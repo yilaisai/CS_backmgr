@@ -18,7 +18,7 @@
                   :dataList="transferQueryStatus"></sac-select>
       <sac-input ref="fromOrToUserPhone" label="用户账号" v-model.trim="filterForm.fromOrToUserPhone"></sac-input>
       <sac-date ref="selectedDate" label="日　　期" v-model="selectedDate"></sac-date>
-      <sac-input ref="txid" label="txid" v-model.trim="filterForm.txid"></sac-input>
+      <sac-input ref="thirdOrderNo" label="txid" v-model.trim="filterForm.thirdOrderNo"></sac-input>
       <sac-submit-form
         @submitForm="submitForm(1)"
         :isReset="false"></sac-submit-form>
@@ -44,7 +44,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="amount" label="转账金额" min-width="150"></el-table-column>
-      <el-table-column prop="txid" label="txid" min-width="150"></el-table-column>
+      <el-table-column prop="thirdOrderNo" label="txid" min-width="150"></el-table-column>
       <el-table-column prop="confirmTime" label="到账时间" min-width="153"></el-table-column>
       <div v-if="isShowPayTime">
         <el-table-column prop="payTime" label="上链时间" min-width="153"></el-table-column>
@@ -108,6 +108,7 @@
           tradeType: '',
           alarmType: '',
           tradeStatus: '',
+          thirdOrderNo: '',
           fromOrToUserPhone: '',
           startDate: '',
           endDate: '',

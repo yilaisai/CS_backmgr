@@ -12,7 +12,7 @@
       <el-table-column prop="planName" label="活动名称"></el-table-column>
       <el-table-column label="活动时间">
         <template slot-scope="scope" prop="updateTime">
-          {{scope.row.beginTime.substr(0,10)}} 至 {{scope.row.endTime.substr(0,10)}}
+          {{scope.row.beginTime}} 至 {{scope.row.endTime}}
         </template>
       </el-table-column>
       <el-table-column prop="totalAmount" label="活动资金" width="100"></el-table-column>

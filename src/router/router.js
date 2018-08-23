@@ -377,6 +377,24 @@ export const appRouter = [
       },
     ],
   },
+  {
+    path: '/invite',
+    name: 'invite',
+    redirect: '/invite/invite',
+    meta: {
+      title: '注册邀请查询',
+    },
+    component: Index,
+    children: [
+      {
+        path: 'invite',
+        meta: {
+          title: '注册邀请查询',
+        },
+        component: () => import('@/pages/invite/invite.vue'),
+      },
+    ],
+  },
 ];
 
 export default [

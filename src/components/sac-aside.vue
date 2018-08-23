@@ -18,22 +18,22 @@
       router
     >
       <template v-for="(item, index) in menuList">
-        <el-menu-item :index="`${index}`" :route="item.menuUrl" :key="index"
-                      v-if="!item.children">
+        <el-menu-item :index="`${index}`" :route="item.path" :key="index"
+                      v-if="item.children.length<2">
           <i class="iconfont" :class="`icon-${item.icon}`"></i>
-          <span slot="title">{{item.name}}</span>
+          <span slot="title">{{item.meta.title}}</span>
         </el-menu-item>
         <el-submenu :index="`${index}`" :key="index" v-else>
           <template slot="title">
             <i class="iconfont" :class="`icon-${item.icon}`"></i>
-            <span>{{item.name}}</span>
+            <span>{{item.meta.title}}</span>
           </template>
           <template v-for="(itemChildren, itemIndex) in item.children">
             <el-menu-item
               style="padding-left: 65px;"
               :index="`${index}-${itemIndex}`"
-              :route="`${itemChildren.menuUrl}`"
-              :key="itemIndex">{{itemChildren.name}}
+              :route="`${item.path}/${itemChildren.path}`"
+              :key="itemIndex">{{itemChildren.meta.title}}
             </el-menu-item>
           </template>
         </el-submenu>
@@ -60,9 +60,11 @@
       },
     },
     mounted() {
-      const menuList = JSON.parse(localStorage.getItem('wallet_menuUrls'));
+      // const menuList = JSON.parse(localStorage.getItem('platFormResList'));
+      const menuList = appRouter;
       menuList.forEach((item) => {
-        item.icon = item.menuUrl.split('/')[1] ? item.menuUrl.split('/')[1] : 'home';
+        const foo = item;
+        foo.icon = foo.path.split('/')[1] ? foo.path.split('/')[1] : 'home';
       });
       this.menuList = menuList;
       // 默认显示页面菜单设置

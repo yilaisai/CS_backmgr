@@ -1,0 +1,61 @@
+/**
+*  Created by   阿紫
+*  On  2018/6/22
+*  Content
+*/
+<template>
+  <el-form-item :label="label" :prop="prop">
+    <el-input v-model="inputName"
+              size="small"
+              :type="type"
+              :placeholder="placeholder?placeholder:`请输入${label}`"
+              clearable
+              @change="inputChange"></el-input>
+  </el-form-item>
+</template>
+
+<script>
+  export default {
+    name: 'sac-input',
+    model: {
+      event: 'change',
+    },
+    props: {
+      prop: {
+        type: String,
+        default: '',
+      },
+      placeholder: {
+        type: String,
+        default: '',
+      },
+      label: {
+        type: String,
+        default: '',
+      },
+      type: {
+        type: String,
+        default: 'text'
+      },
+    },
+    data() {
+      return {
+        inputName: '',
+      };
+    },
+    methods: {
+      inputChange() {
+        this.$emit('change', this.inputName);
+      },
+      reset() {
+        this.inputName = '';
+        this.inputChange();
+      },
+    },
+  };
+</script>
+
+<style lang='less'>
+
+</style>
+

@@ -1,0 +1,43 @@
+@import "./element.less";
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  margin: 0;
+}
+
+.router-view {
+
+}
+// ------------------------------查询--------------------------------
+
+.yh-queryCondition {
+  background: #fff;
+  margin-bottom: 10px;
+  padding: 30px 0 0;
+}
+// ----------------------------查询 end------------------------------
+
+// ------------------------------ table --------------------------------
+.yh-table {
+  background: #fff;
+  padding: 30px 30px 10px 30px;
+  &__condition {
+    position: relative;
+    &-operation {
+      position: absolute;
+      right: 10px;
+      top: -10px;
+    }
+  }
+  .el-menu--horizontal {
+    border: none;
+    .el-menu-item {
+      height: 30px;
+      line-height: 30px;
+    }
+  }
+}
+
+// ----------------------------table end------------------------------

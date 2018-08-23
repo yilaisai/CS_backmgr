@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <script type="text/javascript" src="./static/js/config.js"></script>
+    <link rel="stylesheet" href="https://at.alicdn.com/t/font_786863_92ia0n1wu39.css">
+    <link rel="shortcut icon" type="image/x-icon" href="static/favicon.ico">
+    <title>大钱包后台</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <% if (htmlWebpackPlugin.options.environment === '"development"') { %>
+    <!-- dllPlugins only include in development -->
+    <script src="<%= webpackConfig.output.publicPath %>static/dll/vendor.dll.js"></script>
+    <% } %>
+    <% if (htmlWebpackPlugin.options.environment === '"production"') { %>
+    <!-- inlineManifest only include in production -->
+    <%=htmlWebpackPlugin.files.webpackManifest%>
+    <% } %>
+    <!-- built files will be auto injected -->
+  </body>
+</html>

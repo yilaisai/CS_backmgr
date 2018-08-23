@@ -1,0 +1,75 @@
+/**
+*  Created by   阿紫
+*  On  2018/6/19
+*  Content
+*/
+<template>
+  <el-form-item :label="label" :prop="prop">
+    <el-select v-model="selected"
+               size="small"
+               :placeholder="placeholder?placeholder:`请输入${label}`"
+               filterable
+               :multiple="multiple"
+               @change="selectedChange">
+      <el-option v-for="(item, index) in dataList"
+                 size="small"
+                 :label="item.label"
+                 :value="item.value"
+                 :key="index"></el-option>
+    </el-select>
+  </el-form-item>
+</template>
+
+<script>
+  export default {
+    name: 'sac-select',
+    model: {
+      event: 'change',
+    },
+    props: {
+      prop: {
+        type: String,
+        default: '',
+      },
+      placeholder: {
+        type: String,
+        default: '',
+      },
+      label: {
+        type: String,
+        default: '',
+      },
+      dataList: {
+        type: Array,
+        default: () => [],
+      },
+      multiple: {
+        type: Boolean,
+        default: false,
+      },
+    },
+    data() {
+      return {
+        selected: '',
+      };
+    },
+    methods: {
+      selectedChange() {
+        this.$emit('change', this.selected);
+      },
+      reset() {
+        if (this.multiple) {
+          this.selected = [];
+        } else {
+          this.selected = '';
+        }
+        this.selectedChange();
+      },
+    },
+  };
+</script>
+
+<style lang='less'>
+
+</style>
+

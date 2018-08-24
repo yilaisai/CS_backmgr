@@ -19,8 +19,6 @@ module.exports = {
       'vue-router',
       'element-ui',
       'axios',
-      'js-base64',
-      'js-cookie',
       // 'normalize.css',
     ],
   },

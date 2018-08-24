@@ -15,17 +15,15 @@ const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 const env = require('../config/prod.env');
 
 const webpackConfig = merge(baseWebpackConfig, {
-  externals: {
-    'vue': 'Vue',
-    'vuex': 'Vuex',
-    'vue-router': 'VueRouter',
-    'element-ui': 'ELEMENT',
-    'axios': true,
-    'js-base64': 'Base64',
-    'js-cookie': 'Cookies',
-    'element-ui/lib/theme-chalk/index.css': 'window',
-    'normalize.css': 'window',
-  },
+  // externals: {
+  //   'vue': 'Vue',
+  //   'vuex': 'Vuex',
+  //   'vue-router': 'VueRouter',
+  //   'element-ui': 'ELEMENT',
+  //   'axios': true,
+  //   'element-ui/lib/theme-chalk/index.css': 'window',
+  //   'normalize.css': 'window',
+  // },
   module: {
     rules: utils.styleLoaders({
       sourceMap: config.build.productionSourceMap,
@@ -90,55 +88,50 @@ const webpackConfig = merge(baseWebpackConfig, {
     }),
     // to include dependencies from a CDN instead of bundling it
     // see API section in https://github.com/mmiller42/html-webpack-externals-plugin
-    new HtmlWebpackExternalsPlugin({
-      externals: [
-        {
-          module: 'vue',
-          entry: 'https://cdn.bootcss.com/vue/2.5.2/vue.runtime.min.js',
-          global: 'Vue',
-        },
-        {
-          module: 'vuex',
-          entry: 'https://cdn.bootcss.com/vuex/3.0.1/vuex.min.js',
-          global: 'Vuex',
-        },
-        {
-          module: 'vue-router',
-          entry: 'https://cdn.bootcss.com/vue-router/3.0.1/vue-router.min.js',
-          global: 'VueRouter',
-        },
-        {
-          module: 'element-ui',
-          entry: 'https://cdn.bootcss.com/element-ui/2.2.0/index.js',
-          global: 'ELEMENT',
-        },
-        {
-          module: 'axios',
-          entry: 'https://cdn.bootcss.com/axios/0.18.0/axios.min.js',
-          global: 'axios',
-        },
-        {
-          module: 'element-ui-theme',
-          entry: 'https://cdn.bootcss.com/element-ui/2.2.0/theme-chalk/index.css',
-          append: false,
-        },
-        {
-          module: 'js-base64',
-          entry: 'https://cdn.jsdelivr.net/npm/js-base64@2.4.3/base64.min.js',
-          global: 'Base64',
-        },
-        {
-          module: 'js-cookie',
-          entry: 'https://cdn.bootcss.com/js-cookie/2.2.0/js.cookie.min.js',
-          global: 'Cookies',
-        },
-        {
-          module: 'normalize',
-          entry: 'https://cdn.bootcss.com/normalize/8.0.0/normalize.min.css',
-          append: false,
-        }
-      ],
-    }),
+    // new HtmlWebpackExternalsPlugin({
+    //   // externals: [
+    //   //   {
+    //   //     module: 'vue',
+    //   //     entry: 'https://cdn.bootcss.com/vue/2.5.2/vue.runtime.min.js',
+    //   //     global: 'Vue',
+    //   //   },
+    //   //   {
+    //   //     module: 'vuex',
+    //   //     entry: 'https://cdn.bootcss.com/vuex/3.0.1/vuex.min.js',
+    //   //     global: 'Vuex',
+    //   //   },
+    //   //   {
+    //   //     module: 'vue-router',
+    //   //     entry: 'https://cdn.bootcss.com/vue-router/3.0.1/vue-router.min.js',
+    //   //     global: 'VueRouter',
+    //   //   },
+    //   //   {
+    //   //     module: 'element-ui',
+    //   //     entry: 'https://cdn.bootcss.com/element-ui/2.2.0/index.js',
+    //   //     global: 'ELEMENT',
+    //   //   },
+    //   //   {
+    //   //     module: 'axios',
+    //   //     entry: 'https://cdn.bootcss.com/axios/0.18.0/axios.min.js',
+    //   //     global: 'axios',
+    //   //   },
+    //   //   {
+    //   //     module: 'element-ui-theme',
+    //   //     entry: 'https://cdn.bootcss.com/element-ui/2.2.0/theme-chalk/index.css',
+    //   //     append: false,
+    //   //   },
+    //   //   {
+    //   //     module: 'js-base64',
+    //   //     entry: 'https://cdn.jsdelivr.net/npm/js-base64@2.4.3/base64.min.js',
+    //   //     global: 'Base64',
+    //   //   },
+    //   //   {
+    //   //     module: 'normalize',
+    //   //     entry: 'https://cdn.bootcss.com/normalize/8.0.0/normalize.min.css',
+    //   //     append: false,
+    //   //   }
+    //   // ],
+    // }),
     // keep module.id stable when vendor modules does not change
     new webpack.HashedModuleIdsPlugin(),
     // enable scope hoisting

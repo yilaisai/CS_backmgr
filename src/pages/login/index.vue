@@ -141,8 +141,8 @@
 
 <style lang="less">
   .login {
-    background: #F0F3F7;
-    background: url('~@/assets/bg1.png') no-repeat 10% 20%,
+    /*background: #F0F3F7;*/
+    background: url('~@/assets/bg.png') no-repeat 10% 20%,
     url('~@/assets/bg2.png') no-repeat 86% 24%,
     url('~@/assets/bg3.png') no-repeat 10% 89%,
     url('~@/assets/bg4.png') no-repeat 89% 89%;

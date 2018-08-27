@@ -266,7 +266,7 @@
                 });
                 setTimeout(() => {
                   this.$router.push({
-                    path: '/currency',
+                    path: '/configurable/currency',
                   })
                 }, 1000)
               })
@@ -279,7 +279,7 @@
                 });
                 setTimeout(() => {
                   this.$router.push({
-                    path: '/currency',
+                    path: '/configurable/currency',
                   })
                 }, 1000)
               })
@@ -305,8 +305,9 @@
         this.ruleForm.tranInFee = tranInFee[0];
         this.tranInFeeUnit = tranInFee.length > 1 ? '%' : '';
         this.ruleForm.tranOutFee = tranOutFee[0];
-        this.tranOutFeeUnit = tranInFee.length > 1 ? '%' : '';
+        this.tranOutFeeUnit = tranOutFee.length > 1 ? '%' : '';
         this.ruleForm.isErc20 = this.ruleForm.isErc20 == 0 ? 'NO' : 'YES';
+        this.ruleForm.tranLimitNRealNameAmount = this.ruleForm.tranLimitNrealName;
         this.buttonTitle = '修改币种';
       } else {
         this.buttonTitle = '创建币种';

@@ -21,10 +21,10 @@
           </el-select>
         </el-form-item>
         <sac-input
-          ref="fromUserPhone"
+          ref="phone"
           label="手机号"
-          v-model.trim="filterForm.fromUserPhone"
-          prop="fromUserPhone"></sac-input>
+          v-model.trim="filterForm.phone"
+          prop="phone"></sac-input>
         <sac-input
           ref="realName"
           label="姓名"
@@ -78,7 +78,7 @@
       return {
         filterForm: {
           auditStatus: "",
-          fromUserPhone: "",
+          phone: "",
           realName: '',
           cardNo: '',
           pageNum: 1,
@@ -92,7 +92,7 @@
     },
     methods: {
       resetForm() {
-        this.$refs.fromUserPhone.reset();
+        this.$refs.phone.reset();
         this.$refs.realName.reset();
         this.$refs.cardNo.reset();
         this.filterForm.auditStatus = '';

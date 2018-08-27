@@ -480,6 +480,9 @@
             return false;
           }
         });
+      },
+      openUrl(url) {
+        if (url) window.open(url);
       }
     },
     activated() {

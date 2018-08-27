@@ -96,7 +96,6 @@
               plat: 'web',
             };
             this.$http.post('wallet/backmgr/sysuser/open/sysUserLogin.do', postObj).then((res) => {
-              console.log(res, 192920010);
               const { token, userName, roleName, menuUrls } = res.result;
               const { msg } = res;
               localStorage.setItem('wallet_token', token);
@@ -111,11 +110,8 @@
                 this.$router.replace('/');
               }, 500);
             }).catch((res) => {
-              console.log(res, 99999);
-              const { code } = res.data;
-              if (code && code == 40007) {
-                this.getImgCode(); // 重新获取图片验证码
-              }
+              console.log(res, 5678);
+              this.getImgCode(); // 重新获取图片验证码
             })
           } else {
             console.log('error submit!!');

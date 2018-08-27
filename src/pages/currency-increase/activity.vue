@@ -10,7 +10,7 @@
     </el-col>
     <sac-table :data="listData.list">
       <el-table-column prop="planName" label="活动名称"></el-table-column>
-      <el-table-column label="活动时间">
+      <el-table-column label="认购时间">
         <template slot-scope="scope" prop="updateTime">
           {{scope.row.beginTime}} 至 {{scope.row.endTime}}
         </template>
@@ -76,7 +76,7 @@
           </el-input>
         </el-form-item>
         <el-form-item label="年化收益:" prop="yearIncome">
-          <el-input v-model.number="ruleForm.yearIncome" size="small" placeholder="请输入年化收益"></el-input>
+          <el-input v-model="ruleForm.yearIncome" size="small" placeholder="请输入年化收益"></el-input>
         </el-form-item>
         <el-form-item label="起购额度:" prop="buyMin">
           <el-input placeholder="请输入起购额度" size="small" v-model="ruleForm.buyMin">
@@ -106,14 +106,16 @@
     name: 'activity',
     data() {
       const checkNum = (rule, value, callback) => {
-        if (!/^[0-9]*$/i.test(value)) {
+        if (!/^[0-9]+.?[0-9]*$/.test(value)) {
           callback(new Error(rule.message));
         } else {
           callback();
         }
       };
       const checkYearIncome = (rule, value, callback) => {
-        if (value > 9) {
+        if (!/^[0-9]+.?[0-9]*$/.test(value)) {
+          callback(new Error('年化收益必须为数字'));
+        } else if (value > 9) {
           callback(new Error('年化收益值必须小于9'));
         } else if ((value + '').length > 5) {
           callback(new Error('年化收益值精确到毫'));
@@ -173,7 +175,6 @@
           ],
           yearIncome: [
             { required: true, message: '请输入年化收益', trigger: 'blur' },
-            { type: 'number', message: '年化收益必须为数字', trigger: 'blur' },
             { validator: checkYearIncome },
           ],
           buyMin: [

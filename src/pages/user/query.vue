@@ -24,6 +24,11 @@
         label="身份证"
         v-model.trim="filterForm.cardNo"
         prop="cardNo"></sac-input>
+      <sac-input
+        ref="toAddr"
+        label="收款地址"
+        v-model="filterForm.toAddr"
+        prop="toAddr"></sac-input>
       <sac-submit-form
         @submitForm="submitForm(1)"
         @resetForm="resetForm"></sac-submit-form>
@@ -37,14 +42,14 @@
       <el-table-column prop="registTime" label="注册时间"></el-table-column>
       <el-table-column label="操作" width="300">
         <template slot-scope="scope">
-          <el-button size="small" v-show="scope.row.optStatus== 2" type="danger"
+          <el-button size="small" v-show="scope.row.optStatus== 2" type="success"
                      @click="optStatusChange(0,'解冻账号',scope.row)">解冻账号
           </el-button>
-          <el-button size="small" v-show="scope.row.optStatus== 1" type="warning"
-                     @click="optStatusChange(0,'解锁账号',scope.row)">解锁账号
-          </el-button>
-          <el-button size="small" v-show="scope.row.optStatus== 0" type="danger"
+          <el-button size="small" v-show="scope.row.optStatus != 2" type="danger"
                      @click="optStatusChange(2,'冻结账号',scope.row)">冻结账号
+          </el-button>
+          <el-button size="small" v-show="scope.row.optStatus== 1" type="success" plain
+                     @click="optStatusChange(0,'解锁账号',scope.row)">解锁账号
           </el-button>
           <el-button size="small" v-show="scope.row.optStatus== 0" type="warning"
                      @click="optStatusChange(1,'锁定账号',scope.row)">锁定账号
@@ -70,6 +75,7 @@
           phone: '',
           nickName: '',
           cardNo: '',
+          toAddr: '',
           pageNum: 1,
           pageSize: 20
         },
@@ -84,6 +90,7 @@
         this.$refs.phone.reset();
         this.$refs.nickName.reset();
         this.$refs.cardNo.reset();
+        this.$refs.toAddr.reset();
         this.$refs.filterForm.resetFields(); // 重置query的数据
         this.listData.list = [];
       },

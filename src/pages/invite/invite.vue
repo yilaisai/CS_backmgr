@@ -32,18 +32,24 @@
     </el-form>
 
     <span>邀请成功的1级好友</span>
-    <el-table height="50%" :data="list" border size="small">
-      <el-table-column prop="userId" label="序号"></el-table-column>
+    <el-table height="50%" :data="firstList" border size="small">
+      <el-table-column
+        type="index"
+        width="50">
+      </el-table-column>
       <el-table-column prop="phone" label="好友账户"></el-table-column>
-      <el-table-column prop="realName" label="注册时间"></el-table-column>
-      <el-table-column prop="nickName" label="邀请收益"></el-table-column>
+      <el-table-column prop="registTime" label="注册时间"></el-table-column>
+      <el-table-column prop="inviteGiveAmount" label="邀请收益"></el-table-column>
     </el-table>
     <span style="margin-top: 20px;">邀请成功的2级好友</span>
-    <el-table height="50%" :data="list" border size="small">
-      <el-table-column prop="userId" label="序号"></el-table-column>
+    <el-table height="50%" :data="secondList" border size="small">
+      <el-table-column
+        type="index"
+        width="50">
+      </el-table-column>
       <el-table-column prop="phone" label="好友账户"></el-table-column>
-      <el-table-column prop="realName" label="注册时间"></el-table-column>
-      <el-table-column prop="nickName" label="邀请收益"></el-table-column>
+      <el-table-column prop="registTime" label="注册时间"></el-table-column>
+      <el-table-column prop="inviteGiveAmount" label="邀请收益"></el-table-column>
     </el-table>
   </div>
 </template>
@@ -63,7 +69,8 @@
           updateStartTime: '',
           updateEndTime: '',
         },
-        list: [],
+        firstList: [],
+        secondList: [],
       };
     },
     methods: {
@@ -71,8 +78,9 @@
         this.filterForm.updateStartTime = this.dateTime[0];
         this.filterForm.updateEndTime = this.dateTime[1];
         this.$http.post("wallet/backmgr/registInviteRecd/getUserInviteReward.do", this.filterForm).then((res) => {
-          const { list } = res.result;
-          this.list = list;
+          const { firstList, secondList } = res.result;
+          this.firstList = firstList;
+          this.secondList = secondList;
         })
       },
       submitForm() {
@@ -85,7 +93,7 @@
           }
         });
       }
-    }
+    },
   };
 </script>
 <style lang="less">

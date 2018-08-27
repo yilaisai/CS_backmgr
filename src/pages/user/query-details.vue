@@ -10,11 +10,11 @@
         <el-button size="small" type="primary" plain @click="$router.go(-1)">返回</el-button>
       </el-col>
       <el-col :span="18" style="text-align:right">
-        <el-button size="small" v-show="this.optStatus== 2" type="danger" @click="optStatusChange(0,'解冻账号')">解冻账号
+        <el-button size="small" v-show="this.optStatus== 2" type="success" @click="optStatusChange(0,'解冻账号')">解冻账号
         </el-button>
-        <el-button size="small" v-show="this.optStatus== 1" type="warning" @click="optStatusChange(0,'解锁账号')">解锁账号
+        <el-button size="small" v-show="this.optStatus!= 2" type="danger" @click="optStatusChange(2,'冻结账号')">冻结账号
         </el-button>
-        <el-button size="small" v-show="this.optStatus== 0" type="danger" @click="optStatusChange(2,'冻结账号')">冻结账号
+        <el-button size="small" v-show="this.optStatus== 1" type="success" plain @click="optStatusChange(0,'解锁账号')">解锁账号
         </el-button>
         <el-button size="small" v-show="this.optStatus== 0" type="warning" @click="optStatusChange(1,'锁定账号')">锁定账号
         </el-button>

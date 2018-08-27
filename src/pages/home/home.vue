@@ -13,14 +13,14 @@
         <el-table-column prop="ytdCount" label="昨日新增"></el-table-column>
       </el-table>
     </div>
-    <div class="table-wrap">
-      <h2 class="t-title">账户信息</h2>
-      <el-table :data="account" border>
-        <el-table-column prop="name" label="币种"></el-table-column>
-        <el-table-column prop="total" label="钱包账户总额"></el-table-column>
-        <el-table-column prop="increase" label="昨日新增"></el-table-column>
-      </el-table>
-    </div>
+    <!--<div class="table-wrap">-->
+      <!--<h2 class="t-title">账户信息</h2>-->
+      <!--<el-table :data="account" border>-->
+        <!--<el-table-column prop="name" label="币种"></el-table-column>-->
+        <!--<el-table-column prop="total" label="钱包账户总额"></el-table-column>-->
+        <!--<el-table-column prop="increase" label="昨日新增"></el-table-column>-->
+      <!--</el-table>-->
+    <!--</div>-->
   </div>
 </template>
 <script>

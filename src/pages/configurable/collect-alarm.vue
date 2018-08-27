@@ -62,7 +62,7 @@
     name: 'collect-alarm',
     data() {
       const checkNum = (rule, value, callback) => {
-        if (!/^[0-9]*$/i.test(value)) {
+        if (!/^[0-9]+.?[0-9]*$/.test(value)) {
           callback(new Error(rule.message));
         } else {
           callback();

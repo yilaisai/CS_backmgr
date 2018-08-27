@@ -50,13 +50,13 @@
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" :inline="true" label-width="130px">
         <el-form-item label="名称:" prop="appName">
-          <el-input v-model="ruleForm.appName" size="small" placeholder="请输入内容"></el-input>
+          <el-input v-model="ruleForm.appName" size="small" placeholder="请输入名称"></el-input>
         </el-form-item>
         <el-form-item label="商户手机号:" prop="phone" v-if="!ruleForm.appName">
-          <el-input v-model="ruleForm.phone" size="small" placeholder="请输入内容"></el-input>
+          <el-input v-model="ruleForm.phone" size="small" placeholder="请输入商户手机号"></el-input>
         </el-form-item>
         <el-form-item label="应用图标:" prop="appIcon">
-          <el-input v-model="ruleForm.appIcon" size="small" placeholder="请输入内容">
+          <el-input v-model="ruleForm.appIcon" size="small" placeholder="请输入应用图标">
             <el-upload
               :action="server_path + 'wallet/util/open/uploadFile.do'"
               multiple
@@ -79,34 +79,34 @@
           </el-select>
         </el-form-item>
         <el-form-item label="APPID:" prop="appid">
-          <el-input v-model="ruleForm.appid" size="small" placeholder="请输入内容"></el-input>
+          <el-input v-model="ruleForm.appid" size="small" placeholder="请输入APPID"></el-input>
         </el-form-item>
         <el-form-item label="支付通知Url:">
-          <el-input v-model="ruleForm.notifyUrl" size="small" placeholder="请输入内容"></el-input>
+          <el-input v-model="ruleForm.notifyUrl" size="small" placeholder="请输入支付通知Url"></el-input>
         </el-form-item>
         <el-form-item label="回调地址:">
-          <el-input v-model="ruleForm.hookInjectUrl" size="small" placeholder="请输入内容"></el-input>
+          <el-input v-model="ruleForm.hookInjectUrl" size="small" placeholder="请输入回调地址"></el-input>
         </el-form-item>
         <el-form-item label="版本号:" prop="appVersion">
-          <el-input v-model="ruleForm.appVersion" size="small" placeholder="请输入内容"></el-input>
+          <el-input v-model="ruleForm.appVersion" size="small" placeholder="请输入版本号"></el-input>
         </el-form-item>
         <el-form-item label="iOS Scheme协议:">
-          <el-input v-model="ruleForm.iosPackageName" size="small" placeholder="请输入内容"></el-input>
+          <el-input v-model="ruleForm.iosPackageName" size="small" placeholder="请输入iOS Scheme协议"></el-input>
         </el-form-item>
         <el-form-item label="android 包名:">
-          <el-input v-model="ruleForm.adrPackageName" size="small" placeholder="请输入内容"></el-input>
+          <el-input v-model="ruleForm.adrPackageName" size="small" placeholder="请输入android 包名"></el-input>
         </el-form-item>
         <el-form-item label="android下载地址:">
-          <el-input v-model="ruleForm.downloadUrl" size="small" placeholder="请输入内容"></el-input>
+          <el-input v-model="ruleForm.downloadUrl" size="small" placeholder="请输入android下载地址"></el-input>
         </el-form-item>
         <el-form-item label="ios下载地址:">
-          <el-input v-model="ruleForm.iosDownldUrl" size="small" placeholder="请输入内容"></el-input>
+          <el-input v-model="ruleForm.iosDownldUrl" size="small" placeholder="请输入ios下载地址"></el-input>
         </el-form-item>
         <el-form-item label="跳转地址:">
-          <el-input v-model="ruleForm.jumpUrl" size="small" placeholder="请输入内容"></el-input>
+          <el-input v-model="ruleForm.jumpUrl" size="small" placeholder="请输入跳转地址"></el-input>
         </el-form-item>
         <el-form-item label="应用介绍:" prop="destext">
-          <el-input type="textarea" :rows="2" size="small" placeholder="请输入内容" v-model="ruleForm.destext"></el-input>
+          <el-input type="textarea" :rows="2" size="small" placeholder="请输入应用介绍" v-model="ruleForm.destext"></el-input>
         </el-form-item>
         <el-form-item label="是否自营" prop="ownType">
           <el-radio-group v-model="ruleForm.ownType">
@@ -125,8 +125,12 @@
     <el-dialog :title="`应用 ${ruleForm.appName} 的详情`" :visible.sync="dialogFormVisibleView">
       <el-form :inline="true" class="demo-form-inline" label-width="130px">
         <el-form-item label="名称:">{{ruleForm.appName}}</el-form-item>
-        <el-form-item label="应用图标:">{{ruleForm.appIcon}}</el-form-item>
-        <el-form-item label="商户类型:">{{ruleForm.transferTypeId}}</el-form-item>
+        <el-form-item label="应用图标:">
+          <img v-if="!ruleForm.appIcon.indexOf('http')" :src="ruleForm.appIcon"
+               style="max-width:100%; max-height: 100px;" alt="图标存储地址">
+          <span v-if="ruleForm.appIcon.indexOf('http')">{{ruleForm.appIcon}}</span>
+        </el-form-item>
+        <el-form-item label="商户类型:">{{ruleForm.transferTypeName}}</el-form-item>
         <el-form-item label="APPID:">{{ruleForm.appId}}</el-form-item>
         <el-form-item label="支付通知Url:">{{ruleForm.notifyUrl}}</el-form-item>
         <el-form-item label="回调地址:">{{ruleForm.hookInjectUrl}}</el-form-item>
@@ -247,7 +251,7 @@
           pageNum: this.pageNum
         }).then((res) => {
           this.listData = res.result.list
-          this.listData.total = res.result.total
+          this.listData.total = res.result.list.total
         })
       },
       // 上下架

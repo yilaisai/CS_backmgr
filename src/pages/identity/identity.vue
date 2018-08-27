@@ -38,6 +38,9 @@
         <sac-submit-form
           @submitForm="submitForm(1)"
           @resetForm="resetForm"></sac-submit-form>
+        <el-form-item>
+          <el-button type="danger" @click="quickAudit" size="small">一键审核</el-button>
+        </el-form-item>
       </el-form>
     </div>
     <sac-table :data="listData.list">
@@ -118,6 +121,26 @@
           name: 'identityDetails',
           params: itemDate,
         })
+      },
+      quickAudit() {
+        this.$confirm('确定一键审核吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$http.post('/wallet/backmgr/user/quickAudit.do').then((res) => {
+            this.$notify({
+              title: '成功',
+              message: '一键审核成功',
+              type: 'success'
+            });
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消一键审核'
+          });
+        });
       }
     },
     activated() {

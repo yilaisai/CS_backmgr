@@ -311,7 +311,8 @@
             self.pushMessage = false;
           }, 20000)
         }).catch(() => {
-          self.pushMessage = false;
+          this.getNoticeInfoList()
+          this.pushMessage = false;
         })
       },
       // 查看详情

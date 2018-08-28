@@ -96,8 +96,8 @@
       },
       submitForm(num) {
         this.filterForm.pageNum = num;
-        const { phone, nickName, cardNo } = this.filterForm;
-        if (phone || nickName || cardNo) {
+        const { phone, nickName, cardNo, toAddr } = this.filterForm;
+        if (phone || nickName || cardNo || toAddr) {
           this.getUserInfoList();
         } else {
           this.$notify.error({

@@ -20,7 +20,11 @@
       <el-table-column prop="amount" :label="coinRand">
       </el-table-column>
       <el-table-column prop="coinAddr" label="收款地址"></el-table-column>
-      <el-table-column prop="lastLoginTime" label="最后登录时间" width="130"></el-table-column>
+      <el-table-column prop="lastLoginTime" label="最后登录时间" width="130">
+        <template slot-scope="scope" prop="lastLoginTime">
+          {{scope.row.lastLoginTime | dateFormat}}
+        </template>
+      </el-table-column>
       <el-table-column label="操作" width="130">
         <template slot-scope="scope" prop="sysStatus">
           <el-button type="primary" size="small" @click.native="goDetail(scope.row.phone)">查看详情</el-button>

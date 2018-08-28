@@ -151,12 +151,10 @@
         return isJPG;
       },
       frontUrlSuccess(response, res, file) {
-        console.log(response)
         this.ruleForm.frontUrl = response.result.urls[0]
       },
       backUrlSuccess(response, res, file) {
         this.ruleForm.backUrl = response.result.urls[0]
-        console.log('this.imageUrl2', this.imageUrl2);
       },
       antiUrlSuccess(response, res, file) {
         this.ruleForm.antiUrl = response.result.urls[0]
@@ -206,8 +204,8 @@
       overflow: hidden;
     }
     img {
-      height: 100%;
-      width: 100%;
+      max-width: 100%;
+      max-height: 300px;
     }
   }
 </style>

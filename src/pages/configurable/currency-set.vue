@@ -291,8 +291,7 @@
         });
       },
       upload(response, file, fileList) {
-        console.log(response)
-        this.postObj.iconUrl = response.result.urls[0]
+        this.ruleForm.iconUrl = response.result.urls[0]
       },
     },
     activated() {

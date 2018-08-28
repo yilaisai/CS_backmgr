@@ -52,7 +52,7 @@
         <el-form-item label="名称:" prop="appName">
           <el-input v-model="ruleForm.appName" size="small" placeholder="请输入名称"></el-input>
         </el-form-item>
-        <el-form-item label="商户手机号:" prop="phone" v-if="!ruleForm.appName">
+        <el-form-item label="商户手机号:" prop="phone" v-if="!ruleForm.id">
           <el-input v-model="ruleForm.phone" size="small" placeholder="请输入商户手机号"></el-input>
         </el-form-item>
         <el-form-item label="应用图标:" prop="appIcon">

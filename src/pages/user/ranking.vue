@@ -20,10 +20,7 @@
       <el-table-column prop="amount" :label="coinRand">
       </el-table-column>
       <el-table-column prop="coinAddr" label="收款地址"></el-table-column>
-      <el-table-column prop="lastLoginTime" label="最后登录时间" width="130">
-        <template slot-scope="scope" prop="lastLoginTime">
-          {{scope.row.lastLoginTime | dateFormat}}
-        </template>
+      <el-table-column prop="lastLoginTime" label="最后登录时间" width="140">
       </el-table-column>
       <el-table-column label="操作" width="130">
         <template slot-scope="scope" prop="sysStatus">
@@ -40,6 +37,8 @@
   </div>
 </template>
 <script>
+  import { dateFormat } from '@/common/util';
+
   export default {
     name: 'ranking',
     data() {
@@ -78,8 +77,12 @@
       },
       getPersonalRanking() {
         this.$http.post("cloud/backmgr/statics/personalRanking", this.filterForm).then((res) => {
-          this.listData.list = res.result.list;
-          this.listData.total = res.result.total
+          const { list, total } = res.result;
+          list.forEach((item) => {
+            item.lastLoginTime = item.lastLoginTime ? dateFormat(item.lastLoginTime, 'YYYY-MM-DD HH:mm:ss') : item.lastLoginTime;
+          })
+          this.listData.list = list;
+          this.listData.total = total
         })
       },
       goDetail(phone) {

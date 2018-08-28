@@ -42,7 +42,8 @@
       </el-row>
       <el-row :gutter="24" >
         <el-col :span="8">
-          <span>正面：</span> <img :src="details.cardFrontUrl" alt="">
+          <span>正面：</span>
+          <img :src="details.cardFrontUrl" alt="">
         </el-col>
         <el-col :span="8">
           <span>反面：</span> <img :src="details.cardBackUrl" alt="">
@@ -75,8 +76,13 @@
   </div>
 </template>
 <script>
+  import PPreview from "vue-simple-picture-preview";
+
   export default {
     name: "identity-details",
+    components: {
+      PPreview
+    },
     data() {
       return {
         details: {},
@@ -185,7 +191,8 @@
       color: red;
     }
     img {
-      width: 90%;
+      max-height: 250px;
+      max-width: 350px;
       margin: 20px 0;
     }
     .content {

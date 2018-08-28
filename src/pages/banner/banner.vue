@@ -37,7 +37,11 @@
       </el-table-column>
       <el-table-column prop="bannerTypeName" label="banner类型"></el-table-column>
       <el-table-column prop="bannerName" label="banner名称"></el-table-column>
-      <el-table-column prop="jumpUrl" label="跳转链接"></el-table-column>
+      <el-table-column prop="jumpUrl" label="跳转链接">
+        <template slot-scope="scope" prop="sysStatus">
+          <a target="_brank" :href="scope.row.jumpUrl">{{scope.row.jumpUrl}}</a>
+        </template>
+      </el-table-column>
       <el-table-column prop="remark" label="备注"></el-table-column>
       <el-table-column prop="createTime" label="创建时间" width="170"></el-table-column>
       <el-table-column label="操作" width="160">

@@ -174,7 +174,7 @@
               if (item.sysUserList.length == 1) {
                 item.sysUserList = item.sysUserList[0].Name;
               } else {
-                item.sysUserList = item.sysUserList.reduce((prev, next) => `${prev.Name}，${next.Name}`);
+                item.sysUserList = item.sysUserList.reduce((prev, next) => `${prev.Name ? prev.Name : prev}，${next.Name}`);
               }
             }
           });

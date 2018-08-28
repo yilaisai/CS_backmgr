@@ -44,6 +44,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     }),
     new UglifyJsPlugin({
       uglifyOptions: {
+        comments: false,        //去掉注释
         compress: {
           warnings: false,
           drop_console: true,

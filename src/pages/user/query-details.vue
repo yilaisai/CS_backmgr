@@ -49,10 +49,11 @@
         <label>最后登录时间:</label>
         <span>{{detais.lastLoginTime}}</span>
       </el-col>
-      <el-col :span="8">
-        <label>最后登录IP地址：</label>
-        <span>{{detais.cardNo}}</span>
-      </el-col>
+      <!--FIXME 后端暂时没有返回-->
+      <!--<el-col :span="8">-->
+      <!--<label>最后登录IP地址：</label>-->
+      <!--<span>{{detais.cardNo}}</span>-->
+      <!--</el-col>-->
     </el-row>
     <label>持币信息：</label>
     <sac-table :data="tableData">

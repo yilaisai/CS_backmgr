@@ -27,8 +27,8 @@
       <sac-input
         ref="toAddr"
         label="收款地址"
-        v-model="filterForm.toAddr"
-        prop="toAddr"></sac-input>
+        v-model="filterForm.coinAddr"
+        prop="coinAddr"></sac-input>
       <sac-submit-form
         @submitForm="submitForm(1)"
         @resetForm="resetForm"></sac-submit-form>
@@ -75,7 +75,7 @@
           phone: '',
           nickName: '',
           cardNo: '',
-          toAddr: '',
+          coinAddr: '',
           pageNum: 1,
           pageSize: 20
         },
@@ -90,14 +90,14 @@
         this.$refs.phone.reset();
         this.$refs.nickName.reset();
         this.$refs.cardNo.reset();
-        this.$refs.toAddr.reset();
+        this.$refs.coinAddr.reset();
         this.$refs.filterForm.resetFields(); // 重置query的数据
         this.listData.list = [];
       },
       submitForm(num) {
         this.filterForm.pageNum = num;
-        const { phone, nickName, cardNo, toAddr } = this.filterForm;
-        if (phone || nickName || cardNo || toAddr) {
+        const { phone, nickName, cardNo, coinAddr } = this.filterForm;
+        if (phone || nickName || cardNo || coinAddr) {
           this.getUserInfoList();
         } else {
           this.$notify.error({

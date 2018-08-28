@@ -107,6 +107,68 @@
       margin-right: 10px;
       display: inline-block;
     }
+    .icon- {
+      &home {
+        padding-left: 20px;
+        background: url("~@/assets/home.png") no-repeat top left;
+        background-size: 15px 15px;
+      }
+      &banner {
+        padding-left: 20px;
+        background: url("~@/assets/banner.png") no-repeat top left;
+        background-size: 16px 16px;
+      }
+      &configurable {
+        padding-left: 20px;
+        background: url("~@/assets/configurable.png") no-repeat top left;
+        background-size: 14px 15px;
+      }
+      &currency-increase {
+        padding-left: 20px;
+        background: url("~@/assets/currency-increase.png") no-repeat top left;
+        background-size: 19px;
+      }
+      &feedback {
+        padding-left: 20px;
+        background: url("~@/assets/feedback.png") no-repeat top left;
+        background-size: 16px 16px;
+      }
+      &identity {
+        padding-left: 20px;
+        background: url("~@/assets/identity.png") no-repeat top left;
+        background-size: 15px 15px;
+      }
+      &invite {
+        padding-left: 20px;
+        background: url("~@/assets/invite.png") no-repeat top left;
+        background-size: 16px 16px;
+      }
+      &message {
+        padding-left: 20px;
+        background: url("~@/assets/message.png") no-repeat top left;
+        background-size: 16px 16px;
+      }
+      &money {
+        padding-left: 20px;
+        background: url("~@/assets/money.png") no-repeat top left;
+        background-size: 16px;
+      }
+      &permissions {
+        padding-left: 20px;
+        background: url("~@/assets/permissions.png") no-repeat top left;
+        background-size: 14px 17px;
+      }
+      &third-application {
+        padding-left: 20px;
+        background: url("~@/assets/third-application.png") no-repeat top left;
+        background-size: 14px 15px;
+      }
+      &user {
+        padding-left: 20px;
+        background: url("~@/assets/user.png") no-repeat top left;
+        background-size: 16px 15px;
+      }
+    }
   }
 </style>
 

@@ -38,7 +38,8 @@
 
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisiblePwd">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="180px">
-        <sac-input type="password" label="验证我的登录密码" placeholder="我的登录密码" v-model="ruleForm.ownPwd" prop="ownPwd" ref="ownPwd"></sac-input>
+        <sac-input type="password" label="验证我的登录密码" placeholder="我的登录密码" v-model="ruleForm.ownPwd" prop="ownPwd"
+                   ref="ownPwd"></sac-input>
         <sac-input type="password" ref="pwd" v-model="ruleForm.pwd" :label="`${currentData.name}的新登录密码`"
                    placeholder="请输入6-16位密码" prop="pwd"></sac-input>
       </el-form>
@@ -277,16 +278,14 @@
       },
       // 获取角色
       getSysRoleList() {
-        if (!this.roleList.length) {
-          this.$http.post('wallet/backmgr/privilege/getSysRoleList.do').then((res) => {
-            const { roleList } = res.result;
-            roleList.forEach((item) => {
-              item.label = item.roleName;
-              item.value = item.roleId;
-            })
-            this.roleList = roleList;
+        this.$http.post('wallet/backmgr/privilege/getSysRoleList.do').then((res) => {
+          const { roleList } = res.result;
+          roleList.forEach((item) => {
+            item.label = item.roleName;
+            item.value = item.roleId;
           })
-        }
+          this.roleList = roleList;
+        })
       },
     },
     activated() {

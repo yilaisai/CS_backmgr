@@ -144,17 +144,17 @@
         });
       },
       remove(data) {
-        this.$confirm(`此操作将永久删除 ${data.name} 角色, 是否继续?`, '提示', {
+        this.$confirm(`此操作将永久删除 ${data.roleName} 角色, 是否继续?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           this.$http.post('wallet/backmgr/privilege/deleteSysRole.do', {
-            roleId: data.id
+            roleId: data.roleId
           }).then((res) => {
             this.$notify({
               title: '成功',
-              message: `删除 ${data.name} 角色成功`,
+              message: `删除 ${data.roleName} 角色成功`,
               type: 'success'
             });
             this.getSysRoleList();

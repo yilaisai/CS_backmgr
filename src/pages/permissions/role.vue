@@ -106,7 +106,7 @@
           if (valid) {
             this.ruleForm.urlId = this.$refs.tree.getCheckedKeys().join(',') || '';
             const { id, name, urlId } = this.ruleForm;
-            if (id) {
+            if (id || id == 0) {
               const obj = {};
               Object.entries(this.ruleForm).forEach(([key, value]) => {
                 if (value != this.currentForm[key]) {

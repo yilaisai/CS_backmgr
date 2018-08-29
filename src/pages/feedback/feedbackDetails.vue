@@ -30,21 +30,19 @@
 
       <h3>意见反馈：</h3>
       <p class="details">{{details.content}}</p>
-      <PPreview v-if="imgArray.length&&imgArray[0]" :pictureList="imgArray"></PPreview>
-      <!--<div v-if="imgArray.length">-->
-      <!--<img :src="item" alt="" v-for="item in imgArray">-->
-      <!--</div>-->
+      <div v-if="imgArray.length" >
+        <viewer :options="options"
+                class="viewer" ref="viewer"
+        >
+          <img :src="item" alt="" v-for="item in imgArray">
+        </viewer>
+      </div>
     </div>
   </div>
 </template>
 <script>
-  import PPreview from "vue-simple-picture-preview";
-
   export default {
     name: "feedbackDetails",
-    components: {
-      PPreview
-    },
     data() {
       return {
         details: {
@@ -58,7 +56,23 @@
           remark: '',
           fId: '',
         },
-        imgArray: []
+        imgArray: [],
+        options: {
+          inline: false,
+          button: false,
+          navbar: false,
+          title: false,
+          toolbar: true,
+          tooltip: false,
+          movable: true,
+          zoomable: true,
+          rotatable: true,
+          scalable: false,
+          transition: true,
+          fullscreen: true,
+          keyboard: true,
+          url: 'data-source'
+        }
       };
     },
     methods: {
@@ -77,7 +91,6 @@
         this.details = this.$route.params;
         this.submitForm.fId = this.$route.params.id;
         this.imgArray = this.$route.params.otherFile.split(',');
-        console.log(this.$route.params.otherFile, ' this.imgArray', this.imgArray.length);
       } else {
         this.$router.go(-1);
       }

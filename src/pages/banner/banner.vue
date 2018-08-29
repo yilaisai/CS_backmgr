@@ -30,8 +30,12 @@
       <el-table-column prop="weight" label="权重" width="80"></el-table-column>
       <el-table-column label="图片">
         <template slot-scope="scope">
-          <img v-if="!scope.row.bannerUrl.indexOf('http')" :src="scope.row.bannerUrl"
-               style="max-width:100%; max-height: 150px;" alt="图片存储地址不存在">
+          <viewer :options="options"
+                  class="viewer" ref="viewer"
+          >
+            <img v-if="!scope.row.bannerUrl.indexOf('http')" :src="scope.row.bannerUrl"
+                 style="max-width:100%; max-height: 150px;" alt="图片存储地址不存在">
+          </viewer>
           <span v-if="scope.row.bannerUrl.indexOf('http')">{{scope.row.bannerUrl}}</span>
         </template>
       </el-table-column>
@@ -163,6 +167,22 @@
         },
         server_path: "",
         bannerTypeCode: "",
+        options: {
+          inline: false,
+          button: false,
+          navbar: false,
+          title: false,
+          toolbar: false,
+          tooltip: false,
+          movable: true,
+          zoomable: true,
+          rotatable: true,
+          scalable: false,
+          transition: true,
+          fullscreen: true,
+          keyboard: true,
+          url: 'data-source'
+        }
       };
     },
     methods: {

@@ -19,7 +19,7 @@
         <el-button size="small" type="primary" @click.native="fixContent">修改</el-button>
       </el-col>
     </el-row>
-    <div class="content" >
+    <div class="content">
       <el-row :gutter="24">
         <el-col :span="8"><span>账号：</span><span>{{details.phone}}</span></el-col>
         <el-col :span="8"><span>姓名：</span><span>{{details.realName}}</span></el-col>
@@ -40,17 +40,21 @@
           </el-button>
         </el-col>
       </el-row>
-      <el-row :gutter="24" >
-        <el-col :span="8">
-          <span>正面：</span>
-          <img :src="details.cardFrontUrl" alt="">
-        </el-col>
-        <el-col :span="8">
-          <span>反面：</span> <img :src="details.cardBackUrl" alt="">
-        </el-col>
-        <el-col :span="8">
-          <span>手持照片：</span> <img :src="details.antiMoneyUrl" alt="">
-        </el-col>
+      <el-row :gutter="24">
+        <viewer :options="options"
+                class="viewer" ref="viewer"
+        >
+          <el-col :span="8">
+            <span>正面：</span>
+            <img :src="details.cardFrontUrl">
+          </el-col>
+          <el-col :span="8">
+            <span>反面：</span> <img :src="details.cardBackUrl" alt="">
+          </el-col>
+          <el-col :span="8">
+            <span>手持照片：</span> <img :src="details.antiMoneyUrl" alt="">
+          </el-col>
+        </viewer>
       </el-row>
     </div>
     <span>审核记录详情：</span>
@@ -76,13 +80,8 @@
   </div>
 </template>
 <script>
-  import PPreview from "vue-simple-picture-preview";
-
   export default {
     name: "identity-details",
-    components: {
-      PPreview
-    },
     data() {
       return {
         details: {},
@@ -101,6 +100,22 @@
           reason: [
             { required: true, message: '请输入拒绝理由', trigger: 'blur' },
           ]
+        },
+        options: {
+          inline: false,
+          button: false,
+          navbar: false,
+          title: false,
+          toolbar: true,
+          tooltip: false,
+          movable: true,
+          zoomable: true,
+          rotatable: true,
+          scalable: false,
+          transition: true,
+          fullscreen: true,
+          keyboard: true,
+          url: 'data-source'
         }
       };
     },

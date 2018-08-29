@@ -13,8 +13,12 @@
       <el-table-column label="名称" prop="appName"></el-table-column>
       <el-table-column prop="appIcon" label="图标存储地址">
         <template slot-scope="scope">
-          <img v-if="!scope.row.appIcon.indexOf('http')" :src="scope.row.appIcon"
-               style="max-width:100%; max-height: 150px;" alt="图标存储地址">
+          <viewer :options="options"
+                  class="viewer" ref="viewer"
+          >
+            <img v-if="!scope.row.appIcon.indexOf('http')" :src="scope.row.appIcon"
+                 style="max-width:100%; max-height: 150px;" alt="图标存储地址">
+          </viewer>
           <span v-if="scope.row.appIcon.indexOf('http')">{{scope.row.appIcon}}</span>
         </template>
       </el-table-column>
@@ -212,6 +216,22 @@
         },
         transferTypeInfoList: [],
         currentForm: {},
+        options: {
+          inline: false,
+          button: false,
+          navbar: false,
+          title: false,
+          toolbar: false,
+          tooltip: false,
+          movable: true,
+          zoomable: true,
+          rotatable: true,
+          scalable: false,
+          transition: true,
+          fullscreen: true,
+          keyboard: true,
+          url: 'data-source'
+        }
       };
     },
     methods: {

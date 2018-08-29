@@ -4,8 +4,9 @@
 *  Content
 */
 <template>
-  <el-form-item :label="label" :prop="prop">
+  <el-form-item :label="`${label}:`" :prop="prop">
     <el-input v-model="inputName"
+              :value="value"
               size="small"
               :type="type"
               :placeholder="placeholder?placeholder:`请输入${label}`"
@@ -37,6 +38,7 @@
         type: String,
         default: 'text'
       },
+      value: [String, Number],
     },
     data() {
       return {
@@ -51,6 +53,9 @@
         this.inputName = '';
         this.inputChange();
       },
+    },
+    mounted() {
+      this.inputName = this.value;
     },
   };
 </script>

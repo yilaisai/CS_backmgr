@@ -4,7 +4,7 @@
 *  Content
 */
 <template>
-  <el-form-item :label="label" :prop="prop" class="sac-date">
+  <el-form-item :label="`${label}:`" :prop="prop" class="sac-date">
     <el-date-picker
       v-model="value"
       :editable="false"

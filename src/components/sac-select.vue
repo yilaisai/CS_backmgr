@@ -4,7 +4,7 @@
 *  Content
 */
 <template>
-  <el-form-item :label="label" :prop="prop">
+  <el-form-item :label="`${label}:`" :prop="prop">
     <el-select v-model="selected"
                size="small"
                :placeholder="placeholder?placeholder:`请输入${label}`"

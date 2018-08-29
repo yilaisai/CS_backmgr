@@ -4,7 +4,7 @@
 *  Content
 */
 <template>
-  <el-form-item :label="label" :prop="prop">
+  <el-form-item :label="`${label}:`" :prop="prop">
     <el-col :span="11">
       <input type="number"
              v-model="beginNumber"

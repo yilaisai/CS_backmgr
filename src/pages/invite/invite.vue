@@ -6,7 +6,7 @@
 <template>
   <div class='invite'>
     <el-form :inline="true"
-             label-width="80px"
+             label-width="90px"
              ref="filterForm"
              :rules="rules"
              :model="filterForm">

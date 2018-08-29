@@ -4,7 +4,7 @@
 *  Content
 */
 <template>
-  <el-form-item label="币　　种" :prop="prop">
+  <el-form-item label="币　　种:" :prop="prop">
     <el-select v-model="selected"
                size="small"
                placeholder="请选择币种"

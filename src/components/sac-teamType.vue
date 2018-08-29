@@ -4,7 +4,7 @@
 *  Content
 */
 <template>
-  <el-form-item label="商户类型" :prop="prop">
+  <el-form-item label="商户类型:" :prop="prop">
     <el-cascader
       size="small"
       :options="teamTypeList"

@@ -1,10 +1,10 @@
-import Vue from "vue";
-
 /**
  *  Created by   阿紫
- *  On  2018/8/16
+ *  On  2018/8/8
  *  Content
  */
+
+import Vue from "vue";
 
 export const convertTransactionType = (value) => {
   switch (value) {

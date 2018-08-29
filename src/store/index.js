@@ -1,12 +1,6 @@
-/**
- *  Created by   阿紫
- *  On  2018/5/8
- *  Content
- */
 
 import Vue from 'vue';
 import Vuex from 'vuex';
-import * as getters from './getters';
 import * as actions from './actions';
 import * as mutations from './mutations';
 
@@ -23,7 +17,6 @@ const store = new Vuex.Store({
     coinList: [], // 币 种
     teamTypeList: [], // 商户类型
   },
-  getters,
   actions,
   mutations,
   strict,

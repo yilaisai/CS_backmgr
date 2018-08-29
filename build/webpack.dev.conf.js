@@ -20,20 +20,6 @@ if (!utils.fsExistsSync('static/dll/vendor-manifest.json') ||
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 
-// const localIp = (function () {
-//   const os = require('os');
-//   const interfaces = os.networkInterfaces();
-//   let IPv4 = '127.0.0.1';
-//   for (let key in interfaces) {
-//     interfaces[key].forEach(function (details) {
-//       if (details.family === 'IPv4' && key === 'en0') {
-//         IPv4 = details.address;
-//       }
-//     });
-//   }
-//   return IPv4;
-// }());
-
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })

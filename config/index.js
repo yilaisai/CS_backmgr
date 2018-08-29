@@ -10,15 +10,7 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {
-      '/wallet/backmgr': {
-        target: 'http://47.52.128.11:9005/', // 服务器
-        changeOrigin: true,
-        pathRewrite: {
-          '^wallet/backmgr/': '/wallet/backmgr/'
-        }
-      }
-    },
+    proxyTable: {},
 
     // Various Dev Server settings
     host: '0.0.0.0', // can be overwritten by process.env.HOST

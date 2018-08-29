@@ -141,7 +141,7 @@
         <el-input style="width:80%" type="textarea" :rows="2" size="small" placeholder="请输入币种介绍"
                   v-model="ruleForm.chineseDesc"></el-input>
       </el-form-item>
-      <el-form-item size="small" style="text-align:center; width:80%; margin-top:100px;">
+      <el-form-item size="small" style="text-align:center; width:80%; margin-top:60px;">
         <el-button type="primary" style="width: 100px" @click="onSubmit">{{buttonTitle}}</el-button>
         <el-button type="danger" style="width: 100px;" @click="$router.go(-1)">取消</el-button>
       </el-form-item>
@@ -269,6 +269,8 @@
                     path: '/configurable/currency',
                   })
                 }, 1000)
+                this.$store.commit('setCoinList', []);
+                this.$store.dispatch('getSampleCoinInfo');
               })
             } else {
               this.$http.post("wallet/backmgr/coin/createCoinInfo.do", ruleForm).then((res) => {
@@ -282,6 +284,8 @@
                     path: '/configurable/currency',
                   })
                 }, 1000)
+                this.$store.commit('setCoinList', []);
+                this.$store.dispatch('getSampleCoinInfo');
               })
             }
           } else {

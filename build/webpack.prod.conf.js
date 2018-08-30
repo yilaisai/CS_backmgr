@@ -89,7 +89,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     }),
     // to include dependencies from a CDN instead of bundling it
     // see API section in https://github.com/mmiller42/html-webpack-externals-plugin
-    // new HtmlWebpackExternalsPlugin({
+    // news HtmlWebpackExternalsPlugin({
     //   // externals: [
     //   //   {
     //   //     module: 'vue',

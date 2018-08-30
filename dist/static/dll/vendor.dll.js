@@ -10,7 +10,7 @@ var vendor_library =
 /******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
 /******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
+/******/ 		// Create a news module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
@@ -1514,7 +1514,7 @@ function copyAugment (target, src, keys) {
 
 /**
  * Attempt to create an observer instance for a value,
- * returns the new observer if successfully observed,
+ * returns the news observer if successfully observed,
  * or the existing observer if the value already has one.
  */
 function observe (value, asRootData) {
@@ -1602,7 +1602,7 @@ function defineReactive (
 }
 
 /**
- * Set a property on an object. Adds the new property and
+ * Set a property on an object. Adds the news property and
  * triggers change notification if the property doesn't
  * already exist.
  */
@@ -1700,7 +1700,7 @@ if (process.env.NODE_ENV !== 'production') {
     if (!vm) {
       warn(
         "option \"" + key + "\" can only be used during instance " +
-        'creation with the `new` keyword.'
+        'creation with the `news` keyword.'
       );
     }
     return defaultStrat(parent, child)
@@ -2024,7 +2024,7 @@ function assertObjectType (name, value, vm) {
 }
 
 /**
- * Merge two option objects into a new one.
+ * Merge two option objects into a news one.
  * Core utility used in both instantiation and inheritance.
  */
 function mergeOptions (
@@ -3403,9 +3403,9 @@ function updateChildComponent (
   // determine whether component has slot children
   // we need to do this before overwriting $options._renderChildren
   var hasChildren = !!(
-    renderChildren ||               // has new static slots
+    renderChildren ||               // has news static slots
     vm.$options._renderChildren ||  // has old static slots
-    parentVnode.data.scopedSlots || // has new scoped slots
+    parentVnode.data.scopedSlots || // has news scoped slots
     vm.$scopedSlots !== emptyObject // has old scoped slots
   );
 
@@ -3810,7 +3810,7 @@ Watcher.prototype.run = function run () {
       isObject(value) ||
       this.deep
     ) {
-      // set new value
+      // set news value
       var oldValue = this.value;
       this.value = value;
       if (this.user) {
@@ -4730,8 +4730,8 @@ var componentVNodeHooks = {
       child,
       options.propsData, // updated props
       options.listeners, // updated listeners
-      vnode, // new parent vnode
-      options.children // new children
+      vnode, // news parent vnode
+      options.children // news children
     );
   },
 
@@ -5255,7 +5255,7 @@ function resolveConstructorOptions (Ctor) {
     var cachedSuperOptions = Ctor.superOptions;
     if (superOptions !== cachedSuperOptions) {
       // super option changed,
-      // need to resolve new options.
+      // need to resolve news options.
       Ctor.superOptions = superOptions;
       // check if there are any late-modified/attached options (#4976)
       var modifiedOptions = resolveModifiedOptions(Ctor);
@@ -5309,7 +5309,7 @@ function Vue (options) {
   if (process.env.NODE_ENV !== 'production' &&
     !(this instanceof Vue)
   ) {
-    warn('Vue is a constructor and should be called with the `new` keyword');
+    warn('Vue is a constructor and should be called with the `news` keyword');
   }
   this._init(options);
 }
@@ -6129,7 +6129,7 @@ function createPatchFunction (backend) {
   ) {
     if (isDef(vnode.elm) && isDef(ownerArray)) {
       // This vnode was used in a previous render!
-      // now it's used as a new node, overwriting its elm would cause
+      // now it's used as a news node, overwriting its elm would cause
       // potential patch errors down the road when it's used as an insertion
       // reference node. Instead, we clone the node on-demand before creating
       // associated DOM element for it.
@@ -6435,7 +6435,7 @@ function createPatchFunction (backend) {
             oldCh[idxInOld] = undefined;
             canMove && nodeOps.insertBefore(parentElm, vnodeToMove.elm, oldStartVnode.elm);
           } else {
-            // same key but different element. treat as new element
+            // same key but different element. treat as news element
             createElm(newStartVnode, insertedVnodeQueue, parentElm, oldStartVnode.elm, false, newCh, newStartIdx);
           }
         }
@@ -6493,7 +6493,7 @@ function createPatchFunction (backend) {
 
     // reuse element for static trees.
     // note we only do this if the vnode is cloned -
-    // if the new node is not cloned it means the render functions have been
+    // if the news node is not cloned it means the render functions have been
     // reset by the hot-reload-api and we need to do a proper re-render.
     if (isTrue(vnode.isStatic) &&
       isTrue(oldVnode.isStatic) &&
@@ -6671,7 +6671,7 @@ function createPatchFunction (backend) {
     var insertedVnodeQueue = [];
 
     if (isUndef(oldVnode)) {
-      // empty mount (likely as component), create new root element
+      // empty mount (likely as component), create news root element
       isInitialPatch = true;
       createElm(vnode, insertedVnodeQueue, parentElm, refElm);
     } else {
@@ -6711,7 +6711,7 @@ function createPatchFunction (backend) {
         var oldElm = oldVnode.elm;
         var parentElm$1 = nodeOps.parentNode(oldElm);
 
-        // create new node
+        // create news node
         createElm(
           vnode,
           insertedVnodeQueue,
@@ -6796,7 +6796,7 @@ function _update (oldVnode, vnode) {
     oldDir = oldDirs[key];
     dir = newDirs[key];
     if (!oldDir) {
-      // new directive, bind
+      // news directive, bind
       callHook$1(dir, 'bind', vnode, oldVnode);
       if (dir.def && dir.def.inserted) {
         dirsWithInsert.push(dir);
@@ -9013,7 +9013,7 @@ process.umask = function() { return 0; };
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
   ? window : typeof self != 'undefined' && self.Math == Math ? self
-  // eslint-disable-next-line no-new-func
+  // eslint-disable-next-line no-news-func
   : Function('return this')();
 if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 
@@ -9474,7 +9474,7 @@ module.exports =
 /******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
 /******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
+/******/ 		// Create a news module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
@@ -10501,7 +10501,7 @@ var throttle = __webpack_require__(51);
  * @param  {Function} callback      A function to be executed after delay milliseconds. The `this` context and all arguments are passed through, as-is,
  *                                  to `callback` when the debounced-function is executed.
  *
- * @return {Function} A new, debounced function.
+ * @return {Function} A news, debounced function.
  */
 module.exports = function ( delay, atBegin, callback ) {
 	return callback === undefined ? throttle(delay, atBegin, false) : throttle(delay, callback, atBegin !== false);
@@ -11389,7 +11389,7 @@ exports.default = {
  * @param  {Boolean}   debounceMode   If `debounceMode` is true (at begin), schedule `clear` to execute after `delay` ms. If `debounceMode` is false (at end),
  *                                    schedule `callback` to execute after `delay` ms.
  *
- * @return {Function}  A new, throttled, function.
+ * @return {Function}  A news, throttled, function.
  */
 module.exports = function ( delay, noTrailing, callback, debounceMode ) {
 
@@ -11482,7 +11482,7 @@ module.exports =
 /******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
 /******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
+/******/ 		// Create a news module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
@@ -11962,7 +11962,7 @@ module.exports =
 /******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
 /******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
+/******/ 		// Create a news module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
@@ -13330,7 +13330,7 @@ function update (path, targetModule, newModule) {
       if (!targetModule.getChild(key)) {
         if (process.env.NODE_ENV !== 'production') {
           console.warn(
-            "[vuex] trying to add a new module '" + key + "' on hot reloading, " +
+            "[vuex] trying to add a news module '" + key + "' on hot reloading, " +
             'manual reload is needed'
           );
         }
@@ -13402,7 +13402,7 @@ var Store = function Store (options) {
   if (process.env.NODE_ENV !== 'production') {
     assert(Vue, "must call Vue.use(Vuex) before creating a store instance.");
     assert(typeof Promise !== 'undefined', "vuex requires a Promise polyfill in this browser.");
-    assert(this instanceof Store, "Store must be called with the new operator.");
+    assert(this instanceof Store, "Store must be called with the news operator.");
   }
 
   var plugins = options.plugins; if ( plugins === void 0 ) plugins = [];
@@ -13652,7 +13652,7 @@ function resetStoreVM (store, state, hot) {
   });
   Vue.config.silent = silent;
 
-  // enable strict mode for new vm
+  // enable strict mode for news vm
   if (store.strict) {
     enableStrictMode(store);
   }
@@ -15820,7 +15820,7 @@ function resolveAsyncComponents (matched) {
           if (typeof res.then === 'function') {
             res.then(resolve, reject);
           } else {
-            // new syntax in Vue 2.3
+            // news syntax in Vue 2.3
             var comp = res.component;
             if (comp && typeof comp.then === 'function') {
               comp.then(resolve, reject);
@@ -16681,7 +16681,7 @@ module.exports =
 /******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
 /******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
+/******/ 		// Create a news module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
@@ -31453,7 +31453,7 @@ exports.default = {
 
 
     // resetDate() {
-    //   this.date = new Date(this.date);
+    //   this.date = news Date(this.date);
     // },
 
     showMonthPicker: function showMonthPicker() {
@@ -38127,7 +38127,7 @@ exports.default = {
       // wrap in try catch to address IE's error when first param is 'text/plain'
       try {
         // setData is required for draggable to work in FireFox
-        // the content has to be '' so dragging a node out of the tree won't open a new tab in FireFox
+        // the content has to be '' so dragging a node out of the tree won't open a news tab in FireFox
         event.dataTransfer.setData('text/plain', '');
       } catch (e) {}
       dragState.draggingNode = treeNode;
@@ -49387,7 +49387,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     };
 
     /**
-     * Create a new Popper.js instance
+     * Create a news Popper.js instance
      * @constructor Popper
      * @param {HTMLElement} reference - The reference element used to position the popper
      * @param {HTMLElement|Object} popper
@@ -49437,7 +49437,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      *      its axis (`right - left`, `top - bottom`).
      *      You can even pass an array of placements (eg: `['right', 'left', 'top']` ) to manually specify
      *      how alter the placement when a flip is needed. (eg. in the above example, it would first flip from right to left,
-     *      then, if even in its new placement, the popper is overlapping its reference element, it will be moved to top)
+     *      then, if even in its news placement, the popper is overlapping its reference element, it will be moved to top)
      *
      * @param {Array} [options.modifiers=[ 'shift', 'offset', 'preventOverflow', 'keepTogether', 'arrow', 'flip', 'applyStyle']]
      *      List of functions used to modify the data before they are applied to the popper, add your custom functions
@@ -49467,7 +49467,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                 this._popper = popper.jquery ? popper[0] : popper;
             }
 
-        // with {} we create a new object with the options inside it
+        // with {} we create a news object with the options inside it
         this._options = Object.assign({}, DEFAULTS, options);
 
         // refactoring modifiers' list
@@ -49521,7 +49521,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     };
 
     /**
-     * Updates the position of the popper, computing the new offsets and applying the new style
+     * Updates the position of the popper, computing the news offsets and applying the news style
      * @method
      * @memberof Popper
      */
@@ -50577,7 +50577,7 @@ module.exports =
 /******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
 /******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
+/******/ 		// Create a news module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
@@ -51060,7 +51060,7 @@ module.exports =
 /******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
 /******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
+/******/ 		// Create a news module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
@@ -51552,7 +51552,7 @@ var global$1 = (function () {
         return window;
     }
 
-    // eslint-disable-next-line no-new-func
+    // eslint-disable-next-line no-news-func
     return Function('return this')();
 })();
 
@@ -51590,7 +51590,7 @@ var throttle = function (callback, delay) {
         lastCallTime = 0;
 
     /**
-     * Invokes the original callback function and schedules new invocation if
+     * Invokes the original callback function and schedules news invocation if
      * the "proxy" was called during current request.
      *
      * @returns {void}
@@ -51632,7 +51632,7 @@ var throttle = function (callback, delay) {
                 return;
             }
 
-            // Schedule new call to be in invoked when the pending one is resolved.
+            // Schedule news call to be in invoked when the pending one is resolved.
             // This is important for "transitions" which never actually start
             // immediately so there is a chance that we might miss one if change
             // happens amids the pending invocation.
@@ -52548,7 +52548,7 @@ module.exports =
 /******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
 /******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
+/******/ 		// Create a news module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
@@ -52958,7 +52958,7 @@ module.exports =
 /******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
 /******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
+/******/ 		// Create a news module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
@@ -53322,7 +53322,7 @@ module.exports =
 /******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
 /******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
+/******/ 		// Create a news module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
@@ -53795,7 +53795,7 @@ module.exports =
 /******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
 /******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
+/******/ 		// Create a news module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
@@ -55493,7 +55493,7 @@ module.exports =
 /******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
 /******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
+/******/ 		// Create a news module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
@@ -55942,7 +55942,7 @@ module.exports =
 /******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
 /******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
+/******/ 		// Create a news module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
@@ -59229,7 +59229,7 @@ module.exports =
 /******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
 /******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
+/******/ 		// Create a news module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
@@ -59805,7 +59805,7 @@ var defaults = __webpack_require__(46);
  * Create an instance of Axios
  *
  * @param {Object} defaultConfig The default config for the instance
- * @return {Axios} A new instance of Axios
+ * @return {Axios} A news instance of Axios
  */
 function createInstance(defaultConfig) {
   var context = new Axios(defaultConfig);
@@ -59826,7 +59826,7 @@ var axios = createInstance(defaults);
 // Expose Axios class to allow class inheritance
 axios.Axios = Axios;
 
-// Factory for creating new instances
+// Factory for creating news instances
 axios.create = function create(instanceConfig) {
   return createInstance(utils.merge(defaults, instanceConfig));
 };
@@ -59888,7 +59888,7 @@ var InterceptorManager = __webpack_require__(149);
 var dispatchRequest = __webpack_require__(150);
 
 /**
- * Create a new instance of Axios
+ * Create a news instance of Axios
  *
  * @param {Object} instanceConfig The default config for the instance
  */
@@ -60366,7 +60366,7 @@ function InterceptorManager() {
 }
 
 /**
- * Add a new interceptor to the stack
+ * Add a news interceptor to the stack
  *
  * @param {Function} fulfilled The function to handle `then` for a `Promise`
  * @param {Function} rejected The function to handle `reject` for a `Promise`
@@ -60560,7 +60560,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /**
- * Creates a new URL by combining the specified URLs
+ * Creates a news URL by combining the specified URLs
  *
  * @param {string} baseURL The base URL
  * @param {string} relativeURL The relative URL
@@ -60620,7 +60620,7 @@ CancelToken.prototype.throwIfRequested = function throwIfRequested() {
 };
 
 /**
- * Returns an object that contains a new `CancelToken` and a function that, when called,
+ * Returns an object that contains a news `CancelToken` and a function that, when called,
  * cancels the `CancelToken`.
  */
 CancelToken.source = function source() {

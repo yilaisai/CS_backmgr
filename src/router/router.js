@@ -86,7 +86,7 @@ export const appRouter = [
           title: '角色管理',
         },
         component: () => import('@/pages/permissions/role.vue'),
-      },{
+      }, {
         path: 'userManagement',
         name: 'userManagement',
         meta: {
@@ -170,7 +170,7 @@ export const appRouter = [
           title: '已上架应用',
         },
         component: () => import('@/pages/third-application/shelf-application.vue'),
-      },{
+      }, {
         path: 'application-details',
         name: 'applicationDetails',
         meta: {
@@ -392,6 +392,25 @@ export const appRouter = [
           title: '注册邀请查询',
         },
         component: () => import('@/pages/invite/invite.vue'),
+      },
+    ],
+  },
+  {
+    path: '/static',
+    name: 'static',
+    redirect: '/static/title',
+    meta: {
+      title: '静态页面编辑器',
+    },
+    component: Index,
+    children: [
+      {
+        path: 'title',
+        name: 'title',
+        meta: {
+          title: '静态页面编辑器',
+        },
+        component: () => import('@/pages/static/title.vue'),
       },
     ],
   },

@@ -61,3 +61,20 @@ export const transferQueryStatus = [{
   label: '已发送',
 }];
 
+// 身份证审核
+export const identityType = [{
+  value: '',
+  label: '全部',
+}, {
+  value: '1',
+  label: '待审核',
+}, {
+  value: '2',
+  label: '已审核',
+}, {
+  value: '3',
+  label: '审核不通过',
+}, {
+  value: '4',
+  label: '审核通过',
+}];

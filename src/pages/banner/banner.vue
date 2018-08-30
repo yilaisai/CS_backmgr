@@ -12,16 +12,17 @@
              label-width="100px"
              ref="filterForm"
              :model="filterForm">
-      <el-form-item label="banner类型">
-        <el-select v-model="filterForm.bannerType" size="small" placeholder="请选择banner类型">
-          <el-option
-            v-for="item in bannerTypeList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
+      <!--<el-form-item label="banner类型:">-->
+        <!--<el-select v-model="filterForm.bannerType" size="small" placeholder="请选择banner类型">-->
+          <!--<el-option-->
+            <!--v-for="item in bannerTypeList"-->
+            <!--:key="item.value"-->
+            <!--:label="item.label"-->
+            <!--:value="item.value">-->
+          <!--</el-option>-->
+        <!--</el-select>-->
+      <!--</el-form-item>-->
+      <sac-select label="banner类型" v-model="filterForm.bannerType" :data-list="bannerTypeList"></sac-select>
       <sac-submit-form
         :isReset='false'
         @submitForm="submitForm(1)"></sac-submit-form>

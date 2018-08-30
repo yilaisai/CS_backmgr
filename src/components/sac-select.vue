@@ -6,6 +6,7 @@
 <template>
   <el-form-item :label="`${label}:`" :prop="prop">
     <el-select v-model="selected"
+               :value="value"
                size="small"
                :placeholder="placeholder?placeholder:`请输入${label}`"
                filterable
@@ -47,6 +48,7 @@
         type: Boolean,
         default: false,
       },
+      value: [String, Array],
     },
     data() {
       return {
@@ -65,6 +67,9 @@
         }
         this.selectedChange();
       },
+    },
+    mounted() {
+      this.selected = this.value;
     },
   };
 </script>

@@ -5,6 +5,9 @@
 */
 <template>
   <div class='query'>
+    <el-col :span="22" style="text-align:right; margin-bottom: 30px;">
+      <el-button size="small" type="primary" @click="addUser">创建用户</el-button>
+    </el-col>
     <el-form :inline="true"
              label-width="80px"
              ref="filterForm"
@@ -64,12 +67,41 @@
                     :page-size="filterForm.pageSize"
                     :current-page="filterForm.pageNum">
     </sac-pagination>
+    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
+        <sac-input ref="phone" v-model="ruleForm.phone" label="手机号" prop="phone"></sac-input>
+        <sac-input ref="nickName" v-model="ruleForm.nickName" label="昵称" prop="nickName"></sac-input>
+        <sac-input ref="pwd" type="password" v-model="ruleForm.pwd" label="登录密码" placeholder="请输入6-16位密码"
+                   prop="pwd"></sac-input>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false" size="small">取 消</el-button>
+        <el-button type="primary" @click="determine" size="small">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
+  import Md5 from '../../../static/js/md5';
+
   export default {
     name: 'query',
     data() {
+      const checkUserName = (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('请输入用户名'));
+        }
+        callback();
+      }
+      const checkPwd = (rule, value, callback) => {
+        if (!value || value.length < 6 || value.length > 16) {
+          return callback(new Error('请输入6-16位密码'));
+        }
+        if (!/(?=.*[a-z])(?=.*\d)(?=.*[#@!~%^&*.])[a-z\d#@!~%^&*.]/i.test(value)) {
+          return callback(new Error('登录密码必须是字母、数字和符号的组合'));
+        }
+        callback();
+      };
       return {
         filterForm: {
           phone: '',
@@ -83,6 +115,21 @@
           total: null,
           list: [],
         },
+        dialogTitle: '创建用户',
+        ruleForm: {
+          phone: '',
+          pwd: '',
+          nickName: '',
+        },
+        rules: {
+          phone: [
+            { required: true, validator: checkUserName, trigger: 'blur' },
+          ],
+          pwd: [
+            { required: true, validator: checkPwd, trigger: 'blur' },
+          ],
+        },
+        dialogFormVisible: false,
       };
     },
     methods: {
@@ -158,6 +205,33 @@
           }
         })
       },
+      // 创建用户
+      addUser() {
+        this.dialogTitle = '创建用户';
+        this.dialogFormVisible = true;
+        this.ruleForm = {
+          phone: '',
+          pwd: '',
+          nickName: '',
+        };
+        this.$refs.ruleForm && this.$refs.ruleForm.resetFields(); // 重置query的数据
+      },
+      determine() {
+        const { phone, nickName } = this.ruleForm;
+        const pwd = Md5(this.ruleForm.pwd);
+        this.$http.post('wallet/backmgr/user/addUsers.do', {
+          pwd,
+          phone,
+          nickName
+        }).then((res) => {
+          this.$notify({
+            title: '成功',
+            message: `创建用户 ${this.ruleForm.phone} 成功`,
+            type: 'success'
+          });
+          this.dialogFormVisible = false;
+        });
+      }
     }
   };
 </script>

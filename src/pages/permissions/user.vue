@@ -6,7 +6,7 @@
 <template>
   <div class='user'>
     <el-col :span="22" style="text-align:right; margin-bottom: 30px;">
-      <el-button size="small" type="primary" @click="addRole">创建用户</el-button>
+      <el-button size="small" type="primary" @click="addUser">创建用户</el-button>
     </el-col>
     <sac-table :data="listData">
       <el-table-column prop="name" label="用户名称"></el-table-column>
@@ -23,7 +23,7 @@
       </el-table-column>
     </sac-table>
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px">
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
         <sac-input ref="userName" v-model="ruleForm.userName" label="用户名称" prop="userName"></sac-input>
         <sac-input ref="pwd" type="password" v-model="ruleForm.pwd" label="登录密码" placeholder="请输入6-16位密码"
                    prop="pwd"></sac-input>
@@ -112,13 +112,13 @@
         },
         rules: {
           userName: [
-            { validator: checkUserName, trigger: 'blur' },
+            {required: true, validator: checkUserName, trigger: 'blur' },
           ],
           pwd: [
-            { validator: checkPwd, trigger: 'blur' },
+            {required: true, validator: checkPwd, trigger: 'blur' },
           ],
           roleId: [
-            { validator: checkRole, trigger: 'change' },
+            {required: true, validator: checkRole, trigger: 'change' },
           ]
         },
         roleList: [],
@@ -127,7 +127,7 @@
     },
     methods: {
       // 创建用户
-      addRole() {
+      addUser() {
         this.dialogTitle = '创建用户';
         this.dialogFormVisible = true;
         this.getSysRoleList();

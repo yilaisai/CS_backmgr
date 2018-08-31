@@ -3,8 +3,6 @@ import Router from 'vue-router';
 import globalRoutes from './router';
 import store from '../store';
 
-// import { Notification } from 'element-ui';
-
 Vue.use(Router);
 
 const router = new Router({

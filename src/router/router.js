@@ -412,6 +412,14 @@ export const appRouter = [
         },
         component: () => import('@/pages/static/title.vue'),
       },
+      {
+        path: 'addnews',
+        name: 'addnews',
+        meta: {
+          title: '静态页面编辑器'
+        },
+        component: () => import('@/pages/static/add-news.vue')
+      }
     ],
   },
 ];

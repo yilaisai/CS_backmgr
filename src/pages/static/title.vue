@@ -4,39 +4,57 @@
 *  Content
 */
 <template>
-  <div class='title'>
-    <el-col :span="22" style="text-align:right;">
+  <div class='pagelist-page'>
+    <el-col :span="24" style="text-align:right;">
       <el-button size="small" type="primary" @click="addNews">创建新闻</el-button>
     </el-col>
     <el-form :inline="true"
-             label-width="50px"
-             ref="filterForm"
-             :model="filterForm">
-      <sac-select label="预发布路径" v-model="filterForm.pageType" :data-list="typeList"></sac-select>
-      <sac-input label="标题" v-model="filterForm.title"></sac-input>
-      <sac-submit-form
-        :isReset='false'
-        @submitForm="submitForm(1)"></sac-submit-form>
+      label-width="90px"
+      ref="filterForm"
+      :model="filterForm">
+      <el-form-item>
+        <sac-select label="预发布路径" v-model="filterForm.pageType" :data-list="typeList"></sac-select>
+      </el-form-item>
+      <el-form-item label="日　　期:" class="sac-time">
+        <el-date-picker
+          size="small"
+          v-model="dateTime"
+          value-format="yyyy-MM-dd HH:mm:ss"
+          type="datetimerange"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+        >
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item>
+        <sac-submit-form :isReset='false' @submitForm="submitForm(1)"></sac-submit-form>
+      </el-form-item>
     </el-form>
     <sac-table :data="listData.list">
-      <el-table-column prop="bannerTypeName" label="标题"></el-table-column>
-      <el-table-column prop="bannerName" label="预发布类型"></el-table-column>
-      <el-table-column prop="jumpUrl" label="链接地址">
-        <template slot-scope="scope" prop="sysStatus">
-          <a target="_brank" :href="scope.row.jumpUrl">{{scope.row.jumpUrl}}</a>
+      <el-table-column prop="title" label="标题"></el-table-column>
+      <el-table-column prop="page_type" label="预发布类型"></el-table-column>
+      <el-table-column label="链接地址">
+        <template slot-scope="scope">
+          <a target="_brank" :href="scope.row.url">{{scope.row.url}}</a>
         </template>
       </el-table-column>
 
-      <el-table-column prop="createTime" label="创建时间" width="170"></el-table-column>
-      <el-table-column prop="createTime" label="更新时间" width="170"></el-table-column>
+      <el-table-column prop="create_time" label="创建时间" width="170"></el-table-column>
+      <el-table-column prop="update_time" label="更新时间" width="170"></el-table-column>
       <el-table-column label="操作" width="160">
         <template slot-scope="scope" prop="sysStatus">
-          <el-button type="primary" :disabled="scope.row.isOnshelf != 0" size="small"
-                     @click.native="modification(scope.row)">修改
+          <el-button type="primary" :disabled="scope.row.status != 0" size="small"
+                     @click.native="$router.push({name: 'addnews', params: {data: scope.row, type: 'view'}})">查看
           </el-button>
-          <el-button type="danger" :disabled="scope.row.isOnshelf != 0" size="small"
-                     @click.native="remove(scope.row)">删除
+          <el-button type="danger" :disabled="scope.row.status != 0" size="small"
+                     @click.native="$router.push({name: 'addnews', params: {data: scope.row, type: 'amend'}})">修改
           </el-button>
+        </template>
+      </el-table-column>
+      <el-table-column label="上架" width="160">
+        <template slot-scope="scope" prop="status">
+          <el-switch v-model="scope.row.status" :inactive-value="0" :active-value="1"
+                     @click.native="switchChange(scope.row)"></el-switch>
         </template>
       </el-table-column>
     </sac-table>
@@ -50,7 +68,7 @@
 </template>
 <script>
   export default {
-    name: "title",
+    name: "pagelist",
     data() {
       return {
         typeList: [{
@@ -58,14 +76,19 @@
           label: '全部',
         }, {
           value: '1',
-          label: '未发布',
+          label: '官网新闻资讯',
         }, {
           value: '2',
-          label: '已发布',
+          label: 'SacBox消息推送',
+        }, {
+          value: '3',
+          label: 'Banner',
         }],
         filterForm: {
           pageType: '',
           title: '',
+          startTime: '',
+          endTime: '',
           pageNum: 1,
           pageSize: 20
         },
@@ -73,6 +96,7 @@
           total: null,
           list: [],
         },
+        dateTime: []
       };
     },
     methods: {
@@ -85,7 +109,9 @@
         this.submitForm(currentPage);
       },
       getPageInfoList() {
-        this.$http.post("wallet/backgmr/page/open/getPageInfoList.do", this.filterForm).then((res) => {
+        this.filterForm.startTime = this.dateTime[0]
+        this.filterForm.endTime = this.dateTime[1]
+        this.$http.post("/cloud/backmgr/page/open/getPageInfoList.do", this.filterForm).then((res) => {
           this.listData.list = res.result.list.list;
           this.listData.total = res.result.list.total;
         })
@@ -112,11 +138,23 @@
         })
       },
       addNews() {
-        console.log('addNews');
+        this.$router.push('addnews')
       },
       modification(data) {
         console.log('modification');
       },
+      switchChange(data) {
+        this.$http.post('/cloud/backmgr/page/updatePageInfoStatus', {
+          id: data.id,
+          status: ['INVALID0', 'VALID1'][data.status]
+        }).then(res => {
+          this.$notify({
+            title: '成功',
+            message: res.msg,
+            type: 'success'
+          });
+        })
+      }
     },
     activated() {
       this.getPageInfoList();
@@ -124,6 +162,9 @@
   };
 </script>
 <style lang="less">
-  .title {
+  .pagelist-page {
+    .el-form-item__content {
+      width: auto;
+    }
   }
 </style>

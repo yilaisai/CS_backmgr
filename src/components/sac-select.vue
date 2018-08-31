@@ -8,7 +8,7 @@
     <el-select v-model="selected"
                :value="value"
                size="small"
-               :placeholder="placeholder?placeholder:`请输入${label}`"
+               :placeholder="placeholder?placeholder:`请选择${label}`"
                filterable
                :multiple="multiple"
                @change="selectedChange">

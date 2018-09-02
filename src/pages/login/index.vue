@@ -110,7 +110,6 @@
                 this.$router.replace('/');
               }, 500);
             }).catch((res) => {
-              console.log(res, 5678);
               this.getImgCode(); // 重新获取图片验证码
             })
           } else {
@@ -120,13 +119,8 @@
         });
       },
     },
-    beforeRouteEnter(to, from, next) {
-      next((vm) => {
-        vm.postObj.validateCode = '';
-        vm.getImgCode();
-      })
-    },
     activated() {
+      this.postObj.validateCode = '';
       this.getImgCode();
     },
     created() {

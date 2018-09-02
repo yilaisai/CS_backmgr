@@ -54,7 +54,8 @@
       };
     },
     methods: {
-      handleSelect(key) {
+      handleSelect(key, item) {
+        console.log(key, item, 8899);
         this.activeIndex = key;
         localStorage.setItem('menuDefaultActive', key);
       },
@@ -66,7 +67,11 @@
       });
       this.menuList = menuList;
       // 默认显示页面菜单设置
-      this.activeIndex = localStorage.getItem('menuDefaultActive') ? localStorage.getItem('menuDefaultActive') : '0';
+      if (location.hash == '#/home' || !localStorage.getItem('menuDefaultActive')) {
+        this.activeIndex = '0';
+      } else {
+        this.activeIndex = localStorage.getItem('menuDefaultActive')
+      }
     },
   };
 </script>

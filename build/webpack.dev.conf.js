@@ -11,11 +11,11 @@ const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 
 
-if (!utils.fsExistsSync('static/dll/vendor-manifest.json') ||
-  !utils.fsExistsSync('static/dll/vendor.dll.js')) {
-  console.error('Sorry, you should run "npm run build:dll" command first.');
-  process.exit(1);
-}
+// if (!utils.fsExistsSync('static/dll/vendor-manifest.json') ||
+//   !utils.fsExistsSync('static/dll/vendor.dll.js')) {
+//   console.error('Sorry, you should run "npm run build:dll" command first.');
+//   process.exit(1);
+// }
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)

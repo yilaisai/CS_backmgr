@@ -5,7 +5,7 @@
 */
 <template>
   <el-form-item :label="`${label}:`" :prop="prop">
-    <el-input v-model="inputName"
+    <el-input v-model.trim="inputName"
               :value="value"
               size="small"
               :type="type"

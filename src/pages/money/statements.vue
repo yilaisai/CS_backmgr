@@ -12,7 +12,7 @@
       <sac-coin ref="coinId" v-model="filterForm.coinId"></sac-coin>
       <sac-teamType ref="teamType" v-model="filterForm.teamType"></sac-teamType>
       <sac-input ref="fromOrToUserPhone" label="用户账号" v-model.trim="filterForm.fromOrToUserPhone"></sac-input>
-      <sac-date ref="selectedDate" label="日　　期" v-model="selectedDate" :default-value="defaultDate"></sac-date>
+      <sac-date ref="selectedDate" label="日　　期" v-model="selectedDate"></sac-date>
       <sac-submit-form
         @submitForm="submitForm(1)"
         :isReset="false"></sac-submit-form>
@@ -70,7 +70,6 @@
         },
         moneyList: [],
         selectedDate: [], //已选日期
-        defaultDate: [],
       };
     },
     methods: {
@@ -111,7 +110,6 @@
     activated() {
       const end = dateFormat();
       const start = dateFormat(new Date().getTime() - 3600 * 1000 * 24 * 15);
-      this.defaultDate = [start, end];
       this.selectedDate = [start, end];
       this.getTradeList();
     }

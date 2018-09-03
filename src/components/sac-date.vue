@@ -1,8 +1,3 @@
-/**
-*  Created by   阿紫
-*  On  2018/6/15
-*  Content
-*/
 <template>
   <el-form-item :label="`${label}:`" :prop="prop" class="sac-date">
     <el-date-picker
@@ -36,42 +31,25 @@
         type: String,
         default: '',
       },
-      defaultValue: {
-        type: Array,
-        default: () => [],
-      }
+      value: [String, Array],
     },
     watch: {
-      defaultValue(val, oldVal) {
-        if (!this.value.length) {
-          this.value = val;
-          this.preValue = val;
-        }
+      value(val, oldVal) {
+        this.dateValue = val;
       }
     },
     data() {
       return {
-        value: [],
-        preValue: [],
+        dateValue: [],
       };
     },
     methods: {
       dateChange(item) {
-        const datePoor = (+new Date(item[1])) - (+new Date(item[0]));
-        const date30 = 30 * 24 * 60 * 60 * 1000;
-        if (datePoor > date30) {
-          this.value = this.preValue;
-          this.$message.error('日期范围不能超过30天哦！');
-          return;
-        } else {
-          this.value = item || this.value;
-          this.preValue = this.value;
-          this.$emit('change', this.value);
-        }
+        this.dateValue = item || this.dateValue;
+        this.$emit('change', this.dateValue);
       },
       reset() {
-        this.value = this.defaultValue || '';
-        this.preValue = this.defaultValue || '';
+        this.dateValue = this.value;
         this.dateChange();
       },
     },
@@ -88,4 +66,3 @@
     }
   }
 </style>
-

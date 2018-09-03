@@ -14,8 +14,7 @@
       <sac-input v-show="filterForm.type!=0" ref="account" label="用户账号"
                  v-model.trim="filterForm.account"></sac-input>
 
-      <sac-date v-show="filterForm.type!=0" ref="selectedDate" label="日　　期" v-model="selectedDate"
-                :default-value="defaultDate"></sac-date>
+      <sac-date v-show="filterForm.type!=0" ref="selectedDate" label="日　　期" v-model="selectedDate"></sac-date>
 
       <sac-submit-form
         @submitForm="submitForm()"
@@ -69,7 +68,6 @@
           startTime: '',
           endTime: '',
         },
-        defaultDate: [],
         selectedDate: [], //已选日期
         content: {
           coinName: 'SAC',
@@ -269,7 +267,6 @@
     activated() {
       const end = dateFormat();
       const start = dateFormat(new Date().getTime() - 3600 * 1000 * 24 * 15);
-      this.defaultDate = [start, end];
       this.selectedDate = [start, end];
       this.getAllAsset();
     },

@@ -55,7 +55,6 @@
     },
     methods: {
       handleSelect(key, item) {
-        console.log(key, item, 8899);
         this.activeIndex = key;
         localStorage.setItem('menuDefaultActive', key);
       },

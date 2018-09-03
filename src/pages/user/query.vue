@@ -28,7 +28,7 @@
         v-model.trim="filterForm.cardNo"
         prop="cardNo"></sac-input>
       <sac-input
-        ref="toAddr"
+        ref="coinAddr"
         label="收款地址"
         v-model="filterForm.coinAddr"
         prop="coinAddr"></sac-input>

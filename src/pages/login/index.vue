@@ -43,13 +43,13 @@
             </el-col>
           </el-row>
         </div>
-        <el-button type="primary"
-                   class="login-btn"
-                   ref="loginbtn"
-                   @click.native="login" autofocus native-type="submit">
-          登录
-        </el-button>
       </el-form>
+      <el-button type="primary"
+                 class="login-btn"
+                 ref="loginbtn"
+                 @click="login" autofocus native-type="submit">
+        登录
+      </el-button>
     </div>
   </div>
 </template>

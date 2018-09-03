@@ -12,8 +12,15 @@
       label-width="90px"
       ref="filterForm"
       :model="filterForm">
-      <el-form-item>
-        <sac-select label="预发布路径" v-model="filterForm.pageType" :data-list="typeList"></sac-select>
+      <el-form-item label="预发布类型" prop="pageType">
+        <el-select ref="pageType" v-model="filterForm.pageType">
+          <el-option
+              v-for="item,index in pageTypeList"
+              :key="index"
+              :label="item.typeName"
+              :value="item.pageType">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="日　　期:" class="sac-time">
         <el-date-picker
@@ -32,7 +39,11 @@
     </el-form>
     <sac-table :data="listData.list">
       <el-table-column prop="title" label="标题"></el-table-column>
-      <el-table-column prop="page_type" label="预发布类型"></el-table-column>
+      <el-table-column prop="page_type" label="预发布类型">
+        <template slot-scope="scope">
+          <span>{{pageTypeMate(scope.row.page_type)}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="链接地址">
         <template slot-scope="scope">
           <a target="_brank" :href="scope.row.url">{{scope.row.url}}</a>
@@ -71,19 +82,7 @@
     name: "pagelist",
     data() {
       return {
-        typeList: [{
-          value: '',
-          label: '全部',
-        }, {
-          value: '1',
-          label: '官网新闻资讯',
-        }, {
-          value: '2',
-          label: 'SacBox消息推送',
-        }, {
-          value: '3',
-          label: 'Banner',
-        }],
+        pageTypeList: [],
         filterForm: {
           pageType: '',
           title: '',
@@ -111,31 +110,24 @@
       getPageInfoList() {
         this.filterForm.startTime = this.dateTime[0]
         this.filterForm.endTime = this.dateTime[1]
-        this.$http.post("/cloud/backmgr/page/open/getPageInfoList.do", this.filterForm).then((res) => {
+        this.$http.post("/cloud/backmgr/page/open/getPageInfoList", this.filterForm).then((res) => {
           this.listData.list = res.result.list.list;
           this.listData.total = res.result.list.total;
         })
       },
-      // 删除
-      remove(itemData) {
-        const { id, bannerName } = itemData;
-        this.$confirm(`确定删除 ${bannerName} 吗?`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$http.post("wallet/backmgr/banner/updateAppBannerInfoSysStatus.do", {
-            sysStatus: "INVALID0",
-            id
-          }).then((res) => {
-            this.$notify({
-              title: '成功',
-              message: `删除 ${bannerName}成功`,
-              type: 'success'
-            });
-            this.getPageInfoList();
-          })
+      getPageType() {
+        this.$http.post('/cloud/backmgr/page/open/getPageTypeList').then(res => {
+            this.pageTypeList = res.result.list
         })
+      },
+      pageTypeMate(typeNumber) {
+        let typeText = ''
+        this.pageTypeList.forEach((value, index) => {
+          if(value.pageType == typeNumber) {
+            typeText = value.typeName
+          }
+        })
+        return typeText
       },
       addNews() {
         this.$router.push('addnews')
@@ -158,6 +150,7 @@
     },
     activated() {
       this.getPageInfoList();
+      this.getPageType()
     }
   };
 </script>

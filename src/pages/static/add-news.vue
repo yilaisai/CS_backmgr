@@ -5,7 +5,7 @@
                 <el-button size="small" type="primary" plain @click="$router.go(-1)">返回</el-button>
             </el-col>
             <el-col :span="4" style="text-align: right" v-if="!disabled">
-                <el-button size="small" type="primary">生成链接</el-button>
+                <!-- <el-button size="small" type="primary">生成链接</el-button> -->
                 <el-button size="small" type="primary" @click.native="save">保存</el-button>
             </el-col>
         </el-row>
@@ -94,6 +94,13 @@ export default {
             this.$http.post('/cloud/backmgr/page/open/getPageTypeList').then(res => {
                 this.pageTypeList = res.result.list
             })
+        },
+        getContent(id) {
+            this.$http.post('/cloud/backmgr/page/open/getPageInfo', {
+                id: id
+            }).then(res => {
+                this.postObj.content = res.result.appPageInfo.content || ''
+            })
         }
     },
     computed: {
@@ -120,6 +127,7 @@ export default {
             }else {
                 this.disabled = false
             }
+            this.getContent(paramsData.id)
         }else {
             this.postObj = {
                 url: '',

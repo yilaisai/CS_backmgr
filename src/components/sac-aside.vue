@@ -61,6 +61,7 @@
     },
     mounted() {
       const menuList = JSON.parse(localStorage.getItem('wallet_menuUrls')) || [];
+      console.log(menuList)
       menuList.forEach((item) => {
         item.icon = item.menuUrl.split('/')[1] ? item.menuUrl.split('/')[1] : 'home';
       });
@@ -166,6 +167,11 @@
       &user {
         padding-left: 20px;
         background: url("~@/assets/user.png") no-repeat top left;
+        background-size: 16px 15px;
+      }
+      &static {
+        padding-left: 20px;
+        background: url("~@/assets/editor.png") no-repeat top left;
         background-size: 16px 15px;
       }
     }

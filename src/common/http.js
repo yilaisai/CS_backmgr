@@ -13,7 +13,7 @@ axios.defaults.baseURL = SERVER_PATH;
 
 const httpInstance = axios.create({
   responseType: 'json',
-  timeout: 5000,
+  timeout: 10000,
   params: {},
   data: {},
   validateStatus(status) {

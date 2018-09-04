@@ -31,7 +31,7 @@
                 <el-input v-model.trim="postObj.title" placeholder="请输入标题" :disabled="disabled"></el-input>
             </el-form-item>
         </el-form>
-        <quill-editor :disabled="disabled" v-model="postObj.content" ref="myQuillEditor"></quill-editor>
+        <quill-editor :disabled="disabled" v-model.trim="postObj.content" ref="myQuillEditor"></quill-editor>
     </div>
 </template>
 
@@ -61,7 +61,8 @@ export default {
             { min: 1, max: 100, message: '长度在 1 到 100 个字符', trigger: 'blur' }
           ]
         },
-        disabled: false
+        disabled: false,
+        originUrl: ''
       }
     },
     // manually control the data synchronization
@@ -74,17 +75,25 @@ export default {
                     if(this.postObj.id) {
                         postUrl = '/cloud/backmgr/page/updatePageInfo'
                     }
-                    this.$http.post(postUrl, this.postObj).then(res => {
-                        console.log(res)
-                        if(res.code == 200) {
-                            this.$notify({
-                                title: '成功',
-                                message: res.msg,
-                                type: 'success'
-                            });
-                        }
-                        this.$router.go(-1)
-                    })
+                    if(this.postObj.url.trim() != '' && this.postObj.url !== this.originUrl && this.postObj.content.trim() != '') {
+                        // 修改过url
+                        this.$confirm('修改外部URL后将清空自定义内容并保存，确定继续操作？', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }).then(() => {
+                            this.postObj.content = ""
+                            this.saveSubmit(postUrl)
+                        }).catch(() => {
+                            this.$message({
+                                type: 'info',
+                                message: '已取消'
+                            });          
+                        })
+                        
+                    }else {
+                        this.saveSubmit(postUrl)
+                    }
                 } else {
                     return false;
                 }
@@ -100,6 +109,21 @@ export default {
                 id: id
             }).then(res => {
                 this.postObj.content = res.result.appPageInfo.content || ''
+            })
+        },
+        /**
+         * 提交修改或保存
+         */
+        saveSubmit(postUrl) {
+            this.$http.post(postUrl, this.postObj).then(res => {
+                if(res.code == 200) {
+                    this.$notify({
+                        title: '成功',
+                        message: res.msg,
+                        type: 'success'
+                    });
+                }
+                this.$router.go(-1)
             })
         }
     },
@@ -122,6 +146,7 @@ export default {
                 id: paramsData.id
             }
             this.postObj = obj
+            this.originUrl = paramsData.url
             if(this.$route.params.type == 'view') {
                 this.disabled = true
             }else {
@@ -136,6 +161,7 @@ export default {
                 pageType: 1
             }
             this.disabled = false
+            this.originUrl = ''
         }
     },
     components: {

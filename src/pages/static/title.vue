@@ -88,6 +88,8 @@
           title: '',
           startTime: '',
           endTime: '',
+          version: '1.0.0',
+          plat: 'web',
           pageNum: 1,
           pageSize: 20
         },
@@ -116,7 +118,10 @@
         })
       },
       getPageType() {
-        this.$http.post('/cloud/backmgr/page/open/getPageTypeList').then(res => {
+        this.$http.post('/cloud/backmgr/page/open/getPageTypeList',{
+          version: '1.0.0',
+          plat: 'web',
+        }).then(res => {
             this.pageTypeList = res.result.list
         })
       },

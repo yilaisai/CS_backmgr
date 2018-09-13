@@ -422,6 +422,49 @@ export const appRouter = [
       }
     ],
   },
+  {
+    path: '/supersac',
+    name: 'supersac',
+    redirect: '/supersac/list',
+    meta: {
+      title: '超级节点配置',
+    },
+    component: Index,
+    children: [
+      {
+        path: 'list',
+        name: 'list',
+        meta: {
+          title: '超级节点配置',
+        },
+        component: () => import('@/pages/supersac/list.vue'),
+      },
+      {
+        path: 'setprize',
+        name: 'setprize',
+        meta: {
+          title: '超级节点配置'
+        },
+        component: () => import('@/pages/supersac/set-prize.vue')
+      },
+      {
+        path: 'setbill',
+        name: 'set-bill',
+        meta: {
+          title: '超级节点配置'
+        },
+        component: () => import('@/pages/supersac/set-bill.vue')
+      },
+      {
+        path: 'setincome',
+        name: 'set-income',
+        meta: {
+          title: '超级节点配置'
+        },
+        component: () => import('@/pages/supersac/set-income.vue')
+      }
+    ],
+  },
 ];
 
 export default [

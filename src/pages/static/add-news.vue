@@ -31,11 +31,12 @@
             </el-form-item>
         </el-form>
         <quill-editor :disabled="disabled" v-model.trim="postObj.content" ref="myQuillEditor"></quill-editor>
-        <el-upload class="upload-demo" 
+        <el-upload class="upload" 
             :action="serverPath+'wallet/util/open/uploadFile.do'" 
             name="files"
-            :data="{type:'img'}"
+            :data="{type:'html'}"
             :on-success='upScuccess'
+						:before-upload="beforeUpload"
             ref="upload" style="display:none">
             <el-button size="small" type="primary" id="imgInput" v-loading.fullscreen.lock="fullscreenLoading" element-loading-text="插入中,请稍候">点击上传</el-button>
         </el-upload>
@@ -81,6 +82,7 @@ export default {
     // manually control the data synchronization
     // 如果需要手动控制数据同步，父组件需要显式地处理changed事件
     methods: {
+				
         save() {
             this.$refs.form.validate((valid) => {
                 if (valid) {
@@ -139,12 +141,23 @@ export default {
                 this.$router.go(-1)
             })
         },
+				// 图片大小限制
+				beforeUpload(file) {
+					if(file.size > 1048576) {
+						this.$notify({
+								title: '提示',
+								message: '图片大小不得超过1M',
+								type: 'warning'
+						});
+						return false
+					}
+					
+				},
         // 图片上传成功回调   插入到编辑器中
         upScuccess(e, file, fileList) {
             this.fullscreenLoading = false
             let vm = this
             let url = ''
-            console.log(file.response)
             if (this.uploadType === 'image') {    // 获得文件上传后的URL地址
                 url = file.response.result.urls[0]
             } else if (this.uploadType === 'video') {
@@ -188,6 +201,7 @@ export default {
         // 为图片ICON绑定事件  getModule 为编辑器的内部属性
         this.$refs.myQuillEditor.quill.getModule('toolbar').addHandler('image', this.imgHandler)
         this.$refs.myQuillEditor.quill.getModule('toolbar').addHandler('video', this.videoHandler)  // 为视频ICON绑定事件
+				
     },
     activated() {
         this.getPageType()
@@ -220,7 +234,7 @@ export default {
         }
     },
     components: {
-        quillEditor
+        quillEditor,
     }
 }
 </script>

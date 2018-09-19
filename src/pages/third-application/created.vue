@@ -51,7 +51,7 @@
                     :page-size="pageSize"
                     :current-page="pageNum">
     </sac-pagination>
-    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
+    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" :inline="true" label-width="130px">
         <el-form-item label="名称:" prop="appName">
           <el-input v-model="ruleForm.appName" size="small" placeholder="请输入名称"></el-input>

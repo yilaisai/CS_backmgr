@@ -5,18 +5,18 @@
         <el-col :span="8">
             <el-button size="small" type="primary" plain @click="$router.go(-1)">返回</el-button>
         </el-col>
-        <h2>team a奖励设置</h2>
+        <h2>{{teamName}}奖励设置</h2>
     </el-row>
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="230px">
-      <el-form-item label="team a总奖励:" required>
+      <el-form-item :label="teamName+'总奖励:'" v-for="(teamReward,index) in sacTeamRewardList" required>
         <el-col :span="8">
           <el-form-item prop="coinType">
-            <el-select ref="coinType" v-model="ruleForm.coinType">
+            <el-select ref="coinType" v-model="teamReward.coinName">
               <el-option
                   v-for="item,index in pageTypeList"
                   :key="index"
-                  :label="item.typeName"
-                  :value="item.coinType">
+                  :label="item.coinName"
+                  :value="item.coinId">
               </el-option>
             </el-select>
           </el-form-item>
@@ -24,27 +24,27 @@
         <el-col class="line" :span="1"></el-col>
         <el-col :span="7">
           <el-form-item prop="coinNumber">
-            <el-input v-model="ruleForm.coinNumber" clearable size="small" placeholder="请输入数量"
+            <el-input v-model="teamReward.amount" clearable size="small" placeholder="请输入数量"
                       class="min-input"></el-input>
           </el-form-item>
         </el-col>
-        <el-button type="primary" style="width: 100px" @click="addPrize">添加</el-button>
-        <el-button type="primary" style="width: 100px" @click="deletePrize">删除</el-button>
+        <el-button type="primary" style="width: 100px" @click="deletePrize(teamReward,index)">删除</el-button>
+        <el-button type="primary" style="width: 100px" @click="addPrize(teamReward,index)" v-show="index == sacTeamRewardList.length - 1">添加</el-button>
       </el-form-item>
-      <el-form-item label="最强王者奖励百分比:" prop="kingRate">
-        <el-input style="width:80%" clearable v-model="ruleForm.kingRate" size="small"
+      <el-form-item label="最强王者奖励百分比:" prop="kingRewardRate">
+        <el-input style="width:80%" clearable v-model="ruleForm.kingRewardRate" size="small"
                   placeholder="请输入百分比"></el-input>
       </el-form-item>
-      <el-form-item label="荣耀黄金+持续白银奖励百分比:" prop="goldRate" required>
-        <el-input style="width:80%" v-model="ruleForm.goldRate" size="small"
+      <el-form-item label="荣耀黄金+持续白银奖励百分比:" prop="goldSilverRate" required>
+        <el-input style="width:80%" v-model="ruleForm.goldSilverRate" size="small"
                   placeholder="请输入百分比" clearable></el-input>
       </el-form-item>
-      <el-form-item label="倔强青铜奖励百分比:" prop="bronzeRate">
-        <el-input style="width:80%" clearable v-model="ruleForm.bronzeRate" size="small"
+      <el-form-item label="倔强青铜奖励百分比:" prop="bronzeRewardRate">
+        <el-input style="width:80%" clearable v-model="ruleForm.bronzeRewardRate" size="small"
                   placeholder="请输入百分比"></el-input>
       </el-form-item>
-      <el-form-item label="总人数奖励百分比:" prop="totalPrize">
-        <el-input style="width:80%" clearable v-model="ruleForm.totalPrize" size="small"
+      <el-form-item label="总人数奖励百分比:" prop="eachOneRate">
+        <el-input style="width:80%" clearable v-model="ruleForm.eachOneRate" size="small"
                   placeholder="请输入百分比"></el-input>
       </el-form-item>
       <p class="total-prize">*各奖励百分比相加等于总奖励</p>
@@ -69,113 +69,155 @@
       return {
         ruleForm: {
           coinType: "",
-          coinNumber: "",
-          kingRate: '',
-          goldRate: '',
-          bronzeRate: '',
-          totalPrize: '',
+          kingRewardRate: '',
+          goldSilverRate: '',
+          bronzeRewardRate: '',
+          eachOneRate: '',
         },
+        sacTeamRewardList: [],
+        teamName: '',
+        teamId: '',
         server_path: "",
         pageTypeList: [],
         rules: {
-          bronzeRate: [
+          bronzeRewardRate: [
             { required: true, message: '请输入数额', trigger: 'blur' },
-            { validator: checkNum, message: '转账限额必须为数字' }
+            { validator: checkNum, message: '限额必须为数字' }
           ],
-          goldRate: [
+          goldSilverRate: [
             { required: true, message: '请输入数额', trigger: 'blur' },
-            { validator: checkNum, message: '转账限额必须为数字' }
+            { validator: checkNum, message: '限额必须为数字' }
           ],
-          bronzeRate: [
-            { required: true, message: '请选择是否是ETH代币', trigger: 'change' },
+          kingRewardRate: [
+            { required: true, message: '请输入数额', trigger: 'blur' },
+            { validator: checkNum, message: '限额必须为数字' }
           ],
           coinType: [
-            { required: true, message: '请输入最小转账数额', trigger: 'blur' },
-            { validator: checkNum, message: '账数额必须为数字' }
+            { required: true, message: '请选择币种', trigger: 'change' },
+            { message: '账数额必须为数字' }
           ],
-          coinNumber: [
-            { required: true, message: '请输入最小转账数额', trigger: 'blur' },
-            { validator: checkNum, message: '账数额必须为数字' }
-          ],
-          totalPrize: [
+          eachOneRate: [
             { required: true, message: '请输入数额', trigger: 'blur' },
-            { validator: checkNum, message: '短信通知限额必须为数字' }
+            { validator: checkNum, message: '限额必须为数字' }
           ],
         }
       };
     },
     methods: {
-      resetForm() {
-        this.ruleForm.contractadres = '';
-        this.$refs.ruleForm.resetFields();
-      },
+      // 提交/修改团队配置信息
       onSubmit() {
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
             const ruleForm = JSON.parse(JSON.stringify(this.ruleForm))
             ruleForm.tranInFee = (this.ruleForm.tranInFee + this.tranInFeeUnit).trim();
             ruleForm.tranOutFee = (this.ruleForm.tranOutFee + this.tranOutFeeUnit).trim();
-            if (ruleForm.coinId) {
-              ruleForm.contractadres = ruleForm.contractadres || 'empty';
-              this.$http.post("wallet/backmgr/coin/updateCoinInfo.do", ruleForm).then((res) => {
-                this.$notify({
-                  title: '成功',
-                  message: `${ruleForm.coinName} 修改成功`,
-                  type: 'success'
-                });
-                setTimeout(() => {
-                  this.$router.push({
-                    path: '/configurable/currency',
-                  })
-                }, 1000)
-                this.$store.commit('setCoinList', []);
-                this.$store.dispatch('getSampleCoinInfo');
-              })
-            } else {
-              this.$http.post("wallet/backmgr/coin/createCoinInfo.do", ruleForm).then((res) => {
-                this.$notify({
-                  title: '成功',
-                  message: `${ruleForm.coinName} 创建成功`,
-                  type: 'success'
-                });
-                setTimeout(() => {
-                  this.$router.push({
-                    path: '/configurable/currency',
-                  })
-                }, 1000)
-                this.$store.commit('setCoinList', []);
-                this.$store.dispatch('getSampleCoinInfo');
-              })
-            }
+            this.$http.post("/cloud/team/backmgr/teamRewardSeting",{
+              'teamId': this.teamId,
+              'kingRewardRate': this.ruleForm.kingRewardRate,
+              'goldRewardRate': this.ruleForm.goldSilverRate,
+              'bronzeRewardRate': this.ruleForm.bronzeRewardRate,
+              'eachOneRate': this.ruleForm.eachOneRate,
+            }).then((res) => {
+              console.log(res)
+              this.$message({
+                type: 'success',
+                message: '修改成功！'
+              });
+              this.$router.go(-1)
+            })
           } else {
             console.log('error submit!!');
             return false;
           }
         });
       },
-      addPrize() {
+      // 添加币种
+      addPrize(data,index) {
+        console.log();
+        // debugger
+        if (data.coinName == '') {
+          this.$notify({
+            message: '请选择币种类型',
+            type: 'error'
+          });
+          return
+        }
+        if ((data.amount + '').trim() == '') {
+          this.$notify({
+            message: '请输入币种的数量',
+            type: 'error'
+          });
+          return
+        }
+        this.sacTeamRewardList.push({'coinName':'','amount': ''})
 
+        if (typeof data.coinName != 'number') return
+        this.$http.post("/cloud/team/backmgr/teamCoinSeting",{
+          'teamId': this.teamId,
+          'coinId': data.coinName,
+          'amount': data.amount
+        }).then((res) => {
+          console.log(res)
+        })
       },
-      deletePrize(){
-
-      }
+      //根据下标删除指定元素
+      deleteIndex (arr,index) {
+        var temArray=[]
+        for(var i=0;i<arr.length;i++){
+          if(i!=index){
+            temArray.push(arr[i])
+          }
+        }
+        return temArray;
+      },
+      // 删除币种
+      deletePrize(data,index){
+        debugger
+        let coinId = data.coinName
+        if (typeof coinId != 'number') {
+          coinId = data.coinId
+        }
+        this.$http.post("/cloud/team/backmgr/delTeamCoinSeting",{
+          'teamId': this.teamId,
+          'coinId': coinId,
+        }).then((res) => {
+          console.log(res)
+          this.deleteIndex(this.sacTeamRewardList,index)
+        })
+      },
+      // 获取奖励配置
+      getTeamRewardSeting(teamId){
+        this.$http.post("/cloud/team/backmgr/getTeamRewardSeting",{
+          'teamId': teamId
+        }).then((res) => {
+          console.log(res)
+          // debugger
+          this.ruleForm = res.result;
+          this.sacTeamRewardList = res.result.sacTeamRewardCoinResultDtoList
+          console.log(this.ruleForm.coinType);
+          this.ruleForm.coinType = this.sacTeamRewardList[0].coinName
+          // this.$refs.coinType[0].lable = this.sacTeamRewardList[0].coinName
+        })
+      },
+      // 获取币种类型
+      getCoinInfoList(){
+        this.$http.post("/cloud/coin/open/getCoinInfoList",{}).then((res) => {
+          console.log(res)
+          // debugger
+          this.pageTypeList = res.result;
+        })
+      },
     },
     activated() {
-      this.resetForm();
+      this.getCoinInfoList();
       this.server_path = SERVER_PATH;
-      if (this.$route.params.coinId) {
-        this.ruleForm = JSON.parse(JSON.stringify(this.$route.params));
-        const tranInFee = this.ruleForm.tranInFee.split('%');
-        const tranOutFee = this.ruleForm.tranOutFee.split('%');
-        this.ruleForm.tranInFee = tranInFee[0];
-        this.tranInFeeUnit = tranInFee.length > 1 ? '%' : '';
-        this.ruleForm.tranOutFee = tranOutFee[0];
-        this.tranOutFeeUnit = tranOutFee.length > 1 ? '%' : '';
-        this.ruleForm.bronzeRate = this.ruleForm.bronzeRate == 0 ? 'NO' : 'YES';
-        this.ruleForm.goldRate = this.ruleForm.tranLimitNrealName;
-        this.buttonTitle = '修改币种';
-      } else {
-        this.buttonTitle = '创建币种';
+      if(this.$route.params && this.$route.params.data) {
+          const paramsData = this.$route.params.data
+          console.log('paramsData', paramsData);
+          this.teamName = paramsData.teamName
+          this.teamId = paramsData.teamId
+          // debugger
+          this.getTeamRewardSeting(this.teamId)
       }
     }
   };

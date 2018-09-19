@@ -4,7 +4,7 @@
     <h2>PNB 兑人民币价格设置</h2>
     <div class="" style="background-color: #f2f2f2;padding:20px;">
       <div class="" v-show="!showChangeRateDiv">
-        1PNB = 16.5¥<el-button type="primary" size="medium" style="margin-left: 30px;" @click="showChangeRateDiv = true">修改</el-button>
+        1PNB = {{pnbPrice?pnbPrice:'?'}}¥<el-button type="primary" size="medium" style="margin-left: 30px;" @click="showChangeRateDiv = true">修改</el-button>
       </div>
       <div class="" v-show="showChangeRateDiv">
         <p>1PNB = <el-input v-model="cbbRate" placeholder="请输入内容" style="width: 150px;"></el-input> ¥</p>
@@ -51,6 +51,8 @@
         dialogFormVisibleView: false,
         dialogDeleteVisibleView: false,
         showChangeRateDiv: false,
+        pnbCoinId: '',
+        pnbPrice: '',
       };
     },
     created () {
@@ -60,17 +62,30 @@
       getBillList () {
         this.$http.post("/cloud/coin/open/getCoinInfoList",{}).then((res) => {
           this.list = res.result
+          this.list.map((key,value) => {
+            if (value.coinName == 'SAC') {
+              this.pnbCoinId = value.coinId
+              this.pnbPrice = value.price
+            }
+          })
         })
       },
+      // 修改pnb价格
       onSubmit () {
         this.$http.post("/cloud/coin/backmgr/updateCoinInfo",{
-          'id':'',
-          'coinName':'',
-          'price': ''
+          'id':this.pnbCoinId,
+          'coinName':'SAC',
+          'price': this.cbbRate
         }).then((res) => {
+          this.$message({
+            type: 'success',
+            message: '修改成功！'
+          });
           this.showChangeRateDiv = false
+          this.pnbPrice = this.cbbRate
         })
       },
+      // 点击删除按钮
       delete1 (data) {
         console.log(data);
         this.id = data.coinId
@@ -83,14 +98,23 @@
         this.$http.post("/cloud/coin/backmgr/createCoinInfo",{
           'coinName': this.billName
         }).then((res) => {
+          this.$message({
+            type: 'success',
+            message: '添加成功！'
+          });
           this.getBillList()
         })
       },
+      // 确定删除
       confirmDetele () {
         this.$http.post("/cloud/coin/backmgr/updateCoinInfoSysStatus",{
           'id': this.id,
           'sysStatus': 0
         }).then((res) => {
+          this.$message({
+            type: 'success',
+            message: '删除成功！'
+          });
           this.getBillList()
         })
       }

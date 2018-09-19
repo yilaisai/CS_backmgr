@@ -178,7 +178,11 @@
         background: url("~@/assets/editor.png") no-repeat top left;
         background-size: 16px 15px;
       }
+      &supersac {
+        padding-left: 20px;
+        background: url("~@/assets/supersac.png") no-repeat top left;
+        background-size: 17px 17px;
+      }
     }
   }
 </style>
-

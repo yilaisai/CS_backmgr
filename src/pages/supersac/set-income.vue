@@ -5,9 +5,6 @@
         <el-col :span="19">
             <span style="font-size:20px;font-weight:bold;">收益设置</span>
         </el-col>
-        <el-col :span="4" style="text-align: right">
-            <el-button type="success" @click.native="gradeAdd">增加会员等级</el-button>
-        </el-col>
     </el-row>
     <sac-table :data="listData.list">
       <el-table-column prop="title" label="会员等级"  width="170"></el-table-column>
@@ -20,49 +17,39 @@
       <el-table-column label="操作">
         <template slot-scope="scope" prop="sysStatus">
           <el-button type="primary"
-                     @click.native="changeInfo">修改
+                     @click.native="changeInfo(scope.row)">修改
           </el-button>
         </template>
       </el-table-column>
     </sac-table>
-    <sac-pagination v-show="listData.list.length>0"
-                    @handleChange="getPaginationChange"
-                    :total="+listData.total"
-                    :page-size="ruleForm.pageSize"
-                    :current-page="ruleForm.pageNum">
-    </sac-pagination>
     <el-dialog :visible.sync="dialogFormVisible">
       <el-form :model="ruleForm" ref="ruleForm" :rules="rules" :inline="true" label-width="170px">
-        <el-form-item label="会员等级:" prop="grade" v-show="showAddGrade">
-          <el-input placeholder="请输入会员等级" size="small" v-model="ruleForm.grade">
-          </el-input>
-        </el-form-item>
-        <el-form-item label="会员等级:" prop="grade" v-show="!showAddGrade">
+        <el-form-item label="会员等级:" prop="roleName">
           感觉好点
         </el-form-item>
-        <el-form-item label="起始收益率:" prop="minIncome">
-          <el-input placeholder="请输入起始收益率" size="small" v-model="ruleForm.minIncome">
+        <el-form-item label="起始收益率:" prop="initRate">
+          <el-input placeholder="请输入起始收益率" size="small" v-model="ruleForm.initRate">
             <template slot="append">%</template>
           </el-input>
         </el-form-item>
-        <el-form-item label="收益率上限:" prop="maxIncome">
-          <el-input v-model="ruleForm.maxIncome" size="small" placeholder="请输入收益率上限">
+        <el-form-item label="收益率上限:" prop="maxRate">
+          <el-input v-model="ruleForm.maxRate" size="small" placeholder="请输入收益率上限">
             <template slot="append">%</template>
           </el-input>
         </el-form-item>
-        <el-form-item label="每邀请1个人增长值:" prop="prizeIncome">
-          <el-input placeholder="请输入每邀请1个人增长值" size="small" v-model="ruleForm.prizeIncome">
+        <el-form-item label="每邀请1个人增长值:" prop="increasRate">
+          <el-input placeholder="请输入每邀请1个人增长值" size="small" v-model="ruleForm.increasRate">
             <template slot="append">%</template>
           </el-input>
         </el-form-item>
-        <el-form-item label="升级持币量:" prop="upgradeBill">
-          <el-input placeholder="请输入升级持币量" size="small" v-model="ruleForm.upgradeBill">
+        <el-form-item label="升级持币量:" prop="holdAmountLimit">
+          <el-input placeholder="请输入升级持币量" size="small" v-model="ruleForm.holdAmountLimit">
             <template slot="append">PNB</template>
           </el-input>
         </el-form-item>
-        <el-form-item label="被邀请者持币量:" prop="invitedBill">
+        <el-form-item label="被邀请者持币量:" prop="invitedHoldAmountLimit">
           <el-input size="small" placeholder="请输入被邀请者持币量"
-                    v-model="ruleForm.invitedBill">
+                    v-model="ruleForm.invitedHoldAmountLimit">
           <template slot="append">PNB</template>
           </el-input>
         </el-form-item>
@@ -81,43 +68,31 @@
       return {
         pageTypeList: [],
         ruleForm: {
-          grade: '',
-          planName: '',
-          maxIncome: '',
-          totalAmount: "",
-          minIncome: '',
-          invitedBill: '',
-          beginTime: '',
-          endTime: '',
-          upgradeBill: '',
-          prizeIncome: '',
-          pageNum: 1,
-          pageSize: 20
+          maxRate: '',
+          initRate: '',
+          invitedHoldAmountLimit: '',
+          holdAmountLimit: '',
+          increasRate: '',
         },
         dialogFormVisible: false,
-        showAddGrade: false, // 是否为添加会员等级
         rules: {
-          grade: [
+          initRate: [
             { required: true, message: '请输入起始收益率', trigger: 'blur' },
           ],
-          minIncome: [
-            { required: true, message: '请输入起始收益率', trigger: 'blur' },
-          ],
-          maxIncome: [
+          maxRate: [
             { required: true, message: '请输入收益率上限', trigger: 'blur' },
           ],
-          prizeIncome: [
+          increasRate: [
             { required: true, message: '请输入每邀请1个人增长值', trigger: 'blur' },
           ],
-          upgradeBill: [
+          holdAmountLimit: [
             { required: true, message: '请输入升级持币量', trigger: 'blur' },
           ],
-          invitedBill: [
+          invitedHoldAmountLimit: [
             { required: true, message: '请输入被邀请者持币量', trigger: 'blur' },
           ],
         },
         listData: {
-          total: null,
           list: [],
         },
       };
@@ -126,36 +101,27 @@
       this.getPageInfoList()
     },
     methods: {
-      changeInfo () {
+      changeInfo (data) {
+        this.ruleForm = data
         this.dialogFormVisible = true
-        this.showAddGrade = false
       },
-      // 增加会员等级
-      gradeAdd () {
-        this.dialogFormVisible = true
-        this.showAddGrade = true
-      },
-      submitForm(num) {
-        this.ruleForm.pageNum = num;
-        this.getPageInfoList();
-      },
-      getPaginationChange(val, currentPage) {
-        this.ruleForm.pageSize = val;
-        this.submitForm(currentPage);
-      },
+      // 获取角色信息
       getPageInfoList() {
-        this.$http.post("/cloud/backmgr/page/open/getPageInfoList", {
-          'version': '1.0.0',
-          'plat': 'web',
-          'pageNum': 1,
-          'pageSize': 20
-        }).then((res) => {
-          this.listData.list = res.result.list.list;
-          this.listData.total = res.result.list.total;
+        this.$http.post("/cloud/role/backmgr/getRoleInfo", {}).then((res) => {
+          this.listData.list = res.result || [];
         })
       },
+      // 修改角色信息
       determine() {
-
+        let data = this.ruleForm
+        this.$http.post("/cloud/role/backmgr/updateRoleInfo", data).then((res) => {
+          this.$message({
+            type: 'success',
+            message: '修改成功！'
+          });
+          this.getPageInfoList()
+          this.dialogFormVisible = false
+        })
       },
     },
   };

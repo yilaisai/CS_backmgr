@@ -60,11 +60,13 @@
     },
     methods: {
       getBillList () {
-        this.$http.post("/cloud/coin/open/getCoinInfoList",{}).then((res) => {
+        this.$http.post("/supernode/coin/open/getCoinInfoList",{}).then((res) => {
           this.list = res.result
-          this.list.map((key,value) => {
-            if (value.coinName == 'SAC') {
+          this.list.map((value,key) => {
+            console.log(value);
+            if (value.coinName == 'PNB') {
               this.pnbCoinId = value.coinId
+              console.log('this.pnbCoinId', this.pnbCoinId);
               this.pnbPrice = value.price
             }
           })
@@ -72,9 +74,9 @@
       },
       // 修改pnb价格
       onSubmit () {
-        this.$http.post("/cloud/coin/backmgr/updateCoinInfo",{
+        this.$http.post("/supernode/backmgr/coin/updateCoinInfo",{
           'id':this.pnbCoinId,
-          'coinName':'SAC',
+          'coinName':'PNB',
           'price': this.cbbRate
         }).then((res) => {
           this.$message({
@@ -95,7 +97,7 @@
         this.dialogFormVisibleView = true
       },
       confirmBill(){
-        this.$http.post("/cloud/coin/backmgr/createCoinInfo",{
+        this.$http.post("/supernode/backmgr/coin/createCoinInfo",{
           'coinName': this.billName
         }).then((res) => {
           this.$message({
@@ -103,11 +105,12 @@
             message: '添加成功！'
           });
           this.getBillList()
+          this.billName = ''
         })
       },
       // 确定删除
       confirmDetele () {
-        this.$http.post("/cloud/coin/backmgr/updateCoinInfoSysStatus",{
+        this.$http.post("/supernode/backmgr/coin/updateCoinInfoSysStatus",{
           'id': this.id,
           'sysStatus': 0
         }).then((res) => {

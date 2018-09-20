@@ -77,7 +77,7 @@
         this.submitForm(currentPage);
       },
       getPageInfoList() {
-        this.$http.post("/cloud/vote/open/getTeamVoteRankList",{
+        this.$http.post("/supernode/vote/open/getTeamVoteRankList",{
           'teamName': this.filterForm.name,
           'num': this.filterForm.pageType
         }).then((res) => {
@@ -87,7 +87,7 @@
         })
       },
       getPageType() {
-        this.$http.post('/cloud/vote/open/getNumGameInfo',{}).then(res => {
+        this.$http.post('/supernode/vote/open/getNumGameInfo',{}).then(res => {
             this.pageTypeList = res.result
         })
       },

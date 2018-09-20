@@ -111,7 +111,7 @@
             const ruleForm = JSON.parse(JSON.stringify(this.ruleForm))
             ruleForm.tranInFee = (this.ruleForm.tranInFee + this.tranInFeeUnit).trim();
             ruleForm.tranOutFee = (this.ruleForm.tranOutFee + this.tranOutFeeUnit).trim();
-            this.$http.post("/cloud/team/backmgr/teamRewardSeting",{
+            this.$http.post("/supernode/backmgr/team/teamRewardSeting",{
               'teamId': this.teamId,
               'kingRewardRate': this.ruleForm.kingRewardRate,
               'goldRewardRate': this.ruleForm.goldSilverRate,
@@ -152,7 +152,7 @@
         this.sacTeamRewardList.push({'coinName':'','amount': ''})
 
         if (typeof data.coinName != 'number') return
-        this.$http.post("/cloud/team/backmgr/teamCoinSeting",{
+        this.$http.post("/supernode/backmgr/team/backmgr/teamCoinSeting",{
           'teamId': this.teamId,
           'coinId': data.coinName,
           'amount': data.amount
@@ -177,7 +177,7 @@
         if (typeof coinId != 'number') {
           coinId = data.coinId
         }
-        this.$http.post("/cloud/team/backmgr/delTeamCoinSeting",{
+        this.$http.post("/supernode/backmgr/team/delTeamCoinSeting",{
           'teamId': this.teamId,
           'coinId': coinId,
         }).then((res) => {
@@ -187,7 +187,7 @@
       },
       // 获取奖励配置
       getTeamRewardSeting(teamId){
-        this.$http.post("/cloud/team/backmgr/getTeamRewardSeting",{
+        this.$http.post("/supernode/backmgr/team/getTeamRewardSeting",{
           'teamId': teamId
         }).then((res) => {
           console.log(res)
@@ -201,7 +201,7 @@
       },
       // 获取币种类型
       getCoinInfoList(){
-        this.$http.post("/cloud/coin/open/getCoinInfoList",{}).then((res) => {
+        this.$http.post("/supernode/coin/open/getCoinInfoList",{}).then((res) => {
           console.log(res)
           // debugger
           this.pageTypeList = res.result;

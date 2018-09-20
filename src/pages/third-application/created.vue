@@ -11,6 +11,7 @@
     <sac-table :data="listData.list">
       <el-table-column prop="id" label="序号" width="100"></el-table-column>
       <el-table-column label="名称" prop="appName"></el-table-column>
+      <el-table-column label="英文名称" prop="appNameEn"></el-table-column>
       <el-table-column prop="appIcon" label="图标存储地址">
         <template slot-scope="scope">
           <viewer :options="options"
@@ -22,7 +23,9 @@
           <span v-if="scope.row.appIcon.indexOf('http')">{{scope.row.appIcon}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="appVersion" label="版本号" width="120"></el-table-column>
+      <el-table-column prop="iosVersion" label="ios版本号" width="120"></el-table-column>
+      <el-table-column prop="adrVersion" label="android版本号" width="120"></el-table-column>
+
       <el-table-column prop="appId" label="APPID" width="180"></el-table-column>
       <el-table-column prop="createTime" label="创建时间" width="200"></el-table-column>
       <el-table-column label="操作" width="250">
@@ -53,8 +56,11 @@
     </sac-pagination>
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" :inline="true" label-width="130px">
-        <el-form-item label="名称:" prop="appName">
+        <el-form-item label="应用名称:" prop="appName">
           <el-input v-model="ruleForm.appName" size="small" placeholder="请输入名称"></el-input>
+        </el-form-item>
+        <el-form-item label="应用英文名称:">
+          <el-input v-model="ruleForm.appNameEn" size="small" placeholder="请输入名称"></el-input>
         </el-form-item>
         <el-form-item label="商户手机号:" prop="phone" v-if="!ruleForm.id">
           <el-input v-model="ruleForm.phone" size="small" placeholder="请输入商户手机号"></el-input>
@@ -91,14 +97,23 @@
         <el-form-item label="回调地址:">
           <el-input v-model="ruleForm.hookInjectUrl" size="small" placeholder="请输入回调地址"></el-input>
         </el-form-item>
-        <el-form-item label="版本号:" prop="appVersion">
-          <el-input v-model="ruleForm.appVersion" size="small" placeholder="请输入版本号"></el-input>
+        <el-form-item label="ios版本号:" prop="iosVersion">
+          <el-input v-model="ruleForm.iosVersion" size="small" placeholder="请输入版本号"></el-input>
+        </el-form-item>
+        <el-form-item label="android版本号:" prop="adrVersion">
+          <el-input v-model="ruleForm.adrVersion" size="small" placeholder="请输入版本号"></el-input>
         </el-form-item>
         <el-form-item label="iOS Scheme协议:">
           <el-input v-model="ruleForm.iosPackageName" size="small" placeholder="请输入iOS Scheme协议"></el-input>
         </el-form-item>
+        <el-form-item label="iOS 签名:">
+          <el-input v-model="ruleForm.iosSign" size="small" placeholder="请输入iOS 签名"></el-input>
+        </el-form-item>
         <el-form-item label="android 包名:">
           <el-input v-model="ruleForm.adrPackageName" size="small" placeholder="请输入android 包名"></el-input>
+        </el-form-item>
+        <el-form-item label="android 签名:">
+          <el-input v-model="ruleForm.adrSign" size="small" placeholder="请输入android 签名"></el-input>
         </el-form-item>
         <el-form-item label="android下载地址:">
           <el-input v-model="ruleForm.downloadUrl" size="small" placeholder="请输入android下载地址"></el-input>
@@ -112,11 +127,17 @@
         <el-form-item label="应用介绍:" prop="destext">
           <el-input type="textarea" :rows="2" size="small" placeholder="请输入应用介绍" v-model="ruleForm.destext"></el-input>
         </el-form-item>
+        <el-form-item label="英文版介绍:">
+          <el-input type="textarea" :rows="2" size="small" placeholder="请输入应用介绍" v-model="ruleForm.destextEn"></el-input>
+        </el-form-item>
         <el-form-item label="是否自营" prop="ownType">
           <el-radio-group v-model="ruleForm.ownType">
             <el-radio :label="1">是</el-radio>
             <el-radio :label="0">否</el-radio>
           </el-radio-group>
+        </el-form-item>
+        <el-form-item label="权重:">
+          <el-input-number v-model="ruleForm.position" size="small" :min="0"></el-input-number>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -129,6 +150,7 @@
     <el-dialog :title="`应用 ${ruleForm.appName} 的详情`" :visible.sync="dialogFormVisibleView">
       <el-form :inline="true" class="demo-form-inline" label-width="130px">
         <el-form-item label="名称:">{{ruleForm.appName}}</el-form-item>
+        <el-form-item label="英文版名称:">{{ruleForm.appNameEn}}</el-form-item>
         <el-form-item label="应用图标:">
           <img v-if="!ruleForm.appIcon.indexOf('http')" :src="ruleForm.appIcon"
                style="max-width:100%; max-height: 100px;" alt="图标存储地址">
@@ -138,14 +160,19 @@
         <el-form-item label="APPID:">{{ruleForm.appId}}</el-form-item>
         <el-form-item label="支付通知Url:">{{ruleForm.notifyUrl}}</el-form-item>
         <el-form-item label="回调地址:">{{ruleForm.hookInjectUrl}}</el-form-item>
-        <el-form-item label="版本号:">{{ruleForm.appVersion}}</el-form-item>
+        <el-form-item label="ios版本号:">{{ruleForm.iosVersion}}</el-form-item>
+        <el-form-item label="android版本号:">{{ruleForm.adrVersion}}</el-form-item>
         <el-form-item label="iOS Scheme协议:">{{ruleForm.iosPackageName}}</el-form-item>
+        <el-form-item label="iOS 签名:">{{ruleForm.iosSign}}</el-form-item>
+        <el-form-item label="android 签名:">{{ruleForm.adrSign}}</el-form-item>
         <el-form-item label="android 包名:">{{ruleForm.adrPackageName}}</el-form-item>
         <el-form-item label="android下载地址:">{{ruleForm.downloadUrl}}</el-form-item>
         <el-form-item label="ios下载地址:">{{ruleForm.iosDownldUrl}}</el-form-item>
         <el-form-item label="跳转地址:">{{ruleForm.jumpUrl}}</el-form-item>
         <el-form-item label="是否自营:">{{ruleForm.ownType?'是':'否'}}</el-form-item>
         <el-form-item label="应用介绍:">{{ruleForm.destext}}</el-form-item>
+        <el-form-item label="英文版介绍:">{{ruleForm.destextEn}}</el-form-item>
+        <el-form-item label="权重:">{{ruleForm.position}}</el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisibleView = false" size="small">取 消</el-button>
@@ -174,18 +201,24 @@
           appid: "",
           phone: "",
           appName: "",
+          appNameEn:"",
           appIcon: "",
           notifyUrl: "",
           hookInjectUrl: "",
-          appVersion: "",
+          iosVersion: "",
+          adrVersion: "",
           destext: "",
+          destextEn: "",
           jumpUrl: "",
           iosPackageName: "",
+          iosSign:"",
+          adrSign:"",
           adrPackageName: "",
           downloadUrl: "",
           iosDownldUrl: "",
           transferTypeId: '',
           ownType: 1,
+          position: 0,
         },
         server_path: "",
         rules: {
@@ -204,8 +237,11 @@
           phone: [
             { required: true, message: '请输入商户手机号', trigger: 'blur' }
           ],
-          appVersion: [
-            { required: true, message: '请输入版本号', trigger: 'blur' }
+          iosVersion: [
+            { required: true, message: '请输入ios版本号', trigger: 'blur' }
+          ],
+          adrVersion: [
+            { required: true, message: '请输入android版本号', trigger: 'blur' }
           ],
           destext: [
             { required: true, message: '请输入应用介绍', trigger: 'blur' }
@@ -243,7 +279,8 @@
           appIcon: "",
           notifyUrl: "",
           hookInjectUrl: "",
-          appVersion: "",
+          iosVersion: "",
+          adrVersion: "",
           destext: "",
           jumpUrl: "",
           iosPackageName: "",
@@ -252,6 +289,11 @@
           iosDownldUrl: "",
           transferTypeId: '',
           ownType: 1,
+          appNameEn:"",
+          iosSign:"",
+          adrSign:"",
+          destextEn: "",
+          position: 0,
         };
         this.$refs.ruleForm && this.$refs.ruleForm.resetFields(); // 重置query的数据
       },

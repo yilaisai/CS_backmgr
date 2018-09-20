@@ -40,6 +40,17 @@
           <span v-if="scope.row.bannerUrl.indexOf('http')">{{scope.row.bannerUrl}}</span>
         </template>
       </el-table-column>
+      <el-table-column label="英文版图片">
+        <template slot-scope="scope">
+          <viewer :options="options"
+                  class="viewer" ref="viewer"
+          >
+            <img v-if="!scope.row.bannerUrlEn.indexOf('http')" :src="scope.row.bannerUrlEn"
+                 style="max-width:100%; max-height: 150px;" alt="图片存储地址不存在">
+          </viewer>
+          <span v-if="scope.row.bannerUrlEn.indexOf('http')">{{scope.row.bannerUrlEn}}</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="bannerTypeName" label="banner类型"></el-table-column>
       <el-table-column prop="bannerName" label="banner名称"></el-table-column>
       <el-table-column prop="jumpUrl" label="跳转链接">
@@ -73,7 +84,7 @@
                     :current-page="filterForm.pageNum">
     </sac-pagination>
     <el-dialog :title="dialogTitle" :visible.sync="isShowAddDialog">
-      <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="110px">
+      <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="140px">
         <el-form-item label="banner图片:" prop="bannerUrl">
           <el-col>
             <el-input size="small" v-model="ruleForm.bannerUrl" placeholder="请选择上传">
@@ -84,6 +95,21 @@
                 :data="{type:'img'}"
                 :show-file-list="false"
                 :on-success="upload" slot="append">
+                <el-button size="small" type="primary">点击上传</el-button>
+              </el-upload>
+            </el-input>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="banner英文版图片:" prop="bannerUrlEn">
+          <el-col>
+            <el-input size="small" v-model="ruleForm.bannerUrlEn" placeholder="请选择上传">
+              <el-upload
+                :action="server_path + 'wallet/util/open/uploadFile.do'"
+                multiple
+                name="files"
+                :data="{type:'img'}"
+                :show-file-list="false"
+                :on-success="uploadEnPic" slot="append">
                 <el-button size="small" type="primary">点击上传</el-button>
               </el-upload>
             </el-input>
@@ -144,6 +170,7 @@
         isShowAddDialog: false,
         ruleForm: {
           bannerUrl: "",
+          bannerUrlEn: '',
           bannerTypeEnName: "",
           bannerName: "",
           jumpUrl: "",
@@ -155,6 +182,9 @@
         rules: {
           bannerUrl: [
             { required: true, message: '请输入banner图片地址', trigger: 'blur' },
+          ],
+          bannerUrlEn: [
+            { required: true, message: '请输入banner英文版图片地址', trigger: 'blur' },
           ],
           bannerName: [
             { required: true, message: '请选择banner名称', trigger: 'change' }
@@ -190,6 +220,7 @@
       resetForm() {
         this.ruleForm = {
           bannerUrl: "",
+          bannerUrlEn: "",
           bannerTypeEnName: "",
           bannerName: "",
           jumpUrl: "",
@@ -273,6 +304,9 @@
       upload(response, file, fileList) {
         this.ruleForm.bannerUrl = response.result.urls[0]
       },
+      uploadEnPic(response, file, fileList) {
+        this.ruleForm.bannerUrlEn = response.result.urls[0]
+      },
       addBanner() {
         this.resetForm();
         this.dialogTitle = '创建banner';
@@ -289,7 +323,7 @@
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
             if (this.ruleForm.id) {
-              const { bannerTypeEnName, id, bannerName, jumpUrl, bannerUrl, weight, remark } = this.ruleForm;
+              const { bannerTypeEnName, id, bannerName, jumpUrl, bannerUrl, bannerUrlEn,weight, remark } = this.ruleForm;
               this.$http.post("wallet/backmgr/banner/updateAppBannerInfo.do", {
                 bannerTypeEnName,
                 bannerType: this.bannerTypeCode,
@@ -297,6 +331,7 @@
                 bannerName,
                 jumpUrl: jumpUrl || 'empty',
                 bannerUrl,
+                bannerUrlEn,
                 weight,
                 remark: remark || 'empty',
               }).then((res) => {

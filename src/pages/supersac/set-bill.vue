@@ -55,9 +55,6 @@
         pnbPrice: '',
       };
     },
-    created () {
-      this.getBillList()
-    },
     methods: {
       getBillList () {
         this.$http.post("/supernode/coin/open/getCoinInfoList",{}).then((res) => {
@@ -104,6 +101,7 @@
             type: 'success',
             message: '添加成功！'
           });
+          this.dialogFormVisibleView = false
           this.getBillList()
           this.billName = ''
         })
@@ -118,10 +116,14 @@
             type: 'success',
             message: '删除成功！'
           });
+          this.dialogDeleteVisibleView = false
           this.getBillList()
         })
       }
     },
+    activated() {
+      this.getBillList()
+    }
   };
 </script>
 <style lang="less">

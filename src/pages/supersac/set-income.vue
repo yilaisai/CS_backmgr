@@ -18,9 +18,9 @@
           {{(scope.row.maxRate*100).toFixed(2)}}%
         </template>
       </el-table-column>
-      <el-table-column prop="increasRate" label="每邀请1个人增长值" width="170">
+      <el-table-column prop="increaseRate" label="每邀请1个人增长值" width="170">
         <template slot-scope="scope">
-          {{(scope.row.increasRate*100).toFixed(2)}}%
+          {{(scope.row.increaseRate*100).toFixed(2)}}%
         </template>
       </el-table-column>
       <el-table-column prop="holdAmountLimit" label="最小持币量限制"></el-table-column>
@@ -36,9 +36,7 @@
     </sac-table>
     <el-dialog :visible.sync="dialogFormVisible">
       <el-form :model="ruleForm" ref="ruleForm" :rules="rules" :inline="true" label-width="170px">
-        <el-form-item label="会员等级:" prop="roleName">
-          感觉好点
-        </el-form-item>
+        <el-form-item label="会员等级:" prop="roleName">{{ruleForm.roleName}}</el-form-item>
         <el-form-item label="起始收益率:" prop="initRate">
           <el-input placeholder="请输入起始收益率" size="small" v-model="(ruleForm.initRate*100).toFixed(2)">
             <template slot="append">%</template>
@@ -49,8 +47,8 @@
             <template slot="append">%</template>
           </el-input>
         </el-form-item>
-        <el-form-item label="每邀请1个人增长值:" prop="increasRate">
-          <el-input placeholder="请输入每邀请1个人增长值" size="small" v-model="(ruleForm.increasRate*100).toFixed(2)">
+        <el-form-item label="每邀请1个人增长值:" prop="increaseRate">
+          <el-input placeholder="请输入每邀请1个人增长值" size="small" v-model="(ruleForm.increaseRate*100).toFixed(2)">
             <template slot="append">%</template>
           </el-input>
         </el-form-item>
@@ -84,7 +82,7 @@
           initRate: '',
           invitedHoldAmountLimit: '',
           holdAmountLimit: '',
-          increasRate: '',
+          increaseRate: '',
         },
         dialogFormVisible: false,
         rules: {
@@ -94,7 +92,7 @@
           maxRate: [
             { required: true, message: '请输入收益率上限', trigger: 'blur' },
           ],
-          increasRate: [
+          increaseRate: [
             { required: true, message: '请输入每邀请1个人增长值', trigger: 'blur' },
           ],
           holdAmountLimit: [
@@ -109,12 +107,9 @@
         },
       };
     },
-    created () {
-      this.getPageInfoList()
-    },
     methods: {
       changeInfo (data) {
-        this.ruleForm = data
+        this.ruleForm = JSON.parse(JSON.stringify(data))
         this.dialogFormVisible = true
       },
       // 获取角色信息
@@ -127,7 +122,7 @@
       determine() {
         let data = this.ruleForm
         console.log(this.ruleForm);
-        // const {maxRate, initRate, invitedHoldAmountLimit, holdAmountLimit,increasRate} = this.ruleForm
+        // const {maxRate, initRate, invitedHoldAmountLimit, holdAmountLimit,increaseRate} = this.ruleForm
         this.$http.post("/supernode/backmgr/role/updateRoleInfo", data).then((res) => {
           this.$message({
             type: 'success',
@@ -138,6 +133,9 @@
         })
       },
     },
+    activated() {
+      this.getPageInfoList()
+    }
   };
 </script>
 <style lang="less">

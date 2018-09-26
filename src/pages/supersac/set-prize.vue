@@ -225,12 +225,9 @@
     activated() {
       this.getCoinInfoList();
       this.server_path = SERVER_PATH;
-      if(this.$route.params && this.$route.params.data) {
-          const paramsData = this.$route.params.data
-          console.log('paramsData', paramsData);
-          this.teamName = paramsData.teamName
-          this.teamId = paramsData.teamId
-          // debugger
+      if(this.$route.query) {
+          this.teamName = this.$route.query.teamName
+          this.teamId = this.$route.query.teamId
           this.getTeamRewardSeting(this.teamId)
       }
     }

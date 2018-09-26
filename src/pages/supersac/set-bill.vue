@@ -12,13 +12,19 @@
         <el-button type="primary" size="medium" @click="onSubmit">确认</el-button>
       </div>
     </div>
-    <h2>币种设置</h2>
+    <el-row>
+        <el-col :span="17">
+            <h2>币种设置</h2>
+        </el-col>
+        <el-col :span="4">
+            <el-button type="danger" @click.native="add" style="margin-top:20px;">添加币种</el-button>
+        </el-col>
+    </el-row>
     <sac-table :data="list">
       <el-table-column prop="coinName" label="币种"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope" prop="sysStatus">
           <el-button type="primary" @click.native="delete1(scope.row)">删除</el-button>
-          <el-button type="danger" @click.native="add">添加</el-button>
         </template>
       </el-table-column>
     </sac-table>

@@ -29,13 +29,17 @@
       <el-table-column prop="teamName" label="名称" width="200"></el-table-column>
       <el-table-column prop="totalAmount" label="总投票数" width="200"></el-table-column>
       <el-table-column prop="memberNum" label="总人数" width="200"></el-table-column>
-      <el-table-column prop="scoreRate" label="得分占比" width="200"></el-table-column>
+      <el-table-column prop="scoreRate" label="得分占比" width="200">
+        <template slot-scope="scope" prop="sysStatus">
+          {{scope.row.scoreRate*100}}%
+        </template>
+      </el-table-column>
       <!-- <el-table-column prop="update_time" label="出块数量" width="170"></el-table-column> -->
 
       <el-table-column label="操作">
         <template slot-scope="scope" prop="sysStatus">
           <el-button type="primary"
-                     @click.native="$router.push({name: 'setprize', params: {data: scope.row, type: 'view'}})">配置奖励
+                     @click.native="$router.push({name: 'setprize', query: {teamName: scope.row.teamName, teamId: scope.row.teamId}})">配置奖励
           </el-button>
         </template>
       </el-table-column>

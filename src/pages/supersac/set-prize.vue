@@ -11,12 +11,13 @@
       <el-form-item :label="teamName+'总奖励:'" v-for="(teamReward,index) in sacTeamRewardList" :key="index" required>
         <el-col :span="8">
           <el-form-item prop="coinType">
-            <el-select ref="coinType" v-model="teamReward.coinName">
+            <el-select ref="coinType" v-model="teamReward.coinId">
               <el-option
                   v-for="item,index in pageTypeList"
                   :key="index"
                   :label="item.coinName"
-                  :value="item.coinId">
+                  :value="item.coinId"
+                  >
               </el-option>
             </el-select>
           </el-form-item>
@@ -28,8 +29,8 @@
                       class="min-input"></el-input>
           </el-form-item>
         </el-col>
-        <el-button type="primary" style="width: 100px" @click="deletePrize(teamReward,index)">删除</el-button>
-        <el-button type="primary" style="width: 100px" @click="addPrize(teamReward,index)" v-show="index == sacTeamRewardList.length - 1">添加</el-button>
+        <el-button type="danger" size="small" style="width: 100px" @click="deletePrize(teamReward,index)">删除</el-button>
+        <el-button type="primary" size="small" style="width: 100px" @click="addPrize(teamReward,index)" v-show="index == sacTeamRewardList.length - 1">添加</el-button>
       </el-form-item>
       <el-form-item label="最强王者奖励百分比:" prop="kingRewardRate">
         <el-input style="width:80%" clearable v-model="ruleForm.kingRewardRate" size="small" placeholder="请输入百分比">
@@ -74,6 +75,7 @@
         }
       };
       return {
+        coinValue: '',
         ruleForm: {
           coinType: "",
           kingRewardRate: '',
@@ -82,6 +84,7 @@
           eachOneRate: '',
         },
         sacTeamRewardList: [],
+        tapIndex: '',
         teamName: '',
         teamId: '',
         server_path: "",
@@ -99,10 +102,10 @@
             { required: true, message: '请输入数额', trigger: 'blur' },
             { validator: checkNum, message: '必须为数字' }
           ],
-          coinType: [
-            { required: true, message: '请选择币种', trigger: 'change' },
-            { message: '必须为数字' }
-          ],
+          // coinType: [
+          //   { required: true, message: '请选择币种', trigger: 'change' },
+          //   { message: '必须为数字' }
+          // ],
           eachOneRate: [
             { required: true, message: '请输入数额', trigger: 'blur' },
             { validator: checkNum, message: '必须为数字' }
@@ -147,9 +150,8 @@
       },
       // 添加币种
       addPrize(data,index) {
-        console.log();
-        // debugger
-        if (data.coinName == '') {
+        console.log('data', data);
+        if (!data.coinId || data.coinId == '') {
           this.$notify({
             message: '请选择币种类型',
             type: 'error'
@@ -165,28 +167,17 @@
         }
         this.sacTeamRewardList.push({'coinName':'','amount': ''})
 
-        if (typeof data.coinName != 'number') return
-        this.$http.post("/supernode/backmgr/team/backmgr/teamCoinSeting",{
+        if (index == this.tapIndex -1 ) return
+        this.$http.post("/supernode/backmgr/team/teamCoinSeting",{
           'teamId': this.teamId,
-          'coinId': data.coinName,
+          'coinId': data.coinId,
           'amount': data.amount
         }).then((res) => {
           console.log(res)
         })
       },
-      //根据下标删除指定元素
-      deleteIndex (arr,index) {
-        var temArray=[]
-        for(var i=0;i<arr.length;i++){
-          if(i!=index){
-            temArray.push(arr[i])
-          }
-        }
-        return temArray;
-      },
       // 删除币种
       deletePrize(data,index){
-        debugger
         let coinId = data.coinName
         if (typeof coinId != 'number') {
           coinId = data.coinId
@@ -195,8 +186,7 @@
           'teamId': this.teamId,
           'coinId': coinId,
         }).then((res) => {
-          console.log(res)
-          this.deleteIndex(this.sacTeamRewardList,index)
+          this.getTeamRewardSeting(this.teamId)
         })
       },
       // 获取奖励配置
@@ -207,7 +197,12 @@
           console.log(res)
           // debugger
           this.ruleForm = JSON.parse(JSON.stringify(res.result || {}));
-          this.sacTeamRewardList = (res.result || {}).sacTeamRewardCoinResultDtoList || []
+          if (!(res.result || {}).sacTeamRewardCoinResultDtoList ||((res.result || {}).sacTeamRewardCoinResultDtoList).length == 0) {
+            this.sacTeamRewardList = [{'coinName':'','amount': ''}]
+          } else {
+            this.sacTeamRewardList = (res.result || {}).sacTeamRewardCoinResultDtoList
+            this.tapIndex = (res.result || {}).sacTeamRewardCoinResultDtoList.length
+          }
           console.log(this.ruleForm.coinType);
           this.ruleForm.coinType = (this.sacTeamRewardList[0] || {}).coinName
           // this.$refs.coinType[0].lable = this.sacTeamRewardList[0].coinName

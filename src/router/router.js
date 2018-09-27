@@ -164,6 +164,14 @@ export const appRouter = [
         component: () => import('@/pages/third-application/created.vue'),
       },
       {
+        path: 'check-application',
+        name: 'check-application',
+        meta: {
+          title: '审核管理',
+        },
+        component: () => import('@/pages/third-application/check-application.vue'),
+      },
+      {
         path: 'shelf-application',
         name: 'shelfApplication',
         meta: {

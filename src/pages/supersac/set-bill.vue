@@ -65,12 +65,12 @@
       getBillList () {
         this.$http.post("/supernode/coin/open/getCoinInfoList",{}).then((res) => {
           this.list = res.result
-          this.list.map((value,key) => {
+          this.list.map((value) => {
             console.log(value);
             if (value.coinName == 'PNB') {
               this.pnbCoinId = value.coinId
               console.log('this.pnbCoinId', this.pnbCoinId);
-              this.pnbPrice = value.price
+              this.pnbPrice = value.amount
             }
           })
         })

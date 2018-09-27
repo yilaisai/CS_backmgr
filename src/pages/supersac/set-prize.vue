@@ -54,7 +54,7 @@
             <template slot="append">%</template>
         </el-input>
       </el-form-item>
-      <p class="total-prize">*各奖励百分比相加等于总奖励</p>
+      <p class="total-prize">*各奖励百分比相加等于100%</p>
       <el-form-item size="small" style="text-align:center; width:80%; margin-top:60px;">
         <el-button type="primary" style="width: 100px" @click="onSubmit">提交</el-button>
         <el-button type="danger" style="width: 100px;" @click="$router.go(-1)">取消</el-button>
@@ -115,10 +115,10 @@
       onSubmit() {
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
-            console.log(this.ruleForm.kingRewardRate + this.ruleForm.goldSilverRate + this.ruleForm.bronzeRewardRate);
-            if (Number(this.ruleForm.kingRewardRate) + Number(this.ruleForm.goldSilverRate) + Number(this.ruleForm.bronzeRewardRate) != this.ruleForm.eachOneRate) {
+            console.log(Number(this.ruleForm.kingRewardRate) + Number(this.ruleForm.goldSilverRate) + Number(this.ruleForm.bronzeRewardRate) + Number(this.ruleForm.eachOneRate));
+            if (Number(this.ruleForm.kingRewardRate) + Number(this.ruleForm.goldSilverRate) + Number(this.ruleForm.bronzeRewardRate) + Number(this.ruleForm.eachOneRate) != 100) {
               this.$notify({
-                message: '各奖励百分比相加必须等于总奖励！',
+                message: '各奖励百分比相加必须等于100%！',
                 type: 'error'
               });
               return
@@ -262,7 +262,7 @@
     .total-prize {
       color: red;
       font-size: 15px;
-      margin-left: 81px;
+      margin: 35px 0 0 81px;
     }
     .el-input--suffix .el-input__inner {
       height: 32px!important;

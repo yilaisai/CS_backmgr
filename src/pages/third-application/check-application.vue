@@ -1,18 +1,11 @@
-/**
-*  Created by   阿紫
-*  On  2018/8/10
-*  Content 应用管理
-*/
+
 <template>
   <div class='created'>
-    <el-col :span="22" style="text-align:right; margin-bottom: 30px;">
-      <el-button size="small" type="primary" @click="addCreate">创建应用</el-button>
-    </el-col>
     <sac-table :data="listData.list">
       <el-table-column prop="id" label="序号" width="100"></el-table-column>
-      <el-table-column label="名称" prop="appName"></el-table-column>
+      <el-table-column label="应用名称" prop="app_name"></el-table-column>
       <el-table-column label="英文名称" prop="appNameEn"></el-table-column>
-      <el-table-column prop="appIcon" label="图标存储地址">
+      <el-table-column prop="app_icon" label="应用图标">
         <template slot-scope="scope">
           <viewer :options="options"
                   class="viewer" ref="viewer"
@@ -23,12 +16,12 @@
           <span v-if="scope.row.appIcon.indexOf('http')">{{scope.row.appIcon}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="iosVersion" label="ios版本号" width="120"></el-table-column>
-      <el-table-column prop="adrVersion" label="android版本号" width="120"></el-table-column>
+      <el-table-column prop="ios_version" label="ios版本号" width="120"></el-table-column>
+      <el-table-column prop="adr_version" label="android版本号" width="120"></el-table-column>
 
-      <el-table-column prop="appId" label="APPID" width="180"></el-table-column>
+      <el-table-column prop="app_id" label="APPID" width="180"></el-table-column>
       <el-table-column prop="createTime" label="创建时间" width="200"></el-table-column>
-      <el-table-column label="操作" width="250">
+      <el-table-column label="操作" width="200">
         <template slot-scope="scope" prop="sysStatus">
           <el-button type="success" size="small"
                      @click.native="goDetail(scope.row)">查看详情
@@ -36,15 +29,19 @@
           <el-button type="warning" :disabled="scope.row.isShow != 0" size="small"
                      @click.native="modification(scope.row)">修改
           </el-button>
-          <el-button type="danger" :disabled="scope.row.isShow != 0" size="small" @click.native="remove(scope.row)">
+          <!-- <el-button type="danger" :disabled="scope.row.isShow != 0" size="small" @click.native="remove(scope.row)">
             删除
-          </el-button>
+          </el-button> -->
         </template>
       </el-table-column>
-      <el-table-column label="上架" width="100">
-        <template slot-scope="scope" prop="isShow">
-          <el-switch v-model="scope.row.isShow" :inactive-value="0" :active-value="1"
-                     @click.native="switchChange(scope.row)"></el-switch>
+      <el-table-column label="操作" width="200">
+        <template slot-scope="scope" prop="sysStatus">
+          <el-button type="success" size="small"
+                     @click.native="passCheck(scope.row)">审核通过
+          </el-button>
+          <el-button type="danger" :disabled="scope.row.isShow != 0" size="small"
+                     @click.native="showNoPassCheck(scope.row)">拒绝
+          </el-button>
         </template>
       </el-table-column>
     </sac-table>
@@ -139,6 +136,9 @@
         <el-form-item label="权重:">
           <el-input-number v-model="ruleForm.position" size="small" :min="0"></el-input-number>
         </el-form-item>
+        <el-form-item label="联系邮箱:" prop="email">
+          <el-input v-model="ruleForm.email" size="small" placeholder="请输入联系邮箱"></el-input>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false" size="small">取 消</el-button>
@@ -173,7 +173,15 @@
         <el-form-item label="应用介绍:">{{ruleForm.destext}}</el-form-item>
         <el-form-item label="英文版介绍:">{{ruleForm.destextEn}}</el-form-item>
         <el-form-item label="权重:">{{ruleForm.position}}</el-form-item>
+        <el-form-item label="联系邮箱:">{{ruleForm.email}}</el-form-item>
       </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisibleView = false" size="small">取 消</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog title="拒绝原因" :visible.sync="dialogReasonVisibleView">
+      <el-input type="textarea" :rows="2" size="small" placeholder="请输入拒绝原因" v-model="reason"></el-input>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisibleView = false" size="small">取 消</el-button>
       </div>
@@ -185,9 +193,10 @@
 </style>
 <script>
   export default {
-    name: 'created',
+    name: 'check-application',
     data() {
       return {
+        reason: '',
         listData: {
           total: null,
           list: [],
@@ -249,6 +258,9 @@
           ownType: [
             { required: true, message: '请选择是否自营', trigger: 'blur' }
           ],
+          email: [
+            { required: true, message: '请输入联系邮箱', trigger: 'blur' }
+          ],
         },
         transferTypeInfoList: [],
         currentForm: {},
@@ -267,7 +279,8 @@
           fullscreen: true,
           keyboard: true,
           url: 'data-source'
-        }
+        },
+        dialogReasonVisibleView: false,
       };
     },
     methods: {
@@ -307,8 +320,9 @@
         this.pageNum = currentPage;
         this.getThirdAppInfoList();
       },
+      // 获取未审核/待审核列表
       getThirdAppInfoList() {
-        this.$http.post("wallet/backmgr/thirdAppInfo/getThirdAppInfoList.do", {
+        this.$http.post("/wallet/backmgr/thirdAppInfo/getWaitingThirdAppList.do", {
           pageSize: this.pageSize,
           pageNum: this.pageNum
         }).then((res) => {
@@ -316,50 +330,28 @@
           this.listData.total = res.result.list.total
         })
       },
-      // 上下架
-      switchChange(itemData) {
-        const { isShow, id, appName } = itemData;
-        this.$http.post("wallet/backmgr/thirdAppInfo/updateThirdAppInfoIsShow.do", {
-          isShow: isShow ? "SHOW" : "HIDE",
-          id: id
+      // 审核通过/审核不通过
+      passCheck(itemData) {
+        const { appName, id } = itemData;
+        this.$http.post("/wallet/backmgr/thirdAppInfo/updateThirdAppInfoAuditStatus.do", {
+          sysStatus: "INVALID0",
+          id
         }).then((res) => {
           this.$notify({
             title: '成功',
-            message: `${appName} ${isShow ? "上架" : "下架"} 成功`,
+            message: `删除 ${appName}成功`,
             type: 'success'
           });
+          this.getThirdAppInfoList()
         })
       },
-      // 删除
-      remove(itemData) {
-        const { appName, id } = itemData;
-        this.$confirm(`确定删除 ${appName} 应用?`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$http.post("wallet/backmgr/thirdAppInfo/updateThirdAppInfoSysStatus.do", {
-            sysStatus: "INVALID0",
-            id
-          }).then((res) => {
-            this.$notify({
-              title: '成功',
-              message: `删除 ${appName}成功`,
-              type: 'success'
-            });
-            this.getThirdAppInfoList()
-          })
-        })
+      showNoPassCheck(){
+        this.dialogReasonVisibleView = true
       },
       upload(response, file, fileList) {
         this.ruleForm.appIcon = response.result.urls[0]
       },
-      addCreate() {
-        this.resetForm();
-        this.dialogFormVisible = true;
-        this.dialogTitle = '创建应用';
-        this.getTransferTypeInfoList();
-      },
+      // 修改应用
       modification(data) {
         this.resetForm();
         this.dialogFormVisible = true;
@@ -370,6 +362,7 @@
         this.dialogTitle = `修改 ${this.ruleForm.appName} 应用`;
         this.getTransferTypeInfoList();
       },
+      // 重新修改提交
       determine() {
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
@@ -379,7 +372,7 @@
                   this.ruleForm[key] = 'empty';
                 }
               })
-              this.$http.post("wallet/backmgr/thirdAppInfo/updateThirdAppInfo.do", this.ruleForm).then((res) => {
+              this.$http.post("/wallet/backmgr/thirdAppInfo/updateThirdAppInfo.do", this.ruleForm).then((res) => {
                 this.dialogFormVisible = false;
                 this.resetForm();
                 this.$notify({
@@ -389,22 +382,11 @@
                 });
                 this.getThirdAppInfoList();
               })
-            } else {
-              this.$http.post("wallet/backmgr/thirdAppInfo/createThirdAppInfo.do", this.ruleForm).then((res) => {
-                this.dialogFormVisible = false;
-                this.resetForm();
-                this.$notify({
-                  title: '成功',
-                  message: `创建 ${ this.ruleForm.appName} 应用成功`,
-                  type: 'success'
-                });
-                this.pageNum = 1;
-                this.getThirdAppInfoList();
-              })
             }
           }
         })
       },
+      // 获取商户类型
       getTransferTypeInfoList() {
         if (!this.transferTypeInfoList.length) {
           this.$http.post("wallet/backmgr/transferType/getTransferTypeInfoList.do", {

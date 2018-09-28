@@ -7,12 +7,24 @@
         </el-col>
     </el-row>
     <sac-table :data="listData.list">
-      <el-table-column prop="title" label="会员等级"  width="170"></el-table-column>
-      <el-table-column prop="create_time" label="起始收益率" width="170"></el-table-column>
-      <el-table-column prop="update_time" label="收益率上限" width="170"></el-table-column>
-      <el-table-column prop="update_time" label="每邀请1个人增长值" width="170"></el-table-column>
-      <el-table-column prop="update_time" label="升级持币量"></el-table-column>
-      <el-table-column prop="update_time" label="被邀请者最少持币量"></el-table-column>
+      <el-table-column prop="roleName" label="会员等级"  width="170"></el-table-column>
+      <el-table-column prop="initRate" label="起始收益率" width="170">
+        <template slot-scope="scope">
+          {{(scope.row.initRate*100).toFixed(2)}}%
+        </template>
+      </el-table-column>
+      <el-table-column prop="maxRate" label="收益率上限" width="170">
+        <template slot-scope="scope">
+          {{(scope.row.maxRate*100).toFixed(2)}}%
+        </template>
+      </el-table-column>
+      <el-table-column prop="increaseRate" label="每邀请1个人增长值" width="170">
+        <template slot-scope="scope">
+          {{(scope.row.increaseRate*100).toFixed(2)}}%
+        </template>
+      </el-table-column>
+      <el-table-column prop="holdAmountLimit" label="最小持币量限制"></el-table-column>
+      <el-table-column prop="invitedHoldAmountLimit" label="被邀请者最少持币量"></el-table-column>
 
       <el-table-column label="操作">
         <template slot-scope="scope" prop="sysStatus">
@@ -24,21 +36,19 @@
     </sac-table>
     <el-dialog :visible.sync="dialogFormVisible">
       <el-form :model="ruleForm" ref="ruleForm" :rules="rules" :inline="true" label-width="170px">
-        <el-form-item label="会员等级:" prop="roleName">
-          感觉好点
-        </el-form-item>
+        <el-form-item label="会员等级:" prop="roleName">{{ruleForm.roleName}}</el-form-item>
         <el-form-item label="起始收益率:" prop="initRate">
-          <el-input placeholder="请输入起始收益率" size="small" v-model="ruleForm.initRate">
+          <el-input placeholder="请输入起始收益率" size="small" v-model="(ruleForm.initRate*100).toFixed(2)">
             <template slot="append">%</template>
           </el-input>
         </el-form-item>
         <el-form-item label="收益率上限:" prop="maxRate">
-          <el-input v-model="ruleForm.maxRate" size="small" placeholder="请输入收益率上限">
+          <el-input v-model="(ruleForm.maxRate*100).toFixed(2)" size="small" placeholder="请输入收益率上限">
             <template slot="append">%</template>
           </el-input>
         </el-form-item>
-        <el-form-item label="每邀请1个人增长值:" prop="increasRate">
-          <el-input placeholder="请输入每邀请1个人增长值" size="small" v-model="ruleForm.increasRate">
+        <el-form-item label="每邀请1个人增长值:" prop="increaseRate">
+          <el-input placeholder="请输入每邀请1个人增长值" size="small" v-model="(ruleForm.increaseRate*100).toFixed(2)">
             <template slot="append">%</template>
           </el-input>
         </el-form-item>
@@ -72,7 +82,7 @@
           initRate: '',
           invitedHoldAmountLimit: '',
           holdAmountLimit: '',
-          increasRate: '',
+          increaseRate: '',
         },
         dialogFormVisible: false,
         rules: {
@@ -82,7 +92,7 @@
           maxRate: [
             { required: true, message: '请输入收益率上限', trigger: 'blur' },
           ],
-          increasRate: [
+          increaseRate: [
             { required: true, message: '请输入每邀请1个人增长值', trigger: 'blur' },
           ],
           holdAmountLimit: [
@@ -97,24 +107,23 @@
         },
       };
     },
-    created () {
-      this.getPageInfoList()
-    },
     methods: {
       changeInfo (data) {
-        this.ruleForm = data
+        this.ruleForm = JSON.parse(JSON.stringify(data))
         this.dialogFormVisible = true
       },
       // 获取角色信息
       getPageInfoList() {
-        this.$http.post("/cloud/role/backmgr/getRoleInfo", {}).then((res) => {
+        this.$http.post("/supernode/backmgr/role/getRoleInfo", {}).then((res) => {
           this.listData.list = res.result || [];
         })
       },
       // 修改角色信息
       determine() {
         let data = this.ruleForm
-        this.$http.post("/cloud/role/backmgr/updateRoleInfo", data).then((res) => {
+        console.log(this.ruleForm);
+        // const {maxRate, initRate, invitedHoldAmountLimit, holdAmountLimit,increaseRate} = this.ruleForm
+        this.$http.post("/supernode/backmgr/role/updateRoleInfo", data).then((res) => {
           this.$message({
             type: 'success',
             message: '修改成功！'
@@ -124,6 +133,9 @@
         })
       },
     },
+    activated() {
+      this.getPageInfoList()
+    }
   };
 </script>
 <style lang="less">

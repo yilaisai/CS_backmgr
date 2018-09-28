@@ -164,6 +164,14 @@ export const appRouter = [
         component: () => import('@/pages/third-application/created.vue'),
       },
       {
+        path: 'check-application',
+        name: 'check-application',
+        meta: {
+          title: '审核管理',
+        },
+        component: () => import('@/pages/third-application/check-application.vue'),
+      },
+      {
         path: 'shelf-application',
         name: 'shelfApplication',
         meta: {
@@ -462,6 +470,70 @@ export const appRouter = [
           title: '超级节点配置'
         },
         component: () => import('@/pages/supersac/set-income.vue')
+      },
+      {
+        path: 'user',
+        name: 'user',
+        meta: {
+          title: '用户管理'
+        },
+        component: () => import('@/pages/supersac/user.vue')
+      },
+      {
+        path: 'capital-detail',
+        name: 'capital-detail',
+        meta: {
+          title: '用户管理'
+        },
+        component: () => import('@/pages/supersac/capital-detail.vue')
+      },
+      {
+        path: 'invite-detail',
+        name: 'invite-detail',
+        meta: {
+          title: '用户管理'
+        },
+        component: () => import('@/pages/supersac/invite-detail.vue')
+      },
+      {
+        path: 'node-detail',
+        name: 'node-detail',
+        meta: {
+          title: '节点管理'
+        },
+        component: () => import('@/pages/supersac/node-detail.vue')
+      },
+      {
+        path: 'node-manage',
+        name: 'node-manage',
+        meta: {
+          title: '节点管理'
+        },
+        component: () => import('@/pages/supersac/node-manage.vue')
+      },
+      {
+        path: 'banner',
+        name: 'banner',
+        meta: {
+          title: 'banner管理'
+        },
+        component: () => import('@/pages/supersac/banner.vue')
+      },
+      {
+        path: 'money-manage',
+        name: 'money-manage',
+        meta: {
+          title: '资金管理'
+        },
+        component: () => import('@/pages/supersac/money-manage.vue')
+      },
+      {
+        path: 'notice-manage',
+        name: 'notice-manage',
+        meta: {
+          title: '公告管理'
+        },
+        component: () => import('@/pages/supersac/notice-manage.vue')
       }
     ],
   },

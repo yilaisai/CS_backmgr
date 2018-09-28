@@ -1,8 +1,4 @@
-/**
-*  Created by   阿紫
-*  On  2018/8/10
-*  Content
-*/
+
 <template>
   <div class='banner'>
     <el-col :span="22" style="text-align:right;">
@@ -12,17 +8,13 @@
              label-width="100px"
              ref="filterForm"
              :model="filterForm">
-      <!--<el-form-item label="banner类型:">-->
-        <!--<el-select v-model="filterForm.bannerType" size="small" placeholder="请选择banner类型">-->
-          <!--<el-option-->
-            <!--v-for="item in bannerTypeList"-->
-            <!--:key="item.value"-->
-            <!--:label="item.label"-->
-            <!--:value="item.value">-->
-          <!--</el-option>-->
-        <!--</el-select>-->
-      <!--</el-form-item>-->
-      <sac-select label="banner类型" v-model="filterForm.bannerType" :data-list="bannerTypeList"></sac-select>
+     <sac-input
+       ref="phone"
+       label="图片名称"
+       v-model.trim="filterForm.imgName"
+       prop="phone"></sac-input>
+      <sac-date ref="selectedDate" label="日　　期" v-model="selectedDate"></sac-date>
+      <sac-select label="状态" v-model="filterForm.bannerType" :data-list="bannerTypeList"></sac-select>
       <sac-submit-form
         :isReset='false'
         @submitForm="submitForm(1)"></sac-submit-form>
@@ -38,17 +30,6 @@
                  style="max-width:100%; max-height: 150px;" alt="图片存储地址不存在">
           </viewer>
           <span v-if="scope.row.bannerUrl.indexOf('http')">{{scope.row.bannerUrl}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="英文版图片">
-        <template slot-scope="scope">
-          <viewer :options="options"
-                  class="viewer" ref="viewer"
-          >
-            <img v-if="!scope.row.bannerUrlEn.indexOf('http')" :src="scope.row.bannerUrlEn"
-                 style="max-width:100%; max-height: 150px;" alt="图片存储地址不存在">
-          </viewer>
-          <span v-if="scope.row.bannerUrlEn.indexOf('http')">{{scope.row.bannerUrlEn}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="bannerTypeName" label="banner类型"></el-table-column>
@@ -100,21 +81,6 @@
             </el-input>
           </el-col>
         </el-form-item>
-        <el-form-item label="banner英文版图片:" prop="bannerUrlEn">
-          <el-col>
-            <el-input size="small" v-model="ruleForm.bannerUrlEn" placeholder="请选择上传">
-              <el-upload
-                :action="server_path + 'wallet/util/open/uploadFile.do'"
-                multiple
-                name="files"
-                :data="{type:'img'}"
-                :show-file-list="false"
-                :on-success="uploadEnPic" slot="append">
-                <el-button size="small" type="primary">点击上传</el-button>
-              </el-upload>
-            </el-input>
-          </el-col>
-        </el-form-item>
         <el-form-item label="banner类型" prop="bannerTypeEnName">
           <el-select size="small" v-model="ruleForm.bannerTypeEnName" placeholder="请选择banner类型"
                      @change="getbannerTypeEnName('ruleForm')" style="width:100%;">
@@ -157,8 +123,10 @@
     name: 'banner',
     data() {
       return {
+        selectedDate: [],
         filterForm: {
           bannerType: 'None',
+          imgName: '',
           pageNum: 1,
           pageSize: 20
         },
@@ -166,11 +134,19 @@
           total: null,
           list: [],
         },
-        bannerTypeList: [],
+        bannerTypeList: [{
+          value: '',
+          label: '全部',
+        }, {
+          value: 'SystemMsg',
+          label: '上架',
+        },{
+          value: 'SystemMsg',
+          label: '下架',
+        }],
         isShowAddDialog: false,
         ruleForm: {
           bannerUrl: "",
-          bannerUrlEn: '',
           bannerTypeEnName: "",
           bannerName: "",
           jumpUrl: "",
@@ -182,9 +158,6 @@
         rules: {
           bannerUrl: [
             { required: true, message: '请输入banner图片地址', trigger: 'blur' },
-          ],
-          bannerUrlEn: [
-            { required: true, message: '请输入banner英文版图片地址', trigger: 'blur' },
           ],
           bannerName: [
             { required: true, message: '请选择banner名称', trigger: 'change' }
@@ -220,7 +193,6 @@
       resetForm() {
         this.ruleForm = {
           bannerUrl: "",
-          bannerUrlEn: "",
           bannerTypeEnName: "",
           bannerName: "",
           jumpUrl: "",
@@ -243,19 +215,6 @@
         this.$http.post("wallet/backmgr/banner/getAppBannerInfos.do", this.filterForm).then((res) => {
           this.listData.list = res.result.list.list;
           this.listData.total = res.result.list.total;
-        })
-      },
-      getBannerType() {
-        this.$http.post("wallet/backmgr/banner/getBannerType.do", {
-          version: '1.0.0',
-          plat: 'web',
-        }).then((res) => {
-          const { list } = res.result;
-          list.forEach((item) => {
-            item.label = item.name;
-            item.value = item.bannerType;
-          })
-          this.bannerTypeList = list;
         })
       },
       // 删除
@@ -304,9 +263,6 @@
       upload(response, file, fileList) {
         this.ruleForm.bannerUrl = response.result.urls[0]
       },
-      uploadEnPic(response, file, fileList) {
-        this.ruleForm.bannerUrlEn = response.result.urls[0]
-      },
       addBanner() {
         this.resetForm();
         this.dialogTitle = '创建banner';
@@ -323,7 +279,7 @@
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
             if (this.ruleForm.id) {
-              const { bannerTypeEnName, id, bannerName, jumpUrl, bannerUrl, bannerUrlEn,weight, remark } = this.ruleForm;
+              const { bannerTypeEnName, id, bannerName, jumpUrl, bannerUrl, weight, remark } = this.ruleForm;
               this.$http.post("wallet/backmgr/banner/updateAppBannerInfo.do", {
                 bannerTypeEnName,
                 bannerType: this.bannerTypeCode,
@@ -331,7 +287,6 @@
                 bannerName,
                 jumpUrl: jumpUrl || 'empty',
                 bannerUrl,
-                bannerUrlEn,
                 weight,
                 remark: remark || 'empty',
               }).then((res) => {
@@ -366,7 +321,6 @@
     activated() {
       this.server_path = SERVER_PATH
       this.getAppBannerInfos();
-      this.getBannerType();
     }
   };
 </script>

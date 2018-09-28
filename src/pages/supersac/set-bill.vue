@@ -12,13 +12,19 @@
         <el-button type="primary" size="medium" @click="onSubmit">确认</el-button>
       </div>
     </div>
-    <h2>币种设置</h2>
+    <el-row>
+        <el-col :span="17">
+            <h2>币种设置</h2>
+        </el-col>
+        <el-col :span="4">
+            <el-button type="danger" @click.native="add" style="margin-top:20px;">添加币种</el-button>
+        </el-col>
+    </el-row>
     <sac-table :data="list">
       <el-table-column prop="coinName" label="币种"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope" prop="sysStatus">
           <el-button type="primary" @click.native="delete1(scope.row)">删除</el-button>
-          <el-button type="danger" @click.native="add">添加</el-button>
         </template>
       </el-table-column>
     </sac-table>
@@ -55,26 +61,25 @@
         pnbPrice: '',
       };
     },
-    created () {
-      this.getBillList()
-    },
     methods: {
       getBillList () {
-        this.$http.post("/cloud/coin/open/getCoinInfoList",{}).then((res) => {
+        this.$http.post("/supernode/coin/open/getCoinInfoList",{}).then((res) => {
           this.list = res.result
-          this.list.map((key,value) => {
-            if (value.coinName == 'SAC') {
+          this.list.map((value) => {
+            console.log(value);
+            if (value.coinName == 'PNB') {
               this.pnbCoinId = value.coinId
-              this.pnbPrice = value.price
+              console.log('this.pnbCoinId', this.pnbCoinId);
+              this.pnbPrice = value.amount
             }
           })
         })
       },
       // 修改pnb价格
       onSubmit () {
-        this.$http.post("/cloud/coin/backmgr/updateCoinInfo",{
+        this.$http.post("/supernode/backmgr/coin/updateCoinInfo",{
           'id':this.pnbCoinId,
-          'coinName':'SAC',
+          'coinName':'PNB',
           'price': this.cbbRate
         }).then((res) => {
           this.$message({
@@ -95,19 +100,21 @@
         this.dialogFormVisibleView = true
       },
       confirmBill(){
-        this.$http.post("/cloud/coin/backmgr/createCoinInfo",{
+        this.$http.post("/supernode/backmgr/coin/createCoinInfo",{
           'coinName': this.billName
         }).then((res) => {
           this.$message({
             type: 'success',
             message: '添加成功！'
           });
+          this.dialogFormVisibleView = false
           this.getBillList()
+          this.billName = ''
         })
       },
       // 确定删除
       confirmDetele () {
-        this.$http.post("/cloud/coin/backmgr/updateCoinInfoSysStatus",{
+        this.$http.post("/supernode/backmgr/coin/updateCoinInfoSysStatus",{
           'id': this.id,
           'sysStatus': 0
         }).then((res) => {
@@ -115,10 +122,14 @@
             type: 'success',
             message: '删除成功！'
           });
+          this.dialogDeleteVisibleView = false
           this.getBillList()
         })
       }
     },
+    activated() {
+      this.getBillList()
+    }
   };
 </script>
 <style lang="less">

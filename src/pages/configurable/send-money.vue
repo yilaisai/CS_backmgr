@@ -48,14 +48,14 @@
         </template>
       </el-table-column>
       <el-table-column prop="loginDay" label="领取奖励所需登录天数"></el-table-column>
-      <el-table-column prop="maxInviteAmount" label="单个邀请送币量"></el-table-column>
+      <el-table-column prop="maxInviteAmount" label="送币上限"></el-table-column>
       <el-table-column prop="remainAmount" label="奖金池剩余总额"></el-table-column>
       
       <!-- <el-table-column prop="sysStatus" label="系统状态"></el-table-column> -->
       <el-table-column prop="totalAmount" label="总奖金池额度"></el-table-column>
-      <el-table-column prop="tranStatus" label="是否需要转账才可分配奖励">
+      <el-table-column prop="tranStatus" label="转账">
         <template scope="scope">     
-          <div v-for="item in needData" :key="item.tranStatus" v-if="scope.row.invitedAuthState==item.value">{{item.text}}</div>       
+          <div v-for="item in tranStatusData" :key="item.tranStatus" v-if="scope.row.invitedAuthState==item.value">{{item.text}}</div>       
         </template>
       </el-table-column>
       <el-table-column prop="beginDate" label="规则生效时间" width="140">
@@ -181,7 +181,7 @@
           <el-form-item label="领取奖励所需登录天数:" prop="loginDay" class="from_box_item">
             <el-input type="number" v-model="ruleForm.loginDay" placeholder=""></el-input>
           </el-form-item>
-          <el-form-item label="单个邀请送币量:" prop="maxInviteAmount" class="from_box_item">
+          <el-form-item label="送币上限:" prop="maxInviteAmount" class="from_box_item">
             <el-input type="number" v-model="ruleForm.maxInviteAmount" placeholder=""></el-input>
           </el-form-item>
         </div>
@@ -204,10 +204,10 @@
           <el-form-item label="总奖金池额度:" prop="totalAmount" class="from_box_item">
             <el-input type="number" v-model="ruleForm.totalAmount" placeholder=""></el-input>
           </el-form-item>
-          <el-form-item label="是否需要转账才可分配奖励:" prop="tranStatus" class="from_box_item">
+          <el-form-item label="转账:" prop="tranStatus" class="from_box_item">
             <el-select v-model="ruleForm.tranStatus" placeholder="请选择">
               <el-option
-                v-for="item in needData"
+                v-for="item in tranStatusData"
                 :key="item.value"
                 :label="item.text"
                 :value="item.value">
@@ -229,18 +229,6 @@
               type="datetime"
               placeholder="选择失效时间">
             </el-date-picker>
-          </el-form-item>
-        </div>
-        <div class="from_box">
-          <el-form-item label="系统状态:" prop="sysStatus" class="from_box_item">
-            <el-select v-model="ruleForm.sysStatus" placeholder="请选择">
-              <el-option
-                v-for="item in sysStatusData"
-                :key="item.value"
-                :label="item.text"
-                :value="item.value">
-              </el-option>
-            </el-select>
           </el-form-item>
         </div>
         
@@ -323,6 +311,11 @@ import { dateFormat } from '@/common/util';
         isOnshelfData:[
           {value:0,text:'下架'},
           {value:1,text:'上架'},
+        ],
+        tranStatusData:[
+          {value:0,text:'不需要转账'},
+          {value:1,text:'需要转账'},
+          {value:2,text:'链上转账'}
         ],
         coinList: [],
       };
@@ -534,6 +527,18 @@ import { dateFormat } from '@/common/util';
         .el-form-item__label{
           line-height: 18px;
           margin-bottom: 15px;
+        }
+        label{
+          font-size:13px
+        }
+        .el-input__inner{
+          width:80%
+        }
+        .el-select{
+          width:80%;
+          input{
+            width:100%
+          }
         }
       }
     }

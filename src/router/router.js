@@ -329,7 +329,7 @@ export const appRouter = [
         path: 'send-money',
         name: 'sendMoney',
         meta: {
-          title: '送币量',
+          title: '邀请规则',
         },
         component: () => import('@/pages/configurable/send-money.vue'),
       },

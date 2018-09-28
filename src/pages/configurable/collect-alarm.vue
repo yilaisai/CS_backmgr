@@ -17,6 +17,7 @@
           <span v-if="scope.row.rtype == 0">审核告警</span>
           <span v-if="scope.row.rtype == 1">上链异常</span>
           <span v-if="scope.row.rtype == 2">到账延时</span>
+          <span v-if="scope.row.rtype == 3">商户余额</span>
         </template>
       </el-table-column>
       <el-table-column prop="intervalTime" label="发送间隔"></el-table-column>

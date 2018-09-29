@@ -3,8 +3,7 @@
   <div class='created'>
     <sac-table :data="listData.list">
       <el-table-column prop="id" label="序号" width="100"></el-table-column>
-      <el-table-column label="应用名称" prop="app_name"></el-table-column>
-      <el-table-column label="英文名称" prop="appNameEn"></el-table-column>
+      <el-table-column label="应用名称" prop="appName"></el-table-column>
       <el-table-column prop="app_icon" label="应用图标">
         <template slot-scope="scope">
           <viewer :options="options"
@@ -16,22 +15,19 @@
           <span v-if="scope.row.appIcon.indexOf('http')">{{scope.row.appIcon}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="ios_version" label="ios版本号" width="120"></el-table-column>
-      <el-table-column prop="adr_version" label="android版本号" width="120"></el-table-column>
+      <el-table-column prop="iosVersion" label="ios版本号" width="120"></el-table-column>
+      <el-table-column prop="adrVersion" label="android版本号" width="120"></el-table-column>
 
-      <el-table-column prop="app_id" label="APPID" width="180"></el-table-column>
+      <el-table-column prop="appId" label="APPID" width="180"></el-table-column>
       <el-table-column prop="createTime" label="创建时间" width="200"></el-table-column>
       <el-table-column label="操作" width="200">
         <template slot-scope="scope" prop="sysStatus">
           <el-button type="success" size="small"
                      @click.native="goDetail(scope.row)">查看详情
           </el-button>
-          <el-button type="warning" :disabled="scope.row.isShow != 0" size="small"
+          <el-button type="warning" size="small"
                      @click.native="modification(scope.row)">修改
           </el-button>
-          <!-- <el-button type="danger" :disabled="scope.row.isShow != 0" size="small" @click.native="remove(scope.row)">
-            删除
-          </el-button> -->
         </template>
       </el-table-column>
       <el-table-column label="操作" width="200">
@@ -39,7 +35,7 @@
           <el-button type="success" size="small"
                      @click.native="passCheck(scope.row)">审核通过
           </el-button>
-          <el-button type="danger" :disabled="scope.row.isShow != 0" size="small"
+          <el-button type="danger" size="small"
                      @click.native="showNoPassCheck(scope.row)">拒绝
           </el-button>
         </template>
@@ -180,10 +176,11 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="拒绝原因" :visible.sync="dialogReasonVisibleView">
-      <el-input type="textarea" :rows="2" size="small" placeholder="请输入拒绝原因" v-model="reason"></el-input>
+    <el-dialog title="拒绝原因" :visible.sync="dialogReasonVisibleView" width="600px">
+      <el-input type="textarea" :rows="3" size="small" placeholder="请输入拒绝原因" v-model="failReason"></el-input>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisibleView = false" size="small">取 消</el-button>
+        <el-button @click="dialogReasonVisibleView = false" size="small">取 消</el-button>
+        <el-button @click="passCheck(refuseData,1)" type="primary" size="small">确定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -196,11 +193,12 @@
     name: 'check-application',
     data() {
       return {
-        reason: '',
+        failReason: '',
         listData: {
           total: null,
           list: [],
         },
+        refuseData: '',
         pageNum: 1,
         pageSize: 20,
         dialogTitle: '创建应用',
@@ -228,6 +226,7 @@
           transferTypeId: '',
           ownType: 1,
           position: 0,
+          email: '',
         },
         server_path: "",
         rules: {
@@ -307,6 +306,7 @@
           adrSign:"",
           destextEn: "",
           position: 0,
+          email: '',
         };
         this.$refs.ruleForm && this.$refs.ruleForm.resetFields(); // 重置query的数据
       },
@@ -331,22 +331,37 @@
         })
       },
       // 审核通过/审核不通过
-      passCheck(itemData) {
+      passCheck(itemData,i) {
+        console.log('itemData', itemData);
         const { appName, id } = itemData;
-        this.$http.post("/wallet/backmgr/thirdAppInfo/updateThirdAppInfoAuditStatus.do", {
-          sysStatus: "INVALID0",
-          id
-        }).then((res) => {
+        let postData = {id}
+        if (i == 1 && (this.failReason + '').trim() == '') {
+          this.$notify({
+            message: '请先输入拒绝原因！',
+            type: 'warning'
+          });
+          return
+        }
+        if (i == 1) {
+          postData.auditStatus = 'not_pass'
+          postData.failReason = this.failReason
+        } else {
+          postData.auditStatus = 'pass'
+        }
+        this.$http.post("/wallet/backmgr/thirdAppInfo/updateThirdAppInfoAuditStatus.do", postData).then((res) => {
           this.$notify({
             title: '成功',
-            message: `删除 ${appName}成功`,
+            message: `处理 ${appName}成功`,
             type: 'success'
           });
+          this.dialogReasonVisibleView = false
           this.getThirdAppInfoList()
         })
       },
-      showNoPassCheck(){
+      showNoPassCheck(data){
+        console.log('data',data);
         this.dialogReasonVisibleView = true
+        this.refuseData = data
       },
       upload(response, file, fileList) {
         this.ruleForm.appIcon = response.result.urls[0]

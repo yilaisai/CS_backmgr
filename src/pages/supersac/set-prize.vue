@@ -32,18 +32,18 @@
         <el-button type="danger" size="small" style="width: 100px" @click="deletePrize(teamReward,index)">删除</el-button>
         <el-button type="primary" size="small" style="width: 100px" @click="addPrize(teamReward,index)" v-show="index == sacTeamRewardList.length - 1">添加</el-button>
       </el-form-item>
-      <el-form-item label="最强王者奖励百分比:" prop="kingRewardRate">
+      <el-form-item label="王者奖励百分比:" prop="kingRewardRate">
         <el-input style="width:80%" clearable v-model="ruleForm.kingRewardRate" size="small" placeholder="请输入百分比">
           <template slot="append">%</template>
         </el-input>
       </el-form-item>
-      <el-form-item label="荣耀黄金+持续白银奖励百分比:" prop="goldSilverRate" required>
+      <el-form-item label="钻石+铂金奖励百分比:" prop="goldSilverRate" required>
         <el-input style="width:80%" v-model="ruleForm.goldSilverRate" size="small"
                   placeholder="请输入百分比" clearable>
             <template slot="append">%</template>
         </el-input>
       </el-form-item>
-      <el-form-item label="倔强青铜奖励百分比:" prop="bronzeRewardRate">
+      <el-form-item label="黄金奖励百分比:" prop="bronzeRewardRate">
         <el-input style="width:80%" clearable v-model="ruleForm.bronzeRewardRate" size="small"
                   placeholder="请输入百分比">
             <template slot="append">%</template>

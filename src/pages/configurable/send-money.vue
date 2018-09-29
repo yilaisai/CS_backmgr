@@ -55,7 +55,7 @@
       <el-table-column prop="totalAmount" label="总奖金池额度"></el-table-column>
       <el-table-column prop="tranStatus" label="转账">
         <template scope="scope">     
-          <div v-for="item in tranStatusData" :key="item.tranStatus" v-if="scope.row.invitedAuthState==item.value">{{item.text}}</div>       
+          <div v-for="item in tranStatusData" :key="item.tranStatus" v-if="scope.row.tranStatus==item.value">{{item.text}}</div>       
         </template>
       </el-table-column>
       <el-table-column prop="beginDate" label="生效时间" width="140"></el-table-column>

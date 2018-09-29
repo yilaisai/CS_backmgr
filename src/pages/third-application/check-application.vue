@@ -411,9 +411,10 @@
             const date = res.result.list.list;
             date.forEach((item) => {
               item.label = item.transferTypeName;
-              item.value = item.id;
+              item.value = (item.id).toString();
             });
             this.transferTypeInfoList = date;
+
           })
         }
       }

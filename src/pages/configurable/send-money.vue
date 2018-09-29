@@ -36,18 +36,18 @@
       </el-table-column>
       
       <el-table-column prop="inviteAmount" label="邀请数送币量"></el-table-column>
-      <el-table-column prop="inviteAuthState" label="邀请人是否需要实名认证">
+      <el-table-column prop="inviteAuthState" label="邀请人实名">
         <template scope="scope">     
           <div v-for="item in needData" :key="item.coinId" v-if="scope.row.inviteAuthState==item.value">{{item.text}}</div>       
         </template>
       </el-table-column>
-      <el-table-column prop="inviteCount" label="邀请人达多少数量才可分配奖励"></el-table-column>
-      <el-table-column prop="invitedAuthState" label="被邀请人是否需要实名认证">
+      <el-table-column prop="inviteCount" label="邀请人数"></el-table-column>
+      <el-table-column prop="invitedAuthState" label="被邀请人实名">
         <template scope="scope">     
           <div v-for="item in needData" :key="item.coinId" v-if="scope.row.invitedAuthState==item.value">{{item.text}}</div>       
         </template>
       </el-table-column>
-      <el-table-column prop="loginDay" label="领取奖励所需登录天数"></el-table-column>
+      <el-table-column prop="loginDay" label="登录天数"></el-table-column>
       <el-table-column prop="maxInviteAmount" label="送币上限"></el-table-column>
       <el-table-column prop="remainAmount" label="奖金池剩余总额"></el-table-column>
       
@@ -58,12 +58,9 @@
           <div v-for="item in tranStatusData" :key="item.tranStatus" v-if="scope.row.invitedAuthState==item.value">{{item.text}}</div>       
         </template>
       </el-table-column>
-      <el-table-column prop="beginDate" label="规则生效时间" width="140">
-        <template scope="scope">     
-          <div v-for="item in needData" :key="item.tranStatus" v-if="scope.row.invitedAuthState==item.value">{{item.text}}</div>       
-        </template>
-      </el-table-column>
-      <el-table-column prop="endDate" label="规则失效时间" width="140"></el-table-column>
+      <el-table-column prop="beginDate" label="生效时间" width="140"></el-table-column>
+      <el-table-column prop="endDate" label="失效时间" width="140"></el-table-column>
+      <el-table-column prop="sendCount" label="一天送币次数"></el-table-column>
       <el-table-column label="操作" width="100" fixed="right">
         
         <template slot-scope="scope" prop="sysStatus">
@@ -150,7 +147,7 @@
           <el-form-item label="邀请数送币量:" prop="inviteAmount" class="from_box_item">
             <el-input type="number" v-model="ruleForm.inviteAmount" placeholder=""></el-input>
           </el-form-item>
-          <el-form-item label="邀请人是否需要实名认证:" prop="inviteAuthState" class="from_box_item">
+          <el-form-item label="邀请人实名:" prop="inviteAuthState" class="from_box_item">
             <el-select v-model="ruleForm.inviteAuthState" placeholder="请选择">
               <el-option
                 v-for="item in needData"
@@ -162,7 +159,7 @@
           </el-form-item>
         </div>
         <div class="from_box">
-          <el-form-item label="被邀请人是否需要实名认证:" prop="invitedAuthState" class="from_box_item">
+          <el-form-item label="被邀请人实名:" prop="invitedAuthState" class="from_box_item">
             <el-select v-model="ruleForm.invitedAuthState" placeholder="请选择">
               <el-option
                 v-for="item in needData"
@@ -173,12 +170,12 @@
             </el-select>
           </el-form-item>
         
-          <el-form-item label="邀请人达多少数量才可分配奖励:" prop="inviteCount" class="from_box_item">
+          <el-form-item label="邀请人数:" prop="inviteCount" class="from_box_item">
             <el-input type="number" v-model="ruleForm.inviteCount" placeholder=""></el-input>
           </el-form-item>
         </div>
         <div class="from_box">
-          <el-form-item label="领取奖励所需登录天数:" prop="loginDay" class="from_box_item">
+          <el-form-item label="登录天数:" prop="loginDay" class="from_box_item">
             <el-input type="number" v-model="ruleForm.loginDay" placeholder=""></el-input>
           </el-form-item>
           <el-form-item label="送币上限:" prop="maxInviteAmount" class="from_box_item">
@@ -216,19 +213,24 @@
           </el-form-item>
         </div>
         <div class="from_box">
-          <el-form-item label="规则生效时间:" prop="beginDate" class="from_box_item" >
+          <el-form-item label="生效时间:" prop="beginDate" class="from_box_item" >
             <el-date-picker
               v-model="ruleForm.beginDate"
               type="datetime"
               placeholder="选择生效时间">
             </el-date-picker>
           </el-form-item>
-          <el-form-item label="规则失效时间:" prop="endDate" class="from_box_item">
+          <el-form-item label="失效时间:" prop="endDate" class="from_box_item">
             <el-date-picker
               v-model="ruleForm.endDate"
               type="datetime"
               placeholder="选择失效时间">
             </el-date-picker>
+          </el-form-item>
+        </div>
+        <div class="from_box">
+          <el-form-item label="一天送币次数:" prop="sendCount" class="from_box_item">
+            <el-input type="number" v-model="ruleForm.sendCount" placeholder=""></el-input>
           </el-form-item>
         </div>
         
@@ -280,7 +282,8 @@ import { dateFormat } from '@/common/util';
           tranStatus:'',
           beginDate:'',
           endDate:'',
-          isOnshelf:''
+          isOnshelf:'',
+          sendCount:''
         },
         rules: {
           minAmount: [
@@ -297,8 +300,8 @@ import { dateFormat } from '@/common/util';
           ]
         },
         effectSecData:[
-          {value:0,text:'不给予奖励'},
-          {value:1,text:'给予奖励'},
+          {value:0,text:'不给予'},
+          {value:1,text:'给予'},
         ],
         needData:[
           {value:0,text:'不需要'},
@@ -313,9 +316,9 @@ import { dateFormat } from '@/common/util';
           {value:1,text:'上架'},
         ],
         tranStatusData:[
-          {value:0,text:'不需要转账'},
-          {value:1,text:'需要转账'},
-          {value:2,text:'链上转账'}
+          {value:0,text:'不需要'},
+          {value:1,text:'需要'},
+          {value:2,text:'链上'}
         ],
         coinList: [],
       };

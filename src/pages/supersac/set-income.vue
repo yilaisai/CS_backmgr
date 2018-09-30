@@ -131,9 +131,9 @@
         let data = {
           roleId: this.ruleForm.roleId,
           roleName: this.ruleForm.roleName,
-          initRate: (this.ruleForm.initRate/100).toFixed(2),
-          maxRate: (this.ruleForm.maxRate/100).toFixed(2),
-          increaseRate: (this.ruleForm.increaseRate/100).toFixed(2),
+          initRate: (this.ruleForm.initRate/100).toFixed(4),
+          maxRate: (this.ruleForm.maxRate/100).toFixed(4),
+          increaseRate: (this.ruleForm.increaseRate/100).toFixed(4),
           holdAmountLimit: this.ruleForm.holdAmountLimit,
           invitedHoldAmountLimit: this.ruleForm.invitedHoldAmountLimit
         }

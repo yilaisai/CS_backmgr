@@ -38,26 +38,26 @@
       <el-form :model="ruleForm" ref="ruleForm" :rules="rules" :inline="true" label-width="170px">
         <el-form-item label="会员等级:" prop="roleName">{{ruleForm.roleName}}</el-form-item>
         <el-form-item label="起始收益率:" prop="initRate">
-          <el-input placeholder="请输入起始收益率" size="small" v-model="(ruleForm.initRate*100).toFixed(2)">
+          <el-input placeholder="请输入起始收益率" size="small" v-model="ruleForm.initRate">
             <template slot="append">%</template>
           </el-input>
         </el-form-item>
         <el-form-item label="收益率上限:" prop="maxRate">
-          <el-input v-model="(ruleForm.maxRate*100).toFixed(2)" size="small" placeholder="请输入收益率上限">
+          <el-input v-model="ruleForm.maxRate" size="small" placeholder="请输入收益率上限">
             <template slot="append">%</template>
           </el-input>
         </el-form-item>
         <el-form-item label="每邀请1个人增长值:" prop="increaseRate">
-          <el-input placeholder="请输入每邀请1个人增长值" size="small" v-model="(ruleForm.increaseRate*100).toFixed(2)">
+          <el-input placeholder="请输入每邀请1个人增长值" size="small" v-model="ruleForm.increaseRate">
             <template slot="append">%</template>
           </el-input>
         </el-form-item>
-        <el-form-item label="升级持币量:" prop="holdAmountLimit">
+        <el-form-item label="升级持币量:" prop="holdAmountLimit" class="hold-amount-limit">
           <el-input placeholder="请输入升级持币量" size="small" v-model="ruleForm.holdAmountLimit">
             <template slot="append">PNB</template>
           </el-input>
         </el-form-item>
-        <el-form-item label="被邀请者持币量:" prop="invitedHoldAmountLimit">
+        <el-form-item label="被邀请者持币量:" prop="invitedHoldAmountLimit" class="invited-hold-amount-limit">
           <el-input size="small" placeholder="请输入被邀请者持币量"
                     v-model="ruleForm.invitedHoldAmountLimit">
           <template slot="append">PNB</template>
@@ -109,7 +109,15 @@
     },
     methods: {
       changeInfo (data) {
-        this.ruleForm = JSON.parse(JSON.stringify(data))
+        this.ruleForm = {
+          roleId: data.roleId,
+          roleName: data.roleName,
+          initRate: (data.initRate*100).toFixed(2),
+          maxRate: (data.maxRate*100).toFixed(2),
+          increaseRate: (data.increaseRate*100).toFixed(2),
+          holdAmountLimit: data.holdAmountLimit,
+          invitedHoldAmountLimit: data.invitedHoldAmountLimit
+        }
         this.dialogFormVisible = true
       },
       // 获取角色信息
@@ -120,9 +128,15 @@
       },
       // 修改角色信息
       determine() {
-        let data = this.ruleForm
-        console.log(this.ruleForm);
-        // const {maxRate, initRate, invitedHoldAmountLimit, holdAmountLimit,increaseRate} = this.ruleForm
+        let data = {
+          roleId: this.ruleForm.roleId,
+          roleName: this.ruleForm.roleName,
+          initRate: (this.ruleForm.initRate/100).toFixed(2),
+          maxRate: (this.ruleForm.maxRate/100).toFixed(2),
+          increaseRate: (this.ruleForm.increaseRate/100).toFixed(2),
+          holdAmountLimit: this.ruleForm.holdAmountLimit,
+          invitedHoldAmountLimit: this.ruleForm.invitedHoldAmountLimit
+        }
         this.$http.post("/supernode/backmgr/role/updateRoleInfo", data).then((res) => {
           this.$message({
             type: 'success',
@@ -142,6 +156,12 @@
   .set-income {
     .el-form-item__content {
       width: auto;
+    }
+    .hold-amount-limit,
+    .invited-hold-amount-limit {
+      .el-input-group__append {
+        padding: 0 13px 0 12px;
+      }
     }
   }
 </style>

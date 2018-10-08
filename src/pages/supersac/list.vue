@@ -92,6 +92,11 @@
       },
       getPageType() {
         this.$http.post('/supernode/vote/open/getNumGameInfo',{}).then(res => {
+            res.result.map((value) => {
+              if (!value.num) {
+                value.dateStr = '当前期'
+              }
+            })
             this.pageTypeList = res.result
         })
       },

@@ -29,7 +29,7 @@
                       class="min-input"></el-input>
           </el-form-item>
         </el-col>
-        <el-button type="danger" size="small" style="width: 100px" @click="deletePrize(teamReward,index)">删除</el-button>
+        <el-button type="danger" size="small" style="width: 100px" @click="deletePrize(teamReward,index)" v-show="!teamReward.type">删除</el-button>
         <el-button type="primary" size="small" style="width: 100px" @click="addPrize(teamReward,index)" v-show="index == sacTeamRewardList.length - 1">添加</el-button>
       </el-form-item>
       <el-form-item label="王者奖励百分比:" prop="kingRewardRate">
@@ -165,15 +165,21 @@
           });
           return
         }
-        this.sacTeamRewardList.push({'coinName':'','amount': ''})
-
-        if (index == this.tapIndex -1 ) return
+        if (index == this.tapIndex -1 ) {
+          this.sacTeamRewardList.push({'coinName':'','amount': '','type':1})
+          return
+        }
         this.$http.post("/supernode/backmgr/team/teamCoinSeting",{
           'teamId': this.teamId,
           'coinId': data.coinId,
           'amount': data.amount
         }).then((res) => {
           console.log(res)
+          if (res.code == 200) {
+            this.sacTeamRewardList[this.sacTeamRewardList.length -1].type = 0
+            console.log('this.sacTeamRewardList11111',this.sacTeamRewardList);
+            this.sacTeamRewardList.push({'coinName':'','amount': '','type':1})
+          }
         })
       },
       // 删除币种
@@ -198,12 +204,12 @@
           // debugger
           this.ruleForm = JSON.parse(JSON.stringify(res.result || {}));
           if (!(res.result || {}).sacTeamRewardCoinResultDtoList ||((res.result || {}).sacTeamRewardCoinResultDtoList).length == 0) {
-            this.sacTeamRewardList = [{'coinName':'','amount': ''}]
+            this.sacTeamRewardList = [{'coinName':'','amount': '','type':1}]
           } else {
             this.sacTeamRewardList = (res.result || {}).sacTeamRewardCoinResultDtoList
             this.tapIndex = (res.result || {}).sacTeamRewardCoinResultDtoList.length
           }
-          console.log(this.ruleForm.coinType);
+          console.log('this.sacTeamRewardList', this.sacTeamRewardList);
           this.ruleForm.coinType = (this.sacTeamRewardList[0] || {}).coinName
           // this.$refs.coinType[0].lable = this.sacTeamRewardList[0].coinName
         })

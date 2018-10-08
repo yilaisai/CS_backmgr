@@ -52,13 +52,13 @@
             <template slot="append">%</template>
           </el-input>
         </el-form-item>
-        <el-form-item label="升级持币量:" prop="holdAmountLimit" class="hold-amount-limit">
-          <el-input placeholder="请输入升级持币量" size="small" v-model="ruleForm.holdAmountLimit">
+        <el-form-item label="最小持币量限制:" prop="holdAmountLimit" class="hold-amount-limit">
+          <el-input placeholder="请输入最小持币量限制" size="small" v-model="ruleForm.holdAmountLimit">
             <template slot="append">PNB</template>
           </el-input>
         </el-form-item>
-        <el-form-item label="被邀请者持币量:" prop="invitedHoldAmountLimit" class="invited-hold-amount-limit">
-          <el-input size="small" placeholder="请输入被邀请者持币量"
+        <el-form-item label="被邀请者最少持币量:" prop="invitedHoldAmountLimit" class="invited-hold-amount-limit">
+          <el-input size="small" placeholder="请输入被邀请者最少持币量"
                     v-model="ruleForm.invitedHoldAmountLimit">
           <template slot="append">PNB</template>
           </el-input>

@@ -178,7 +178,9 @@
           if (res.code == 200) {
             this.sacTeamRewardList[this.sacTeamRewardList.length -1].type = 0
             console.log('this.sacTeamRewardList11111',this.sacTeamRewardList);
-            this.sacTeamRewardList.push({'coinName':'','amount': '','type':1})
+            this.getTeamRewardSeting(this.teamId).then(() => {
+              this.sacTeamRewardList.push({'coinName':'','amount': '','type':1})
+            })
           }
         })
       },
@@ -204,7 +206,7 @@
       },
       // 获取奖励配置
       getTeamRewardSeting(teamId){
-        this.$http.post("/supernode/backmgr/team/getTeamRewardSeting",{
+        return this.$http.post("/supernode/backmgr/team/getTeamRewardSeting",{
           'teamId': teamId
         }).then((res) => {
           console.log(res)

@@ -165,10 +165,10 @@
           });
           return
         }
-        if (index == this.tapIndex -1 ) {
-          this.sacTeamRewardList.push({'coinName':'','amount': '','type':1})
-          return
-        }
+        // if (index == this.tapIndex -1 ) {
+        //   this.sacTeamRewardList.push({'coinName':'','amount': '','type':1})
+        //   return
+        // }
         this.$http.post("/supernode/backmgr/team/teamCoinSeting",{
           'teamId': this.teamId,
           'coinId': data.coinId,

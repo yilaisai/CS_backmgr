@@ -204,10 +204,10 @@
           // debugger
           let data = res.result || {}
           this.ruleForm = {
-            eachOneRate: (data.eachOneRate*100).toFixed(2),
-            goldSilverRate: (data.goldSilverRate*100).toFixed(2),
-            kingRewardRate: (data.kingRewardRate*100).toFixed(2),
-            bronzeRewardRate: (data.bronzeRewardRate*100).toFixed(2),
+            eachOneRate: data.eachOneRate*100,
+            goldSilverRate: data.goldSilverRate*100,
+            kingRewardRate: data.kingRewardRate*100,
+            bronzeRewardRate: data.bronzeRewardRate*100,
             sacTeamRewardCoinResultDtoList: data.sacTeamRewardCoinResultDtoList,
             teamId: data.teamId,
             id: data.id

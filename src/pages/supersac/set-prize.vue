@@ -199,7 +199,7 @@
         if (data == undefined) {
           return ''
         } else {
-          return (data*100).toFixed(2)
+          return data*100
         }
       },
       // 获取奖励配置
@@ -211,17 +211,10 @@
           // debugger
           let data = res.result || {}
           this.ruleForm = {
-<<<<<<< HEAD
-            eachOneRate: data.eachOneRate*100,
-            goldSilverRate: data.goldSilverRate*100,
-            kingRewardRate: data.kingRewardRate*100,
-            bronzeRewardRate: data.bronzeRewardRate*100,
-=======
             eachOneRate: this.filter(data.eachOneRate),
             goldSilverRate: this.filter(data.goldSilverRate),
             kingRewardRate: this.filter(data.kingRewardRate),
             bronzeRewardRate: this.filter(data.bronzeRewardRate),
->>>>>>> 43845a3a73735d4842971ff9337c623d98df0a34
             sacTeamRewardCoinResultDtoList: data.sacTeamRewardCoinResultDtoList,
             teamId: data.teamId,
             id: data.id

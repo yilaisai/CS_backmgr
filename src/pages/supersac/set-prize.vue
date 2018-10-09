@@ -172,6 +172,7 @@
         this.$http.post("/supernode/backmgr/team/teamCoinSeting",{
           'teamId': this.teamId,
           'coinId': data.coinId,
+           'id': data.id,
           'amount': data.amount
         }).then((res) => {
           console.log(res)

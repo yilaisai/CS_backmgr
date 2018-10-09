@@ -195,6 +195,13 @@
           this.getTeamRewardSeting(this.teamId)
         })
       },
+      filter(data) {
+        if (data == undefined) {
+          return ''
+        } else {
+          return (data*100).toFixed(2)
+        }
+      },
       // 获取奖励配置
       getTeamRewardSeting(teamId){
         this.$http.post("/supernode/backmgr/team/getTeamRewardSeting",{
@@ -204,10 +211,10 @@
           // debugger
           let data = res.result || {}
           this.ruleForm = {
-            eachOneRate: (data.eachOneRate*100).toFixed(2),
-            goldSilverRate: (data.goldSilverRate*100).toFixed(2),
-            kingRewardRate: (data.kingRewardRate*100).toFixed(2),
-            bronzeRewardRate: (data.bronzeRewardRate*100).toFixed(2),
+            eachOneRate: this.filter(data.eachOneRate),
+            goldSilverRate: this.filter(data.goldSilverRate),
+            kingRewardRate: this.filter(data.kingRewardRate),
+            bronzeRewardRate: this.filter(data.bronzeRewardRate),
             sacTeamRewardCoinResultDtoList: data.sacTeamRewardCoinResultDtoList,
             teamId: data.teamId,
             id: data.id

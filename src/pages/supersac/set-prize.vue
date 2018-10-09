@@ -130,10 +130,10 @@
             console.log('this.teamId', this.teamId);
             this.$http.post("/supernode/backmgr/team/teamRewardSeting",{
               'teamId': this.teamId,
-              'kingRewardRate': this.ruleForm.kingRewardRate + '%',
-              'goldRewardRate': this.ruleForm.goldSilverRate + '%',
-              'bronzeRewardRate': this.ruleForm.bronzeRewardRate + '%',
-              'eachOneRate': this.ruleForm.eachOneRate + '%',
+              'kingRewardRate': (this.ruleForm.kingRewardRate/100).toFixed(2),
+              'goldRewardRate': (this.ruleForm.goldSilverRate/100).toFixed(2),
+              'bronzeRewardRate': (this.ruleForm.bronzeRewardRate/100).toFixed(2),
+              'eachOneRate': (this.ruleForm.eachOneRate/100).toFixed(2),
             }).then((res) => {
               console.log(res)
               this.$message({
@@ -202,7 +202,17 @@
         }).then((res) => {
           console.log(res)
           // debugger
-          this.ruleForm = JSON.parse(JSON.stringify(res.result || {}));
+          let data = res.result || {}
+          this.ruleForm = {
+            eachOneRate: (data.eachOneRate*100).toFixed(2),
+            goldSilverRate: (data.goldSilverRate*100).toFixed(2),
+            kingRewardRate: (data.kingRewardRate*100).toFixed(2),
+            bronzeRewardRate: (data.bronzeRewardRate*100).toFixed(2),
+            sacTeamRewardCoinResultDtoList: data.sacTeamRewardCoinResultDtoList,
+            teamId: data.teamId,
+            id: data.id
+          }
+
           if (!(res.result || {}).sacTeamRewardCoinResultDtoList ||((res.result || {}).sacTeamRewardCoinResultDtoList).length == 0) {
             this.sacTeamRewardList = [{'coinName':'','amount': '','type':1}]
           } else {

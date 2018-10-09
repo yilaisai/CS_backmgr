@@ -219,9 +219,9 @@
             teamId: data.teamId,
             id: data.id
           }
-
           if (!(res.result || {}).sacTeamRewardCoinResultDtoList ||((res.result || {}).sacTeamRewardCoinResultDtoList).length == 0) {
             this.sacTeamRewardList = [{'coinName':'','amount': '','type':1}]
+            this.tapIndex = ''
           } else {
             this.sacTeamRewardList = (res.result || {}).sacTeamRewardCoinResultDtoList
             this.tapIndex = (res.result || {}).sacTeamRewardCoinResultDtoList.length

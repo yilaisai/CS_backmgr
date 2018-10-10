@@ -13,7 +13,7 @@
       <!-- <el-table-column prop="minAmount" label="持币数量" :formatter="formatSex"></el-table-column>
       <el-table-column prop="amount" label="送币数量"></el-table-column> -->
       
-      <el-table-column prop="createTime" label="规则创建时间" width="140" >
+      <el-table-column prop="createTime" label="创建时间" width="140">
         
 
       </el-table-column>
@@ -21,38 +21,39 @@
                 :key="item.coinId"
                 :label="item.coinName"
                 :value="item.coinId"> -->
-      <el-table-column prop="coinId" label="币种">
+      <el-table-column prop="coinId" label="币种" class-name="选择送出的币类型" :render-header="foo">
         <template scope="scope">     
           <div v-for="item in coinList" :key="item.coinId" v-if="scope.row.coinId==item.coinId">{{item.coinName}}</div>       
         </template>
       </el-table-column>
-      <el-table-column prop="directInvitedAmount" label="一级好友奖励"></el-table-column>
-      <el-table-column prop="secInvitedAmount" label="二级好友邀请奖励"></el-table-column>
+      <el-table-column prop="directInvitedAmount" label="邀请奖励" width="100" class-name="邀请单个好友时，给予邀请人的奖励" :render-header="foo"></el-table-column>
+      <el-table-column prop="registAmount" label="被邀请人奖励" width="100"></el-table-column>
+      <el-table-column prop="secInvitedAmount" label="父奖励" class-name="邀请单个好友时，给予父邀请人的奖励" :render-header="foo"></el-table-column>
       
-      <el-table-column prop="effectSec" label="被邀请的二级好友给予其邀请人奖励">
+      <el-table-column prop="effectSec" label="父奖励状态" width="100" class-name="是否给予邀请单个好友时，父邀请人的奖励" :render-header="foo">
         <template scope="scope">     
           <div v-for="item in effectSecData" :key="item.coinId" v-if="scope.row.effectSec==item.value">{{item.text}}</div>       
         </template>
       </el-table-column>
       
-      <el-table-column prop="inviteAmount" label="邀请数送币量"></el-table-column>
-      <el-table-column prop="inviteAuthState" label="邀请人实名">
+      <el-table-column prop="inviteAmount" label="邀请数奖励" width="100" class-name="邀请人邀请用户数达到一定数量奖励多少币，与邀请单个好友冲突" :render-header="foo"></el-table-column>
+      <el-table-column prop="inviteAuthState" label="邀请人实名" width="100">
         <template scope="scope">     
           <div v-for="item in needData" :key="item.coinId" v-if="scope.row.inviteAuthState==item.value">{{item.text}}</div>       
         </template>
       </el-table-column>
       <el-table-column prop="inviteCount" label="邀请人数"></el-table-column>
-      <el-table-column prop="invitedAuthState" label="被邀请人实名">
+      <el-table-column prop="invitedAuthState" label="被邀请人实名" width="100">
         <template scope="scope">     
           <div v-for="item in needData" :key="item.coinId" v-if="scope.row.invitedAuthState==item.value">{{item.text}}</div>       
         </template>
       </el-table-column>
       <el-table-column prop="loginDay" label="登录天数"></el-table-column>
       <el-table-column prop="maxInviteAmount" label="送币上限"></el-table-column>
-      <el-table-column prop="remainAmount" label="奖金池剩余总额"></el-table-column>
+      <el-table-column prop="remainAmount" label="奖池余额"></el-table-column>
       
       <!-- <el-table-column prop="sysStatus" label="系统状态"></el-table-column> -->
-      <el-table-column prop="totalAmount" label="总奖金池额度"></el-table-column>
+      <el-table-column prop="totalAmount" label="奖池总额" width="100" class-name="0表示不限制" :render-header="foo"></el-table-column>
       <el-table-column prop="tranStatus" label="转账">
         <template scope="scope">     
           <div v-for="item in tranStatusData" :key="item.tranStatus" v-if="scope.row.tranStatus==item.value">{{item.text}}</div>       
@@ -60,16 +61,16 @@
       </el-table-column>
       <el-table-column prop="beginDate" label="生效时间" width="140"></el-table-column>
       <el-table-column prop="endDate" label="失效时间" width="140"></el-table-column>
-      <el-table-column prop="sendCount" label="一天送币次数"></el-table-column>
-      <el-table-column label="操作" width="100" fixed="right">
+      <el-table-column prop="sendCount" label="数/天" class-name="每天送币次数，0表示不限制" :render-header="foo"></el-table-column>
+      <el-table-column label="操作" width="150" fixed="right">
         
         <template slot-scope="scope" prop="sysStatus">
           <el-button type="success" :disabled="scope.row.isOnshelf != 0" size="small"
                      @click.native="modification(scope.row)">修改
           </el-button>
-          <!-- <el-button type="danger" :disabled="scope.row.isOnshelf != 0" size="small" @click.native="remove(scope.row)">
-            删除
-          </el-button> -->
+          <el-button type="danger" size="small" :disabled="scope.row.sysStatus != 0"
+                     @click.native="remove(scope.row)">删除
+          </el-button>
         </template>
       </el-table-column>
       <el-table-column label="系统状态" width="100" fixed="right">
@@ -124,15 +125,15 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="一级好友奖励:" prop="directInvitedAmount"  class="from_box_item">
+          <el-form-item label="邀请奖励:" prop="directInvitedAmount"  class="from_box_item">
             <el-input type="number" v-model="ruleForm.directInvitedAmount" placeholder=""></el-input>
           </el-form-item>
         </div>
         <div class="from_box">
-          <el-form-item label="二级好友邀请奖励:" prop="secInvitedAmount"   class="from_box_item">
+          <el-form-item label="父奖励:" prop="secInvitedAmount"   class="from_box_item">
             <el-input type="number" v-model="ruleForm.secInvitedAmount" placeholder=""></el-input>
           </el-form-item>
-          <el-form-item label="被邀请的二级好友给予其邀请人奖励:" prop="effectSec"   class="from_box_item">
+          <el-form-item label="父奖励状态:" prop="effectSec"   class="from_box_item">
             <el-select v-model="ruleForm.effectSec" placeholder="请选择">
               <el-option
                 v-for="item in effectSecData"
@@ -144,7 +145,7 @@
           </el-form-item>
         </div>
         <div class="from_box">
-          <el-form-item label="邀请数送币量:" prop="inviteAmount" class="from_box_item">
+          <el-form-item label="邀请数奖励:" prop="inviteAmount" class="from_box_item">
             <el-input type="number" v-model="ruleForm.inviteAmount" placeholder=""></el-input>
           </el-form-item>
           <el-form-item label="邀请人实名:" prop="inviteAuthState" class="from_box_item">
@@ -183,7 +184,7 @@
           </el-form-item>
         </div>
         <div class="from_box">
-          <el-form-item label="奖金池剩余总额:" prop="remainAmount"  class="from_box_item">
+          <el-form-item label="奖池余额:" prop="remainAmount"  class="from_box_item">
             <el-input type="number" v-model="ruleForm.remainAmount" placeholder=""></el-input>
           </el-form-item>
           <el-form-item label="系统状态:" prop="sysStatus" class="from_box_item">
@@ -198,7 +199,7 @@
           </el-form-item>
         </div>
         <div class="from_box">
-          <el-form-item label="总奖金池额度:" prop="totalAmount" class="from_box_item">
+          <el-form-item label="奖池总额:" prop="totalAmount" class="from_box_item">
             <el-input type="number" v-model="ruleForm.totalAmount" placeholder=""></el-input>
           </el-form-item>
           <el-form-item label="转账:" prop="tranStatus" class="from_box_item">
@@ -229,8 +230,11 @@
           </el-form-item>
         </div>
         <div class="from_box">
-          <el-form-item label="一天送币次数:" prop="sendCount" class="from_box_item">
+          <el-form-item label="数/天:" prop="sendCount" class="from_box_item">
             <el-input type="number" v-model="ruleForm.sendCount" placeholder=""></el-input>
+          </el-form-item>
+          <el-form-item label="被邀请人奖励:" prop="registAmount"  class="from_box_item" :formatter="formatSex">
+            <el-input type="number" v-model="ruleForm.registAmount" placeholder=""></el-input>
           </el-form-item>
         </div>
         
@@ -283,7 +287,8 @@ import { dateFormat } from '@/common/util';
           beginDate:'',
           endDate:'',
           isOnshelf:'',
-          sendCount:''
+          sendCount:'',
+          registAmount:''
         },
         rules: {
           minAmount: [
@@ -412,8 +417,7 @@ import { dateFormat } from '@/common/util';
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$http.post("wallet/backmgr/registInviteRule/updateRegistInviteRuleStatue.do", {
-            sysStatus: "INVALID0",
+          this.$http.post("wallet/backmgr/registInviteRule/delRegistInviteRule.do", {
             id
           }).then((res) => {
             this.$notify({
@@ -500,6 +504,21 @@ import { dateFormat } from '@/common/util';
         var second=date.getSeconds();  
         second=second < 10 ? ('0' + second) : second;  
         return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second; 
+      },
+      foo(h,{column}){
+        console.log(column);
+        if(column.className){
+            return(
+              <el-tooltip
+              class="item"
+              effect="dark"
+              content={column.className}
+              placement="bottom"
+              >
+                <span>{column.label}<i class="el-icon-question"></i></span>
+              </el-tooltip>
+            )
+        }
       }
     },
     activated() {

@@ -11,10 +11,10 @@
       </el-col>
       <el-col :span="16" style="text-align: right;">
         <el-button class="refuse-btn" type="danger" :disabled="details.antiMoneyAudit == 0" size="small"
-                   @click.native="modifyState()">拒绝
+                   @click.native="modifyState('refuse')">拒绝
         </el-button>
         <el-button class="success-btn" type="success" :disabled="details.antiMoneyAudit == 1" size="small"
-                   @click.native="modifyState()">通过审核
+                   @click.native="modifyState('success')">通过审核
         </el-button>
         <el-button size="small" type="primary" @click.native="fixContent">修改</el-button>
       </el-col>
@@ -66,7 +66,7 @@
     </sac-table>
     <el-dialog title="备注" :visible.sync="dialogFormVisible">
       <el-form :model="dialogForm" ref="dialogForm" :rules="details.antiMoneyAudit == '1'?rules:{}">
-        <el-form-item prop="reason" :label="`${details.antiMoneyAudit == '0' ? '审核通过':'拒绝'}理由`">
+        <el-form-item prop="reason" :label="`${details.antiMoneyAudit == '-1' ? (isAuditPass ? '审核通过': '拒绝') : (details.antiMoneyAudit == '0' ? '审核通过': '拒绝')}理由`">
           <el-input type="textarea"
                     :autosize="{ minRows: 2, maxRows: 6 }"
                     v-model="dialogForm.reason" maxlength="50"
@@ -116,7 +116,8 @@
           fullscreen: true,
           keyboard: true,
           url: 'data-source'
-        }
+        },
+        isAuditPass: true
       };
     },
     methods: {
@@ -163,7 +164,12 @@
           this.list = res.result.list;
         })
       },
-      modifyState() {
+      modifyState(id) {
+        if(id == 'refuse') {
+          this.isAuditPass = false;
+        } else {
+          this.isAuditPass = true;
+        }
         this.dialogFormVisible = true;
         this.resetForm();
       },
@@ -174,7 +180,7 @@
             const { reason } = this.dialogForm;
             this.$http.post("wallet/backmgr/user/updateAuditStatus.do", {
               userId,
-              auditStatus: antiMoneyAudit == '1' ? '0' : '1',
+              auditStatus: antiMoneyAudit == '-1' ? (this.isAuditPass ? '1' : '0') : (antiMoneyAudit == '1' ? '0' : '1'),
               auditType: 1,
               reason: reason || 'empty'
             }).then((res) => {

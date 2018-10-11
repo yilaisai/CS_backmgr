@@ -36,7 +36,7 @@
                      @click.native="passCheck(scope.row)">审核通过
           </el-button>
           <el-button type="danger" size="small"
-                     @click.native="showNoPassCheck(scope.row)">拒绝
+                     @click.native="showNoPassCheck(scope.row)" :disabled="scope.row.auditStatus == 0">拒绝
           </el-button>
         </template>
       </el-table-column>

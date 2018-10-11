@@ -5,9 +5,13 @@
 */
 <template>
   <div class='created'>
-    <el-col :span="22" style="text-align:right; margin-bottom: 30px;">
+    <el-col :span="22" style="text-align:right;">
       <el-button size="small" type="primary" @click="addCreate">创建应用</el-button>
     </el-col>
+    <el-form :inline="true" label-width="90px" ref="filterForm" :model="filterForm">
+      <sac-input label="APPID" v-model="filterForm.appId"></sac-input>
+      <el-button type="primary" size="small" @click.native="sendAPPID()" style="margin-top: 5px;">发送</el-button>
+    </el-form>
     <sac-table :data="listData.list">
       <el-table-column prop="id" label="序号" width="100"></el-table-column>
       <el-table-column label="名称" prop="appName"></el-table-column>
@@ -188,6 +192,9 @@
     name: 'created',
     data() {
       return {
+        filterForm: {
+          appId: ''
+        },
         listData: {
           total: null,
           list: [],
@@ -271,6 +278,17 @@
       };
     },
     methods: {
+      sendAPPID() {
+        this.$http.post("wallet/backmgr/thirdAppInfo/sendEmailByAppId.do", {
+          appId: this.filterForm.appId
+        }).then((res) => {
+          this.$notify({
+            title: '成功',
+            message: 'appId'+res.msg,
+            type: 'success'
+          });
+        })
+      },
       resetForm() {
         this.ruleForm = {
           appid: "",

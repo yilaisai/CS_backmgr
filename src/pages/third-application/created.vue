@@ -5,13 +5,15 @@
 */
 <template>
   <div class='created'>
-    <el-col :span="22" style="text-align:right;">
-      <el-button size="small" type="primary" @click="addCreate">创建应用</el-button>
-    </el-col>
     <el-form :inline="true" label-width="90px" ref="filterForm" :model="filterForm">
-      <sac-input label="APPID" v-model="filterForm.appId"></sac-input>
-      <el-button type="primary" size="small" @click.native="sendAPPID()" style="margin-top: 5px;">发送</el-button>
-    </el-form>
+      <el-col :inline="true" :span="14">
+        <sac-input label="APPID" v-model="filterForm.appId"></sac-input>
+        <el-button type="primary" size="small" @click.native="sendAPPID()" style="margin-top: 5px;">发送</el-button>
+      </el-col>
+      <el-col :inline="true" :span="10" align="right">
+        <el-button size="small" type="primary" @click="addCreate" style="margin-top: 5px;">创建应用</el-button>
+      </el-col>
+    </el-form> 
     <sac-table :data="listData.list">
       <el-table-column prop="id" label="序号" width="100"></el-table-column>
       <el-table-column label="名称" prop="appName"></el-table-column>

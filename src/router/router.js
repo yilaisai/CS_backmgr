@@ -473,7 +473,7 @@ export const appRouter = [
       },
       {
         path: 'user',
-        name: 'user',
+        name: 'supersacUser',
         meta: {
           title: '用户管理'
         },
@@ -513,7 +513,7 @@ export const appRouter = [
       },
       {
         path: 'banner',
-        name: 'banner',
+        name: 'supersacBanner',
         meta: {
           title: 'banner管理'
         },

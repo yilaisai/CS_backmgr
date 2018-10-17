@@ -31,7 +31,7 @@
             {{CardAudit == 1 ?'通过' : details.cardBackAudit ==-1?'未申请':cardBackAuditArr[details.cardBackAudit]}}</span>
         </el-col>
         <el-col :span="8">
-          <span>三要素审核111：</span>
+          <span>三要素审核：</span>
           <span :class="[(details.autoVerifyDesc =='通过')||(details.autoVerifyDesc =='快速通过')?'green':'red']">
             {{details.autoVerifyDesc}}</span>
         </el-col>

@@ -11,15 +11,6 @@
                label-width="80px"
                ref="filterForm"
                :model="filterForm">
-        <!--<el-form-item label="审核状态:">-->
-        <!--<el-select v-model="filterForm.auditStatus" size="small" placeholder="请选择" style="width: 100%">-->
-        <!--<el-option label="待审核" value="1"></el-option>-->
-        <!--<el-option label="已审核" value="2"></el-option>-->
-        <!--<el-option label="审核不通过" value="3"></el-option>-->
-        <!--<el-option label="审核通过" value="4"></el-option>-->
-        <!--<el-option label="全部" value=""></el-option>-->
-        <!--</el-select>-->
-        <!--</el-form-item>-->
         <sac-select label="审核状态" v-model="filterForm.auditStatus" :data-list="identityType"></sac-select>
         <sac-input
           ref="phone"
@@ -37,6 +28,7 @@
           v-model.trim="filterForm.cardNo"
           prop="cardNo"></sac-input>
         <sac-submit-form
+          :isReset="false"
           @submitForm="submitForm(1)"
           @resetForm="resetForm"></sac-submit-form>
         <el-form-item>

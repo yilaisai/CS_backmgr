@@ -1,3 +1,8 @@
+/**
+*  Created by   阿紫
+*  On  2018/10/17
+*  Content
+*/
 
 <template>
   <div class='banner'>
@@ -8,13 +13,14 @@
              label-width="100px"
              ref="filterForm"
              :model="filterForm">
-     <sac-input
-       ref="phone"
-       label="图片名称"
-       v-model.trim="filterForm.imgName"
-       prop="phone"></sac-input>
+      <sac-input
+        ref="phone"
+        label="图片名称"
+        v-model.trim="filterForm.bannerName"
+        prop="phone"></sac-input>
       <sac-date ref="selectedDate" label="日　　期" v-model="selectedDate"></sac-date>
-      <sac-select label="状态" v-model="filterForm.bannerType" :data-list="bannerTypeList"></sac-select>
+      <sac-select label="类型" v-model="filterForm.bannerType" :props="typeList" :data-list="bannerTypeList"></sac-select>
+      <sac-select label="状态" v-model="filterForm.isOnShelf" :data-list="bannerOnShelfList"></sac-select>
       <sac-submit-form
         :isReset='false'
         @submitForm="submitForm(1)"></sac-submit-form>
@@ -40,7 +46,11 @@
         </template>
       </el-table-column>
       <el-table-column prop="remark" label="备注"></el-table-column>
-      <el-table-column prop="createTime" label="创建时间" width="170"></el-table-column>
+      <el-table-column prop="createTime" label="创建时间" width="170">
+        <template slot-scope="scope">
+          {{scope.row.createTime| dateFormat('YYYY-MM-DD HH:mm')}}
+        </template>
+      </el-table-column>
       <el-table-column label="操作" width="160">
         <template slot-scope="scope" prop="sysStatus">
           <el-button type="primary" :disabled="scope.row.isOnshelf != 0" size="small"
@@ -125,8 +135,11 @@
       return {
         selectedDate: [],
         filterForm: {
-          bannerType: 'None',
-          imgName: '',
+          bannerType: '',
+          bannerName: '',
+          beginTime: '',
+          endTime: '',
+          isOnShelf: '',
           pageNum: 1,
           pageSize: 20
         },
@@ -134,16 +147,21 @@
           total: null,
           list: [],
         },
-        bannerTypeList: [{
+        bannerOnShelfList: [{
           value: '',
           label: '全部',
         }, {
-          value: 'SystemMsg',
+          value: '1',
           label: '上架',
-        },{
-          value: 'SystemMsg',
+        }, {
+          value: '0',
           label: '下架',
         }],
+        typeList: {
+          value: 'type',
+          label: 'typeName',
+        },
+        bannerTypeList: [],
         isShowAddDialog: false,
         ruleForm: {
           bannerUrl: "",
@@ -211,10 +229,16 @@
         this.filterForm.pageSize = val;
         this.submitForm(currentPage);
       },
+      // banner类型
+      getBannerTypeList() {
+        this.$http.post("supernode/backmgr/banner/open/getBannerTypeList", this.filterForm).then((res) => {
+          this.bannerTypeList = res.result;
+        })
+      },
       getAppBannerInfos() {
-        this.$http.post("wallet/backmgr/banner/getAppBannerInfos.do", this.filterForm).then((res) => {
-          this.listData.list = res.result.list.list;
-          this.listData.total = res.result.list.total;
+        this.$http.post("supernode/backmgr/banner/open/list", this.filterForm).then((res) => {
+          this.listData.list = res.result.list;
+          this.listData.total = res.result.total;
         })
       },
       // 删除
@@ -321,6 +345,7 @@
     activated() {
       this.server_path = SERVER_PATH
       this.getAppBannerInfos();
+      this.getBannerTypeList();
     }
   };
 </script>

@@ -67,7 +67,7 @@
     <el-dialog title="备注" :visible.sync="dialogFormVisible">
       <el-form :model="dialogForm" ref="dialogForm" :rules="details.antiMoneyAudit == '1'?rules:{}">
         <el-form-item prop="reason"
-                      :label="`${details.antiMoneyAudit == '-1' ? (isAuditPass ? '审核通过': '拒绝') : (details.antiMoneyAudit == '0' ? '审核通过': '拒绝')}理由`">
+                      :label="`${details.antiMoneyAudit == '-1'||details.antiMoneyAudit == '2' ? (isAuditPass ? '审核通过': '拒绝') : (details.antiMoneyAudit == '0' ? '审核通过': '拒绝')}理由`">
           <el-input type="textarea"
                     :autosize="{ minRows: 2, maxRows: 6 }"
                     v-model="dialogForm.reason" maxlength="50"
@@ -181,7 +181,7 @@
             const { reason } = this.dialogForm;
             this.$http.post("wallet/backmgr/user/updateAuditStatus.do", {
               userId,
-              auditStatus: antiMoneyAudit == '-1' ? (this.isAuditPass ? '1' : '0') : (antiMoneyAudit == '1' || '2' ? '0' : '1'),
+              auditStatus: antiMoneyAudit == '-1' ? (this.isAuditPass ? '1' : '0') : (antiMoneyAudit == '1'  ? '0' : '1'),
               auditType: 1,
               reason: reason || 'empty'
             }).then((res) => {

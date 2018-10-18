@@ -9,8 +9,14 @@
       <el-form-item label="应用名称:" prop="appName">
         <el-input v-model="ruleForm.appName" size="small" placeholder="请输入名称"></el-input>
       </el-form-item>
-      <el-form-item label="应用英文名称:">
+      <el-form-item label="应用英文名称:" prop="appNameEn">
         <el-input v-model="ruleForm.appNameEn" size="small" placeholder="请输入名称"></el-input>
+      </el-form-item>
+      <el-form-item label="应用属性介绍:" prop="appProp">
+        <el-input v-model="ruleForm.appProp" size="small" placeholder="请输入名称"></el-input>
+      </el-form-item>
+      <el-form-item label="应用属性英文介绍:" prop="appPropEn">
+        <el-input v-model="ruleForm.appPropEn" size="small" placeholder="请输入名称"></el-input>
       </el-form-item>
       <el-form-item label="商户手机号:" prop="phone" v-if="!ruleForm.id">
         <el-input v-model="ruleForm.phone" size="small" placeholder="请输入商户手机号"></el-input>
@@ -109,6 +115,8 @@
           phone: "",
           appName: "",
           appNameEn: "",
+          appProp: "",
+          appPropEn: "",
           appIcon: "",
           notifyUrl: "",
           hookInjectUrl: "",
@@ -135,7 +143,16 @@
             { required: true, message: '请输入APPID', trigger: 'blur' }
           ],
           appName: [
-            { required: true, message: '请输入名称', trigger: 'blur' }
+            { required: true, message: '请输入应用名称', trigger: 'blur' }
+          ],
+          appNameEn: [
+            { required: true, message: '请输入应用英文名称', trigger: 'blur' }
+          ],
+          appProp: [
+            { required: true, message: '请输入应用属性介绍', trigger: 'blur' }
+          ],
+          appPropEn: [
+            { required: true, message: '请输入应用属性英文介绍', trigger: 'blur' }
           ],
           appIcon: [
             { required: true, message: '请输入应用图标地址', trigger: 'blur' }

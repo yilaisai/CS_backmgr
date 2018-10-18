@@ -90,8 +90,10 @@
         <el-input-number v-model="ruleForm.position" size="small" :min="0"></el-input-number>
       </el-form-item>
     </el-form>
-    <el-button @click="router.go(-1)" size="small">取 消</el-button>
-    <el-button type="primary" @click="determine" size="small">确 定</el-button>
+    <el-row type="flex" justify="center">
+      <el-button @click="$router.go(-1)" size="small">取 消</el-button>
+      <el-button type="primary" @click="determine" size="small">确 定</el-button>
+    </el-row>
   </div>
 </template>
 <script>
@@ -106,7 +108,7 @@
           appid: "",
           phone: "",
           appName: "",
-          appNameEn:"",
+          appNameEn: "",
           appIcon: "",
           notifyUrl: "",
           hookInjectUrl: "",
@@ -116,8 +118,8 @@
           destextEn: "",
           jumpUrl: "",
           iosPackageName: "",
-          iosSign:"",
-          adrSign:"",
+          iosSign: "",
+          adrSign: "",
           adrPackageName: "",
           downloadUrl: "",
           iosDownldUrl: "",
@@ -175,9 +177,9 @@
           iosDownldUrl: "",
           transferTypeId: '',
           ownType: 1,
-          appNameEn:"",
-          iosSign:"",
-          adrSign:"",
+          appNameEn: "",
+          iosSign: "",
+          adrSign: "",
           destextEn: "",
           position: 0,
         };
@@ -242,7 +244,7 @@
       this.server_path = SERVER_PATH;
       this.resetForm();
       this.getTransferTypeInfoList();
-      if (this.$route.param.id) {
+      if (this.$route.param) {
         this.ruleForm = JSON.parse(JSON.stringify(data));
         this.currentForm = JSON.parse(JSON.stringify(data));
         this.ruleForm.appid = data.appId;

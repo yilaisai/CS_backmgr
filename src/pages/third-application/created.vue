@@ -204,11 +204,14 @@
       },
       addCreate() {
         this.$router.push({
-          name:'',
+          name: 'thirdModify'
         })
       },
-      modification() {
-
+      modification(param) {
+        this.$router.push({
+          name: 'thirdModify',
+          param
+        })
       }
     },
     activated() {

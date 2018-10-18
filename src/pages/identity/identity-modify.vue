@@ -131,9 +131,7 @@
                 type: 'success'
               });
               setTimeout(() => {
-                this.$router.push({
-                  path: '/identity',
-                })
+                this.goBack();
               }, 1000)
             })
           } else {
@@ -170,11 +168,12 @@
       this.resetForm();
       this.server_path = SERVER_PATH;
       if (this.$route.params.userId) {
+        console.log(this.$route.params, 88);
         this.ruleForm.userId = this.$route.params.userId;
         this.ruleForm.realName = this.$route.params.realName;
         this.ruleForm.cardNo = this.$route.params.cardNo;
         this.ruleForm.frontUrl = this.$route.params.cardFrontUrl;
-        this.ruleForm.backUrl = this.$route.params.cardFrontUrl;
+        this.ruleForm.backUrl = this.$route.params.cardBackUrl;
         this.ruleForm.antiUrl = this.$route.params.antiMoneyUrl;
         this.details = JSON.parse(JSON.stringify(this.ruleForm));
         this.details.phone = this.$route.params.phone;

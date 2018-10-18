@@ -131,9 +131,7 @@
                 type: 'success'
               });
               setTimeout(() => {
-                this.$router.push({
-                  path: '/identity',
-                })
+                this.goBack();
               }, 1000)
             })
           } else {

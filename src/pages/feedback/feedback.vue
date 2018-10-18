@@ -25,6 +25,9 @@
       <sac-submit-form
         :isReset='false'
         @submitForm="submitForm(1)"></sac-submit-form>
+      <el-form-item class="fi-add">
+        <el-button type="primary"  size="small" @click="addFeedBack">添加</el-button>
+      </el-form-item>
     </el-form>
     <sac-table :data="listData.list">
       <el-table-column prop="rtype" label="反馈类型" :formatter="formatSex" width="100"></el-table-column>
@@ -52,6 +55,26 @@
                     :page-size="filterForm.pageSize"
                     :current-page="filterForm.pageNum">
     </sac-pagination>
+    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
+      <el-form ref="ruleForm" :model="ruleForm" label-width="140px" :rules="rules">
+        <el-form-item label="反馈类型:">
+          <el-col :span="16">
+            <span>转账入账补录</span>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="反馈描述:"  prop="desc">
+          <el-input type="textarea" v-model="ruleForm.desc" placeholder="请输入反馈描述"></el-input>
+        </el-form-item>
+        <el-form-item label="联系方式:" prop="phone">
+          <el-input type="text" v-model.number="ruleForm.phone" placeholder="请输入联系方式"></el-input>
+        </el-form-item>
+        
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" size="medium" >提交</el-button>
+      </div>
+      
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -85,9 +108,29 @@
           value: 'Other',
           label: '其他',
         }],
+        dialogTitle: '添加意见反馈',
+        dialogFormVisible: false,
+        ruleForm: {
+          desc:'',
+          phone:''
+        },
+        rules: {
+          desc: [
+            { required: true, message: '请输入反馈描述', trigger: 'blur' }
+          ],
+        }
       };
     },
     methods: {
+      //添加意见反馈
+      addFeedBack(){
+        this.dialogFormVisible=true;
+        this.ruleForm = {
+          desc:'',
+          phone:''
+        }
+        this.$refs.ruleForm && this.$refs.ruleForm.resetFields();
+      },
       submitForm(num) {
         this.filterForm.pageNum = num;
         this.getfeedBackList();

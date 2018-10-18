@@ -252,9 +252,16 @@ export const appRouter = [
       {
         path: 'message',
         meta: {
-          title: '消息推送管理',
+          title: '客户端推送',
         },
         component: () => import('@/pages/message/message.vue'),
+      },
+      {
+        path: 'sms-push',
+        meta: {
+          title: '短信推送',
+        },
+        component: () => import('@/pages/message/sms-push.vue'),
       },
       {
         path: 'messageDetails',

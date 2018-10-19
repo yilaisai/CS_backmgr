@@ -172,6 +172,14 @@ export const appRouter = [
         component: () => import('@/pages/third-application/third-modify.vue'),
       },
       {
+        path: 'third-detail',
+        name: 'thirdDetail',
+        meta: {
+          title: '应用详情',
+        },
+        component: () => import('@/pages/third-application/third-detail.vue'),
+      },
+      {
         path: 'check-application',
         name: 'check-application',
         meta: {

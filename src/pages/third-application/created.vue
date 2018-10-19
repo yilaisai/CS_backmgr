@@ -7,7 +7,16 @@
   <div class='created'>
     <el-form :inline="true" label-width="90px" ref="filterForm" :model="filterForm">
       <el-col :inline="true" :span="14">
-        <sac-input label="APPID" v-model="filterForm.appId"></sac-input>
+
+        <el-input :placeholder="`请输入${filterForm.key}`" v-model="filterForm.value" size="small"
+                  class="input-with-select">
+          <el-select v-model="filterForm.key" slot="prepend" placeholder="请选择">
+            <el-option label="appId" value="appId"></el-option>
+            <el-option label="appName" value="appName"></el-option>
+            <el-option label="appNameEn" value="appNameEn"></el-option>
+          </el-select>
+        </el-input>
+        <el-button type="primary" size="small" @click.native="queryEvents" style="margin-top: 5px;">查询</el-button>
         <el-tooltip class="item" effect="dark" content="将已配置的APPID以邮箱和短信的形式一键发送给第三方" placement="top">
           <el-button type="primary" size="small" @click.native="sendAPPID()" style="margin-top: 5px;">发送</el-button>
         </el-tooltip>
@@ -62,38 +71,6 @@
                     :page-size="pageSize"
                     :current-page="pageNum">
     </sac-pagination>
-
-    <!--<el-dialog :title="`应用 ${ruleForm.appName} 的详情`" :visible.sync="dialogFormVisibleView">-->
-    <!--<el-form :inline="true" class="demo-form-inline" label-width="130px">-->
-    <!--<el-form-item label="名称:">{{ruleForm.appName}}</el-form-item>-->
-    <!--<el-form-item label="英文版名称:">{{ruleForm.appNameEn}}</el-form-item>-->
-    <!--<el-form-item label="应用图标:">-->
-    <!--<img v-if="!ruleForm.appIcon.indexOf('http')" :src="ruleForm.appIcon"-->
-    <!--style="max-width:100%; max-height: 100px;" alt="图标存储地址">-->
-    <!--<span v-if="ruleForm.appIcon.indexOf('http')">{{ruleForm.appIcon}}</span>-->
-    <!--</el-form-item>-->
-    <!--<el-form-item label="商户类型:">{{ruleForm.transferTypeName}}</el-form-item>-->
-    <!--<el-form-item label="APPID:">{{ruleForm.appId}}</el-form-item>-->
-    <!--<el-form-item label="支付通知Url:">{{ruleForm.notifyUrl}}</el-form-item>-->
-    <!--<el-form-item label="回调地址:">{{ruleForm.hookInjectUrl}}</el-form-item>-->
-    <!--<el-form-item label="ios版本号:">{{ruleForm.iosVersion}}</el-form-item>-->
-    <!--<el-form-item label="android版本号:">{{ruleForm.adrVersion}}</el-form-item>-->
-    <!--<el-form-item label="iOS Scheme协议:">{{ruleForm.iosPackageName}}</el-form-item>-->
-    <!--<el-form-item label="iOS 签名:">{{ruleForm.iosSign}}</el-form-item>-->
-    <!--<el-form-item label="android 签名:">{{ruleForm.adrSign}}</el-form-item>-->
-    <!--<el-form-item label="android 包名:">{{ruleForm.adrPackageName}}</el-form-item>-->
-    <!--<el-form-item label="android下载地址:">{{ruleForm.downloadUrl}}</el-form-item>-->
-    <!--<el-form-item label="ios下载地址:">{{ruleForm.iosDownldUrl}}</el-form-item>-->
-    <!--<el-form-item label="跳转地址:">{{ruleForm.jumpUrl}}</el-form-item>-->
-    <!--<el-form-item label="是否自营:">{{ruleForm.ownType?'是':'否'}}</el-form-item>-->
-    <!--<el-form-item label="应用介绍:">{{ruleForm.destext}}</el-form-item>-->
-    <!--<el-form-item label="英文版介绍:">{{ruleForm.destextEn}}</el-form-item>-->
-    <!--<el-form-item label="权重:">{{ruleForm.position}}</el-form-item>-->
-    <!--</el-form>-->
-    <!--<div slot="footer" class="dialog-footer">-->
-    <!--<el-button @click="dialogFormVisibleView = false" size="small">取 消</el-button>-->
-    <!--</div>-->
-    <!--</el-dialog>-->
   </div>
 </template>
 <style>
@@ -105,7 +82,8 @@
     data() {
       return {
         filterForm: {
-          appId: ''
+          value: '',
+          key: 'appId',
         },
         listData: {
           total: null,
@@ -113,11 +91,6 @@
         },
         pageNum: 1,
         pageSize: 20,
-        dialogTitle: '创建应用',
-        dialogFormVisible: false,
-        dialogFormVisibleView: false,
-
-
         options: {
           inline: false,
           button: false,
@@ -139,19 +112,23 @@
     methods: {
       sendAPPID() {
         this.$http.post("wallet/backmgr/thirdAppInfo/sendEmailByAppId.do", {
-          appId: this.filterForm.appId
+          value: this.filterForm.value,
+          key: this.filterForm.key
         }).then((res) => {
           this.$notify({
             title: '成功',
-            message: 'appId' + res.msg,
+            message: this.filterForm.key + res.msg,
             type: 'success'
           });
         })
       },
-      goDetail(data) {
-        this.resetForm();
-        this.dialogFormVisibleView = true;
-        this.ruleForm = JSON.parse(JSON.stringify(data));
+      queryEvents() {
+        this.$http.post("wallet/backmgr/thirdAppInfo/findAppByField.do", {
+          value: this.filterForm.value,
+          key: this.filterForm.key
+        }).then((res) => {
+          console.log(res, 888);
+        })
       },
       getPaginationChange(val, currentPage) {
         this.pageSize = val;
@@ -207,12 +184,18 @@
           name: 'thirdModify'
         })
       },
-      modification(param) {
+      modification(params) {
         this.$router.push({
           name: 'thirdModify',
-          param
+          params
         })
-      }
+      },
+      goDetail(params) {
+        this.$router.push({
+          name: 'thirdDetail',
+          params
+        })
+      },
     },
     activated() {
       this.getThirdAppInfoList();
@@ -226,6 +209,13 @@
       .el-form--inline .el-form-item__content {
         width: 240px;
       }
+    }
+    .el-select .el-input {
+      width: 120px;
+    }
+    .el-input-group {
+      width: 350px;
+      margin-right: 10px;
     }
   }
 </style>

@@ -14,10 +14,10 @@
             :model="postObj"
             ref="form">
             <el-form-item label="外部URL" prop="realName">
-                <el-input v-model.trim="postObj.url" placeholder="请输入外部URL" :disabled="disabled"></el-input>
+                <el-input v-model.trim="postObj.url" size="small" placeholder="请输入外部URL" :disabled="disabled"></el-input>
             </el-form-item>
             <el-form-item label="预发布类型" prop="pageType">
-                <el-select ref="pageType" v-model="postObj.pageType" :disabled="disabled">
+                <el-select ref="pageType" v-model="postObj.pageType" size="small" :disabled="disabled">
                     <el-option
                         v-for="item,index in pageTypeList"
                         :key="index"
@@ -27,12 +27,12 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="标题" prop="title">
-                <el-input v-model.trim="postObj.title" placeholder="请输入标题" :disabled="disabled"></el-input>
+                <el-input v-model.trim="postObj.title" size="small" placeholder="请输入标题" :disabled="disabled"></el-input>
             </el-form-item>
         </el-form>
         <quill-editor :disabled="disabled" v-model.trim="postObj.content" ref="myQuillEditor"></quill-editor>
-        <el-upload class="upload" 
-            :action="serverPath+'wallet/util/open/uploadFile.do'" 
+        <el-upload class="upload"
+            :action="serverPath+'wallet/util/open/uploadFile.do'"
             name="files"
             :data="{type:'html'}"
             :on-success='upScuccess'
@@ -82,7 +82,7 @@ export default {
     // manually control the data synchronization
     // 如果需要手动控制数据同步，父组件需要显式地处理changed事件
     methods: {
-				
+
         save() {
             this.$refs.form.validate((valid) => {
                 if (valid) {
@@ -103,9 +103,9 @@ export default {
                             this.$message({
                                 type: 'info',
                                 message: '已取消'
-                            });          
+                            });
                         })
-                        
+
                     }else {
                         this.saveSubmit(postUrl)
                     }
@@ -151,7 +151,7 @@ export default {
 						});
 						return false
 					}
-					
+
 				},
         // 图片上传成功回调   插入到编辑器中
         upScuccess(e, file, fileList) {
@@ -201,7 +201,7 @@ export default {
         // 为图片ICON绑定事件  getModule 为编辑器的内部属性
         this.$refs.myQuillEditor.quill.getModule('toolbar').addHandler('image', this.imgHandler)
         this.$refs.myQuillEditor.quill.getModule('toolbar').addHandler('video', this.videoHandler)  // 为视频ICON绑定事件
-				
+
     },
     activated() {
         this.getPageType()

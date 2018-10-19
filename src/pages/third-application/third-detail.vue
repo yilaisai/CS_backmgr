@@ -81,6 +81,7 @@
       if (this.$route.params.id) {
         this.ruleForm = this.$route.params;
       } else {
+
         this.$router.go(-1);
       }
     },

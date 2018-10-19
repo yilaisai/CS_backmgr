@@ -111,7 +111,7 @@
       <el-form-item label="应用预览:" prop="appPreviewPics" class="appPreviewPics">
         <el-input v-model="ruleForm.appPreviewPics" size="small" placeholder="多个预览地址以逗号隔开">
         </el-input>
-        <span class="appIcon">预览尺寸：508*270，最多上传4张</span>
+        <span class="appIcon">预览尺寸：横：508*284 竖：320*569，最多上传4张</span>
         <el-upload
           multiple
           name="files"

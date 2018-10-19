@@ -47,6 +47,20 @@
                     :page-size="pageSize"
                     :current-page="pageNum">
     </sac-pagination>
+    <el-dialog :title="dialogEditorTitle" :visible.sync="dialogEditor" :close-on-click-modal="false">
+      
+        <quill-editor ref="myTextEditor"  
+          :content="dialogEditorContent"
+          :options = "editorOption"  
+          @change="onEditorChange($event)">
+          
+        </quill-editor> 
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogEditor = false" size="small">取 消</el-button>
+          <el-button type="primary" @click="editConfirm" size="small">确 定</el-button>
+        </div>
+      
+    </el-dialog>
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" :inline="true" label-width="130px">
         <el-form-item label="应用名称:" prop="appName">
@@ -118,10 +132,12 @@
           <el-input v-model="ruleForm.jumpUrl" size="small" placeholder="请输入跳转地址"></el-input>
         </el-form-item>
         <el-form-item label="应用介绍:" prop="destext">
-          <el-input type="textarea" :rows="2" size="small" placeholder="请输入应用介绍" v-model="ruleForm.destext"></el-input>
+             <el-button plain size="small" type="primary" @click="openDialogEditor('destext')" >修改</el-button>
+          <!-- <el-input type="textarea" :rows="2" size="small" placeholder="请输入应用介绍" v-model="ruleForm.destext"></el-input> -->
         </el-form-item>
         <el-form-item label="英文版介绍:">
-          <el-input type="textarea" :rows="2" size="small" placeholder="请输入应用介绍" v-model="ruleForm.destextEn"></el-input>
+          <el-button plain size="small" type="primary" @click="openDialogEditor('destextEn')" >修改</el-button>
+          <!-- <el-input type="textarea" :rows="2" size="small" placeholder="请输入应用介绍" v-model="ruleForm.destextEn"></el-input> -->
         </el-form-item>
         <el-form-item label="是否自营" prop="ownType">
           <el-radio-group v-model="ruleForm.ownType">
@@ -166,8 +182,8 @@
         <el-form-item label="ios下载地址:">{{ruleForm.iosDownldUrl}}</el-form-item>
         <el-form-item label="跳转地址:">{{ruleForm.jumpUrl}}</el-form-item>
         <el-form-item label="是否自营:">{{ruleForm.ownType?'是':'否'}}</el-form-item>
-        <el-form-item label="应用介绍:">{{ruleForm.destext}}</el-form-item>
-        <el-form-item label="英文版介绍:">{{ruleForm.destextEn}}</el-form-item>
+        <el-form-item label="应用介绍:" ><span v-html="ruleForm.destext"></span></el-form-item>
+        <el-form-item label="英文版介绍:"><span v-html="ruleForm.destextEn"></span></el-form-item>
         <el-form-item label="权重:">{{ruleForm.position}}</el-form-item>
         <el-form-item label="联系邮箱:">{{ruleForm.email}}</el-form-item>
       </el-form>
@@ -189,9 +205,35 @@
 
 </style>
 <script>
+/*使用富文本所需*/
+import { quillEditor } from 'vue-quill-editor'
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
+
   export default {
     name: 'check-application',
+    components: {  
+      quillEditor  
+    },
     data() {
+      //富文本toolbar
+      let  toolbarOptions = [
+        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+        ['blockquote', 'code-block'],
+        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+        [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+        [{ 'direction': 'rtl' }],                         // text direction
+        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+        [{ 'font': [] }],
+        [{ 'align': [] }],
+        ['clean']                                         // remove formatting button
+      ];
       return {
         failReason: '',
         listData: {
@@ -280,6 +322,17 @@
           url: 'data-source'
         },
         dialogReasonVisibleView: false,
+        dialogEditor:false,
+        dialogEditorType:'',
+        dialogEditorTitle:'',
+        dialogEditorContent:"",
+        
+        editorOption:{
+            modules:{
+                toolbar:toolbarOptions
+            },
+            placeholder:''
+        }
       };
     },
     methods: {
@@ -417,6 +470,33 @@
 
           })
         }
+      },
+      //打开富文本编辑
+      openDialogEditor(id){
+        this.dialogEditor=true
+        if(id=='destext'){
+          this.dialogEditorType='destext'
+          this.dialogEditorTitle='修改应用介绍';
+          this.dialogEditorContent=this.ruleForm.destext
+        }else if(id =='destextEn'){
+          this.dialogEditorType='destextEn'
+          this.dialogEditorTitle='修改英文版介绍';
+          this.dialogEditorContent=this.ruleForm.destextEn
+        }
+      },
+      //富文本编辑器  文本改变时 设置字段值
+      onEditorChange({ editor, html, text }) {
+          this.dialogEditorContent = html  
+      },
+      //富文本存储
+      editConfirm(){
+        if(this.dialogEditorType=='destext'){
+          this.ruleForm.destext=this.dialogEditorContent;
+          this.dialogEditor=false
+        }else if(this.dialogEditorType=='destextEn'){
+          this.ruleForm.destextEn=this.dialogEditorContent;
+          this.dialogEditor=false
+        }
       }
     },
     activated() {
@@ -432,6 +512,9 @@
       .el-form--inline .el-form-item__content {
         width: 240px;
       }
+    }
+    .quill-editor .ql-container .ql-editor{
+      min-height:300px;
     }
   }
 </style>

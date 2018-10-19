@@ -59,11 +59,11 @@
       <el-form ref="ruleForm" :model="ruleForm" label-width="140px" :rules="rules">
         <el-form-item label="反馈类型:">
           <el-col :span="16">
-            <span>转账入账补录</span>
+            <span>{{ruleForm.title}}</span>
           </el-col>
         </el-form-item>
-        <el-form-item label="反馈描述:"  prop="desc">
-          <el-input type="textarea" v-model="ruleForm.desc" placeholder="请输入反馈描述"></el-input>
+        <el-form-item label="反馈描述:"  prop="content">
+          <el-input type="textarea" v-model="ruleForm.content" placeholder="请输入反馈描述"></el-input>
         </el-form-item>
         <el-form-item label="联系方式:" prop="phone">
           <el-input type="text" v-model.number="ruleForm.phone" placeholder="请输入联系方式"></el-input>
@@ -71,7 +71,8 @@
         
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" size="medium" >提交</el-button>
+         <el-button @click="dialogFormVisible = false" size="small">取 消</el-button>
+        <el-button type="primary" size="medium" @click="determine">提交</el-button>
       </div>
       
     </el-dialog>
@@ -105,19 +106,26 @@
           value: 'Suggest',
           label: '建议',
         }, {
+          value: 'Tranfer',
+          label: '转账入账补录',
+        }, {
           value: 'Other',
           label: '其他',
         }],
         dialogTitle: '添加意见反馈',
         dialogFormVisible: false,
         ruleForm: {
-          desc:'',
-          phone:''
+          content:'',
+          phone:'',
+          title:'转账入账补录'
         },
         rules: {
-          desc: [
+          content: [
             { required: true, message: '请输入反馈描述', trigger: 'blur' }
           ],
+          phone: [
+            { required: true, message: '请输入联系方式', trigger: 'blur' }
+          ]
         }
       };
     },
@@ -125,10 +133,8 @@
       //添加意见反馈
       addFeedBack(){
         this.dialogFormVisible=true;
-        this.ruleForm = {
-          desc:'',
-          phone:''
-        }
+        this.ruleForm.content='';
+        this.ruleForm.phone='';
         this.$refs.ruleForm && this.$refs.ruleForm.resetFields();
       },
       submitForm(num) {
@@ -168,6 +174,23 @@
           }
         })
       },
+      //新增存储
+      determine(){
+        this.$refs.ruleForm.validate((valid) => {
+          if (valid) {
+            const ruleForm = JSON.parse(JSON.stringify(this.ruleForm))
+            this.$http.post("wallet/backmgr/feedback/createFeedBack.do", ruleForm).then((res) => {
+              this.$notify({
+                  title: '成功',
+                  message: `添加成功`,
+                  type: 'success'
+                });
+                this.dialogFormVisible = false;
+                this.getfeedBackList();
+            })
+          }
+        })
+      }
     },
     activated() {
       this.getfeedBackList();
@@ -183,6 +206,9 @@
     }
     .el-date-editor {
       width: 366px;
+    }
+    .yh-submit .el-form-item__content ,.fi-add .el-form-item__content{
+      width:auto
     }
   }
 </style>

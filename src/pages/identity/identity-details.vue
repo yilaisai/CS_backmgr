@@ -175,6 +175,7 @@
         this.resetForm();
       },
       updateAuditStatus() {
+
         this.$refs.dialogForm.validate((valid) => {
           if (valid) {
             const { userId, antiMoneyAudit } = this.details; // auditStatus 状态0表示不通过，1表示通过  auditType 1表示实名认证，2表示高级认证

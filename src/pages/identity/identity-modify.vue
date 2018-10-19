@@ -42,7 +42,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="身份证反面照片:" prop="frontUrl">
+          <el-form-item label="身份证反面照片:" prop="backUrl">
             <div slot="tip" class="attention">*证件照在有效期内，照片文字清晰可见，图片格式支持jpg/png</div>
             <el-upload
               class="avatar-uploader"
@@ -59,7 +59,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="手持照片:" prop="frontUrl">
+      <el-form-item label="手持照片:" prop="antiUrl">
         <div slot="tip" class="attention">*证件照在有效期内，照片文字清晰可见，图片格式支持jpg/png</div>
         <el-upload
           class="avatar-uploader"
@@ -123,16 +123,23 @@
       saveData() {
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
-            const ruleForm = JSON.parse(JSON.stringify(this.ruleForm))
+            const ruleForm = JSON.parse(JSON.stringify(this.ruleForm));
+            let data = JSON.parse(JSON.stringify(this.$route.params));
             this.$http.post("wallet/backmgr/user/updateUserInfo.do", ruleForm).then((res) => {
               this.$notify({
                 title: '成功',
                 message: `${this.details.phone} 修改成功`,
                 type: 'success'
               });
+              data.cardFrontUrl = ruleForm.frontUrl;
+              data.cardBackUrl = ruleForm.backUrl;
+              data.antiMoneyUrl = ruleForm.antiUrl;
+              data.realName = ruleForm.realName;
+              data.cardNo = ruleForm.cardNo;
               setTimeout(() => {
                 this.$router.push({
-                  path: '/identity',
+                  name: 'identityDetails',
+                  params: data,
                 })
               }, 1000)
             })
@@ -170,11 +177,12 @@
       this.resetForm();
       this.server_path = SERVER_PATH;
       if (this.$route.params.userId) {
+        console.log(this.$route.params, 88);
         this.ruleForm.userId = this.$route.params.userId;
         this.ruleForm.realName = this.$route.params.realName;
         this.ruleForm.cardNo = this.$route.params.cardNo;
         this.ruleForm.frontUrl = this.$route.params.cardFrontUrl;
-        this.ruleForm.backUrl = this.$route.params.cardFrontUrl;
+        this.ruleForm.backUrl = this.$route.params.cardBackUrl;
         this.ruleForm.antiUrl = this.$route.params.antiMoneyUrl;
         this.details = JSON.parse(JSON.stringify(this.ruleForm));
         this.details.phone = this.$route.params.phone;

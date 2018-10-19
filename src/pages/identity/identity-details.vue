@@ -175,13 +175,14 @@
         this.resetForm();
       },
       updateAuditStatus() {
+
         this.$refs.dialogForm.validate((valid) => {
           if (valid) {
             const { userId, antiMoneyAudit } = this.details; // auditStatus 状态0表示不通过，1表示通过  auditType 1表示实名认证，2表示高级认证
             const { reason } = this.dialogForm;
             this.$http.post("wallet/backmgr/user/updateAuditStatus.do", {
               userId,
-              auditStatus: antiMoneyAudit == '-1' ? (this.isAuditPass ? '1' : '0') : (antiMoneyAudit == '1'  ? '0' : '1'),
+              auditStatus: antiMoneyAudit == '-1' || antiMoneyAudit == '2' ? (this.isAuditPass ? '1' : '0') : (antiMoneyAudit == '1' ? '0' : '1'),
               auditType: 1,
               reason: reason || 'empty'
             }).then((res) => {

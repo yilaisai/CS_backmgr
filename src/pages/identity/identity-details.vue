@@ -181,7 +181,7 @@
             const { reason } = this.dialogForm;
             this.$http.post("wallet/backmgr/user/updateAuditStatus.do", {
               userId,
-              auditStatus: antiMoneyAudit == '-1' ? (this.isAuditPass ? '1' : '0') : (antiMoneyAudit == '1' || '2' ? '0' : '1'),
+              auditStatus: antiMoneyAudit == '-1' || antiMoneyAudit == '2' ? (this.isAuditPass ? '1' : '0') : (antiMoneyAudit == '1' ? '0' : '1'),
               auditType: 1,
               reason: reason || 'empty'
             }).then((res) => {

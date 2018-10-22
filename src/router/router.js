@@ -502,19 +502,19 @@ export const appRouter = [
         },
         component: () => import('@/pages/supersac/user.vue')
       },
-      {
-        path: 'capital-detail',
-        name: 'capital-detail',
-        meta: {
-          title: '用户管理'
-        },
-        component: () => import('@/pages/supersac/capital-detail.vue')
-      },
+      // {
+      //   path: 'capital-detail',
+      //   name: 'capital-detail',
+      //   meta: {
+      //     title: '用户管理'
+      //   },
+      //   component: () => import('@/pages/supersac/capital-detail.vue')
+      // },
       {
         path: 'invite-detail',
         name: 'invite-detail',
         meta: {
-          title: '用户管理'
+          title: '邀请详情'
         },
         component: () => import('@/pages/supersac/invite-detail.vue')
       },

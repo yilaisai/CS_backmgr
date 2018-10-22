@@ -1,48 +1,31 @@
-
 <template>
   <div class='query'>
-    <!-- <el-col :span="22" style="text-align:right; margin-bottom: 30px;">
-      <el-button size="small" type="primary" @click="addUser">创建用户</el-button>
-    </el-col> -->
     <el-form :inline="true"
              label-width="80px"
              ref="filterForm"
              :model="filterForm">
       <sac-input
         ref="phone"
-        label="手机号"
+        label="用户名"
         v-model.trim="filterForm.phone"
         prop="phone"></sac-input>
-      <!-- <sac-input
-        ref="nickName"
-        label="昵称"
-        v-model.trim="filterForm.nickName"
-        prop="nickName"></sac-input>
-      <sac-input
-        ref="cardNo"
-        label="身份证"
-        v-model.trim="filterForm.cardNo"
-        prop="cardNo"></sac-input>
-      <sac-input
-        ref="coinAddr"
-        label="收款地址"
-        v-model="filterForm.coinAddr"
-        prop="coinAddr"></sac-input> -->
       <sac-submit-form
+        :isReset='false'
         @submitForm="submitForm(1)"
         @resetForm="resetForm"></sac-submit-form>
     </el-form>
     <sac-table :data="listData.list">
-      <!-- <el-table-column prop="userId" label="序号" width="100"></el-table-column> -->
-      <el-table-column prop="phone" label="手机号码" width="130"></el-table-column>
-      <el-table-column prop="registTime" label="注册时间"></el-table-column>
-      <el-table-column prop="realName" label="节点"></el-table-column>
-      <el-table-column prop="nickName" label="等级"></el-table-column>
-      <el-table-column prop="cardNo" label="PNB"></el-table-column>
-      <el-table-column prop="cardNo" label="SAC"></el-table-column>
-      <el-table-column prop="cardNo" label="PNB"></el-table-column>
-      <el-table-column prop="cardNo" label="PNB"></el-table-column>
-      <el-table-column prop="cardNo" label="PNB"></el-table-column>
+      <el-table-column prop="phone" label="用户名" width="130"></el-table-column>
+      <el-table-column label="注册时间" width="150px">
+        <template slot-scope="scope" prop="createTime">
+          {{scope.row.createTime| dateFormat('YYYY-MM-DD HH:mm')}}
+        </template>
+      </el-table-column>
+      <el-table-column prop="teamName" label="节点"></el-table-column>
+      <el-table-column prop="currentLevel" label="当前等级"></el-table-column>
+      <el-table-column prop="maxLevel" label="最高等级"></el-table-column>
+      <el-table-column prop="pNBAmount" label="PNB"></el-table-column>
+      <el-table-column prop="sACAmount" label="SAC"></el-table-column>
       <el-table-column label="资金明细" width="100">
         <template slot-scope="scope">
           <el-button type="primary" size="small" @click.native="goDetail(scope.row.phone)">查看详情</el-button>
@@ -53,12 +36,12 @@
           <el-button type="primary" size="small" @click.native="goInviteDetail(scope.row.phone)">查看详情</el-button>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="100">
+      <el-table-column label="操作" width="130">
         <template slot-scope="scope">
-          <el-button size="small" v-show="scope.row.optStatus== 1" type="success" plain
+          <el-button size="small" v-if="scope.row.status== 1" type="success"
                      @click="optStatusChange(0,'解锁账号',scope.row)">解锁账号
           </el-button>
-          <el-button size="small" v-show="scope.row.optStatus== 0" type="warning"
+          <el-button size="small" v-if="scope.row.status== 0" type="warning"
                      @click="optStatusChange(1,'锁定账号',scope.row)">锁定账号
           </el-button>
         </template>
@@ -68,20 +51,8 @@
                     @handleChange="getPaginationChange"
                     :total="+listData.total"
                     :page-size="filterForm.pageSize"
-                    :current-page="filterForm.pageNum">
+                    :current-page="filterForm.curPage">
     </sac-pagination>
-    <!-- <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
-        <sac-input ref="phone" v-model="ruleForm.phone" label="手机号" prop="phone"></sac-input>
-        <sac-input ref="nickName" v-model="ruleForm.nickName" label="昵称" prop="nickName"></sac-input>
-        <sac-input ref="pwd" type="password" v-model="ruleForm.pwd" label="登录密码" placeholder="请输入6-16位密码"
-                   prop="pwd"></sac-input>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false" size="small">取 消</el-button>
-        <el-button type="primary" @click="determine" size="small">确 定</el-button>
-      </div>
-    </el-dialog> -->
   </div>
 </template>
 <script>
@@ -108,17 +79,13 @@
       return {
         filterForm: {
           phone: '',
-          nickName: '',
-          cardNo: '',
-          coinAddr: '',
-          pageNum: 1,
+          curPage: 1,
           pageSize: 20
         },
         listData: {
           total: null,
           list: [],
         },
-        dialogTitle: '创建用户',
         ruleForm: {
           phone: '',
           pwd: '',
@@ -145,28 +112,20 @@
         this.listData.list = [];
       },
       submitForm(num) {
-        this.filterForm.pageNum = num;
-        const { phone, nickName, cardNo, coinAddr } = this.filterForm;
-        if (phone || nickName || cardNo || coinAddr) {
-          this.getUserInfoList();
-        } else {
-          this.$notify.error({
-            title: '错误',
-            message: '查询内容不能为空'
-          });
-        }
+        this.filterForm.curPage = num;
+        this.getUserInfoList();
       },
       getUserInfoList() {
-        this.$http.post('/wallet/backmgr/user/getUserInfoList.do', this.filterForm)
+        this.$http.post('supernode/backmgr/user/list', this.filterForm)
           .then((res) => {
-            const { list, total } = res.result.list;
+            const { list, total } = res.result;
             this.listData.list = list;
             this.listData.total = total;
           });
       },
       getPaginationChange(val, currentPage) {
         this.filterForm.pageSize = val;
-        // this.filterForm.pageNum = currentPage;
+        this.filterForm.curPage = currentPage;
         this.submitForm(currentPage);
       },
       goDetail(phone) {
@@ -193,9 +152,9 @@
           cancelButtonText: '取消',
           beforeClose: (action, instance, done) => {
             if (action === 'confirm') {
-              this.$http.post('wallet/backmgr/user/operatetUser.do', {
-                userId: data.userId,
-                optStatus: type,
+              this.$http.post('supernode/backmgr/user/lock', {
+                phone: data.phone,
+                status: type,
               }).then((res) => {
                 this.$notify({
                   title: '成功',
@@ -211,33 +170,9 @@
           }
         })
       },
-      // 创建用户
-      addUser() {
-        this.dialogTitle = '创建用户';
-        this.dialogFormVisible = true;
-        this.ruleForm = {
-          phone: '',
-          pwd: '',
-          nickName: '',
-        };
-        this.$refs.ruleForm && this.$refs.ruleForm.resetFields(); // 重置query的数据
-      },
-      determine() {
-        const { phone, nickName } = this.ruleForm;
-        const pwd = Md5(this.ruleForm.pwd);
-        this.$http.post('wallet/backmgr/user/addUsers.do', {
-          pwd,
-          phone,
-          nickName
-        }).then((res) => {
-          this.$notify({
-            title: '成功',
-            message: `创建用户 ${this.ruleForm.phone} 成功`,
-            type: 'success'
-          });
-          this.dialogFormVisible = false;
-        });
-      }
+    },
+    activated() {
+      this.getUserInfoList()
     }
   };
 </script>

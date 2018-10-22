@@ -5,47 +5,7 @@
       <el-col :span="4">
         <el-button size="small" type="primary" plain @click="$router.go(-1)">返回</el-button>
       </el-col>
-      <!-- <el-col :span="18" style="text-align:right">
-        <el-button size="small" v-show="this.optStatus== 2" type="success" @click="optStatusChange(0,'解冻账号')">解冻账号
-        </el-button>
-        <el-button size="small" v-show="this.optStatus!= 2" type="danger" @click="optStatusChange(2,'冻结账号')">冻结账号
-        </el-button>
-        <el-button size="small" v-show="this.optStatus== 1" type="success" plain @click="optStatusChange(0,'解锁账号')">解锁账号
-        </el-button>
-        <el-button size="small" v-show="this.optStatus== 0" type="warning" @click="optStatusChange(1,'锁定账号')">锁定账号
-        </el-button>
-      </el-col> -->
     </el-row>
-    <!-- <el-row class="sac-row" :gutter="10">
-      <el-col :span="8">
-        <label>用户账号:</label>
-        <span>{{detais.phone}}</span>
-      </el-col>
-      <el-col :span="8">
-        <label>姓名：</label>
-        <span>{{detais.realName}}</span>
-      </el-col>
-      <el-col :span="8">
-        <label>昵称：</label>
-        <span>{{detais.nickName}}</span>
-      </el-col>
-      <el-col :span="8">
-        <label>系统ID:</label>
-        <span>{{detais.userId}}</span>
-      </el-col>
-      <el-col :span="8">
-        <label>身份证号：</label>
-        <span>{{detais.cardNo}}</span>
-      </el-col>
-      <el-col :span="8">
-        <label>注册时间：</label>
-        <span>{{detais.registTime}}</span>
-      </el-col>
-      <el-col :span="8">
-        <label>最后登录时间:</label>
-        <span>{{detais.lastLoginTime}}</span>
-      </el-col>
-    </el-row> -->
     <label>13502330693资金明细：</label>
     <sac-table :data="tableData">
       <el-table-column prop="coinName" label="序号" width="120"></el-table-column>

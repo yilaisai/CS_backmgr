@@ -9,7 +9,7 @@
       </el-col>
     </el-row>
     <div class="invite">
-      邀请Ta的人：1590233999（持续白银）
+      邀请Ta的人：{{parent}}（{{level}}）
     </div>
     <el-form :inline="true"
              label-width="100px"
@@ -55,7 +55,8 @@
           curPage: 1,
           pageSize: 20
         },
-        stateType: '',
+        parent: '15017908530', // 给个默认值，防止出现 {{}}
+        level: '王者',
         noticeTypeList: [{
           value: '',
           label: '全部',
@@ -72,9 +73,11 @@
       getDetail() {
         this.$http.post('supernode/backmgr/user/invite/list', this.filterForm)
           .then((res) => {
-            const { details } = res.result;
+            const { details, level, parent } = res.result;
             this.detais.list = details.list;
             this.detais.total = details.total;
+            this.level = level;
+            this.parent = parent;
           });
       },
       submitForm(num) {

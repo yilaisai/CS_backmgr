@@ -109,7 +109,7 @@
         </el-upload>
       </el-form-item>
       <el-form-item label="应用预览:" prop="appPreviewPics" class="appPreviewPics">
-        <el-input v-model="ruleForm.appPreviewPics" size="small" placeholder="多个预览地址以逗号隔开">
+        <el-input v-model="ruleForm.appPreviewPics" @change="getAppPreviewPics" size="small" placeholder="多个预览地址以逗号隔开">
         </el-input>
         <span class="appIcon">预览尺寸：横：508*284 竖：320*569，最多上传4张</span>
         <el-upload
@@ -329,8 +329,15 @@
         if (this.appPreviewPics.length > fileList.length) {
           let appPreviewPics = this.ruleForm.appPreviewPics.split(',');
           appPreviewPics.forEach((item, index) => {
-            if (item == file.url) {
-              appPreviewPics.splice(index, 1);
+            if (this.fileList.length) {
+              if (item == file.url) {
+                appPreviewPics.splice(index, 1);
+                this.fileList.splice(index, 1);
+              }
+            } else {
+              if (item == file.response.result.urls[0]) {
+                appPreviewPics.splice(index, 1);
+              }
             }
           })
           this.ruleForm.appPreviewPics = appPreviewPics.join(',');
@@ -389,6 +396,16 @@
           this.ruleForm.destextEn = this.destext;
         }
         this.destextDialogVisible = false;
+      },
+      getAppPreviewPics(e) {
+        this.appPreviewPics = e.split(',') || [];
+        this.appPreviewPics.forEach((item, index) => {
+          if (!this.fileList.some(itemList => item == itemList.url)) {
+            this.fileList.push({
+              url: item
+            })
+          }
+        })
       }
     },
     activated() {
@@ -396,7 +413,7 @@
       this.resetForm();
       this.getTransferTypeInfoList();
       const res = this.$route.params;
-      if (this.$route.params) {
+      if (this.$route.params.id) {
         this.ruleForm = JSON.parse(JSON.stringify(res));
         this.currentForm = JSON.parse(JSON.stringify(res));
         this.ruleForm.appid = res.appId;

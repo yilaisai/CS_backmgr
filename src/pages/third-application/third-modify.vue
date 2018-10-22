@@ -391,13 +391,13 @@
       this.server_path = SERVER_PATH;
       this.resetForm();
       this.getTransferTypeInfoList();
+      this.fileList = [];
       const res = this.$route.params;
       if (this.$route.params.id) {
         this.ruleForm = JSON.parse(JSON.stringify(res));
         this.currentForm = JSON.parse(JSON.stringify(res));
         this.ruleForm.appid = res.appId;
         this.currentForm.appid = res.appId;
-        this.fileList = [];
         this.appPreviewPics = res.appPreviewPics ? res.appPreviewPics.split(',') : [];
         this.appPreviewPics.forEach((item, index) => {
           this.fileList.push({

@@ -127,7 +127,7 @@
           value: this.filterForm.value,
           key: this.filterForm.key
         }).then((res) => {
-          console.log(res, 888);
+          this.listData = res.result
         })
       },
       getPaginationChange(val, currentPage) {

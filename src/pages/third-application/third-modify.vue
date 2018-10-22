@@ -376,18 +376,18 @@
       destextHandle(language = '') {
         if (language == 'en') {
           this.destextDialogTitle = '添加应用英文版介绍';
-          this.destext = this.ruleForm.destextEn;
+          this.destext = this.ruleForm.destextEn.replace(/<\/?[^>]*>/g, "");
         } else {
           this.destextDialogTitle = '添加应用介绍';
-          this.destext = this.ruleForm.destext;
+          this.destext = this.ruleForm.destext.replace(/<\/?[^>]*>/g, "");
         }
         this.destextDialogVisible = true;
       },
       destextDetermine() {
         if (this.destextDialogTitle.indexOf('应用介绍') > -1) {
-          this.ruleForm.destext = this.destext;
+          this.ruleForm.destext = this.destext.replace(/<\/?[^>]*>/g, "");
         } else {
-          this.ruleForm.destextEn = this.destext;
+          this.ruleForm.destextEn = this.destext.replace(/<\/?[^>]*>/g, "");
         }
         this.destextDialogVisible = false;
       },

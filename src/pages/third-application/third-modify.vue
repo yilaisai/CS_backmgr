@@ -41,7 +41,7 @@
       <el-form-item label="回调地址:">
         <el-input v-model="ruleForm.hookInjectUrl" size="small" placeholder="请输入回调地址"></el-input>
       </el-form-item>
-      <el-form-item label="iOS 版本号:" prop="iosVersion">
+      <el-form-item label="iOS 版本号:">
         <el-input v-model="ruleForm.iosVersion" size="small" placeholder="请输入版本号"></el-input>
       </el-form-item>
       <el-form-item label="iOS Scheme协议:">
@@ -56,7 +56,7 @@
       <el-form-item label="iOS 下载地址:">
         <el-input v-model="ruleForm.iosDownldUrl" size="small" placeholder="请输入ios下载地址"></el-input>
       </el-form-item>
-      <el-form-item label="android 版本号:" prop="adrVersion">
+      <el-form-item label="android 版本号:">
         <el-input v-model="ruleForm.adrVersion" size="small" placeholder="请输入版本号"></el-input>
       </el-form-item>
       <el-form-item label="android 包名:">
@@ -214,12 +214,6 @@
           ],
           phone: [
             { required: true, message: '请输入商户手机号', trigger: 'blur' }
-          ],
-          iosVersion: [
-            { required: true, message: '请输入ios版本号', trigger: 'blur' }
-          ],
-          adrVersion: [
-            { required: true, message: '请输入android版本号', trigger: 'blur' }
           ],
           destext: [
             { required: true, message: '请输入应用介绍', trigger: 'blur' }
@@ -419,7 +413,7 @@
         this.ruleForm.appid = res.appId;
         this.currentForm.appid = res.appId;
         this.fileList = [];
-        this.appPreviewPics = res.appPreviewPics.split(',');
+        this.appPreviewPics = res.appPreviewPics ? res.appPreviewPics.split(',') : [];
         this.appPreviewPics.forEach((item, index) => {
           this.fileList.push({
             url: item

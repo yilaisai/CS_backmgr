@@ -502,14 +502,6 @@ export const appRouter = [
         },
         component: () => import('@/pages/supersac/user.vue')
       },
-      // {
-      //   path: 'capital-detail',
-      //   name: 'capital-detail',
-      //   meta: {
-      //     title: '用户管理'
-      //   },
-      //   component: () => import('@/pages/supersac/capital-detail.vue')
-      // },
       {
         path: 'invite-detail',
         name: 'invite-detail',
@@ -525,6 +517,22 @@ export const appRouter = [
           title: '节点管理'
         },
         component: () => import('@/pages/supersac/node-detail.vue')
+      },
+      {
+        path: 'node-modify',
+        name: 'nodeModify',
+        meta: {
+          title: '节点新增和修改'
+        },
+        component: () => import('@/pages/supersac/node-modify.vue')
+      },
+      {
+        path: 'sendEmail',
+        name: 'sendEmail',
+        meta: {
+          title: '发送邮件'
+        },
+        component: () => import('@/pages/supersac/sendEmail.vue')
       },
       {
         path: 'node-manage',

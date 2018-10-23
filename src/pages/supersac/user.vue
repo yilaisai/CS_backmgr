@@ -11,8 +11,7 @@
         prop="phone"></sac-input>
       <sac-submit-form
         :isReset='false'
-        @submitForm="submitForm(1)"
-        @resetForm="resetForm"></sac-submit-form>
+        @submitForm="submitForm(1)"></sac-submit-form>
     </el-form>
     <sac-table :data="listData.list">
       <el-table-column prop="phone" label="用户名" width="130"></el-table-column>
@@ -61,21 +60,6 @@
   export default {
     name: 'user',
     data() {
-      const checkUserName = (rule, value, callback) => {
-        if (!value) {
-          callback(new Error('请输入用户名'));
-        }
-        callback();
-      }
-      const checkPwd = (rule, value, callback) => {
-        if (!value || value.length < 6 || value.length > 16) {
-          return callback(new Error('请输入6-16位密码'));
-        }
-        if (!/(?=.*[a-z])(?=.*\d)(?=.*[#@!~%^&*.])[a-z\d#@!~%^&*.]/i.test(value)) {
-          return callback(new Error('登录密码必须是字母、数字和符号的组合'));
-        }
-        callback();
-      };
       return {
         filterForm: {
           phone: '',
@@ -86,31 +70,9 @@
           total: null,
           list: [],
         },
-        ruleForm: {
-          phone: '',
-          pwd: '',
-          nickName: '',
-        },
-        rules: {
-          phone: [
-            { required: true, validator: checkUserName, trigger: 'blur' },
-          ],
-          pwd: [
-            { required: true, validator: checkPwd, trigger: 'blur' },
-          ],
-        },
-        dialogFormVisible: false,
       };
     },
     methods: {
-      resetForm() {
-        this.$refs.phone.reset();
-        this.$refs.nickName.reset();
-        this.$refs.cardNo.reset();
-        this.$refs.coinAddr.reset();
-        this.$refs.filterForm.resetFields(); // 重置query的数据
-        this.listData.list = [];
-      },
       submitForm(num) {
         this.filterForm.curPage = num;
         this.getUserInfoList();

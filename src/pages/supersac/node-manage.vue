@@ -1,58 +1,57 @@
-
 <template>
   <div class='query'>
     <el-row>
       <el-col :span="18">
-          <p style="margin:0 0 0 30px;font-weight:bold;">本期PNB总投票数：48952</p>
+        <p style="margin:0 0 0 30px;font-weight:bold;">本期PNB总投票数：{{pNBAmount}}</p>
       </el-col>
       <el-col :span="4" style="text-align:center;margin-bottom: 30px;">
-        <el-button size="small" type="primary" @click="addUser">节点申请</el-button>
+        <el-button size="small" type="primary" @click="createNode">节点申请</el-button>
       </el-col>
     </el-row>
     <el-form :inline="true"
-             label-width="80px"
+             label-width="100px"
              ref="filterForm"
              :model="filterForm">
       <sac-input
         ref="phone"
-        label="账号"
-        v-model.trim="filterForm.phone"
+        label="Sacbox账号"
+        v-model.trim="filterForm.sacBoxAccount"
         prop="phone"></sac-input>
       <sac-input
         ref="nickName"
         label="节点名"
-        v-model.trim="filterForm.nickName"
+        v-model.trim="filterForm.teamName"
         prop="nickName"></sac-input>
-      <sac-select label="状态" v-model="filterForm.stateType" :data-list="stateList"></sac-select>
+      <sac-select label="状态" v-model="filterForm.status" :data-list="stateList"></sac-select>
 
       <sac-submit-form
-        @submitForm="submitForm(1)"
-        @resetForm="resetForm"></sac-submit-form>
+        :isReset='false'
+        @submitForm="submitForm(1)"></sac-submit-form>
     </el-form>
     <sac-table :data="listData.list">
-      <el-table-column prop="userId" label="节点名" width="100"></el-table-column>
-      <el-table-column prop="phone" label="Sacbox账号" width="130"></el-table-column>
-      <el-table-column prop="realName" label="SAC收款地址"></el-table-column>
-      <el-table-column prop="nickName" label="SAC持仓数"></el-table-column>
-      <el-table-column prop="cardNo" label="PNB投票数"></el-table-column>
-      <el-table-column prop="registTime" label="邮箱"></el-table-column>
-      <el-table-column prop="registTime" label="节点简介"></el-table-column>
-      <el-table-column prop="registTime" label="状态"></el-table-column>
-      <el-table-column label="操作" width="300">
+      <el-table-column prop="teamName" label="节点名" width="100"></el-table-column>
+      <el-table-column prop="sacBoxAccount" label="Sacbox账号" width="130"></el-table-column>
+      <el-table-column prop="sacBoxAddr" label="SAC收款地址"></el-table-column>
+      <el-table-column prop="sacAmount" label="SAC持仓数"></el-table-column>
+      <el-table-column prop="pnbAmount" label="PNB投票数"></el-table-column>
+      <el-table-column prop="email" label="邮箱"></el-table-column>
+      <el-table-column prop="nodeIntroduce" label="节点简介"></el-table-column>
+      <el-table-column prop="status" label="状态">
+        <template slot-scope="scope" prop="status">
+          {{scope.row.status=='2'?'审核中': scope.row.status=='1'?'审核成功':'审核失败'}}
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="350">
         <template slot-scope="scope">
-          <el-button size="small" v-show="scope.row.optStatus== 2" type="success"
-                     @click="optStatusChange(0,'解冻账号',scope.row)">解冻账号
+          <el-button size="small" v-if="scope.row.lockStatus== 1" type="danger"
+                     @click="optStatusChange(0,'解锁节点',scope.row)">解锁节点
           </el-button>
-          <el-button size="small" v-show="scope.row.optStatus != 2" type="danger"
-                     @click="optStatusChange(2,'冻结账号',scope.row)">冻结账号
+          <el-button size="small" v-if="scope.row.lockStatus== 0" type="warning"
+                     @click="optStatusChange(1,'锁定节点',scope.row)">锁定节点
           </el-button>
-          <el-button size="small" v-show="scope.row.optStatus== 1" type="success" plain
-                     @click="optStatusChange(0,'解锁账号',scope.row)">解锁账号
-          </el-button>
-          <el-button size="small" v-show="scope.row.optStatus== 0" type="warning"
-                     @click="optStatusChange(1,'锁定账号',scope.row)">锁定账号
-          </el-button>
-          <el-button type="primary" size="small" @click.native="goDetail(scope.row.phone)">查看详情</el-button>
+          <el-button type="primary" size="small" @click.native="goDetail(scope.row)">查看详情</el-button>
+          <el-button type="primary" size="small" @click.native="goModifyDetail(scope.row)">修改</el-button>
+          <el-button type="primary" size="small" @click.native="sendEmail(scope.row.email)">发邮件</el-button>
         </template>
       </el-table-column>
     </sac-table>
@@ -60,40 +59,76 @@
                     @handleChange="getPaginationChange"
                     :total="+listData.total"
                     :page-size="filterForm.pageSize"
-                    :current-page="filterForm.pageNum">
+                    :current-page="filterForm.curPage">
     </sac-pagination>
-    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
-        <sac-input ref="phone" v-model="ruleForm.nodeName" label="节点名称" prop="nodeName"></sac-input>
-        <sac-input ref="phone" v-model="ruleForm.phone" label="Sacbox账号" prop="phone"></sac-input>
-        <sac-input ref="phone" v-model="ruleForm.address" label="Sacbox地址" prop="address"></sac-input>
-        <sac-input ref="phone" v-model="ruleForm.sacNumber" label="SAC持仓数量" prop="sacNumber"></sac-input>
-        <sac-input ref="phone" v-model="ruleForm.email" label="邮箱" prop="email"></sac-input>
-        <el-form-item label="节点简介:" required prop="introduce">
-          <el-col :span="16" style="position: relative;">
-            <span class="tips tips_textarea">{{11}}/500</span>
-            <el-input size="small" type="textarea" :rows="5" v-model="ruleForm.content" width="100%" maxlength="50"
-                      placeholder="请输入节点简介"></el-input>
-          </el-col>
+    <el-dialog
+      :close-on-click-modal="false"
+      :title="dialogVisibleTitle"
+      :visible.sync="dialogVisible"
+      width="60%">
+      <el-form ref="details" :model="details" :inline="true" label-width="150px">
+        <el-form-item label="logo:">
+          <img v-viewer v-if="details.logoUrl" :src="details.logoUrl" alt="">
+        </el-form-item>
+        <el-form-item label="节点名称:">
+          <span>{{details.teamName}}</span>
+        </el-form-item>
+        <el-form-item label="Sacbox账号:">
+          <span>{{details.sacBoxAccount}}</span>
+        </el-form-item>
+        <el-form-item label="SAC收款地址:">
+          <span>{{details.sacBoxAddr}}</span>
+        </el-form-item>
+        <el-form-item label="SAC持仓数:">
+          <span>{{details.sacAmount}}</span>
+        </el-form-item>
+        <el-form-item label="邮箱:">
+          <span>{{details.email}}</span>
+        </el-form-item>
+        <el-form-item label="状态:">
+          <span>{{details.status=='2'?'审核中': details.status=='1'?'审核成功':'审核失败'}}</span>
+        </el-form-item>
+        <el-form-item label="分配账号:">
+          <span>{{details.nodeIntroduce}}</span>
+        </el-form-item>
+        <el-form-item label="官网地址:">
+          <span>{{details.officialAddr}}</span>
+        </el-form-item>
+        <el-form-item label="节点简介:">
+          <span>{{details.nodeIntroduce}}</span>
         </el-form-item>
         <el-form-item label="团队介绍:">
-          <el-col :span="16">
-            <el-input size="small" type="textarea" :rows="5" v-model="ruleForm.content" width="100%" maxlength="50"
-                      placeholder="请输入团队介绍或上传文档"></el-input>
-          </el-col>
+          <span>{{details.teamIntroduce}}</span>
+          <a v-show="isTeamDoc" target="_blank" :href="details.teamIntroduceUrl" class="el-upload-list__item-name">
+            <i class="el-icon-document"></i>{{teamIntroduceUrl}}
+          </a>
+          <img v-show="isTeamImg" v-viewer :src="details.teamIntroduceUrl" class="introduce">
         </el-form-item>
-        <sac-input ref="offcialurl" v-model="ruleForm.offcialurl" label="官网地址" prop="offcialurl"></sac-input>
         <el-form-item label="运营及宣传方案:">
-          <el-col :span="16">
-            <el-input size="small" type="textarea" :rows="5" v-model="ruleForm.content" width="100%" maxlength="50"
-                      placeholder="请输入运营及宣传方案或上传文档"></el-input>
-          </el-col>
+          <span>{{details.marketingIntroduce}}</span>
+          <a v-show="isMarketDoc" target="_blank" :href="details.marketingIntroduceUrl"
+             class="el-upload-list__item-name">
+            <i class="el-icon-document"></i>{{marketingIntroduceUrl}}
+          </a>
+          <img v-show="isMarketImg" v-viewer :src="details.marketingIntroduceUrl" class="introduce">
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false" size="small">取 消</el-button>
-        <el-button type="primary" @click="determine" size="small">确 定</el-button>
-      </div>
+      <span slot="footer" class="dialog-footer">
+      <el-button @click="isApproved(0,details.teamId)" size="small">不通过审核</el-button>
+      <el-button type="primary" @click="isApproved(1,details.teamId)" size="small">通过审核并分配账号</el-button>
+      </span>
+      <el-dialog
+        width="40%"
+        :title="innerVisibleTitle"
+        append-to-body
+        :visible.sync="innerVisible">
+        <el-input size="small" type="textarea" :rows="3" v-model="info" width="100%"
+                  placeholder="请输入原因"></el-input>
+        <span slot="footer" class="dialog-footer">
+      <el-button @click="innerVisible = false" size="small">取消</el-button>
+      <el-button type="primary" @click="approved(innerVisibleTitle=='不通过审核原因'?0:1)" size="small">确定</el-button>
+      </span>
+      </el-dialog>
     </el-dialog>
   </div>
 </template>
@@ -103,104 +138,108 @@
   export default {
     name: 'query',
     data() {
-      const checkUserName = (rule, value, callback) => {
-        if (!value) {
-          callback(new Error('请输入用户名'));
-        }
-        callback();
-      }
-      const checkPwd = (rule, value, callback) => {
-        if (!value || value.length < 6 || value.length > 16) {
-          return callback(new Error('请输入6-16位密码'));
-        }
-        if (!/(?=.*[a-z])(?=.*\d)(?=.*[#@!~%^&*.])[a-z\d#@!~%^&*.]/i.test(value)) {
-          return callback(new Error('登录密码必须是字母、数字和符号的组合'));
-        }
-        callback();
-      };
       return {
         stateList: [{
           value: '',
           label: '全部',
         }, {
-          value: 'SystemMsg',
-          label: '未审核',
-        },{
-          value: 'SystemMsg',
+          value: '2',
+          label: '审核中',
+        }, {
+          value: '0',
           label: '审核失败',
         },
-        {
-          value: '',
-          label: '审核通过，已分配账号，未发邮件',
-        }, {
-          value: 'SystemMsg',
-          label: '审核通过，已分配账号，已发邮件',
-        }],
+          {
+            value: '1',
+            label: '审核成功',
+          }],
         filterForm: {
-          phone: '',
-          nickName: '',
-          cardNo: '',
-          coinAddr: '',
-          pageNum: 1,
+          sacBoxAccount: '',
+          teamName: '',
+          status: '',
+          curPage: 1,
           pageSize: 20
         },
         listData: {
           total: null,
           list: [],
         },
-        dialogTitle: '节点申请表',
-        ruleForm: {
-          phone: '',
-          pwd: '',
-          nickName: '',
-        },
-        rules: {
-          phone: [
-            { required: true, validator: checkUserName, trigger: 'blur' },
-          ],
-          pwd: [
-            { required: true, validator: checkPwd, trigger: 'blur' },
-          ],
-        },
-        dialogFormVisible: false,
+        pNBAmount: '',
+        dialogVisibleTitle: '',
+        dialogVisible: false,
+        details: {},
+        isTeamImg: false,
+        isTeamDoc: false,
+        isMarketImg: false,
+        isMarketDoc: false,
+        teamIntroduceUrl: '',
+        marketingIntroduceUrl: '',
+        innerVisible: false,
+        innerVisibleTitle: '',
+        info: '',
       };
     },
     methods: {
-      resetForm() {
-        this.$refs.phone.reset();
-        this.$refs.nickName.reset();
-        this.$refs.cardNo.reset();
-        this.$refs.coinAddr.reset();
-        this.$refs.filterForm.resetFields(); // 重置query的数据
-        this.listData.list = [];
-      },
       submitForm(num) {
-        this.filterForm.pageNum = num;
-        const { phone, nickName, cardNo, coinAddr } = this.filterForm;
-        if (phone || nickName || cardNo || coinAddr) {
-          this.getUserInfoList();
-        } else {
-          this.$notify.error({
-            title: '错误',
-            message: '查询内容不能为空'
-          });
-        }
+        this.filterForm.curPage = num;
+        this.getList();
       },
-      getUserInfoList() {
-        this.$http.post('/wallet/backmgr/user/getUserInfoList.do', this.filterForm)
+      getList() {
+        this.$http.post('supernode/backmgr/team/detail/list', this.filterForm)
           .then((res) => {
             const { list, total } = res.result.list;
             this.listData.list = list;
             this.listData.total = total;
+            this.pNBAmount = res.result.pNBAmount;
           });
       },
       getPaginationChange(val, currentPage) {
         this.filterForm.pageSize = val;
-        // this.filterForm.pageNum = currentPage;
+        this.filterForm.curPage = currentPage;
         this.submitForm(currentPage);
       },
-      goDetail(phone) {
-        this.$router.push({ name: 'queryDetails', query: { phone } });
+      createNode() {
+        this.$router.push({
+          name: 'nodeModify'
+        });
+      },
+      goModifyDetail(params) {
+        this.$router.push({
+          name: 'nodeModify',
+          params,
+        });
+      },
+      goDetail(res) {
+        this.dialogVisibleTitle = `查看${res.teamName}节点详情`;
+        this.dialogVisible = true;
+        this.details = res;
+        this.teamIntroduceUrl = res.teamIntroduceUrl ? res.teamIntroduceUrl.split('supersac_doc/')[1] : '';
+        this.marketingIntroduceUrl = res.marketingIntroduceUrl ? res.marketingIntroduceUrl.split('supersac_doc/')[1] : '';
+        if (this.teamIntroduceUrl) {
+          if (this.teamIntroduceUrl.indexOf('.jpg') > -1 || this.teamIntroduceUrl.indexOf('.jpeg') > -1 || this.teamIntroduceUrl.indexOf('.png') > -1) {
+            this.isTeamImg = true;
+            this.isTeamDoc = false;
+          } else {
+            this.isTeamImg = false;
+            this.isTeamDoc = true;
+          }
+        } else {
+          this.isTeamImg = false;
+          this.isTeamDoc = false;
+        }
+
+        if (this.marketingIntroduceUrl) {
+          if (this.marketingIntroduceUrl.indexOf('.jpg') > -1 || this.marketingIntroduceUrl.indexOf('.jpeg') > -1 || this.marketingIntroduceUrl.indexOf('.png') > -1) {
+            this.isMarketImg = true;
+            this.isMarketDoc = false;
+          } else {
+            this.isMarketImg = false;
+            this.isMarketDoc = true;
+          }
+        } else {
+          this.isMarketImg = false;
+          this.isMarketDoc = false;
+        }
       },
       /**
        * 冻结/解冻 锁定/解锁 用户   optStatus  用户状态：2表示冻结，1表示锁定，0表示解冻
@@ -212,7 +251,7 @@
           message: h('p', null, [
             h('span', null, '确定执行 '),
             h('span', { style: 'color: red' }, `${title} `),
-            h('span', { style: 'color: #0a52e0' }, `${data.phone}`),
+            h('span', { style: 'color: #0a52e0' }, `${data.teamName}`),
             h('span', null, ' 吗?'),
           ]),
           showCancelButton: true,
@@ -220,16 +259,16 @@
           cancelButtonText: '取消',
           beforeClose: (action, instance, done) => {
             if (action === 'confirm') {
-              this.$http.post('wallet/backmgr/user/operatetUser.do', {
-                userId: data.userId,
-                optStatus: type,
+              this.$http.post('supernode/backmgr/team/detail/lock', {
+                teamId: data.teamId,
+                status: type,
               }).then((res) => {
                 this.$notify({
                   title: '成功',
-                  message: `${title} ${data.phone} 成功`,
+                  message: `${title} ${data.teamName} 成功`,
                   type: 'success'
                 });
-                this.getUserInfoList();
+                this.getList();
                 done();
               })
             } else {
@@ -238,33 +277,38 @@
           }
         })
       },
-      // 创建用户
-      addUser() {
-        this.dialogTitle = '节点申请表';
-        this.dialogFormVisible = true;
-        this.ruleForm = {
-          phone: '',
-          pwd: '',
-          nickName: '',
-        };
-        this.$refs.ruleForm && this.$refs.ruleForm.resetFields(); // 重置query的数据
+      isApproved(status, teamId) {
+        this.innerVisible = true;
+        this.innerVisibleTitle = status ? `通过审核原因` : `不通过审核原因`;
       },
-      determine() {
-        const { phone, nickName } = this.ruleForm;
-        const pwd = Md5(this.ruleForm.pwd);
-        this.$http.post('wallet/backmgr/user/addUsers.do', {
-          pwd,
-          phone,
-          nickName
-        }).then((res) => {
-          this.$notify({
-            title: '成功',
-            message: `创建用户 ${this.ruleForm.phone} 成功`,
-            type: 'success'
+      approved(status) {
+        this.$http.post('supernode/backmgr/team/detail/audit', {
+          status,
+          teamId: this.details.teamId,
+          info: this.info
+        })
+          .then((res) => {
+            this.$notify({
+              title: '成功',
+              message: `${status ? `通过审核并分配账号给节点${this.details.teamName}` : `节点${this.details.teamName}不通过审核`}  处理成功`,
+              type: 'success'
+            });
+            this.innerVisible = false;
+            this.dialogVisible = false;
+            this.getList();
           });
-          this.dialogFormVisible = false;
+      },
+      sendEmail(email) {
+        this.$router.push({
+          name: 'sendEmail',
+          params: {
+            email
+          },
         });
       }
+    },
+    activated() {
+      this.getList();
     }
   };
 </script>

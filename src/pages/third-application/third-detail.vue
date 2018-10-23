@@ -38,6 +38,7 @@
         <span v-html="ruleForm.destextEn"></span>
       </el-form-item>
       <el-form-item label="权重:">{{ruleForm.position}}</el-form-item>
+      <el-form-item label="联系邮箱:">{{ruleForm.email}}</el-form-item>
       <el-form-item label="应用图标:" v-if="ruleForm.appIcon">
         <img v-if="!ruleForm.appIcon.indexOf('http')" :src="ruleForm.appIcon"
              style="max-width:100%; width:80px; height: 80px; border-radius:10px;" alt="图标存储地址">

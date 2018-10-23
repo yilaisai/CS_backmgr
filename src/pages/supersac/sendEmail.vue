@@ -36,21 +36,20 @@
       <el-form-item label="邮件主题：" prop="subject">
         <el-input v-model.trim="postObj.subject" size="small" placeholder="请输入标题" :disabled="disabled"></el-input>
       </el-form-item>
-      <el-form-item label=""></el-form-item>
-      <el-form-item label="邮件内容：" prop="content"></el-form-item>
+      <quill-editor :disabled="disabled" v-model.trim="postObj.content" ref="myQuillEditor"></quill-editor>
+      <el-upload class="upload"
+                 :action="serverPath+'wallet/util/open/uploadFile.do'"
+                 name="files"
+                 :data="{type:'html'}"
+                 :on-success='upScuccess'
+                 :before-upload="beforeUpload"
+                 ref="upload" style="display:none">
+        <el-button size="small" type="primary" id="imgInput" v-loading.fullscreen.lock="fullscreenLoading"
+                   element-loading-text="插入中,请稍候">点击上传
+        </el-button>
+      </el-upload>
+      <el-form-item label="" prop="content"></el-form-item>
     </el-form>
-    <quill-editor :disabled="disabled" v-model.trim="postObj.content" ref="myQuillEditor"></quill-editor>
-    <el-upload class="upload"
-               :action="serverPath+'wallet/util/open/uploadFile.do'"
-               name="files"
-               :data="{type:'html'}"
-               :on-success='upScuccess'
-               :before-upload="beforeUpload"
-               ref="upload" style="display:none">
-      <el-button size="small" type="primary" id="imgInput" v-loading.fullscreen.lock="fullscreenLoading"
-                 element-loading-text="插入中,请稍候">点击上传
-      </el-button>
-    </el-upload>
   </div>
 </template>
 <script>

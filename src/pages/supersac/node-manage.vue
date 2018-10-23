@@ -1,5 +1,5 @@
 <template>
-  <div class='query'>
+  <div class='node-manage'>
     <el-row>
       <el-col :span="18">
         <p style="margin:0 0 0 30px;font-weight:bold;">本期PNB总投票数：{{pNBAmount}}</p>
@@ -68,7 +68,7 @@
       width="60%">
       <el-form ref="details" :model="details" :inline="true" label-width="150px">
         <el-form-item label="logo:">
-          <img v-viewer v-if="details.logoUrl" :src="details.logoUrl" alt="">
+          <img v-viewer v-if="details.logoUrl" :src="details.logoUrl" alt="" class="avatar">
         </el-form-item>
         <el-form-item label="节点名称:">
           <span>{{details.teamName}}</span>
@@ -136,7 +136,7 @@
   import Md5 from '../../../static/js/md5';
 
   export default {
-    name: 'query',
+    name: 'node-manage',
     data() {
       return {
         stateList: [{
@@ -313,10 +313,19 @@
   };
 </script>
 <style lang="less">
-  .query {
+  .node-manage {
+    .avatar {
+      width: 80px;
+      height: 80px;
+      display: block;
+    }
     .tips_textarea {
       bottom: -10px;
       right: 10px;
+    }
+    .introduce {
+      height: 80px;
+      display: block;
     }
   }
 </style>

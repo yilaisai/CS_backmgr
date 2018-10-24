@@ -91,7 +91,7 @@
         this.submitForm(currentPage);
       },
       goDetail(phone) {
-        this.$router.push({ name: 'capital-detail', query: { phone } });
+        this.$router.push({ name: 'money-manage', params: { phone } });
       },
       goInviteDetail(phone) {
         this.$router.push({ name: 'invite-detail', query: { phone } });

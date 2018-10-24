@@ -1,5 +1,12 @@
 <template>
   <div class='transfer-approval'>
+    <el-col :span="24" class="subsidiary" v-if="this.$route.params && this.$route.params.phone">
+      <el-button
+                 size="small" type="primary" plain
+                 @click="$router.go(-1)">返回
+      </el-button>
+      <span class="capital">{{this.$route.params.phone}}的资金明细</span>
+    </el-col>
     <el-form :inline="true"
              label-width="80px"
              ref="filterForm"
@@ -10,7 +17,12 @@
                   :dataList="transactionType" :props="props"></sac-select>
       <sac-select ref="recdStatus" label="状　　态" v-model="recdStatus" multiple
                   :dataList="recdStatusType"></sac-select>
-      <sac-input ref="phone" label="用户名" v-model.trim="filterForm.phone"></sac-input>
+      <el-form-item label="用户名:">
+        <el-input v-model.trim="filterForm.phone"
+                  size="small"
+                  placeholder="请输入用户名"
+                  clearable></el-input>
+      </el-form-item>
       <sac-date ref="selectedDate" label="日　　期" v-model="selectedDate"></sac-date>
       <sac-submit-form
         :isReset='false'
@@ -140,6 +152,9 @@
       },
     },
     activated() {
+      if (this.$route.params && this.$route.params.phone) {
+        this.filterForm.phone = this.$route.params.phone;
+      }
       this.getTradeList();
       this.getFundChangeTypeList();
       this.getCoinInfoList();
@@ -158,6 +173,16 @@
     }
     .el-tag {
       margin-right: 10px;
+    }
+    .subsidiary {
+      display: flex;
+      margin-bottom: 20px;
+      .capital {
+        width: 250px;
+        margin: 0 auto;
+        display: inline-block;
+        font-size: 20px;
+      }
     }
   }
 </style>

@@ -20,11 +20,11 @@
           :show-file-list="false"
           :on-success="upload"
           :data="{type:'supersac_img'}">
-          <img v-if="ruleForm.logoUrl" :src="ruleForm.logoUrl" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          <img v-show="ruleForm.logoUrl" :src="ruleForm.logoUrl" class="avatar">
+          <i v-show="!ruleForm.logoUrl" class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
       </el-form-item>
-      <el-form-item label="节点名称:" prop="sacBoxAccount">
+      <el-form-item label="Sacbox账号:" prop="sacBoxAccount">
         <el-input size="small" v-model="ruleForm.sacBoxAccount" width="100%"
                   placeholder="请输入Sacbox账号"></el-input>
       </el-form-item>
@@ -238,8 +238,12 @@
       const res = this.$route.params;
       if (res.teamId) {
         this.currentForm = JSON.parse(JSON.stringify(res));
-        this.ruleForm = res;
-        this.ruleForm.logoUrl = res.logoUrl;
+        Object.entries(res).forEach(([key, value]) => {
+          if (this.ruleForm[key] == '') {
+            this.ruleForm[key] = value || '';
+          }
+        });
+        this.ruleForm.teamId = res.teamId;
         this.teamIntroduceUrl = res.teamIntroduceUrl ? res.teamIntroduceUrl.split('supersac_doc/')[1] : '';
         this.marketingIntroduceUrl = res.marketingIntroduceUrl ? res.marketingIntroduceUrl.split('supersac_doc/')[1] : '';
         if (this.teamIntroduceUrl) {

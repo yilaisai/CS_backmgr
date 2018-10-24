@@ -67,14 +67,14 @@
         this.activeIndex = localStorage.getItem('menuDefaultActive')
       }
       const menuList = JSON.parse(localStorage.getItem('wallet_menuUrls')) || [];
-      const curHref = location.href.split('#');
-      const activeIndex = this.activeIndex.split('-');
-      const historyRout = menuList[activeIndex[0]].children[activeIndex[1]].menuUrl;
-      if (curHref[1] != historyRout) {
-        this.$router.push({
-          path: historyRout
-        })
-      }
+      // const curHref = location.href.split('#');
+      // const activeIndex = this.activeIndex.split('-');
+      // const historyRout = menuList[activeIndex[0]].children[activeIndex[1]].menuUrl;
+      // if (curHref[1] != historyRout) {
+      //   this.$router.push({
+      //     path: historyRout
+      //   })
+      // }
       menuList.forEach((item) => {
         item.icon = item.menuUrl.split('/')[1] ? item.menuUrl.split('/')[1] : 'home';
       });

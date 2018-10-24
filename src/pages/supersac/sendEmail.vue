@@ -19,7 +19,7 @@
              :model="postObj"
              ref="postObj">
       <el-form-item label="发件人：">
-        <span>{{sendEmail}}</span>
+        <span>【Justoken 客服中心】 oblocktest@gmail.com </span>
       </el-form-item>
       <el-form-item
         size="small"
@@ -67,7 +67,6 @@
     },
     data() {
       return {
-        sendEmail: [],
         postObj: {
           receiver: '',
           subject: '',
@@ -197,7 +196,6 @@
       }
       this.disabled = false
       this.originUrl = '';
-      this.sendEmail = this.$route.params.email;
     },
   };
 </script>

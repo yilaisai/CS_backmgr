@@ -1,22 +1,21 @@
-
 <template>
   <div class='pagelist-page'>
     <el-form :inline="true"
-      label-width="90px"
-      ref="filterForm"
-      :model="filterForm">
+             label-width="90px"
+             ref="filterForm"
+             :model="filterForm">
       <sac-input
         ref="name"
         label="名称"
         v-model.trim="filterForm.name"
         prop="name"></sac-input>
-      <el-form-item label="时间" prop="pageType">
-        <el-select ref="pageType" v-model="filterForm.pageType">
+      <el-form-item label="期　　数：" prop="pageType">
+        <el-select ref="pageType" v-model="filterForm.pageType" size="small">
           <el-option
-              v-for="item,index in pageTypeList"
-              :key="index"
-              :label="item.dateStr"
-              :value="item.num">
+            v-for="item,index in pageTypeList"
+            :key="index"
+            :label="item.dateStr"
+            :value="item.num">
           </el-option>
         </el-select>
       </el-form-item>
@@ -38,8 +37,9 @@
 
       <el-table-column label="操作">
         <template slot-scope="scope" prop="sysStatus">
-          <el-button type="primary"
-                     @click.native="$router.push({name: 'setprize', query: {teamName: scope.row.teamName, teamId: scope.row.teamId}})">配置奖励
+          <el-button type="primary" size="small"
+                     @click.native="$router.push({name: 'setprize', query: {teamName: scope.row.teamName, teamId: scope.row.teamId}})">
+            配置奖励
           </el-button>
         </template>
       </el-table-column>
@@ -81,7 +81,7 @@
         this.submitForm(currentPage);
       },
       getPageInfoList() {
-        this.$http.post("/supernode/vote/open/getTeamVoteRankList",{
+        this.$http.post("/supernode/vote/open/getTeamVoteRankList", {
           'teamName': this.filterForm.name,
           'num': this.filterForm.pageType
         }).then((res) => {
@@ -91,13 +91,11 @@
         })
       },
       getPageType() {
-        this.$http.post('/supernode/vote/open/getNumGameInfo',{}).then(res => {
-            res.result.map((value) => {
-              if (!value.num) {
-                value.dateStr = '当前期'
-              }
-            })
-            this.pageTypeList = res.result
+        this.$http.post('/supernode/vote/open/getNumGameInfo', {}).then(res => {
+          res.result.map((value) => {
+            value.dateStr = (value.num ? '第' + value.num + '期：' : '当前期：') + value.dateStr.substr(0, 4) + '.' + value.dateStr.substr(4, 2) + '.' + value.dateStr.substr(6, 7) + '.' + value.dateStr.substr(13, 2) + '.' + value.dateStr.substr(15, 2)
+          })
+          this.pageTypeList = res.result
         })
       },
       addNews() {

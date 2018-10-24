@@ -27,7 +27,8 @@
     </el-form>
     <sac-table :data="listData.list">
       <el-table-column prop="weight" label="权重" width="80"></el-table-column>
-      <el-table-column label="图片">
+      <el-table-column prop="bannerTypeName" label="banner类型"></el-table-column>
+      <el-table-column label="banner图片">
         <template slot-scope="scope">
           <viewer :options="options"
                   class="viewer" ref="viewer"
@@ -38,7 +39,6 @@
           <span v-if="scope.row.bannerUrl.indexOf('http')">{{scope.row.bannerUrl}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="bannerTypeName" label="banner类型"></el-table-column>
       <el-table-column prop="bannerName" label="banner名称"></el-table-column>
       <el-table-column prop="jumpUrl" label="跳转链接">
         <template slot-scope="scope" prop="sysStatus">
@@ -249,8 +249,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$http.post("wallet/backmgr/banner/updateAppBannerInfoSysStatus.do", {
-            sysStatus: "INVALID0",
+          this.$http.post("supernode/backmgr/banner/delete", {
             id
           }).then((res) => {
             this.$notify({
@@ -265,8 +264,8 @@
       // 上下架
       switchChange(itemData) {
         const { isOnshelf, id, bannerName } = itemData;
-        this.$http.post("wallet/backmgr/banner/updateAppBannerInfoOnshelf.do", {
-          isOnshelf: isOnshelf ? "YES" : "NO",
+        this.$http.post("supernode/backmgr/banner/isOnShelf", {
+          isOnshelf: isOnshelf ? "1" : "0",
           id
         }).then((res) => {
           this.$notify({
@@ -304,7 +303,7 @@
           if (valid) {
             if (this.ruleForm.id) {
               const { bannerTypeEnName, id, bannerName, jumpUrl, bannerUrl, weight, remark } = this.ruleForm;
-              this.$http.post("wallet/backmgr/banner/updateAppBannerInfo.do", {
+              this.$http.post("supernode/backmgr/banner/update", {
                 bannerTypeEnName,
                 bannerType: this.bannerTypeCode,
                 id,
@@ -325,7 +324,7 @@
               })
             } else {
               this.ruleForm.bannerType = this.bannerTypeCode;
-              this.$http.post("wallet/backmgr/banner/createAppBannerInfo.do", this.ruleForm).then((res) => {
+              this.$http.post("supernode/backmgr/banner/create", this.ruleForm).then((res) => {
                 this.$notify({
                   title: '成功',
                   message: `创建 ${ this.ruleForm.bannerName} banner成功`,

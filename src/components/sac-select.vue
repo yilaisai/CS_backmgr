@@ -57,7 +57,7 @@
         type: Boolean,
         default: false,
       },
-      value: [String, Array],
+      value: [String, Array, Number],
     },
     data() {
       return {

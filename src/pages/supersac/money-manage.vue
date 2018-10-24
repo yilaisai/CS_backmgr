@@ -16,6 +16,9 @@
         :isReset='false'
         @submitForm="submitForm(1)"></sac-submit-form>
     </el-form>
+    <div class="moneyList" v-if="isShowMoneyAll">
+      <el-tag v-for="(item,index) in moneyList" :key="index">{{item.name}}：{{item.value}}</el-tag>
+    </div>
     <sac-table :data="listData.list">
       <el-table-column prop="phone" label="用户名"></el-table-column>
       <el-table-column prop="coinName" label="币种"></el-table-column>
@@ -88,7 +91,18 @@
         propsCoin: {
           value: 'coinId',
           label: 'coinName'
-        }
+        },
+        moneyList: [{
+          name: '转入',
+          value: 0
+        }, {
+          name: '转出',
+          value: 0
+        }, {
+          name: '余额',
+          value: 0
+        }],
+        isShowMoneyAll: false,
       };
     },
     methods: {
@@ -98,6 +112,7 @@
       },
       submitForm(num) {
         this.filterForm.pageNum = num;
+        this.isShowMoneyAll = this.filterForm.coinId ? true : false;
         this.getTradeList();
       },
       getTradeList() {
@@ -140,6 +155,9 @@
       .el-form-item__content {
         width: 100%;
       }
+    }
+    .el-tag {
+      margin-right: 10px;
     }
   }
 </style>

@@ -565,6 +565,13 @@ export const appRouter = [
           title: '公告管理'
         },
         component: () => import('@/pages/supersac/notice-manage.vue')
+      }, {
+        path: 'revenue-management',
+        name: 'revenueManagement',
+        meta: {
+          title: '收益管理'
+        },
+        component: () => import('@/pages/supersac/revenue-management.vue')
       }
     ],
   },

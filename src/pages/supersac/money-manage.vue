@@ -101,8 +101,8 @@
         this.getTradeList();
       },
       getTradeList() {
-        this.filterForm.beginTime = this.selectedDate[0];
-        this.filterForm.endTime = this.selectedDate[1];
+        this.filterForm.beginTime = this.selectedDate && this.selectedDate[0];
+        this.filterForm.endTime = this.selectedDate && this.selectedDate[1];
         this.filterForm.recdStatus = this.recdStatus.join(',');
         this.$http.post('supernode/backmgr/fund/list', this.filterForm)
           .then((res) => {

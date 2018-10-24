@@ -1,51 +1,32 @@
-
 <template>
   <div class='transfer-approval'>
     <el-form :inline="true"
              label-width="80px"
              ref="filterForm"
              :model="filterForm">
-     <sac-select ref="tradeType" label="币种" v-model="filterForm.billType"
-                 :dataList="billListType"></sac-select>
-      <sac-select ref="tradeType" label="交易类型" v-model="filterForm.tradeType"
-                  :dataList="transactionType"></sac-select>
-      <sac-input ref="fromOrToUserPhone" label="用户账号" v-model.trim="filterForm.fromOrToUserPhone"></sac-input>
+      <sac-select ref="coinId" label="币　　种" v-model="filterForm.coinId"
+                  :dataList="coinType" :props="propsCoin"></sac-select>
+      <sac-select ref="fundChangeType" label="类　　型" v-model="filterForm.fundChangeType"
+                  :dataList="transactionType" :props="props"></sac-select>
+      <sac-select ref="recdStatus" label="状　　态" v-model="recdStatus" multiple
+                  :dataList="recdStatusType"></sac-select>
+      <sac-input ref="phone" label="用户名" v-model.trim="filterForm.phone"></sac-input>
       <sac-date ref="selectedDate" label="日　　期" v-model="selectedDate"></sac-date>
       <sac-submit-form
-        @submitForm="submitForm(1)"
-        @resetForm="resetForm"></sac-submit-form>
+        :isReset='false'
+        @submitForm="submitForm(1)"></sac-submit-form>
     </el-form>
     <sac-table :data="listData.list">
-      <!-- <el-table-column prop="tradeId" label="序号"></el-table-column> -->
-      <el-table-column prop="fromUserPhone" label="用户账号"></el-table-column>
+      <el-table-column prop="phone" label="用户名"></el-table-column>
       <el-table-column prop="coinName" label="币种"></el-table-column>
-      <el-table-column label="类型">
-        <template slot-scope="scope">
-          <span>{{scope.row.tradeType | convertTransactionType}}</span>
-        </template>
-      </el-table-column>
+      <el-table-column label="类型" prop="fundChangeTypeName"></el-table-column>
       <el-table-column prop="amount" label="金额"></el-table-column>
-      <el-table-column prop="tradeTime" label="日期"></el-table-column>
-      <!-- <el-table-column prop="alarmType" label="时间告警">
+      <el-table-column prop="createTime" label="日期">
         <template slot-scope="scope">
-          <span :class="{red: (scope.row.alarmType == '审核告警')}">{{ scope.row.alarmType }}</span>
-        </template>
-      </el-table-column> -->
-      <el-table-column label="审批状态">
-        <template slot-scope="scope">
-          <span>审核中</span>
+          <span>{{scope.row.createTime | dateFormat('YYYY-MM-DD')}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="180">
-        <template slot-scope="scope">
-          <el-button type="success" size="small"
-                     @click.native="auditTrade(scope.row.tradeId,'AUDIT_SUC')">审核通过
-          </el-button>
-          <el-button type="danger" size="small"
-                     @click.native="auditTrade(scope.row.tradeId,'AUDIT_FAIL')">拒绝
-          </el-button>
-        </template>
-      </el-table-column>
+      <el-table-column label="状态" prop="statusStr"></el-table-column>
     </sac-table>
     <sac-pagination v-show="listData.list.length>0"
                     @handleChange="getPaginationChange"
@@ -53,34 +34,46 @@
                     :page-size="filterForm.pageSize"
                     :current-page="filterForm.pageNum">
     </sac-pagination>
-    <el-dialog title="备注" :visible.sync="dialogFormVisible">
-      <el-form :model="dialogForm" ref="dialogForm">
-        <el-form-item prop="desc" :label="`${dialogForm.tradeStatus == 'AUDIT_SUC' ? '审核通过':'拒绝'}理由`">
-          <el-input type="textarea"
-                    :autosize="{ minRows: 2, maxRows: 6 }"
-                    v-model="dialogForm.sysRemark" maxlength="50"
-                    placeHolder="请输入理由"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click.native="auditSubmit('dialogForm')" size="small">确 定</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 <script>
-  import { transactionType } from '@/common/constants';
-
   export default {
     name: 'transfer-approval',
     data() {
       return {
-        billListType: [],
+        coinType: [{
+          coinId: '',
+          coinName: '全部',
+        }],
+        transactionType: [{
+          type: '',
+          typeName: '全部',
+        }],  // 交易类型
+        recdStatusType: [{
+          value: '',
+          label: '全部'
+        }, {
+          value: '0',
+          label: '失败'
+        }, {
+          value: '1',
+          label: '成功'
+        }, {
+          value: '2',
+          label: '处理中'
+        }, {
+          value: '3',
+          label: '超时待支付'
+        }],
         selectedDate: [],
+        recdStatus: [],
         filterForm: {
-          tradeType: '',
-          tradeStatus: 2,
-          fromOrToUserPhone: '',
+          coinId: '',
+          fundChangeType: '',
+          recdStatus: '',
+          phone: '',
+          beginTime: '',
+          endTime: '',
           pageNum: 1,
           pageSize: 20
         },
@@ -88,67 +81,53 @@
           total: null,
           list: [],
         },
-        transactionType,  // 交易类型
-        dialogFormVisible: false,
-        dialogForm: {
-          sysRemark: '',
-          tradeStatus: '',
-          tradeId: '',
+        props: {
+          value: 'type',
+          label: 'typeName'
+        },
+        propsCoin: {
+          value: 'coinId',
+          label: 'coinName'
         }
       };
     },
     methods: {
-      resetForm() {
-        this.$refs.tradeType.reset();// 重置交易类型
-        this.$refs.fromOrToUserPhone.reset(); // 重置用户账号
-        this.$refs.filterForm.resetFields(); // 重置query的数据
-        this.filterForm.pageNum = 1;
-        this.getTradeList();
+      getPaginationChange(val, currentPage) {
+        this.filterForm.pageSize = val;
+        this.submitForm(currentPage);
       },
       submitForm(num) {
         this.filterForm.pageNum = num;
         this.getTradeList();
       },
       getTradeList() {
-        this.$http.post('wallet/backmgr/trade/getTradeList.do', this.filterForm)
+        this.filterForm.beginTime = this.selectedDate[0];
+        this.filterForm.endTime = this.selectedDate[1];
+        this.filterForm.recdStatus = this.recdStatus.join(',');
+        this.$http.post('supernode/backmgr/fund/list', this.filterForm)
           .then((res) => {
             const { list, total } = res.result.retMap ? res.result.retMap : res.result;
             this.listData.list = list;
             this.listData.total = total;
           });
       },
-      getPaginationChange(val, currentPage) {
-        this.filterForm.pageSize = val;
-        this.submitForm(currentPage);
+      getFundChangeTypeList() {
+        this.$http.post('supernode/backmgr/fund/open/getFundChangeTypeList')
+          .then((res) => {
+            this.transactionType = [...this.transactionType, ...res.result];
+          });
       },
-      auditTrade(tradeId, tradeStatus) {
-        this.dialogFormVisible = true
-        this.dialogForm.tradeId = tradeId;
-        this.dialogForm.sysRemark = '';
-        this.dialogForm.tradeStatus = tradeStatus;
-        this.auditTradeData = {
-          tradeId: tradeId,
-          tradeStatus: tradeStatus
-        }
-      },
-      auditSubmit(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (!valid) return;
-          this.$http.post("wallet/backmgr/trade/auditTrade.do", this.dialogForm).then((res) => {
-            this.$message({
-              message: res.msg,
-              type: 'success'
-            });
-            this.dialogFormVisible = false;
-            this.getTradeList();
-          }).catch(() => {
-            this.dialogFormVisible = false;
-          })
-        })
+      getCoinInfoList() {
+        this.$http.post('supernode/coin/open/getCoinInfoList')
+          .then((res) => {
+            this.coinType = [...this.coinType, ...res.result];
+          });
       },
     },
     activated() {
       this.getTradeList();
+      this.getFundChangeTypeList();
+      this.getCoinInfoList();
     }
   };
 </script>

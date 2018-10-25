@@ -2,8 +2,8 @@
   <div class='transfer-approval'>
     <el-col :span="24" class="subsidiary" v-if="this.$route.params && this.$route.params.phone">
       <el-button
-                 size="small" type="primary" plain
-                 @click="$router.go(-1)">返回
+        size="small" type="primary" plain
+        @click="$router.go(-1)">返回
       </el-button>
       <span class="capital">{{this.$route.params.phone}}的资金明细</span>
     </el-col>
@@ -34,14 +34,14 @@
     <sac-table :data="listData.list">
       <el-table-column prop="phone" label="用户名"></el-table-column>
       <el-table-column prop="coinName" label="币种"></el-table-column>
-      <el-table-column label="类型" prop="fundChangeTypeName"></el-table-column>
+      <el-table-column label="类型" prop="fundTypeName"></el-table-column>
       <el-table-column prop="amount" label="金额"></el-table-column>
       <el-table-column prop="createTime" label="日期">
         <template slot-scope="scope">
           <span>{{scope.row.createTime | dateFormat('YYYY-MM-DD')}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="状态" prop="statusStr"></el-table-column>
+      <el-table-column label="状态" prop="status"></el-table-column>
     </sac-table>
     <sac-pagination v-show="listData.list.length>0"
                     @handleChange="getPaginationChange"
@@ -158,6 +158,14 @@
       this.getTradeList();
       this.getFundChangeTypeList();
       this.getCoinInfoList();
+      this.coinType = [{
+        coinId: '',
+        coinName: '全部',
+      }];
+      this.transactionType = [{
+        type: '',
+        typeName: '全部',
+      }];
     }
   };
 </script>

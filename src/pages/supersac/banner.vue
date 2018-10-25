@@ -91,10 +91,10 @@
             </el-input>
           </el-col>
         </el-form-item>
-        <el-form-item label="banner类型" prop="bannerTypeEnName">
-          <el-select size="small" v-model="ruleForm.bannerTypeEnName" placeholder="请选择banner类型"
-                     @change="getbannerTypeEnName('ruleForm')" style="width:100%;">
-            <el-option :label="item.label" :value="item.value" v-for="(item, index) in bannerTypeList"
+        <el-form-item label="banner类型" prop="bannerType">
+          <el-select size="small" v-model="ruleForm.bannerType" placeholder="请选择banner类型"
+                     style="width:100%;">
+            <el-option :label="item.typeName" :value="item.type" v-for="(item, index) in bannerTypeList"
                        :key="index"></el-option>
           </el-select>
         </el-form-item>
@@ -165,7 +165,7 @@
         isShowAddDialog: false,
         ruleForm: {
           bannerUrl: "",
-          bannerTypeEnName: "",
+          bannerType: "",
           bannerName: "",
           jumpUrl: "",
           weight: "",
@@ -180,7 +180,7 @@
           bannerName: [
             { required: true, message: '请选择banner名称', trigger: 'change' }
           ],
-          bannerTypeEnName: [
+          bannerType: [
             { required: true, message: '请选择banner类型', trigger: 'change' }
           ],
           jumpUrl: [
@@ -188,7 +188,7 @@
           ],
         },
         server_path: "",
-        bannerTypeCode: "",
+        // bannerTypeCode: "",
         options: {
           inline: false,
           button: false,
@@ -211,14 +211,14 @@
       resetForm() {
         this.ruleForm = {
           bannerUrl: "",
-          bannerTypeEnName: "",
+          bannerType: "",
           bannerName: "",
           jumpUrl: "",
           weight: "",
           bannerType: "",
           remark: ""
         };
-        this.bannerTypeCode = '';
+        // this.bannerTypeCode = '';
         this.$refs.ruleForm && this.$refs.ruleForm.resetFields(); // 重置query的数据
       },
       submitForm(num) {
@@ -276,13 +276,13 @@
           this.getAppBannerInfos();
         })
       },
-      getbannerTypeEnName(type) {
-        this.bannerTypeList.forEach((item) => {
-          if (item.value == this[type].bannerTypeEnName) {
-            this.bannerTypeCode = item.code;
-          }
-        })
-      },
+      // getbannerType(type) {
+      //   this.bannerTypeList.forEach((item) => {
+      //     if (item.value == this[type].bannerType) {
+      //       this.bannerTypeCode = item.code;
+      //     }
+      //   })
+      // },
       upload(response, file, fileList) {
         this.ruleForm.bannerUrl = response.result.urls[0]
       },
@@ -293,7 +293,6 @@
       },
       modification(data) {
         this.resetForm();
-        this.bannerTypeCode = data.bannerType;
         this.isShowAddDialog = true;
         this.ruleForm = JSON.parse(JSON.stringify(data));
         this.dialogTitle = `修改 ${this.ruleForm.bannerName} 的banner`;
@@ -302,10 +301,9 @@
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
             if (this.ruleForm.id) {
-              const { bannerTypeEnName, id, bannerName, jumpUrl, bannerUrl, weight, remark } = this.ruleForm;
+              const { bannerType, id, bannerName, jumpUrl, bannerUrl, weight, remark } = this.ruleForm;
               this.$http.post("supernode/backmgr/banner/update", {
-                bannerTypeEnName,
-                bannerType: this.bannerTypeCode,
+                bannerType,
                 id,
                 bannerName,
                 jumpUrl: jumpUrl || 'empty',
@@ -323,7 +321,7 @@
                 this.getAppBannerInfos();
               })
             } else {
-              this.ruleForm.bannerType = this.bannerTypeCode;
+              console.log(this.ruleForm.bannerType, 888);
               this.$http.post("supernode/backmgr/banner/create", this.ruleForm).then((res) => {
                 this.$notify({
                   title: '成功',

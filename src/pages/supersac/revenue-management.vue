@@ -78,7 +78,7 @@
     data() {
       return {
         filterForm: {
-          num: '',
+          num: null,
           pageNum: 1,
           pageSize: 20,
           total: 0,
@@ -97,6 +97,7 @@
     methods: {
       submitForm(num) {
         this.filterForm.pageNum = num;
+        this.handleClick();
       },
       getPaginationChange(val, currentPage) {
         this.filterForm.pageSize = val;
@@ -131,14 +132,16 @@
           pageNum: this.filterForm.pageNum,
           pageSize: this.filterForm.pageSize,
         }).then(res => {
-          this.userIncome = res.result;
+          const { list, total } = res.result;
+          this.userIncome = list;
+          this.filterForm.total = total;
         })
       },
       getTeamMonEarn() {
         this.$http.post('supernode/backmgr/income/getTeamMonEarn', {
           num: this.filterForm.num
         }).then(res => {
-          this.teamMonEarn = res.result;
+          this.teamMonEarn = res.result.list;
         })
       },
       handleClick() {
@@ -168,7 +171,8 @@
     }
     .totalRevenue {
       margin: 100px auto;
-      width: 300px;
+      width: 500px;
+      text-align: center;
       font-size: 20px;
       span {
         color: red;

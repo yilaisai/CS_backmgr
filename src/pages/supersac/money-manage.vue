@@ -56,14 +56,8 @@
     name: 'transfer-approval',
     data() {
       return {
-        coinType: [{
-          coinId: '',
-          coinName: '全部',
-        }],
-        transactionType: [{
-          type: '',
-          typeName: '全部',
-        }],  // 交易类型
+        coinType: [],
+        transactionType: [],  // 交易类型
         recdStatusType: [{
           value: '',
           label: '全部'
@@ -141,13 +135,19 @@
       getFundChangeTypeList() {
         this.$http.post('supernode/backmgr/fund/open/getFundChangeTypeList')
           .then((res) => {
-            this.transactionType = [...this.transactionType, ...res.result];
+            this.transactionType = [{
+              type: '',
+              typeName: '全部',
+            }, ...res.result];
           });
       },
       getCoinInfoList() {
         this.$http.post('supernode/coin/open/getCoinInfoList')
           .then((res) => {
-            this.coinType = [...this.coinType, ...res.result];
+            this.coinType = [{
+              coinId: '',
+              coinName: '全部',
+            }, ...res.result];
           });
       },
     },
@@ -158,14 +158,6 @@
       this.getTradeList();
       this.getFundChangeTypeList();
       this.getCoinInfoList();
-      this.coinType = [{
-        coinId: '',
-        coinName: '全部',
-      }];
-      this.transactionType = [{
-        type: '',
-        typeName: '全部',
-      }];
     }
   };
 </script>

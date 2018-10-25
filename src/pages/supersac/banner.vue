@@ -27,7 +27,7 @@
     </el-form>
     <sac-table :data="listData.list">
       <el-table-column prop="weight" label="权重" width="80"></el-table-column>
-      <el-table-column prop="bannerTypeName" label="banner类型"></el-table-column>
+      <el-table-column prop="bannerName" label="banner名称"></el-table-column>
       <el-table-column label="banner图片">
         <template slot-scope="scope">
           <viewer :options="options"
@@ -39,7 +39,7 @@
           <span v-if="scope.row.bannerUrl.indexOf('http')">{{scope.row.bannerUrl}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="bannerName" label="banner名称"></el-table-column>
+      <el-table-column prop="bannerTypeName" label="banner类型"></el-table-column>
       <el-table-column prop="jumpUrl" label="跳转链接">
         <template slot-scope="scope" prop="sysStatus">
           <a target="_brank" :href="scope.row.jumpUrl">{{scope.row.jumpUrl}}</a>
@@ -53,17 +53,17 @@
       </el-table-column>
       <el-table-column label="操作" width="160">
         <template slot-scope="scope" prop="sysStatus">
-          <el-button type="primary" :disabled="scope.row.isOnshelf != 0" size="small"
+          <el-button type="primary" :disabled="scope.row.isOnShelf != 0" size="small"
                      @click.native="modification(scope.row)">修改
           </el-button>
-          <el-button type="danger" :disabled="scope.row.isOnshelf != 0" size="small"
+          <el-button type="danger" :disabled="scope.row.isOnShelf != 0" size="small"
                      @click.native="remove(scope.row)">删除
           </el-button>
         </template>
       </el-table-column>
       <el-table-column label="上架" width="100">
-        <template slot-scope="scope" prop="isOnshelf">
-          <el-switch v-model="scope.row.isOnshelf" :inactive-value="0" :active-value="1"
+        <template slot-scope="scope" prop="isOnShelf">
+          <el-switch v-model="scope.row.isOnShelf" :inactive-value="0" :active-value="1"
                      @click.native="switchChange(scope.row)"></el-switch>
         </template>
       </el-table-column>
@@ -94,7 +94,7 @@
         <el-form-item label="banner类型" prop="bannerType">
           <el-select size="small" v-model="ruleForm.bannerType" placeholder="请选择banner类型"
                      style="width:100%;">
-            <el-option :label="item.typeName" :value="item.type" v-for="(item, index) in bannerTypeList"
+            <el-option :label="item.typeName" :value="item.code" v-for="(item, index) in bannerTypeList"
                        :key="index"></el-option>
           </el-select>
         </el-form-item>
@@ -158,7 +158,7 @@
           label: '下架',
         }],
         typeList: {
-          value: 'type',
+          value: 'code',
           label: 'typeName',
         },
         bannerTypeList: [],
@@ -232,7 +232,10 @@
       // banner类型
       getBannerTypeList() {
         this.$http.post("supernode/backmgr/banner/open/getBannerTypeList", this.filterForm).then((res) => {
-          this.bannerTypeList = res.result;
+          this.bannerTypeList = [{
+            typeName: '全部',
+            code: '',
+          }, ...res.result];
         })
       },
       getAppBannerInfos() {
@@ -263,14 +266,14 @@
       },
       // 上下架
       switchChange(itemData) {
-        const { isOnshelf, id, bannerName } = itemData;
+        const { isOnShelf, id, bannerName } = itemData;
         this.$http.post("supernode/backmgr/banner/isOnShelf", {
-          isOnshelf: isOnshelf ? "1" : "0",
+          isOnShelf: isOnShelf ? "1" : "0",
           id
         }).then((res) => {
           this.$notify({
             title: '成功',
-            message: `${bannerName} ${isOnshelf ? "上架" : "下架"} 成功`,
+            message: `${bannerName} ${isOnShelf ? "上架" : "下架"} 成功`,
             type: 'success'
           });
           this.getAppBannerInfos();

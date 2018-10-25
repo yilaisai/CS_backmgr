@@ -54,11 +54,9 @@
         </sac-pagination>
       </el-tab-pane>
       <el-tab-pane label="商户情况" name="fourth">
-        <div>
-          <span> PNB发行总数：{{pnbAmount}}</span>
-          <span> 投票SAC总消耗：{{sacAmount}}</span>
-          <span> SAC汇率：{{sacRate}}</span>
-        </div>
+        <span class="amount"> PNB发行总数：<span class="red">{{pnbAmount}}</span></span>
+        <span class="amount"> 投票SAC总消耗：<span class="red">{{sacAmount}}</span></span>
+        <span class="amount"> SAC汇率：<span class="red">{{sacRate}}</span></span>
         <sac-table :data="teamMonEarn">
           <el-table-column prop="teamName" label="商户名称"></el-table-column>
           <el-table-column prop="sacAmount" label="SAC投票净消耗数"></el-table-column>
@@ -89,9 +87,9 @@
         teamIncome: [],
         userIncome: [],
         teamMonEarn: [],
-        pnbAmount: '',
-        sacAmount: '',
-        sacRate: '',
+        pnbAmount: '0',
+        sacAmount: '0',
+        sacRate: '0',
       };
     },
     methods: {
@@ -141,7 +139,11 @@
         this.$http.post('supernode/backmgr/income/getTeamMonEarn', {
           num: this.filterForm.num
         }).then(res => {
-          this.teamMonEarn = res.result.list;
+          const { list, pnbAmount, sacAmount, sacRate } = res.result;
+          this.teamMonEarn = list;
+          this.pnbAmount = pnbAmount || '0';
+          this.sacAmount = sacAmount || '0';
+          this.sacRate = sacRate || '0';
         })
       },
       handleClick() {
@@ -179,6 +181,20 @@
         font-weight: 600;
         font-size: 30px;
       }
+    }
+    .amount {
+      margin-right: 20px;
+      font-size: 14px;
+      span {
+        color: red;
+        font-size: 16px;
+        font-weight: 600;
+      }
+    }
+    .el-tabs {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
     }
   }
 </style>

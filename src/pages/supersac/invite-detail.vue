@@ -74,7 +74,7 @@
         this.$http.post('supernode/backmgr/user/invite/list', this.filterForm)
           .then((res) => {
             const { details, level, parent } = res.result;
-            this.detais.list = details.list;
+            this.detais.list = details.list ? details.list : [];
             this.detais.total = details.total;
             this.level = level;
             this.parent = parent;

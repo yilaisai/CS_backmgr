@@ -1,6 +1,6 @@
 <template>
   <div class='transfer-approval'>
-    <el-col :span="24" class="subsidiary" v-if="this.$route.params && this.$route.params.phone">
+    <el-col :span="24" class="subsidiary" v-if="isShowDetail">
       <el-button
         size="small" type="primary" plain
         @click="$router.go(-1)">返回
@@ -17,7 +17,7 @@
                   :dataList="transactionType" :props="props"></sac-select>
       <sac-select ref="recdStatus" label="状　　态" v-model="recdStatus" multiple
                   :dataList="recdStatusType"></sac-select>
-      <el-form-item label="用户名:">
+      <el-form-item label="用户名:" v-if="!isShowDetail">
         <el-input v-model.trim="filterForm.phone"
                   size="small"
                   placeholder="请输入用户名"
@@ -109,6 +109,7 @@
           value: 0
         }],
         isShowMoneyAll: false,
+        isShowDetail: false,
       };
     },
     methods: {
@@ -154,6 +155,7 @@
     activated() {
       if (this.$route.params && this.$route.params.phone) {
         this.filterForm.phone = this.$route.params.phone;
+        this.isShowDetail = true;
       }
       this.getTradeList();
       this.getFundChangeTypeList();

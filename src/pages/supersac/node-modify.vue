@@ -12,17 +12,11 @@
         <el-input size="small" v-model="ruleForm.teamName" width="100%"
                   placeholder="请输入节点名称"></el-input>
       </el-form-item>
-      <el-form-item label="logo:">
-        <el-upload
-          name="files"
-          class="avatar-uploader"
-          :action="server_path + 'wallet/util/open/uploadFile.do'"
-          :show-file-list="false"
-          :on-success="upload"
-          :data="{type:'supersac_img'}">
-          <img v-show="ruleForm.logoUrl" :src="ruleForm.logoUrl" class="avatar">
-          <i v-show="!ruleForm.logoUrl" class="el-icon-plus avatar-uploader-icon"></i>
-        </el-upload>
+      <el-form-item label="节点简介:" prop="nodeIntroduce" style="position: relative;">
+        <span class="tips tips_textarea">{{ruleForm.nodeIntroduce?ruleForm.nodeIntroduce.length:0}}/500</span>
+        <el-input size="small" type="textarea" :rows="3" v-model="ruleForm.nodeIntroduce" width="100%"
+                  maxlength="50"
+                  placeholder="请输入节点简介"></el-input>
       </el-form-item>
       <el-form-item label="Sacbox账号:" prop="sacBoxAccount">
         <el-input size="small" v-model="ruleForm.sacBoxAccount" width="100%"
@@ -40,11 +34,17 @@
         <el-input v-model="ruleForm.email"></el-input>
       </el-form-item>
       <sac-input ref="offcialurl" v-model="ruleForm.officialAddr" label="官网地址" prop="offcialurl"></sac-input>
-      <el-form-item label="节点简介:" prop="nodeIntroduce" style="position: relative;">
-        <span class="tips tips_textarea">{{ruleForm.nodeIntroduce?ruleForm.nodeIntroduce.length:0}}/500</span>
-        <el-input size="small" type="textarea" :rows="3" v-model="ruleForm.nodeIntroduce" width="100%"
-                  maxlength="50"
-                  placeholder="请输入节点简介"></el-input>
+      <el-form-item label="logo:">
+        <el-upload
+          name="files"
+          class="avatar-uploader"
+          :action="server_path + 'wallet/util/open/uploadFile.do'"
+          :show-file-list="false"
+          :on-success="upload"
+          :data="{type:'supersac_img'}">
+          <img v-show="ruleForm.logoUrl" :src="ruleForm.logoUrl" class="avatar">
+          <i v-show="!ruleForm.logoUrl" class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
       </el-form-item>
       <el-form-item label="团队介绍:">
         <el-input size="small" type="textarea" :rows="3" v-model="ruleForm.teamIntroduce" width="100%"

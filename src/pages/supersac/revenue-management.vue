@@ -196,5 +196,9 @@
       flex-direction: column;
       height: 100%;
     }
+
+    .el-tabs__content, .el-tab-pane {
+      height: 100%;
+    }
   }
 </style>

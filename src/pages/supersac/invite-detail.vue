@@ -24,7 +24,11 @@
       <el-table-column prop="phone" label="用户名"></el-table-column>
       <el-table-column prop="currentLevel" label="等级"></el-table-column>
       <el-table-column prop="pNBAmount" label="PNB"></el-table-column>
-      <el-table-column prop="createTime" label="注册时间"></el-table-column>
+      <el-table-column prop="createTime" label="注册时间">
+        <template slot-scope="scope">
+          <span>{{scope.row.createTime | dateFormat('YYYY-MM-DD HH:mm')}}</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="status" label="状态">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.status=='0'">解锁</el-tag>

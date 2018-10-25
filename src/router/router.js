@@ -572,6 +572,13 @@ export const appRouter = [
           title: '收益管理'
         },
         component: () => import('@/pages/supersac/revenue-management.vue')
+      }, {
+        path: 'team-ranking',
+        name: 'teamRanking',
+        meta: {
+          title: '团队排行'
+        },
+        component: () => import('@/pages/supersac/team-ranking.vue')
       }
     ],
   },

@@ -51,7 +51,7 @@
           </el-button>
           <el-button type="primary" size="small" @click.native="goDetail(scope.row)">查看详情</el-button>
           <el-button type="primary" size="small" @click.native="goModifyDetail(scope.row)">修改</el-button>
-          <el-button type="primary" size="small" @click.native="sendEmail(scope.row.email)">发邮件</el-button>
+          <el-button type="primary" size="small" @click.native="sendEmail()">发邮件</el-button>
         </template>
       </el-table-column>
     </sac-table>
@@ -177,6 +177,7 @@
         innerVisible: false,
         innerVisibleTitle: '',
         info: '',
+        fromName: '',
       };
     },
     methods: {
@@ -191,6 +192,7 @@
             this.listData.list = list;
             this.listData.total = total;
             this.pNBAmount = res.result.pNBAmount;
+            this.fromName = `【${res.result.fromName}】 ${res.result.from}`
           });
       },
       getPaginationChange(val, currentPage) {
@@ -298,11 +300,11 @@
             this.getList();
           });
       },
-      sendEmail(email) {
+      sendEmail() {
         this.$router.push({
           name: 'sendEmail',
           params: {
-            email
+            fromName: this.fromName
           },
         });
       }

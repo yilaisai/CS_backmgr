@@ -324,7 +324,6 @@
                 this.getAppBannerInfos();
               })
             } else {
-              console.log(this.ruleForm.bannerType, 888);
               this.$http.post("supernode/backmgr/banner/create", this.ruleForm).then((res) => {
                 this.$notify({
                   title: '成功',

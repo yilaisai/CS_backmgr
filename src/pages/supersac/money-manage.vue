@@ -91,7 +91,7 @@
           list: [],
         },
         props: {
-          value: 'type',
+          value: 'code',
           label: 'typeName'
         },
         propsCoin: {
@@ -137,7 +137,7 @@
         this.$http.post('supernode/backmgr/fund/open/getFundChangeTypeList')
           .then((res) => {
             this.transactionType = [{
-              type: '',
+              code: '',
               typeName: '全部',
             }, ...res.result];
           });

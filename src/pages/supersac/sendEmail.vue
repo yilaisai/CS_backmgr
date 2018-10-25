@@ -19,7 +19,7 @@
              :model="postObj"
              ref="postObj">
       <el-form-item label="发件人：">
-        <span>【Justoken 客服中心】 oblocktest@gmail.com </span>
+        <span> {{$route.params&&$route.params.fromName}} </span>
       </el-form-item>
       <el-form-item
         size="small"

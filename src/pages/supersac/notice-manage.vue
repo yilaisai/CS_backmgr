@@ -30,7 +30,7 @@
       </el-table-column>
       <el-table-column label="操作" width="150px">
         <template slot-scope="scope" prop="sysStatus">
-          <el-button type="primary" :disabled="scope.row.lockStatus == 0" size="small"
+          <el-button type="primary" :disabled="scope.row.lockStatus == 1" size="small"
                      :loading="scope.row.isLoading"
                      @click.native="modification(scope.row,scope.$index)">修改
           </el-button>
@@ -38,7 +38,7 @@
       </el-table-column>
       <el-table-column label="上架" width="100">
         <template slot-scope="scope" prop="type">
-          <el-switch v-model="scope.row.lockStatus" :inactive-value="1" :active-value="0"
+          <el-switch v-model="scope.row.lockStatus" :inactive-value="0" :active-value="1"
                      @click.native="switchChange(scope.row)"></el-switch>
         </template>
       </el-table-column>
@@ -113,10 +113,10 @@
           value: '',
           label: '全部状态',
         }, {
-          value: '0',
+          value: '1',
           label: '上架',
         }, {
-          value: '1',
+          value: '0',
           label: '下架',
         }],
         dialogTitle: '新增公告',
@@ -173,7 +173,7 @@
         }).then((res) => {
           this.$notify({
             title: '成功',
-            message: `${title} ${lockStatus ? "下架" : "上架"} 成功`,
+            message: `${title} ${lockStatus ? "上架" : "下架"} 成功`,
             type: 'success'
           });
           this.getNoticeInfoList();

@@ -31,8 +31,8 @@
       </el-table-column>
       <el-table-column prop="status" label="状态">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.status=='0'">解锁</el-tag>
-          <el-tag v-if="scope.row.status=='1'" type="danger">锁定</el-tag>
+          <span v-if="scope.row.status=='0'" style="color:#409EFF;">正常</span>
+          <span v-if="scope.row.status=='1'" style="color:red;">锁定中</span>
         </template>
       </el-table-column>
     </sac-table>
@@ -66,10 +66,10 @@
           label: '全部',
         }, {
           value: '1',
-          label: '锁定',
+          label: '锁定中',
         }, {
           value: '0',
-          label: '解锁',
+          label: '正常',
         }],
       };
     },

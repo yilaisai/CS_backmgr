@@ -23,7 +23,21 @@
                   placeholder="请输入用户名"
                   clearable></el-input>
       </el-form-item>
-      <sac-date ref="selectedDate" label="日　　期" v-model="selectedDate"></sac-date>
+      <el-form-item label="日　　期" class="sac-date">
+        <el-date-picker
+          v-model="selectedDate"
+          :editable="false"
+          type="daterange"
+          align="center"
+          size="small"
+          unlink-panels
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          value-format="yyyy-MM-dd">
+        </el-date-picker>
+      </el-form-item>
+
       <sac-submit-form
         :isReset='false'
         @submitForm="submitForm(1)"></sac-submit-form>
@@ -113,6 +127,20 @@
       };
     },
     methods: {
+      resetForm() {
+        this.filterForm.coinId = '';
+        this.filterForm.fundChangeType = '';
+        this.filterForm.recdStatus = '';
+        this.filterForm.beginTime = '';
+        this.filterForm.endTime = '';
+        this.filterForm.phone = '';
+        this.selectedDate = [];
+        this.recdStatus = [];
+        this.$refs.coinId.reset();
+        this.$refs.fundChangeType.reset();
+        this.$refs.recdStatus.reset();
+        this.$refs.filterForm && this.$refs.filterForm.resetFields(); // 重置query的数据
+      },
       getPaginationChange(val, currentPage) {
         this.filterForm.pageSize = val;
         this.submitForm(currentPage);
@@ -156,7 +184,11 @@
       if (this.$route.params && this.$route.params.phone) {
         this.filterForm.phone = this.$route.params.phone;
         this.isShowDetail = true;
+      } else {
+        this.isShowDetail = false;
       }
+      this.resetForm();
+      this.isShowMoneyAll = false;
       this.getTradeList();
       this.getFundChangeTypeList();
       this.getCoinInfoList();
@@ -185,6 +217,12 @@
         display: inline-block;
         font-size: 20px;
       }
+    }
+    .el-date-editor--daterange.el-input__inner {
+      width: 240px;
+    }
+    .el-form-item__content {
+      width: 240px;
     }
   }
 </style>

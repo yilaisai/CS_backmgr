@@ -204,5 +204,13 @@
     .el-form--inline .el-form-item__content {
       width: 350px;
     }
+    .el-form--inline {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      .quill-editor {
+        height: 100%;
+      }
+    }
   }
 </style>

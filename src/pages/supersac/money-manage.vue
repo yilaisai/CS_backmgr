@@ -184,12 +184,13 @@
       if (this.$route.params && this.$route.params.phone) {
         this.filterForm.phone = this.$route.params.phone;
         this.isShowDetail = true;
+        this.getTradeList();
       } else {
         this.isShowDetail = false;
+        this.getTradeList();
       }
       this.resetForm();
       this.isShowMoneyAll = false;
-      this.getTradeList();
       this.getFundChangeTypeList();
       this.getCoinInfoList();
     }

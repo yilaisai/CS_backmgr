@@ -16,10 +16,10 @@
       <el-table-column prop="scoreRate" label="得分占比 "></el-table-column>
       <el-table-column label="操作" width="160">
         <template slot-scope="scope" prop="sysStatus">
-          <el-button type="primary" :disabled="!scope.row.id" size="small"
+          <el-button type="primary" :disabled="!scope.row.id||scope.row.isOnShelf=='1'" size="small"
                      @click.native="modification(scope.row)">修改
           </el-button>
-          <el-button type="danger" :disabled="!scope.row.id" size="small"
+          <el-button type="danger" :disabled="!scope.row.id||scope.row.isOnShelf=='1'" size="small"
                      @click.native="remove(scope.row)">删除
           </el-button>
         </template>
@@ -134,6 +134,7 @@
         this.resetForm();
         this.isShowAddDialog = true;
         this.ruleForm = JSON.parse(JSON.stringify(data));
+        this.ruleForm.member = data.memberNum;
         this.dialogTitle = `修改 ${this.ruleForm.teamName} 的banner`;
       },
       determine() {

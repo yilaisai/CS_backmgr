@@ -15,10 +15,10 @@
              :model="filterForm">
       <sac-input
         ref="phone"
-        label="图片名称"
+        label="banner名称"
         v-model.trim="filterForm.bannerName"
         prop="phone"></sac-input>
-      <sac-date ref="selectedDate" label="日　　期" placeholder="请选择日期"  v-model="selectedDate"></sac-date>
+      <sac-date ref="selectedDate" label="日　　期" placeholder="请选择日期" v-model="selectedDate"></sac-date>
       <sac-select label="类型" v-model="filterForm.bannerType" :props="typeList" :data-list="bannerTypeList"></sac-select>
       <sac-select label="状态" v-model="filterForm.isOnShelf" :data-list="bannerOnShelfList"></sac-select>
       <sac-submit-form
@@ -77,46 +77,45 @@
     <el-dialog :title="dialogTitle" :visible.sync="isShowAddDialog">
       <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="140px">
         <el-form-item label="banner图片:" prop="bannerUrl">
-          <el-col>
-            <el-input size="small" v-model="ruleForm.bannerUrl" placeholder="请选择上传">
-              <el-upload
-                :action="server_path + 'wallet/util/open/uploadFile.do'"
-                multiple
-                name="files"
-                :data="{type:'img'}"
-                :show-file-list="false"
-                :on-success="upload" slot="append">
-                <el-button size="small" type="primary">点击上传</el-button>
-              </el-upload>
-            </el-input>
-          </el-col>
+          <img v-show="ruleForm.bannerUrl" v-viewer :src="ruleForm.bannerUrl" class="introduce">
+          <el-upload
+            v-loading="loading"
+            :action="server_path + 'wallet/util/open/uploadFile.do'"
+            multiple
+            name="files"
+            :before-upload="beforeUpload"
+            :data="{type:'img'}"
+            :show-file-list="false"
+            :on-success="upload">
+            <el-button size="small" type="primary">点击上传</el-button>
+          </el-upload>
         </el-form-item>
         <el-form-item label="banner类型" prop="bannerType">
           <el-select size="small" v-model="ruleForm.bannerType" placeholder="请选择banner类型"
                      style="width:100%;">
             <el-option :label="item.typeName" :value="item.code" v-for="(item, index) in bannerTypeList"
-                       :key="index"></el-option>
+                       :key="index" v-if="index!=0"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label=" banner名称:" prop="bannerName">
-          <el-col>
-            <el-input size="small" v-model="ruleForm.bannerName" placeholder="请输入banner名称"></el-input>
-          </el-col>
+
+          <el-input size="small" v-model="ruleForm.bannerName" placeholder="请输入banner名称"></el-input>
+
         </el-form-item>
         <el-form-item label="跳转链接:" prop="jumpUrl">
-          <el-col>
-            <el-input size="small" v-model="ruleForm.jumpUrl" placeholder="请输入跳转链接"></el-input>
-          </el-col>
+
+          <el-input size="small" v-model="ruleForm.jumpUrl" placeholder="请输入跳转链接"></el-input>
+
         </el-form-item>
         <el-form-item label="权重:">
-          <el-col>
-            <el-input-number size="small" v-model="ruleForm.weight" :min="1" label="请输入权重"></el-input-number>
-          </el-col>
+
+          <el-input-number size="small" v-model="ruleForm.weight" :min="1" label="请输入权重"></el-input-number>
+
         </el-form-item>
         <el-form-item label="备注:">
-          <el-col>
-            <el-input size="small" v-model="ruleForm.remark" placeholder="请输入备注"></el-input>
-          </el-col>
+
+          <el-input size="small" v-model="ruleForm.remark" placeholder="请输入备注"></el-input>
+
         </el-form-item>
         <el-form-item>
           <el-button type="primary" style="width: 100px" size="small" @click.native="determine">确定</el-button>
@@ -163,6 +162,7 @@
         },
         bannerTypeList: [],
         isShowAddDialog: false,
+        loading: false,
         ruleForm: {
           bannerUrl: "",
           bannerType: "",
@@ -279,15 +279,12 @@
           this.getAppBannerInfos();
         })
       },
-      // getbannerType(type) {
-      //   this.bannerTypeList.forEach((item) => {
-      //     if (item.value == this[type].bannerType) {
-      //       this.bannerTypeCode = item.code;
-      //     }
-      //   })
-      // },
       upload(response, file, fileList) {
-        this.ruleForm.bannerUrl = response.result.urls[0]
+        this.ruleForm.bannerUrl = response.result.urls[0];
+        this.loading = false;
+      },
+      beforeUpload(){
+        this.loading = true;
       },
       addBanner() {
         this.resetForm();
@@ -350,5 +347,9 @@
 </script>
 <style lang="less">
   .banner {
+    .introduce {
+      height: 80px;
+      display: block;
+    }
   }
 </style>

@@ -164,6 +164,22 @@ export const appRouter = [
         component: () => import('@/pages/third-application/created.vue'),
       },
       {
+        path: 'third-modify',
+        name: 'thirdModify',
+        meta: {
+          title: '应用修改和新增',
+        },
+        component: () => import('@/pages/third-application/third-modify.vue'),
+      },
+      {
+        path: 'third-detail',
+        name: 'thirdDetail',
+        meta: {
+          title: '应用详情',
+        },
+        component: () => import('@/pages/third-application/third-detail.vue'),
+      },
+      {
         path: 'check-application',
         name: 'check-application',
         meta: {
@@ -488,7 +504,7 @@ export const appRouter = [
       },
       {
         path: 'user',
-        name: 'user',
+        name: 'supersacUser',
         meta: {
           title: '用户管理'
         },
@@ -528,7 +544,7 @@ export const appRouter = [
       },
       {
         path: 'banner',
-        name: 'banner',
+        name: 'supersacBanner',
         meta: {
           title: 'banner管理'
         },

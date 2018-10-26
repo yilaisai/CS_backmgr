@@ -31,7 +31,13 @@
       <el-table-column label="提币" width="90">
         <template slot-scope="scope" prop="isShow">
           <el-switch v-model="scope.row.isWithdraw" :inactive-value="0" :active-value="1"
-                     @click.native="switchChange(scope.row)"></el-switch>
+                     @click.native="withdrawCoin(scope.row)"></el-switch>
+        </template>
+      </el-table-column>
+      <el-table-column label="上架" width="100">
+        <template slot-scope="scope" prop="isShow">
+          <el-switch v-model="scope.row.sysStatus" :inactive-value="0" :active-value="1"
+                     @click.native="updateCoinInfoStatus(scope.row)"></el-switch>
         </template>
       </el-table-column>
     </sac-table>
@@ -108,7 +114,7 @@
         })
       },
       // 转账提币提取
-      switchChange(itemData) {
+      withdrawCoin(itemData) {
         const { coinId, isWithdraw, coinName } = itemData;
         this.$http.post("wallet/backmgr/coin/updateCoinInfoIsWithdraw.do", {
           isWithdraw: isWithdraw ? "YES" : "NO",
@@ -120,6 +126,23 @@
             type: 'success'
           });
           this.getCoinInfoList();
+        })
+      },
+      // 上下架
+      updateCoinInfoStatus(itemData) {
+        console.log(itemData);
+        const { sysStatus, coinId, coinName } = itemData;
+        this.$http.post("wallet/backmgr/coin/updateCoinInfoStatus.do", {
+          status: sysStatus ? "VALID1" : "INVALID0",
+          coinId: coinId,
+          version: '10.24',
+          plat: 'web'
+        }).then((res) => {
+          this.$notify({
+            title: '成功',
+            message: `${coinName} ${sysStatus ? "上架" : "下架"} 成功`,
+            type: 'success'
+          });
         })
       },
       modification(itemData) {

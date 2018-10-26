@@ -8,13 +8,13 @@
     <el-col :span="22" style="text-align:right; margin-bottom:30px;">
       <el-button size="small" type="primary" @click="addSend">创建邀请规则</el-button>
     </el-col>
-    
+
     <sac-table :data="listData.list">
       <!-- <el-table-column prop="minAmount" label="持币数量" :formatter="formatSex"></el-table-column>
       <el-table-column prop="amount" label="送币数量"></el-table-column> -->
-      
+
       <el-table-column prop="createTime" label="创建时间" width="140">
-        
+
 
       </el-table-column>
        <!-- v-for="item in coinList"
@@ -22,48 +22,48 @@
                 :label="item.coinName"
                 :value="item.coinId"> -->
       <el-table-column prop="coinId" label="币种" class-name="选择送出的币类型" :render-header="foo">
-        <template scope="scope">     
-          <div v-for="item in coinList" :key="item.coinId" v-if="scope.row.coinId==item.coinId">{{item.coinName}}</div>       
+        <template slot-scope="scope">
+          <div v-for="item in coinList" :key="item.coinId" v-if="scope.row.coinId==item.coinId">{{item.coinName}}</div>
         </template>
       </el-table-column>
       <el-table-column prop="directInvitedAmount" label="邀请奖励" width="100" class-name="邀请单个好友时，给予邀请人的奖励" :render-header="foo"></el-table-column>
       <el-table-column prop="registAmount" label="被邀请人奖励" width="100"></el-table-column>
       <el-table-column prop="secInvitedAmount" label="父奖励" class-name="邀请单个好友时，给予父邀请人的奖励" :render-header="foo"></el-table-column>
-      
+
       <el-table-column prop="effectSec" label="父奖励状态" width="100" class-name="是否给予邀请单个好友时，父邀请人的奖励" :render-header="foo">
-        <template scope="scope">     
-          <div v-for="item in effectSecData" :key="item.coinId" v-if="scope.row.effectSec==item.value">{{item.text}}</div>       
+        <template slot-scope="scope">
+          <div v-for="item in effectSecData" :key="item.coinId" v-if="scope.row.effectSec==item.value">{{item.text}}</div>
         </template>
       </el-table-column>
-      
+
       <el-table-column prop="inviteAmount" label="邀请数奖励" width="100" class-name="邀请人邀请用户数达到一定数量奖励多少币，与邀请单个好友冲突" :render-header="foo"></el-table-column>
       <el-table-column prop="inviteAuthState" label="邀请人实名" width="100">
-        <template scope="scope">     
-          <div v-for="item in needData" :key="item.coinId" v-if="scope.row.inviteAuthState==item.value">{{item.text}}</div>       
+        <template slot-scope="scope">
+          <div v-for="item in needData" :key="item.coinId" v-if="scope.row.inviteAuthState==item.value">{{item.text}}</div>
         </template>
       </el-table-column>
       <el-table-column prop="inviteCount" label="邀请人数"></el-table-column>
       <el-table-column prop="invitedAuthState" label="被邀请人实名" width="100">
-        <template scope="scope">     
-          <div v-for="item in needData" :key="item.coinId" v-if="scope.row.invitedAuthState==item.value">{{item.text}}</div>       
+        <template slot-scope="scope">
+          <div v-for="item in needData" :key="item.coinId" v-if="scope.row.invitedAuthState==item.value">{{item.text}}</div>
         </template>
       </el-table-column>
       <el-table-column prop="loginDay" label="登录天数"></el-table-column>
       <el-table-column prop="maxInviteAmount" label="送币上限"></el-table-column>
       <el-table-column prop="remainAmount" label="奖池余额"></el-table-column>
-      
+
       <!-- <el-table-column prop="sysStatus" label="系统状态"></el-table-column> -->
       <el-table-column prop="totalAmount" label="奖池总额" width="100" class-name="0表示不限制" :render-header="foo"></el-table-column>
       <el-table-column prop="tranStatus" label="转账">
-        <template scope="scope">     
-          <div v-for="item in tranStatusData" :key="item.tranStatus" v-if="scope.row.tranStatus==item.value">{{item.text}}</div>       
+        <template slot-scope="scope">
+          <div v-for="item in tranStatusData" :key="item.tranStatus" v-if="scope.row.tranStatus==item.value">{{item.text}}</div>
         </template>
       </el-table-column>
       <el-table-column prop="beginDate" label="生效时间" width="140"></el-table-column>
       <el-table-column prop="endDate" label="失效时间" width="140"></el-table-column>
       <el-table-column prop="sendCount" label="数/天" class-name="每天送币次数，0表示不限制" :render-header="foo"></el-table-column>
       <el-table-column label="操作" width="150" fixed="right">
-        
+
         <template slot-scope="scope" prop="sysStatus">
           <el-button type="success" :disabled="scope.row.isOnshelf != 0" size="small"
                      @click.native="modification(scope.row)">修改
@@ -170,7 +170,7 @@
               </el-option>
             </el-select>
           </el-form-item>
-        
+
           <el-form-item label="邀请人数:" prop="inviteCount" class="from_box_item">
             <el-input type="number" v-model="ruleForm.inviteCount" placeholder=""></el-input>
           </el-form-item>
@@ -237,8 +237,8 @@
             <el-input type="number" v-model="ruleForm.registAmount" placeholder=""></el-input>
           </el-form-item>
         </div>
-        
-        
+
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false" size="small">取 消</el-button>
@@ -383,7 +383,7 @@ import { dateFormat } from '@/common/util';
             isOnShelf: isOnshelf ? "YES" : "NO",
             id
           }).then((res) => {
-          
+
             this.$notify({
               title: '成功',
               message: `${isOnshelf ? "上架" : "下架"} 成功`,
@@ -492,18 +492,18 @@ import { dateFormat } from '@/common/util';
         })
       },
       formatDateTime(date){
-        var y = date.getFullYear();  
-        var m = date.getMonth() + 1;  
-        m = m < 10 ? ('0' + m) : m;  
-        var d = date.getDate();  
-        d = d < 10 ? ('0' + d) : d;  
-        var h = date.getHours();  
-        h=h < 10 ? ('0' + h) : h;  
-        var minute = date.getMinutes();  
-        minute = minute < 10 ? ('0' + minute) : minute;  
-        var second=date.getSeconds();  
-        second=second < 10 ? ('0' + second) : second;  
-        return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second; 
+        var y = date.getFullYear();
+        var m = date.getMonth() + 1;
+        m = m < 10 ? ('0' + m) : m;
+        var d = date.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        var h = date.getHours();
+        h=h < 10 ? ('0' + h) : h;
+        var minute = date.getMinutes();
+        minute = minute < 10 ? ('0' + minute) : minute;
+        var second=date.getSeconds();
+        second=second < 10 ? ('0' + second) : second;
+        return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
       },
       foo(h,{column}){
         console.log(column);

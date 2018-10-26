@@ -61,7 +61,6 @@
     },
     mounted() {
       const menuList = JSON.parse(localStorage.getItem('wallet_menuUrls')) || [];
-      console.log(menuList)
       menuList.forEach((item) => {
         item.icon = item.menuUrl.split('/')[1] ? item.menuUrl.split('/')[1] : 'home';
       });

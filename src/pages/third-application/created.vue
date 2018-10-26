@@ -7,13 +7,24 @@
   <div class='created'>
     <el-form :inline="true" label-width="90px" ref="filterForm" :model="filterForm">
       <el-col :inline="true" :span="14">
-        <sac-input label="APPID" v-model="filterForm.appId"></sac-input>
-        <el-button type="primary" size="small" @click.native="sendAPPID()" style="margin-top: 5px;">发送</el-button>
+
+        <el-input :placeholder="`请输入${filterForm.key}`" v-model="filterForm.value" size="small"
+                  class="input-with-select">
+          <el-select v-model="filterForm.key" slot="prepend" placeholder="请选择">
+            <el-option label="appId" value="appId"></el-option>
+            <el-option label="appName" value="appName"></el-option>
+            <el-option label="appNameEn" value="appNameEn"></el-option>
+          </el-select>
+        </el-input>
+        <el-button type="primary" size="small" @click.native="queryEvents" style="margin-top: 5px;">查询</el-button>
+        <el-tooltip class="item" effect="dark" content="将已配置的APPID以邮箱和短信的形式一键发送给第三方" placement="top">
+          <el-button type="primary" size="small" @click.native="sendAPPID()" style="margin-top: 5px;">发送</el-button>
+        </el-tooltip>
       </el-col>
       <el-col :inline="true" :span="10" align="right">
         <el-button size="small" type="primary" @click="addCreate" style="margin-top: 5px;">创建应用</el-button>
       </el-col>
-    </el-form> 
+    </el-form>
     <sac-table :data="listData.list">
       <el-table-column prop="id" label="序号" width="100"></el-table-column>
       <el-table-column label="名称" prop="appName"></el-table-column>
@@ -60,184 +71,19 @@
                     :page-size="pageSize"
                     :current-page="pageNum">
     </sac-pagination>
-    <el-dialog :title="dialogEditorTitle" :visible.sync="dialogEditor" :close-on-click-modal="false">
-      <quill-editor ref="myTextEditor"  
-        :content="dialogEditorContent"
-        :options = "editorOption"  
-        @change="onEditorChange($event)">
-      </quill-editor> 
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogEditor = false" size="small">取 消</el-button>
-        <el-button type="primary" @click="editConfirm" size="small">确 定</el-button>
-      </div>
-    </el-dialog>
-    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" :inline="true" label-width="130px">
-        <el-form-item label="应用名称:" prop="appName">
-          <el-input v-model="ruleForm.appName" size="small" placeholder="请输入名称"></el-input>
-        </el-form-item>
-        <el-form-item label="应用英文名称:">
-          <el-input v-model="ruleForm.appNameEn" size="small" placeholder="请输入名称"></el-input>
-        </el-form-item>
-        <el-form-item label="商户手机号:" prop="phone" v-if="!ruleForm.id">
-          <el-input v-model="ruleForm.phone" size="small" placeholder="请输入商户手机号"></el-input>
-        </el-form-item>
-        <el-form-item label="应用图标:" prop="appIcon">
-          <el-input v-model="ruleForm.appIcon" size="small" placeholder="请输入应用图标">
-            <el-upload
-              :action="server_path + 'wallet/util/open/uploadFile.do'"
-              multiple
-              name="files"
-              :data="{type:'img'}"
-              :show-file-list="false"
-              :on-success="upload" slot="append">
-              <el-button size="small" type="primary">点击上传</el-button>
-            </el-upload>
-          </el-input>
-        </el-form-item>
-        <el-form-item label="商户类型：" prop="transferTypeId">
-          <el-select v-model="ruleForm.transferTypeId" size="small" placeholder="请选择商户类型">
-            <el-option
-              v-for="item in transferTypeInfoList"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="APPID:" prop="appid">
-          <el-input v-model="ruleForm.appid" size="small" placeholder="请输入APPID"></el-input>
-        </el-form-item>
-        <el-form-item label="支付通知Url:">
-          <el-input v-model="ruleForm.notifyUrl" size="small" placeholder="请输入支付通知Url"></el-input>
-        </el-form-item>
-        <el-form-item label="回调地址:">
-          <el-input v-model="ruleForm.hookInjectUrl" size="small" placeholder="请输入回调地址"></el-input>
-        </el-form-item>
-        <el-form-item label="ios版本号:" prop="iosVersion">
-          <el-input v-model="ruleForm.iosVersion" size="small" placeholder="请输入版本号"></el-input>
-        </el-form-item>
-        <el-form-item label="android版本号:" prop="adrVersion">
-          <el-input v-model="ruleForm.adrVersion" size="small" placeholder="请输入版本号"></el-input>
-        </el-form-item>
-        <el-form-item label="iOS Scheme协议:">
-          <el-input v-model="ruleForm.iosPackageName" size="small" placeholder="请输入iOS Scheme协议"></el-input>
-        </el-form-item>
-        <el-form-item label="iOS 签名:">
-          <el-input v-model="ruleForm.iosSign" size="small" placeholder="请输入iOS 签名"></el-input>
-        </el-form-item>
-        <el-form-item label="android 包名:">
-          <el-input v-model="ruleForm.adrPackageName" size="small" placeholder="请输入android 包名"></el-input>
-        </el-form-item>
-        <el-form-item label="android 签名:">
-          <el-input v-model="ruleForm.adrSign" size="small" placeholder="请输入android 签名"></el-input>
-        </el-form-item>
-        <el-form-item label="android下载地址:">
-          <el-input v-model="ruleForm.downloadUrl" size="small" placeholder="请输入android下载地址"></el-input>
-        </el-form-item>
-        <el-form-item label="ios下载地址:">
-          <el-input v-model="ruleForm.iosDownldUrl" size="small" placeholder="请输入ios下载地址"></el-input>
-        </el-form-item>
-        <el-form-item label="跳转地址:">
-          <el-input v-model="ruleForm.jumpUrl" size="small" placeholder="请输入跳转地址"></el-input>
-        </el-form-item>
-        <el-form-item label="应用介绍:" prop="destext">
-          <el-button plain size="small" type="primary" @click="openDialogEditor('destext')" >修改</el-button>
-          <!-- <el-input type="textarea" :rows="2" size="small" placeholder="请输入应用介绍" v-model="ruleForm.destext"></el-input> -->
-        </el-form-item>
-        <el-form-item label="英文版介绍:">
-          <el-button plain size="small" type="primary" @click="openDialogEditor('destextEn')" >修改</el-button>
-          <!-- <el-input type="textarea" :rows="2" size="small" placeholder="请输入应用介绍" v-model="ruleForm.destextEn"></el-input> -->
-        </el-form-item>
-        <el-form-item label="是否自营" prop="ownType">
-          <el-radio-group v-model="ruleForm.ownType">
-            <el-radio :label="1">是</el-radio>
-            <el-radio :label="0">否</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label=" " prop="disclaimerType">
-          <el-checkbox-group v-model="ruleForm.disclaimerType">
-            <el-checkbox label="是否需要免责声明" name="disclaimerType"></el-checkbox>
-          </el-checkbox-group>
-        </el-form-item>
-        <el-form-item label="权重:">
-          <el-input-number v-model="ruleForm.position" size="small" :min="0"></el-input-number>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false" size="small">取 消</el-button>
-        <el-button type="primary" @click="determine" size="small">确 定</el-button>
-      </div>
-    </el-dialog>
-
-
-    <el-dialog :title="`应用 ${ruleForm.appName} 的详情`" :visible.sync="dialogFormVisibleView">
-      <el-form :inline="true" class="demo-form-inline" label-width="130px">
-        <el-form-item label="名称:">{{ruleForm.appName}}</el-form-item>
-        <el-form-item label="英文版名称:">{{ruleForm.appNameEn}}</el-form-item>
-        <el-form-item label="应用图标:">
-          <img v-if="!ruleForm.appIcon.indexOf('http')" :src="ruleForm.appIcon"
-               style="max-width:100%; max-height: 100px;" alt="图标存储地址">
-          <span v-if="ruleForm.appIcon.indexOf('http')">{{ruleForm.appIcon}}</span>
-        </el-form-item>
-        <el-form-item label="商户类型:">{{ruleForm.transferTypeName}}</el-form-item>
-        <el-form-item label="APPID:">{{ruleForm.appId}}</el-form-item>
-        <el-form-item label="支付通知Url:">{{ruleForm.notifyUrl}}</el-form-item>
-        <el-form-item label="回调地址:">{{ruleForm.hookInjectUrl}}</el-form-item>
-        <el-form-item label="ios版本号:">{{ruleForm.iosVersion}}</el-form-item>
-        <el-form-item label="android版本号:">{{ruleForm.adrVersion}}</el-form-item>
-        <el-form-item label="iOS Scheme协议:">{{ruleForm.iosPackageName}}</el-form-item>
-        <el-form-item label="iOS 签名:">{{ruleForm.iosSign}}</el-form-item>
-        <el-form-item label="android 签名:">{{ruleForm.adrSign}}</el-form-item>
-        <el-form-item label="android 包名:">{{ruleForm.adrPackageName}}</el-form-item>
-        <el-form-item label="android下载地址:">{{ruleForm.downloadUrl}}</el-form-item>
-        <el-form-item label="ios下载地址:">{{ruleForm.iosDownldUrl}}</el-form-item>
-        <el-form-item label="跳转地址:">{{ruleForm.jumpUrl}}</el-form-item>
-        <el-form-item label="是否自营:">{{ruleForm.ownType?'是':'否'}}</el-form-item>
-        <el-form-item label="应用介绍:"><span v-html="ruleForm.destext"></span></el-form-item>
-        <el-form-item label="英文版介绍:"><span v-html="ruleForm.destextEn"></span></el-form-item>
-        <el-form-item label="权重:">{{ruleForm.position}}</el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisibleView = false" size="small">取 消</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 <style>
 
 </style>
 <script>
-/*使用富文本所需*/
-import { quillEditor } from 'vue-quill-editor'
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
   export default {
     name: 'created',
-    components: {  
-      quillEditor  
-    },
     data() {
-      //富文本toolbar
-      let  toolbarOptions = [
-        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-        ['blockquote', 'code-block'],
-        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-        [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-        [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-        [{ 'direction': 'rtl' }],                         // text direction
-        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-        [{ 'font': [] }],
-        [{ 'align': [] }],
-        ['clean']                                         // remove formatting button
-      ];
       return {
         filterForm: {
-          appId: ''
+          value: '',
+          key: 'appId',
         },
         listData: {
           total: null,
@@ -245,65 +91,6 @@ import 'quill/dist/quill.bubble.css'
         },
         pageNum: 1,
         pageSize: 20,
-        dialogTitle: '创建应用',
-        dialogFormVisible: false,
-        dialogFormVisibleView: false,
-        ruleForm: {
-          appid: "",
-          phone: "",
-          appName: "",
-          appNameEn:"",
-          appIcon: "",
-          notifyUrl: "",
-          hookInjectUrl: "",
-          iosVersion: "",
-          adrVersion: "",
-          destext: "",
-          destextEn: "",
-          jumpUrl: "",
-          iosPackageName: "",
-          iosSign:"",
-          adrSign:"",
-          adrPackageName: "",
-          downloadUrl: "",
-          iosDownldUrl: "",
-          transferTypeId: '',
-          ownType: 1,
-          position: 0,
-          disclaimerType:true
-        },
-        server_path: "",
-        rules: {
-          transferTypeId: [
-            { required: true, message: '请选择商户类型', trigger: 'change' }
-          ],
-          appid: [
-            { required: true, message: '请输入APPID', trigger: 'blur' }
-          ],
-          appName: [
-            { required: true, message: '请输入名称', trigger: 'blur' }
-          ],
-          appIcon: [
-            { required: true, message: '请输入应用图标地址', trigger: 'blur' }
-          ],
-          phone: [
-            { required: true, message: '请输入商户手机号', trigger: 'blur' }
-          ],
-          iosVersion: [
-            { required: true, message: '请输入ios版本号', trigger: 'blur' }
-          ],
-          adrVersion: [
-            { required: true, message: '请输入android版本号', trigger: 'blur' }
-          ],
-          destext: [
-            { required: true, message: '请输入应用介绍', trigger: 'blur' }
-          ],
-          ownType: [
-            { required: true, message: '请选择是否自营', trigger: 'blur' }
-          ],
-        },
-        transferTypeInfoList: [],
-        currentForm: {},
         options: {
           inline: false,
           button: false,
@@ -319,63 +106,29 @@ import 'quill/dist/quill.bubble.css'
           fullscreen: true,
           keyboard: true,
           url: 'data-source'
-        },
-        dialogReasonVisibleView: false,
-        dialogEditor:false,
-        dialogEditorType:'',
-        dialogEditorTitle:'',
-        dialogEditorContent:"",
-        editorOption:{
-            modules:{
-                toolbar:toolbarOptions
-            },
-            placeholder:''
         }
       };
     },
     methods: {
       sendAPPID() {
         this.$http.post("wallet/backmgr/thirdAppInfo/sendEmailByAppId.do", {
-          appId: this.filterForm.appId
+          value: this.filterForm.value,
+          key: this.filterForm.key
         }).then((res) => {
           this.$notify({
             title: '成功',
-            message: 'appId'+res.msg,
+            message: this.filterForm.key + res.msg,
             type: 'success'
           });
         })
       },
-      resetForm() {
-        this.ruleForm = {
-          appid: "",
-          phone: "",
-          appName: "",
-          appIcon: "",
-          notifyUrl: "",
-          hookInjectUrl: "",
-          iosVersion: "",
-          adrVersion: "",
-          destext: "",
-          jumpUrl: "",
-          iosPackageName: "",
-          adrPackageName: "",
-          downloadUrl: "",
-          iosDownldUrl: "",
-          transferTypeId: '',
-          ownType: 1,
-          appNameEn:"",
-          iosSign:"",
-          adrSign:"",
-          destextEn: "",
-          position: 0,
-          disclaimerType:false
-        };
-        this.$refs.ruleForm && this.$refs.ruleForm.resetFields(); // 重置query的数据
-      },
-      goDetail(data) {
-        this.resetForm();
-        this.dialogFormVisibleView = true;
-        this.ruleForm = JSON.parse(JSON.stringify(data));
+      queryEvents() {
+        this.$http.post("wallet/backmgr/thirdAppInfo/findAppByField.do", {
+          value: this.filterForm.value,
+          key: this.filterForm.key
+        }).then((res) => {
+          this.listData = res.result
+        })
       },
       getPaginationChange(val, currentPage) {
         this.pageSize = val;
@@ -426,110 +179,25 @@ import 'quill/dist/quill.bubble.css'
           })
         })
       },
-      upload(response, file, fileList) {
-        this.ruleForm.appIcon = response.result.urls[0]
-      },
       addCreate() {
-        this.resetForm();
-        this.dialogFormVisible = true;
-        this.dialogTitle = '创建应用';
-        console.log(this.ruleForm)
-        this.getTransferTypeInfoList();
-      },
-      modification(data) {
-        this.resetForm();
-        this.dialogFormVisible = true;
-        this.ruleForm = JSON.parse(JSON.stringify(data));
-        this.currentForm = JSON.parse(JSON.stringify(data));
-        this.ruleForm.appid = data.appId;
-        this.currentForm.appid = data.appId;
-        this.dialogTitle = `修改 ${this.ruleForm.appName} 应用`;
-        this.ruleForm.disclaimerType=this.ruleForm.disclaimerType==1?true:false
-        this.getTransferTypeInfoList();
-      },
-      determine() {
-        this.$refs.ruleForm.validate((valid) => {
-          if (valid) {
-            if (this.ruleForm.id) {
-              Object.entries(this.ruleForm).forEach(([key, value]) => {
-                if (value != this.currentForm[key] && !value) {
-                  this.ruleForm[key] = 'empty';
-                }
-              })
-              this.ruleForm.disclaimerType=this.ruleForm.disclaimerType==true?1:0
-              this.$http.post("wallet/backmgr/thirdAppInfo/updateThirdAppInfo.do", this.ruleForm).then((res) => {
-                this.dialogFormVisible = false;
-                this.resetForm();
-                this.$notify({
-                  title: '成功',
-                  message: `修改 ${ this.ruleForm.appName} 应用成功`,
-                  type: 'success'
-                });
-                this.getThirdAppInfoList();
-              })
-            } else {
-              this.ruleForm.disclaimerType=this.ruleForm.disclaimerType==true?1:0
-              this.$http.post("wallet/backmgr/thirdAppInfo/createThirdAppInfo.do", this.ruleForm).then((res) => {
-                this.dialogFormVisible = false;
-                this.resetForm();
-                this.$notify({
-                  title: '成功',
-                  message: `创建 ${ this.ruleForm.appName} 应用成功`,
-                  type: 'success'
-                });
-                this.pageNum = 1;
-                this.getThirdAppInfoList();
-              })
-            }
-          }
+        this.$router.push({
+          name: 'thirdModify'
         })
       },
-      getTransferTypeInfoList() {
-        if (!this.transferTypeInfoList.length) {
-          this.$http.post("wallet/backmgr/transferType/getTransferTypeInfoList.do", {
-            version: '1.0.0',
-            plat: 'web'
-          }).then((res) => {
-            const date = res.result.list.list;
-            date.forEach((item) => {
-              item.label = item.transferTypeName;
-              item.value = (item.id).toString();
-            });
-            this.transferTypeInfoList = date;
-          })
-        }
+      modification(params) {
+        this.$router.push({
+          name: 'thirdModify',
+          params
+        })
       },
-      //打开富文本编辑
-      openDialogEditor(id){
-        this.dialogEditor=true
-
-        if(id=='destext'){
-          this.dialogEditorType='destext'
-          this.dialogEditorTitle='修改应用介绍';
-          this.dialogEditorContent=this.ruleForm.destext
-        }else if(id =='destextEn'){
-          this.dialogEditorType='destextEn'
-          this.dialogEditorTitle='修改英文版介绍';
-          this.dialogEditorContent=this.ruleForm.destextEn
-        }
+      goDetail(params) {
+        this.$router.push({
+          name: 'thirdDetail',
+          params
+        })
       },
-      //富文本编辑器  文本改变时 设置字段值
-      onEditorChange({ editor, html, text }) {
-          this.dialogEditorContent = html  
-      },
-      //富文本存储
-      editConfirm(){
-        if(this.dialogEditorType=='destext'){
-          this.ruleForm.destext=this.dialogEditorContent;
-          this.dialogEditor=false
-        }else if(this.dialogEditorType=='destextEn'){
-          this.ruleForm.destextEn=this.dialogEditorContent;
-          this.dialogEditor=false
-        }
-      }
     },
     activated() {
-      this.server_path = SERVER_PATH;
       this.getThirdAppInfoList();
     }
   };
@@ -542,8 +210,12 @@ import 'quill/dist/quill.bubble.css'
         width: 240px;
       }
     }
-    .quill-editor .ql-container .ql-editor{
-      min-height:300px;
+    .el-select .el-input {
+      width: 120px;
+    }
+    .el-input-group {
+      width: 350px;
+      margin-right: 10px;
     }
   }
 </style>

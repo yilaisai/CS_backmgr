@@ -14,8 +14,8 @@
                @change="selectedChange">
       <el-option v-for="(item, index) in dataList"
                  size="small"
-                 :label="item.label"
-                 :value="item.value"
+                 :label="item[props.label]"
+                 :value="item[props.value]"
                  :key="index"></el-option>
     </el-select>
   </el-form-item>
@@ -31,6 +31,15 @@
       prop: {
         type: String,
         default: '',
+      },
+      props: {
+        type: Object,
+        default: () => {
+          return {
+            value: 'value',
+            label: 'label',
+          }
+        },
       },
       placeholder: {
         type: String,

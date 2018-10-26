@@ -36,11 +36,13 @@
       <sac-input ref="offcialurl" v-model="ruleForm.officialAddr" label="官网地址" prop="offcialurl"></sac-input>
       <el-form-item label="logo:">
         <el-upload
+          v-loading="loading"
           name="files"
           class="avatar-uploader"
           :action="server_path + 'wallet/util/open/uploadFile.do'"
           :show-file-list="false"
           :on-success="upload"
+          :before-upload="logoUpload"
           :data="{type:'supersac_img'}">
           <img v-show="ruleForm.logoUrl" :src="ruleForm.logoUrl" class="avatar">
           <i v-show="!ruleForm.logoUrl" class="el-icon-plus avatar-uploader-icon"></i>
@@ -52,7 +54,7 @@
                   placeholder="请输入团队介绍或上传团队介绍文档"></el-input>
       </el-form-item>
       <el-form-item label="上传团队介绍:">
-        <span class="appIcon">只能上传 pdf/word/ppt/jpg/png文件，且不超过 500kb</span>
+        <span class="appIcon">只能上传 pdf/word/ppt/jpg/png文件，且不超过 3M</span>
         <a v-show="isTeamDoc" target="_blank" :href="ruleForm.teamIntroduceUrl" class="el-upload-list__item-name">
           <i class="el-icon-document"></i>{{teamIntroduceUrl}}
         </a>
@@ -60,10 +62,11 @@
         <el-upload
           name="files"
           class="upload-demo"
+          v-loading="uploadTeamLoading"
           :action="server_path + 'wallet/util/open/uploadFile.do'"
           :show-file-list="false"
           :on-success="uploadTeamIntroduce"
-          :before-upload="beforeUpload"
+          :before-upload="teamUpload"
           :data="{type:'supersac_doc'}">
           <el-button size="small" type="primary">点击上传</el-button>
         </el-upload>
@@ -75,7 +78,7 @@
                   placeholder="请输入运营及宣传方案或上传运营及宣传方案文档"></el-input>
       </el-form-item>
       <el-form-item label="上传运营及宣传方案:">
-        <span class="appIcon">只能上传 pdf/word/ppt/jpg/png 文件，且不超过 500kb</span>
+        <span class="appIcon">只能上传 pdf/word/ppt/jpg/png 文件，且不超过 3M</span>
         <a v-show="isMarketDoc" target="_blank" :href="ruleForm.marketingIntroduceUrl"
            class="el-upload-list__item-name">
           <i class="el-icon-document"></i>{{marketingIntroduceUrl}}
@@ -84,9 +87,10 @@
         <el-upload
           name="files"
           class="upload-demo"
+          v-loading="uploadIntroduceLoading"
           :action="server_path + 'wallet/util/open/uploadFile.do'"
           :show-file-list="false"
-          :before-upload="beforeUpload"
+          :before-upload="introduceUpload"
           :on-success="uploadIntroduceUrl"
           :data="{type:'supersac_doc'}">
           <el-button size="small" type="primary">点击上传</el-button>
@@ -123,6 +127,9 @@
         isTeamDoc: false,
         isMarketImg: false,
         isMarketDoc: false,
+        loading: false,
+        uploadTeamLoading: false,
+        uploadIntroduceLoading: false,
         marketingIntroduceUrl: '',
         rules: {
           teamName: [
@@ -161,6 +168,10 @@
       },
       upload(response, file, fileList) {
         this.ruleForm.logoUrl = response.result.urls[0];
+        this.loading = false;
+      },
+      logoUpload() {
+        this.loading = true;
       },
       uploadTeamIntroduce(response, file, fileList) {
         this.ruleForm.teamIntroduceUrl = response.result.urls[0];
@@ -172,6 +183,11 @@
           this.isTeamImg = false;
           this.isTeamDoc = true;
         }
+        this.uploadTeamLoading = false;
+      },
+      teamUpload(file){
+        this.beforeUpload(file);
+        this.uploadTeamLoading = true;
       },
       uploadIntroduceUrl(response, file, fileList) {
         this.ruleForm.marketingIntroduceUrl = response.result.urls[0];
@@ -183,20 +199,25 @@
           this.isMarketImg = false;
           this.isMarketDoc = true;
         }
+        this.uploadIntroduceLoading = false;
+      },
+      introduceUpload(file){
+        this.beforeUpload(file);
+        this.uploadIntroduceLoading = true;
       },
       beforeUpload(file) {
-        // 只能上传 pdf/word/ppt/jpg/png 文件，且不超过 500kb
+        // 只能上传 pdf/word/ppt/jpg/png 文件，且不超过 3M
         const type = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/pdf', 'application/msword', 'application/vnd.ms-powerpoint', 'image/jpeg', 'image/png']
         const isJPG = type.includes(file.type)
-        const isLt500kb = file.size / 1024 < 500; // 小于500kb;
+        const isLt3M = file.size / 1024 / 1024 < 3; // 小于3M;
 
         if (!isJPG) {
           this.$message.error('上传文件类型只能是 pdf/word/ppt/jpg/png  格式!');
         }
-        if (!isLt500kb) {
-          this.$message.error('上传文件类型大小不能超过 500kb!');
+        if (!isLt3M) {
+          this.$message.error('上传文件类型大小不能超过 3M!');
         }
-        return isJPG && isLt500kb;
+        return isJPG && isLt3M;
       },
       determine() {
         this.$refs.ruleForm.validate((valid) => {

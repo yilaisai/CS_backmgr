@@ -510,14 +510,14 @@ export const appRouter = [
         },
         component: () => import('@/pages/supersac/invite-detail.vue')
       },
-      {
-        path: 'node-detail',
-        name: 'node-detail',
-        meta: {
-          title: '节点管理'
-        },
-        component: () => import('@/pages/supersac/node-detail.vue')
-      },
+      // {
+      //   path: 'node-detail',
+      //   name: 'node-detail',
+      //   meta: {
+      //     title: '节点管理'
+      //   },
+      //   component: () => import('@/pages/supersac/node-detail.vue')
+      // },
       {
         path: 'node-modify',
         name: 'nodeModify',

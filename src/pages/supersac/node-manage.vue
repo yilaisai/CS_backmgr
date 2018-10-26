@@ -70,8 +70,14 @@
         <el-form-item label="logo:">
           <img v-viewer v-if="details.logoUrl" :src="details.logoUrl" alt="" class="avatar">
         </el-form-item>
+        <el-form-item label="状态:">
+          <span>{{details.status=='2'?'审核中': details.status=='1'?'审核成功':'审核失败'}}</span>
+        </el-form-item>
         <el-form-item label="节点名称:">
           <span>{{details.teamName}}</span>
+        </el-form-item>
+        <el-form-item label="节点简介:">
+          <span>{{details.nodeIntroduce}}</span>
         </el-form-item>
         <el-form-item label="Sacbox账号:">
           <span>{{details.sacBoxAccount}}</span>
@@ -82,20 +88,14 @@
         <el-form-item label="SAC持仓数:">
           <span>{{details.sacAmount}}</span>
         </el-form-item>
+        <el-form-item label="PNB投票数:">
+          <span>{{details.pnbAmount}}</span>
+        </el-form-item>
         <el-form-item label="邮箱:">
           <span>{{details.email}}</span>
         </el-form-item>
-        <el-form-item label="状态:">
-          <span>{{details.status=='2'?'审核中': details.status=='1'?'审核成功':'审核失败'}}</span>
-        </el-form-item>
-        <el-form-item label="分配账号:">
-          <span>{{details.nodeIntroduce}}</span>
-        </el-form-item>
         <el-form-item label="官网地址:">
           <span>{{details.officialAddr}}</span>
-        </el-form-item>
-        <el-form-item label="节点简介:">
-          <span>{{details.nodeIntroduce}}</span>
         </el-form-item>
         <el-form-item label="团队介绍:">
           <span>{{details.teamIntroduce}}</span>

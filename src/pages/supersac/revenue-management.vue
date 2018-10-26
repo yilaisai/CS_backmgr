@@ -199,6 +199,11 @@
 
     .el-tabs__content, .el-tab-pane {
       height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    #pane-fourth {
+      display: block;
     }
   }
 </style>

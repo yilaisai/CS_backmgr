@@ -46,7 +46,7 @@
                      @click.native="changeTplId(scope.row)" v-if="scope.row.status ==1">模板编辑
           </el-button>
           <el-button type="warning" size="small" style="float:right"
-                     @click.native="changeTplId(scope.row)" v-if="scope.row.status ==0">模板修改
+                     @click.native="changeTplId(scope.row)" v-if="scope.row.status ==0 || scope.row.status ==4">模板修改
           </el-button>
         </template>
       </el-table-column>

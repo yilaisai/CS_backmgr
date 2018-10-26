@@ -110,7 +110,7 @@
                             size="small"
                             resize="none"
                             maxlength="500"
-                            placeholder="请输入具体账号,多个账号用逗号隔开"
+                            placeholder="请输入具体账号,多个账号用英文逗号隔开"
                             :autosize="{ minRows: 2, maxRows: 4}"
                             @change="getTextareaChange('ruleForm')"
                             v-model="ruleForm.phones"></el-input>
@@ -272,7 +272,7 @@
       // 删除
       remove(itemData) {
         const { id, title } = itemData;
-        this.$confirm(`确定删除 ${title} 吗?`, '提示', {
+        this.$confirm(`确定删除此条消息吗?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -283,7 +283,7 @@
           }).then((res) => {
             this.$notify({
               title: '成功',
-              message: `删除 ${title}成功`,
+              message: `删除成功`,
               type: 'success'
             });
             this.getNoticeInfoList();
@@ -304,7 +304,7 @@
           setTimeout(() => {
             self.$notify({
               title: '成功',
-              message: ` 推送 ${title} 消息成功`,
+              message: ` 推送消息成功`,
               type: 'success'
             });
             self.getNoticeInfoList()

@@ -155,6 +155,11 @@
             <el-radio :label="0">否</el-radio>
           </el-radio-group>
         </el-form-item>
+        <el-form-item label=" " prop="disclaimerType">
+          <el-checkbox-group v-model="ruleForm.disclaimerType">
+            <el-checkbox label="是否需要免责声明" name="disclaimerType"></el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
         <el-form-item label="权重:">
           <el-input-number v-model="ruleForm.position" size="small" :min="0"></el-input-number>
         </el-form-item>
@@ -265,6 +270,7 @@ import 'quill/dist/quill.bubble.css'
           transferTypeId: '',
           ownType: 1,
           position: 0,
+          disclaimerType:true
         },
         server_path: "",
         rules: {
@@ -362,6 +368,7 @@ import 'quill/dist/quill.bubble.css'
           adrSign:"",
           destextEn: "",
           position: 0,
+          disclaimerType:false
         };
         this.$refs.ruleForm && this.$refs.ruleForm.resetFields(); // 重置query的数据
       },
@@ -426,6 +433,7 @@ import 'quill/dist/quill.bubble.css'
         this.resetForm();
         this.dialogFormVisible = true;
         this.dialogTitle = '创建应用';
+        console.log(this.ruleForm)
         this.getTransferTypeInfoList();
       },
       modification(data) {
@@ -436,6 +444,7 @@ import 'quill/dist/quill.bubble.css'
         this.ruleForm.appid = data.appId;
         this.currentForm.appid = data.appId;
         this.dialogTitle = `修改 ${this.ruleForm.appName} 应用`;
+        this.ruleForm.disclaimerType=this.ruleForm.disclaimerType==1?true:false
         this.getTransferTypeInfoList();
       },
       determine() {
@@ -447,6 +456,7 @@ import 'quill/dist/quill.bubble.css'
                   this.ruleForm[key] = 'empty';
                 }
               })
+              this.ruleForm.disclaimerType=this.ruleForm.disclaimerType==true?1:0
               this.$http.post("wallet/backmgr/thirdAppInfo/updateThirdAppInfo.do", this.ruleForm).then((res) => {
                 this.dialogFormVisible = false;
                 this.resetForm();
@@ -458,6 +468,7 @@ import 'quill/dist/quill.bubble.css'
                 this.getThirdAppInfoList();
               })
             } else {
+              this.ruleForm.disclaimerType=this.ruleForm.disclaimerType==true?1:0
               this.$http.post("wallet/backmgr/thirdAppInfo/createThirdAppInfo.do", this.ruleForm).then((res) => {
                 this.dialogFormVisible = false;
                 this.resetForm();

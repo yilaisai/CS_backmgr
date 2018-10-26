@@ -271,6 +271,14 @@ export const appRouter = [
         },
         component: () => import('@/pages/message/messageDetails.vue'),
       },
+      {
+        path: 'sms-pushDetails',
+        name: 'sms-pushDetails',
+        meta: {
+          title: '短信推送详情',
+        },
+        component: () => import('@/pages/message/sms-pushDetails.vue'),
+      },
     ],
   },
   {

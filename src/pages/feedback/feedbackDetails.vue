@@ -21,10 +21,10 @@
 
       <el-form ref="form" :inline="true" :model="submitForm" class="submitForm">
         <el-form-item label="备注">
-          <el-input v-model="submitForm.remark"></el-input>
+          <el-input v-model="details.remark"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">处理</el-button>
+          <el-button type="primary" @click="onSubmit" :disabled="details.opStatus==1">处理</el-button>
         </el-form-item>
       </el-form>
 
@@ -51,6 +51,7 @@
           contactData: '',
           opStatus: '',
           content: '',
+          remark:''
         },
         submitForm: {
           remark: '',
@@ -77,7 +78,11 @@
     },
     methods: {
       onSubmit() {
-        this.$http.post("/wallet/backmgr/feedback/operateFeedback.do", this.submitForm).then((res) => {
+        const postdata={
+          remark:this.details.remark,
+          fId:this.submitForm.fId
+        }
+        this.$http.post("/wallet/backmgr/feedback/operateFeedback.do", postdata).then((res) => {
           this.$message({
             message: res.msg,
             type: 'success'
@@ -91,6 +96,7 @@
         this.details = this.$route.params;
         this.submitForm.fId = this.$route.params.id;
         this.imgArray = this.$route.params.otherFile.split(',');
+        console.log( this.details)
       } else {
         this.$router.go(-1);
       }

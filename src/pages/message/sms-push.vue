@@ -12,9 +12,9 @@
              label-width="100px"
              ref="filterForm"
              :model="filterForm">
-        <sac-select ref="noticeType" label="消息类型" v-model="filterForm.noticeType"
-                    :dataList="noticeTypeList"></sac-select>
-        <sac-select ref="sendStatues" label="消息状态" v-model="filterForm.sendStatues"
+        <!-- <sac-select ref="noticeType" label="消息类型" v-model="filterForm.noticeType"
+                    :dataList="noticeTypeList"></sac-select> -->
+        <sac-select ref="sendStatues" label="消息状态" v-model="filterForm.status"
                     :dataList="sendStatuesList"></sac-select>
         <sac-submit-form
             :isReset='false'
@@ -32,23 +32,36 @@
         <template slot-scope="scope" prop="status">
           <el-tag type="info" v-if="scope.row.status ==0">未推送</el-tag>
           <el-tag type="info" v-if="scope.row.status ==1">审核中</el-tag>
-          <el-tag type="info" v-if="scope.row.status ==2">正在发送</el-tag>
-          <el-tag type="success" v-if="scope.row.status ==3">部分完成</el-tag>
-          <el-tag type="success" v-if="scope.row.status ==4">完成</el-tag>
+          <el-tag type="info" v-if="scope.row.status ==2">推送中</el-tag>
+          <el-tag type="success" v-if="scope.row.status ==3">部分推送</el-tag>
+          <el-tag type="warn" v-if="scope.row.status ==4">推送失败</el-tag>
+          <el-tag type="success" v-if="scope.row.status ==5">推送成功</el-tag>
+          
+        </template>
+      </el-table-column>
+      <el-table-column prop="tplId" label="模板id">
+        <template slot-scope="scope" prop="tplId">
+          <span>{{scope.row.tplId!==0?scope.row.tplId:''}}</span>
+          <el-button type="warning" size="small" style="float:right"
+                     @click.native="changeTplId(scope.row)" v-if="scope.row.status ==1">模板编辑
+          </el-button>
+          <el-button type="warning" size="small" style="float:right"
+                     @click.native="changeTplId(scope.row)" v-if="scope.row.status ==0">模板修改
+          </el-button>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="240">
         <template slot-scope="scope" prop="sysStatus">
-          <el-button type="success" v-if="scope.row.sendStatues ==1" size="small"
+          <el-button type="success" v-if="scope.row.status !==0 &&scope.row.status !==1" size="small"
                      @click.native="detailList(scope.row)">查看
           </el-button>
-          <el-button type="warning" v-if="scope.row.sendStatues == 0" size="small"
+          <el-button type="warning" v-if="scope.row.status == 0||scope.row.status == 1" size="small"
                      @click.native="modification(scope.row)" :disabled="pushMessage">修改
           </el-button>
-          <el-button type="danger" v-if="scope.row.sendStatues == 0" size="small" :disabled="pushMessage"
+          <el-button type="danger" v-if="scope.row.status == 0||scope.row.status == 1" size="small" :disabled="pushMessage"
                      @click.native="remove(scope.row)">删除
           </el-button>
-          <el-button type="primary" v-if="scope.row.sendStatues == 0" size="small" :disabled="pushMessage"
+          <el-button type="primary" v-if="scope.row.status == 0" size="small" :disabled="pushMessage"
                      :loading="scope.row.isLoading"
                      @click.native="sendMessage(scope.row,scope.$index)">推送
           </el-button>
@@ -61,7 +74,22 @@
                     :page-size="filterForm.pageSize"
                     :current-page="filterForm.pageNum">
     </sac-pagination>
+    <el-dialog :title="dialogTplTitle" :visible.sync="dialogTplVisible">
+      <el-form ref="ruleForm2" :model="ruleForm2" label-width="140px" :rules="rules2">
+        <el-form-item label="模板ID:"  prop="tplId">
+          <el-col :span="16" style=" position: relative;">
+            <el-input size="small" v-model="ruleForm2.tplId"  placeholder="请输入模板ID">
 
+            </el-input>
+          </el-col>
+        </el-form-item>
+        
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogTplVisible = false" size="small">取 消</el-button>
+          <el-button type="primary" @click="TlpDetermine" size="small">{{dialogTplBtnText}}</el-button>
+        </div>
+    </el-dialog>
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
       <el-form ref="ruleForm" :model="ruleForm" label-width="140px" :rules="rules">
         <el-form-item label="短信主题:"  prop="title">
@@ -74,34 +102,35 @@
           <el-col :span="16" style=" position: relative;">
             <span class="tips tips_textarea">{{ruleForm.text.length}}/50</span>
             <el-input size="small" type="textarea" v-model="ruleForm.text" width="100%" maxlength="50"
-                      placeholder="请输入短信内容"></el-input>
+                      placeholder="请输入短信内容" :disabled="ruleForm.id!==''&&ruleForm.id!==undefined"></el-input>
           </el-col>
         </el-form-item>
-        <el-form-item label="推送对象:" required class="fixForm">
-          <el-radio-group v-model="radioValue" @change="getPushType" class="radioGroup">
+        <el-form-item label="推送对象:" required class="fixForm" prop="targetId">
+  
+          <el-radio-group v-model="ruleForm.targetId" @change="getPushType" class="radioGroup">
             <el-col :span="16">
               <el-radio :label="1">全部</el-radio>
             </el-col>
             <el-col :span="16">
               <el-radio :label="2">指定账号推送</el-radio>
-              <el-row :span="24" v-if="radioValue == 2" key="specifyPush" class="specifyPush">
-                <el-form-item label="" required prop="target_phone">
-                  <span class="tips tips_textarea">{{ruleForm.target_phone.length}}/500</span>
+              <el-row :span="24" v-if="ruleForm.targetId == 2" key="specifyPush" class="specifyPush" style="margin-bottom:17px">
+                <el-form-item label="" required prop="targetPhone">
+                  <span class="tips tips_textarea">{{ruleForm.targetPhone.length}}/500</span>
                   <el-input type="textarea"
                             size="small"
                             resize="none"
                             maxlength="500"
-                            placeholder="请输入具体账号,多个账号用逗号隔开"
+                            placeholder="请输入具体账号,多个账号用英文逗号隔开"
                             :autosize="{ minRows: 2, maxRows: 4}"
                             @change="getTextareaChange('ruleForm')"
-                            v-model="ruleForm.target_phone">
+                            v-model="ruleForm.targetPhone">
                   </el-input>
                 </el-form-item>
               </el-row>
             </el-col>
             <el-col :span="24">
               <el-radio :label="3">持仓范围</el-radio>
-              <el-row :span="24" v-if="radioValue == 3" class="positionScope">
+              <el-row :span="24" v-if="ruleForm.targetId == 3" class="positionScope">
                 <el-col :span="5.5">
                   <el-form-item prop="minAmount">
                     <el-input-number size="small" v-model="ruleForm.minAmount" controls-position="right"
@@ -118,7 +147,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col style="margin-left: 10px;" :span="8">
-                  <el-form-item label="币　种:" label-width="80px" prop="coinid" size="mini">
+                  <el-form-item label="币　种:" label-width="80px" prop="coinId" size="mini">
                     <el-select size="small" v-model="ruleForm.coinId" placeholder="请选择币种">
                       <el-option v-for="(item,index) in coinList" :key="index" :label="item.coinName"
                                  :value="item.coinId">
@@ -130,10 +159,10 @@
             </el-col>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="消息发送日期:" prop="execute_time">
-          <el-date-picker size="small" v-model="ruleForm.execute_time" type="datetime" placeholder="选择日期时间"
-                          value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
-          <el-checkbox v-model="ruleForm.is_auto" style="margin-left: 10px;">自动推送</el-checkbox>
+        <el-form-item label="消息发送日期:" prop="executeTime">
+          <el-date-picker size="small" v-model="ruleForm.executeTime" type="datetime" placeholder="选择日期时间"
+                          value-format="yyyy-MM-dd HH:mm:ss" :disabled="executeTimeDisabled"></el-date-picker>
+          <el-checkbox v-model="ruleForm.isAuto" style="margin-left: 10px;">自动推送</el-checkbox>
         </el-form-item>
         
         
@@ -150,9 +179,18 @@
   export default {
     name: 'message',
     data() {
+      var validateTargetPhone = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入具体账号,多个账号用英文逗号隔开'));
+        } else if (value.indexOf('，')>-1) {
+          callback(new Error('请使用英文逗号隔开'));
+        }else {
+          callback();
+        }
+      };
       return {
         filterForm: {
-          sendStatues: '',
+          status: '',
           noticeType: '',
           pageNum: 1,
           pageSize: 20
@@ -178,20 +216,23 @@
           value: '',
           label: '全部状态',
         }, {
-          value: 0,
+          value: '0',
           label: '未推送',
         }, {
-          value: 1,
+          value: '1',
           label: '审核中',
         }, {
-          value: 2,
-          label: '正在发送',
+          value: '2',
+          label: '推送中',
         }, {
-          value: 3,
-          label: '部分完成',
+          value: '3',
+          label: '部分推送',
         }, {
-          value: 4,
-          label: '完成',
+          value: '4',
+          label: '推送失败',
+        }, {
+          value: '5',
+          label: '推送成功',
         }],
         pushMessage: false,
         dialogTitle: '新增消息模版',
@@ -199,13 +240,14 @@
         ruleForm: {
             title: '',
             text:'',
-            target_id:'',
-            target_phone:'',
-            coinid:'',
+            targetId:'',
+            targetPhone:'',
+            coinId:'',
             minAmount: '',
             maxAmount: '',
-            execute_time:'',
-            is_auto:false
+            executeTime:'',
+            isAuto:false,
+            id:''
           /*sendTime: '',
           title: '',
           content: '',
@@ -216,33 +258,56 @@
           maxAmount: '',
           coinId: '', // 币种*/
         },
+        ruleForm2: {
+          tplId:'',
+          auditResult:'pass',
+          id:''
+        },  
+        rules2: {
+          tplId: [
+            { required: true, message: '请输入模板id', trigger: 'blur' }
+          ],
+        },
         rules: {
-          title: [
-            { required: true, message: '短信主题', trigger: 'blur' },
-            { min: 1, max: 15, message: '长度在 1 到 15 个字符', trigger: 'blur' }
+          // title: [
+          //   { required: true, message: '请输入短信主题', trigger: 'blur' },
+          //   { min: 1, max: 15, message: '长度在 1 到 15 个字符', trigger: 'blur' }
+          // ],
+          targetId:[
+            {  required: true,message: '请选择推送对象', trigger: 'blur' }
           ],
           text: [
             { required: true, message: '请输入内容', trigger: 'blur' },
             { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
           ],
-          execute_time: [
-            { required: true, message: '请选择时间', trigger: 'change' }
+          executeTime: [
+            {  required: true,message: '请选择发送日期', trigger: 'blur' }
           ],
-          coinid: [
+          coinId: [
             { required: true, message: '请选择币种', trigger: 'change' }
+          ],
+          targetPhone: [
+            { required: true,validator:validateTargetPhone, trigger: 'blur' }
           ],
         },
         allAccountValue: '', // 暂存所以新增账号
-        radioValue: null,
+        targetId: null,
         currentObj: {},
         coinList: [],
+        dialogTplVisible:false,
+        dialogTplTitle:'',
+        dialogTplBtnText:'',
+        executeTimeDisabled:false
       };
     },
     methods: {
       resetForm() {
+        this.$refs.ruleForm && this.$refs.ruleForm.clearValidate()
         this.$refs.ruleForm && this.$refs.ruleForm.resetFields();
+         
       },
       submitForm(num) {
+
         this.filterForm.pageNum = num;
         this.getNoticeInfoList();
        
@@ -262,24 +327,21 @@
           this.listData.total = total;
         })
       },
-      formatSex: function (row, column) {
-        return row.type == 0 ? '系统消息' : row.type == 1 ? '运营消息' : '动账消息'
-      },
+      
       // 删除
       remove(itemData) {
         const { id, title } = itemData;
-        this.$confirm(`确定删除 ${title} 吗?`, '提示', {
+        this.$confirm(`确定删除此条消息吗?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$http.post("/wallet/backmgr/noticeInfo/updateNoticeInfoSysStatus.do", {
-            sysStatus: 'INVALID0',
+          this.$http.post("wallet/backmgr/push/deleteMsgPushPlan.do", {
             id
           }).then((res) => {
             this.$notify({
               title: '成功',
-              message: `删除 ${title}成功`,
+              message: `删除成功`,
               type: 'success'
             });
             this.getNoticeInfoList();
@@ -291,21 +353,19 @@
         this.listData.list[index].isLoading = true;
         this.pushMessage = true;
         const { id, title } = itemData;
-        this.$http.post("wallet/backmgr/userNoticeRecd/pushUserAll.do", {
-          version: '1.0.0',
-          plat: 'web',
-          noticeInfoId: id,
+        this.$http.post("wallet/backmgr/push/executeMsgPushPlan.do", {
+          id
         }).then((res) => {
           const self = this;
           setTimeout(() => {
             self.$notify({
               title: '成功',
-              message: ` 推送 ${title} 消息成功`,
+              message: ` 启动推送消息成功`,
               type: 'success'
             });
             self.getNoticeInfoList()
             self.pushMessage = false;
-          }, 20000)
+          }, 2000)
         }).catch(() => {
           this.getNoticeInfoList()
           this.pushMessage = false;
@@ -313,15 +373,34 @@
       },
       // 查看详情
       detailList(data) {
+        //alert(data.id)
         this.$router.push({
-          name: 'messageDetails',
+          name: 'sms-pushDetails',
           query: {
-            id: data.id
+            id: data.id,
+            status:data.status
           }
         })
       },
       modification(itemData) {
-        this.dialogTitle = '修改送币规则';
+        this.dialogTitle = '修改短信推送';
+        this.dialogFormVisible = true;
+        this.resetForm();
+        this.getSampleCoinInfo();
+        this.ruleForm = JSON.parse(JSON.stringify(itemData));
+        this.ruleForm.isAuto = this.ruleForm.isAuto == 0 ? false : true;
+        if(this.ruleForm.coinRange!==""){
+          this.ruleForm.minAmount=this.ruleForm.coinRange.split(',')[0];
+          this.ruleForm.maxAmount=this.ruleForm.coinRange.split(',')[1];
+        }
+        console.log(this.ruleForm)
+        //coinRange:this.ruleForm.minAmount+','+this.ruleForm.maxAmount
+        /*console.log(this.ruleForm)
+        const postdata={
+          id:itemData.id
+        }*/
+        
+        /*this.dialogTitle = '修改客户端推送';
         this.dialogFormVisible = true;
         this.resetForm();
         this.getSampleCoinInfo();
@@ -346,22 +425,23 @@
           case 2:
             this.ruleForm.noticeType = 'TransferMsg';
             break;
-        }
+        }*/
       },
       addMessage() {
-        this.radioValue = null;
+        
+
         this.dialogTitle = '创建消息';
-        this.dialogFormVisible = true;
+        
         this.ruleForm = {
             title: '',
             text:'',
-            target_id:'',
-            target_phone:'',
-            coinid:'',
+            targetId:'',
+            targetPhone:'',
+            coinId:'',
             minAmount: '',
             maxAmount: '',
-            execute_time:'',
-            is_auto:false,
+            executeTime:'',
+            isAuto:false,
 
           /*noticeType: '',
           jumpUrl: '',
@@ -378,8 +458,10 @@
         };
         this.resetForm();
         this.getSampleCoinInfo();
+        this.dialogFormVisible = true;
       },
       getTextareaChange(data) {
+        /*console.log(data)
         const phones = this[data].phones.split(',')
         let addTextareaValue = true;
         phones.forEach((item) => {
@@ -392,13 +474,12 @@
           });
           this.ruleForm.phones = this.allAccountValue;
         }
-        this.allAccountValue = this.ruleForm.phones;
+        this.allAccountValue = this.ruleForm.phones;*/
       },
       getPushType(type) {
         switch (type) {
           case 1 :
-            this.ruleForm.phones = '';
-            this.allAccountValue = '';
+            this.ruleForm.targetPhone = '';
             this.ruleForm.minAmount = '';
             this.ruleForm.maxAmount = '';
             this.ruleForm.coinId = '';
@@ -409,13 +490,12 @@
             this.ruleForm.coinId = '';
             return
           case 3:
-            this.ruleForm.phones = '';
-            this.allAccountValue = '';
+            this.ruleForm.targetPhone = '';
             return
         }
       },
-      getUpdatePushType() {
-        switch (this.radioValue) {
+      /*getUpdatePushType() {
+        switch (this.targetId) {
           case 1 :
             this.ruleForm.phones = this.currentObj.phones;
             this.allAccountValue = this.currentObj.phones;
@@ -433,7 +513,7 @@
             this.allAccountValue = this.currentObj.phones;
             return
         }
-      },
+      },*/
       getSampleCoinInfo() {
         if (!this.coinList.length) {
           this.$http.post("wallet/backmgr/coin/getSampleCoinInfo.do", {}).then((res) => {
@@ -443,15 +523,78 @@
       },
       determine() {
         this.$refs.ruleForm.validate((valid) => {
+          console.log(valid)
           if (valid) {
             const ruleForm = JSON.parse(JSON.stringify(this.ruleForm))
             console.log(ruleForm)
-            console.log(this.radioValue)
-            let postdata
-            if (this.radioValue == 1) {
+            console.log(this.ruleForm.targetId)
+            let posturl,postmsg,postdata
+            if (this.ruleForm.id) {
+              posturl='wallet/backmgr/push/updateMsgPushPlan.do'
+              postmsg='修改成功'
+            }else{
+              posturl='wallet/backmgr/push/createMsgPushPlan.do'
+              postmsg='新增成功'
+            }
+           
+            //1为全部，2为指定用户，3为指定币种范围内的用户
+            if (this.ruleForm.targetId == 1) {
                 postdata={
-                    msgTitle:1
+                    msgTitle:this.ruleForm.title,
+                    msgText:this.ruleForm.text,
+                    targetId:this.ruleForm.targetId,
+                    time:this.ruleForm.executeTime,
+                    isAuto:this.ruleForm.isAuto==true? 1 : 0,
+                    id:this.ruleForm.id
                 }
+                this.$http.post(posturl, postdata).then((res) => {
+                    this.$notify({
+                    title: '成功',
+                    message: postmsg,
+                    type: 'success'
+                    });
+                    this.dialogFormVisible = false;
+                    this.getNoticeInfoList();
+                })
+            }else if (this.ruleForm.targetId == 2) {
+                postdata={
+                    msgTitle:this.ruleForm.title,
+                    msgText:this.ruleForm.text,
+                    targetId:this.ruleForm.targetId,
+                    targetPhone:this.ruleForm.targetPhone,
+                    time:this.ruleForm.executeTime,
+                    isAuto:this.ruleForm.isAuto==true? 1 : 0,
+                    id:this.ruleForm.id
+                }
+                this.$http.post(posturl, postdata).then((res) => {
+                    this.$notify({
+                    title: '成功',
+                    message: postmsg,
+                    type: 'success'
+                    });
+                    this.dialogFormVisible = false;
+                    this.getNoticeInfoList();
+                })
+            }else if (this.ruleForm.targetId == 3) {
+                postdata={
+                    msgTitle:this.ruleForm.title,
+                    msgText:this.ruleForm.text,
+                    targetId:this.ruleForm.targetId,
+                    coinRange:this.ruleForm.minAmount+','+this.ruleForm.maxAmount,
+                    coinId:this.ruleForm.coinId,
+                    time:this.ruleForm.executeTime,
+                    isAuto:this.ruleForm.isAuto==true? 1 : 0,
+                    id:this.ruleForm.id
+                }
+                this.$http.post(posturl, postdata).then((res) => {
+                    this.$notify({
+                    title: '成功',
+                    message: postmsg,
+                    type: 'success'
+                    });
+                    this.dialogFormVisible = false;
+                    this.getNoticeInfoList();
+                })
             }
             /*ruleForm.timingPush = ruleForm.timingPush ? 'YES' : 'NO';
             ruleForm.pushAll = this.radioValue == 1 ? 'YES' : 'NO';
@@ -544,7 +687,53 @@
       },
       openUrl(url) {
         if (url) window.open(url);
-      }
+      },
+      //打开修改模板ID
+      changeTplId(data){
+        console.log(data.tolId)
+        this.dialogTplVisible=true;
+        this.ruleForm2.id=data.id
+        this.ruleForm2.tplId=data.tplId!==0?data.tplId:''
+        if(data.status==0){
+          //未发送
+          this.dialogTplTitle='修改模板id'
+          this.dialogTplBtnText='确认修改'
+          
+        }else if(data.status==1){
+          //审核中
+          this.dialogTplBtnText='确定'
+          this.dialogTplTitle='编辑模板id'
+        }
+        
+      },
+      //存储模板ID
+      TlpDetermine(){
+        this.$refs.ruleForm2.validate((valid) => {
+          if (valid) {
+            const ruleForm2 = JSON.parse(JSON.stringify(this.ruleForm2))
+            console.log(ruleForm2)
+            this.$http.post("wallet/backmgr/push/updateTplAuditStatus.do", ruleForm2).then((res) => {
+              this.$notify({
+                title: '成功',
+                message: `修改成功`,
+                type: 'success'
+              });
+              this.dialogTplVisible = false;
+              this.getNoticeInfoList();
+            })
+          }
+        })
+      },
+      //
+      /*changeIsAuto(){
+       // this.$refs.executeTimeForm.resetField();
+        if(this.ruleForm.isAuto){
+          this.ruleForm.executeTime=''
+          this.executeTimeDisabled=true
+        }else{
+          this.executeTimeDisabled=false
+        }
+      }*/
     },
     activated() {
       this.getNoticeInfoList();

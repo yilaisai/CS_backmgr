@@ -146,7 +146,30 @@
         this.submitForm(currentPage);
       },
       formatSex(row, column) {
-        return row.rtype == 0 ? '咨询' : row.type == 1 ? '建议' : '其他'
+        switch(row.rtype){
+          case '':
+            return '全部'
+            break;
+          case null:
+            return '全部'
+            break;
+          case 0:
+            return '咨询'
+            break;
+          case 1:
+            return '建议'
+            break;
+          case 2:
+            return '其他'
+            break;
+          case 3:
+            return '转账入账补录'
+            break;
+          default:
+            return '其他'
+            break;
+        }
+        //return row.rtype == 0 ? '咨询' : row.type == 1 ? '建议' : '其他'
       },
       getfeedBackList() {
         this.filterForm.beginTime = this.dateTime[0];
@@ -159,8 +182,33 @@
       },
       // 查看详情
       detailList(data) {
-        data.rtypeName = data.rtype == 0 ? '咨询' : data.type == 1 ? '建议' : '其他';
-        const { rtypeName, createTime, contactData, opStatus, content, otherFile, id } = data;
+        switch(data.rtype){
+          case '':
+            data.rtypeName = '全部'
+            break;
+          case null:
+            data.rtypeName = '全部'
+            break;
+          case 0:
+            data.rtypeName = '咨询'
+            break;
+          case 1:
+            data.rtypeName = '建议'
+            break;
+          case 2:
+            data.rtypeName = '其他'
+            break;
+          case 3:
+            data.rtypeName = '转账入账补录'
+            break;
+          default:
+            data.rtypeName = '其他'
+            break;
+        }
+        //data.rtypeName = data.rtype == 0 ? '咨询' : data.type == 1 ? '建议' : '其他';
+     
+        const { rtypeName, createTime, contactData, opStatus, content, otherFile, id ,remark} = data;
+        console.log(data)
         this.$router.push({
           name: 'feedbackDetails',
           params: {
@@ -170,7 +218,8 @@
             opStatus,
             content,
             otherFile,
-            id
+            id,
+            remark
           }
         })
       },

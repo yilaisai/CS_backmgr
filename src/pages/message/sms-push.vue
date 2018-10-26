@@ -120,7 +120,7 @@
                             size="small"
                             resize="none"
                             maxlength="500"
-                            placeholder="请输入具体账号,多个账号用英文逗号隔开"
+                            placeholder="请输入具体账号,多个账号用英文逗号隔开（非大陆账号请输入“+区号”）"
                             :autosize="{ minRows: 2, maxRows: 4}"
                             @change="getTextareaChange('ruleForm')"
                             v-model="ruleForm.targetPhone">
@@ -265,7 +265,7 @@
         },  
         rules2: {
           tplId: [
-            { required: true, message: '请输入模板id', trigger: 'blur' }
+            { required: false, message: '请输入模板id', trigger: 'blur' }
           ],
         },
         rules: {
@@ -694,7 +694,7 @@
         this.dialogTplVisible=true;
         this.ruleForm2.id=data.id
         this.ruleForm2.tplId=data.tplId!==0?data.tplId:''
-        if(data.status==0){
+        if(data.status==0 || data.status==4){
           //未发送
           this.dialogTplTitle='修改模板id'
           this.dialogTplBtnText='确认修改'
@@ -711,7 +711,8 @@
         this.$refs.ruleForm2.validate((valid) => {
           if (valid) {
             const ruleForm2 = JSON.parse(JSON.stringify(this.ruleForm2))
-            console.log(ruleForm2)
+            console.log(ruleForm2);
+            ruleForm2.auditResult = ruleForm2.tplId ? 'pass' : 'not_pass' 
             this.$http.post("wallet/backmgr/push/updateTplAuditStatus.do", ruleForm2).then((res) => {
               this.$notify({
                 title: '成功',

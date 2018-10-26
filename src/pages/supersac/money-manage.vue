@@ -11,11 +11,11 @@
              label-width="80px"
              ref="filterForm"
              :model="filterForm">
-      <sac-select ref="coinId" label="币　　种" v-model="filterForm.coinId"
+      <sac-select ref="coinId" label="币　　种" placeholder="请选择币种" v-model="filterForm.coinId"
                   :dataList="coinType" :props="propsCoin"></sac-select>
-      <sac-select ref="fundChangeType" label="类　　型" v-model="filterForm.fundChangeType"
+      <sac-select ref="fundChangeType" label="类　　型" placeholder="请选择类型" v-model="filterForm.fundChangeType"
                   :dataList="transactionType" :props="props"></sac-select>
-      <sac-select ref="recdStatus" label="状　　态" v-model="recdStatus" multiple
+      <sac-select ref="recdStatus" label="状　　态" placeholder="请选择状态" v-model="recdStatus" multiple
                   :dataList="recdStatusType"></sac-select>
       <el-form-item label="用户名:" v-if="!isShowDetail">
         <el-input v-model.trim="filterForm.phone"

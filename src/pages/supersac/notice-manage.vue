@@ -173,7 +173,7 @@
         }).then((res) => {
           this.$notify({
             title: '成功',
-            message: `${title} ${lockStatus ? "上架" : "下架"} 成功`,
+            message: `${lockStatus ? "上架" : "下架"} 成功`,
             type: 'success'
           });
           this.getNoticeInfoList();

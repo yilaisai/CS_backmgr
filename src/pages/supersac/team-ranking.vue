@@ -16,17 +16,17 @@
       <el-table-column prop="scoreRate" label="得分占比 "></el-table-column>
       <el-table-column label="操作" width="160">
         <template slot-scope="scope" prop="sysStatus">
-          <el-button type="primary" :disabled="scope.row.isOnShelf != 0" size="small"
+          <el-button type="primary" :disabled="!scope.row.id" size="small"
                      @click.native="modification(scope.row)">修改
           </el-button>
-          <el-button type="danger" :disabled="scope.row.isOnShelf != 0" size="small"
+          <el-button type="danger" :disabled="!scope.row.id" size="small"
                      @click.native="remove(scope.row)">删除
           </el-button>
         </template>
       </el-table-column>
       <el-table-column label="上架" width="100">
         <template slot-scope="scope" prop="isOnShelf">
-          <el-switch v-model="scope.row.isOnShelf" :inactive-value="0" :active-value="1"
+          <el-switch v-if="scope.row.id" v-model="scope.row.isOnShelf" :inactive-value="0" :active-value="1"
                      @click.native="switchChange(scope.row)"></el-switch>
         </template>
       </el-table-column>
@@ -86,19 +86,20 @@
       },
       getList() {
         this.$http.post("supernode/backmgr/mock/list", this.filterForm).then((res) => {
-          this.list = res.result.list;
+          this.list = res.result;
         })
       },
       // 删除
       remove(itemData) {
-        const { teamId, teamName } = itemData;
+        console.log(itemData, 8888);
+        const { id, teamName } = itemData;
         this.$confirm(`确定删除 ${teamName} 吗?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           this.$http.post("/supernode/backmgr/mock/delete", {
-            id: teamId
+            id
           }).then((res) => {
             this.$notify({
               title: '成功',
@@ -111,10 +112,10 @@
       },
       // 上下架
       switchChange(itemData) {
-        const { isOnShelf, teamId, teamName } = itemData;
+        const { isOnShelf, id, teamName } = itemData;
         this.$http.post("/supernode/backmgr/mock/updateIsOnShelf", {
           isOnShelf: isOnShelf ? "1" : "0",
-          id: teamId
+          id
         }).then((res) => {
           this.$notify({
             title: '成功',
@@ -139,9 +140,9 @@
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
             if (this.ruleForm.id) {
-              const { teamId, teamName, totalAmount, member } = this.ruleForm;
+              const { id, teamName, totalAmount, member } = this.ruleForm;
               this.$http.post("/supernode/backmgr/mock/update", {
-                teamId,
+                id,
                 teamName,
                 totalAmount,
                 member,

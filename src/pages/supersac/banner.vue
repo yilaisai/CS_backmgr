@@ -18,7 +18,7 @@
         label="图片名称"
         v-model.trim="filterForm.bannerName"
         prop="phone"></sac-input>
-      <sac-date ref="selectedDate" label="日　　期" v-model="selectedDate"></sac-date>
+      <sac-date ref="selectedDate" label="日　　期" placeholder="请选择日期"  v-model="selectedDate"></sac-date>
       <sac-select label="类型" v-model="filterForm.bannerType" :props="typeList" :data-list="bannerTypeList"></sac-select>
       <sac-select label="状态" v-model="filterForm.isOnShelf" :data-list="bannerOnShelfList"></sac-select>
       <sac-submit-form

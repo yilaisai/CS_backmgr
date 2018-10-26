@@ -73,9 +73,6 @@
         coinType: [],
         transactionType: [],  // 交易类型
         recdStatusType: [{
-          value: '',
-          label: '全部'
-        }, {
           value: '0',
           label: '失败'
         }, {
@@ -178,7 +175,7 @@
               coinName: '全部',
             }, ...res.result];
           });
-      },
+      }
     },
     activated() {
       if (this.$route.params && this.$route.params.phone) {

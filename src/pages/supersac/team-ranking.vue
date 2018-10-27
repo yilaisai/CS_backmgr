@@ -13,7 +13,11 @@
       <el-table-column prop="teamName" label="团队名称"></el-table-column>
       <el-table-column prop="totalAmount" label="总投票数"></el-table-column>
       <el-table-column prop="memberNum" label="总人数"></el-table-column>
-      <el-table-column prop="scoreRate" label="得分占比 "></el-table-column>
+      <el-table-column prop="scoreRate" label="得分占比 ">
+        <template slot-scope="scope" prop="sysStatus">
+          {{(scope.row.scoreRate*100).toFixed(2)}}%
+        </template>
+      </el-table-column>
       <el-table-column label="操作" width="160">
         <template slot-scope="scope" prop="sysStatus">
           <el-button type="primary" :disabled="!scope.row.id||scope.row.isOnShelf=='1'" size="small"

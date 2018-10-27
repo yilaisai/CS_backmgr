@@ -30,7 +30,7 @@
       <el-table-column prop="memberNum" label="总人数" width="200"></el-table-column>
       <el-table-column prop="scoreRate" label="得分占比" width="200">
         <template slot-scope="scope" prop="sysStatus">
-          {{scope.row.scoreRate*100}}%
+          {{(scope.row.scoreRate*100).toFixed(2)}}%
         </template>
       </el-table-column>
       <!-- <el-table-column prop="update_time" label="出块数量" width="170"></el-table-column> -->

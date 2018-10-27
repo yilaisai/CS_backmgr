@@ -63,7 +63,12 @@
           <el-table-column prop="pnbAmount" label="PNB投票净本金"></el-table-column>
           <el-table-column prop="pnbIncome" label="PNB利息"></el-table-column>
           <el-table-column prop="rewardStr" label="奖励"></el-table-column>
-          <el-table-column prop="toSacAmount" label="PNB折合SAC"></el-table-column>
+          <el-table-column prop="toSacAmount" label="PNB折合SAC">
+            <template slot-scope="scope" prop="sysStatus">
+              <span
+                :style="{color:scope.row.toSacAmount<scope.row.sacAmount?'red': scope.row.toSacAmount>scope.row.sacAmount? '#02bb02':''}">{{scope.row.toSacAmount}}</span>
+            </template>
+          </el-table-column>
         </sac-table>
       </el-tab-pane>
     </el-tabs>

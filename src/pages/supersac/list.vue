@@ -37,7 +37,7 @@
 
       <el-table-column label="操作">
         <template slot-scope="scope" prop="sysStatus">
-          <el-button type="primary" size="small"
+          <el-button type="primary" size="small" v-if="scope.row.teamId"
                      @click.native="$router.push({name: 'setprize', query: {teamName: scope.row.teamName, teamId: scope.row.teamId}})">
             配置奖励
           </el-button>

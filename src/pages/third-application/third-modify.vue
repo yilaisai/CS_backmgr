@@ -359,7 +359,6 @@
               })
               this.ruleForm.disclaimerType=this.ruleForm.disclaimerType==true?1:0
               this.$http.post("wallet/backmgr/thirdAppInfo/updateThirdAppInfo.do", this.ruleForm).then((res) => {
-                this.dialogFormVisible = false;
                 this.$notify({
                   title: '成功',
                   message: `修改 ${this.ruleForm.appName} 应用成功`,
@@ -371,7 +370,6 @@
             } else {
               this.ruleForm.disclaimerType=this.ruleForm.disclaimerType==true?1:0
               this.$http.post("wallet/backmgr/thirdAppInfo/createThirdAppInfo.do", this.ruleForm).then((res) => {
-                this.dialogFormVisible = false;
                 this.$notify({
                   title: '成功',
                   message: `创建 ${ this.ruleForm.appName} 应用成功`,

@@ -54,23 +54,31 @@
       };
     },
     methods: {
-      handleSelect(key, item) {
+      handleSelect(key) {
         this.activeIndex = key;
         localStorage.setItem('menuDefaultActive', key);
       },
     },
     mounted() {
+      // 默认显示页面菜单设置
       const menuList = JSON.parse(localStorage.getItem('wallet_menuUrls')) || [];
+      if (location.hash == '#/home' || !localStorage.getItem('menuDefaultActive')) {
+        this.activeIndex = '0';
+      } else {
+        this.activeIndex = localStorage.getItem('menuDefaultActive');
+        const curHref = location.href.split('#');
+        const activeIndex = this.activeIndex.split('-');
+        const historyRout = menuList[activeIndex[0]].children[activeIndex[1]].menuUrl;
+        if (curHref[1] != historyRout) {
+          this.$router.push({
+            path: historyRout
+          })
+        }
+      }
       menuList.forEach((item) => {
         item.icon = item.menuUrl.split('/')[1] ? item.menuUrl.split('/')[1] : 'home';
       });
       this.menuList = menuList;
-      // 默认显示页面菜单设置
-      if (location.hash == '#/home' || !localStorage.getItem('menuDefaultActive')) {
-        this.activeIndex = '0';
-      } else {
-        this.activeIndex = localStorage.getItem('menuDefaultActive')
-      }
     },
   };
 </script>

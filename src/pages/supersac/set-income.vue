@@ -3,11 +3,11 @@
   <div class='set-income'>
     <el-row style="margin-bottom: 20px;">
         <el-col :span="19" style="text-align:center;">
-            <el-button type="primary" :class="tapIndex == 1?'':'empty'" @click="showButton(1)">收益设置</el-button>
-            <el-button type="primary" :class="tapIndex == 2?'':'empty'" @click="showButton(2)">等级条件设置</el-button>
+            <el-button type="primary" size="small" :class="tapIndex == 1?'':'empty'" @click="showButton(1)">收益设置</el-button>
+            <el-button type="primary" size="small" :class="tapIndex == 2?'':'empty'" @click="showButton(2)">等级条件设置</el-button>
         </el-col>
     </el-row>
-    <sac-table :data="listData.list" v-show="tapIndex == 1">
+    <sac-table :data="listData.list" v-show="tapIndex == 1" >
       <el-table-column prop="roleName" label="会员等级"  width="170"></el-table-column>
       <el-table-column prop="initRate" label="起始收益率" width="170">
         <template slot-scope="scope">
@@ -21,7 +21,7 @@
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope" prop="sysStatus">
-          <el-button type="primary"
+          <el-button type="primary" size="small"
                      @click.native="change1Info(scope.row)">修改
           </el-button>
         </template>
@@ -49,7 +49,7 @@
 
       <el-table-column label="操作">
         <template slot-scope="scope" prop="sysStatus">
-          <el-button type="primary"
+          <el-button type="primary" size="small"
                      @click.native="change2Info(scope.row)">修改
           </el-button>
         </template>
@@ -70,8 +70,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false" >取 消</el-button>
-        <el-button type="primary" @click="determine" >确 定</el-button>
+        <el-button @click="dialogFormVisible = false" size="small">取 消</el-button>
+        <el-button type="primary" @click="determine" size="small">确 定</el-button>
       </div>
     </el-dialog>
     <el-dialog :visible.sync="dialogForm2Visible">
@@ -105,8 +105,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogForm2Visible = false" >取 消</el-button>
-        <el-button type="primary" @click="determine2" >确 定</el-button>
+        <el-button @click="dialogForm2Visible = false" size="small" >取 消</el-button>
+        <el-button type="primary" @click="determine2" size="small">确 定</el-button>
       </div>
     </el-dialog>
   </div>

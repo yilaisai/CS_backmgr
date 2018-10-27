@@ -17,6 +17,11 @@
     </el-form>
     <sac-table :data="listData.list">
       <el-table-column prop="title" label="标题"></el-table-column>
+      <el-table-column prop="type" label="公告类型">
+        <template slot-scope="scope" prop="type">
+          {{scope.row.type=='2'?'动账消息': scope.row.type=='1'?'运营消息':'系统消息'}}
+        </template>
+      </el-table-column>
       <el-table-column prop="content" label="内容"></el-table-column>
       <el-table-column label="发送日期" width="150px">
         <template slot-scope="scope" prop="sysStatus">
@@ -25,7 +30,7 @@
       </el-table-column>
       <el-table-column label="操作" width="150px">
         <template slot-scope="scope" prop="sysStatus">
-          <el-button type="primary" :disabled="scope.row.type == 1" size="small"
+          <el-button type="primary" :disabled="scope.row.lockStatus == 1" size="small"
                      :loading="scope.row.isLoading"
                      @click.native="modification(scope.row,scope.$index)">修改
           </el-button>
@@ -33,7 +38,7 @@
       </el-table-column>
       <el-table-column label="上架" width="100">
         <template slot-scope="scope" prop="type">
-          <el-switch v-model="scope.row.type" :inactive-value="0" :active-value="1"
+          <el-switch v-model="scope.row.lockStatus" :inactive-value="0" :active-value="1"
                      @click.native="switchChange(scope.row)"></el-switch>
         </template>
       </el-table-column>
@@ -161,15 +166,14 @@
       },
       // 上下架
       switchChange(itemData) {
-        const { type, id, title } = itemData;
-        console.log(type, 888);
+        const { lockStatus, id, title } = itemData;
         this.$http.post("supernode/backmgr/notice/updateNoticeStatus", {
-          status: type ? "1" : "0",
+          status: lockStatus ? "1" : "0",
           id
         }).then((res) => {
           this.$notify({
             title: '成功',
-            message: `${title} ${type ? "上架" : "下架"} 成功`,
+            message: `${lockStatus ? "上架" : "下架"} 成功`,
             type: 'success'
           });
           this.getNoticeInfoList();

@@ -15,10 +15,10 @@
              :model="filterForm">
       <sac-input
         ref="phone"
-        label="图片名称"
+        label="banner名称"
         v-model.trim="filterForm.bannerName"
         prop="phone"></sac-input>
-      <sac-date ref="selectedDate" label="日　　期" v-model="selectedDate"></sac-date>
+      <sac-date ref="selectedDate" label="日　　期" placeholder="请选择日期" v-model="selectedDate"></sac-date>
       <sac-select label="类型" v-model="filterForm.bannerType" :props="typeList" :data-list="bannerTypeList"></sac-select>
       <sac-select label="状态" v-model="filterForm.isOnShelf" :data-list="bannerOnShelfList"></sac-select>
       <sac-submit-form
@@ -27,7 +27,8 @@
     </el-form>
     <sac-table :data="listData.list">
       <el-table-column prop="weight" label="权重" width="80"></el-table-column>
-      <el-table-column label="图片">
+      <el-table-column prop="bannerName" label="banner名称"></el-table-column>
+      <el-table-column label="banner图片">
         <template slot-scope="scope">
           <viewer :options="options"
                   class="viewer" ref="viewer"
@@ -39,7 +40,6 @@
         </template>
       </el-table-column>
       <el-table-column prop="bannerTypeName" label="banner类型"></el-table-column>
-      <el-table-column prop="bannerName" label="banner名称"></el-table-column>
       <el-table-column prop="jumpUrl" label="跳转链接">
         <template slot-scope="scope" prop="sysStatus">
           <a target="_brank" :href="scope.row.jumpUrl">{{scope.row.jumpUrl}}</a>
@@ -53,17 +53,17 @@
       </el-table-column>
       <el-table-column label="操作" width="160">
         <template slot-scope="scope" prop="sysStatus">
-          <el-button type="primary" :disabled="scope.row.isOnshelf != 0" size="small"
+          <el-button type="primary" :disabled="scope.row.isOnShelf != 0" size="small"
                      @click.native="modification(scope.row)">修改
           </el-button>
-          <el-button type="danger" :disabled="scope.row.isOnshelf != 0" size="small"
+          <el-button type="danger" :disabled="scope.row.isOnShelf != 0" size="small"
                      @click.native="remove(scope.row)">删除
           </el-button>
         </template>
       </el-table-column>
       <el-table-column label="上架" width="100">
-        <template slot-scope="scope" prop="isOnshelf">
-          <el-switch v-model="scope.row.isOnshelf" :inactive-value="0" :active-value="1"
+        <template slot-scope="scope" prop="isOnShelf">
+          <el-switch v-model="scope.row.isOnShelf" :inactive-value="0" :active-value="1"
                      @click.native="switchChange(scope.row)"></el-switch>
         </template>
       </el-table-column>
@@ -77,46 +77,45 @@
     <el-dialog :title="dialogTitle" :visible.sync="isShowAddDialog">
       <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="140px">
         <el-form-item label="banner图片:" prop="bannerUrl">
-          <el-col>
-            <el-input size="small" v-model="ruleForm.bannerUrl" placeholder="请选择上传">
-              <el-upload
-                :action="server_path + 'wallet/util/open/uploadFile.do'"
-                multiple
-                name="files"
-                :data="{type:'img'}"
-                :show-file-list="false"
-                :on-success="upload" slot="append">
-                <el-button size="small" type="primary">点击上传</el-button>
-              </el-upload>
-            </el-input>
-          </el-col>
+          <img v-show="ruleForm.bannerUrl" v-viewer :src="ruleForm.bannerUrl" class="introduce">
+          <el-upload
+            v-loading="loading"
+            :action="server_path + 'wallet/util/open/uploadFile.do'"
+            multiple
+            name="files"
+            :before-upload="beforeUpload"
+            :data="{type:'img'}"
+            :show-file-list="false"
+            :on-success="upload">
+            <el-button size="small" type="primary">点击上传</el-button>
+          </el-upload>
         </el-form-item>
-        <el-form-item label="banner类型" prop="bannerTypeEnName">
-          <el-select size="small" v-model="ruleForm.bannerTypeEnName" placeholder="请选择banner类型"
-                     @change="getbannerTypeEnName('ruleForm')" style="width:100%;">
-            <el-option :label="item.label" :value="item.value" v-for="(item, index) in bannerTypeList"
-                       :key="index"></el-option>
+        <el-form-item label="banner类型" prop="bannerType">
+          <el-select size="small" v-model="ruleForm.bannerType" placeholder="请选择banner类型"
+                     style="width:100%;">
+            <el-option :label="item.typeName" :value="item.code" v-for="(item, index) in bannerTypeList"
+                       :key="index" v-if="index!=0"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label=" banner名称:" prop="bannerName">
-          <el-col>
-            <el-input size="small" v-model="ruleForm.bannerName" placeholder="请输入banner名称"></el-input>
-          </el-col>
+
+          <el-input size="small" v-model="ruleForm.bannerName" placeholder="请输入banner名称"></el-input>
+
         </el-form-item>
         <el-form-item label="跳转链接:" prop="jumpUrl">
-          <el-col>
-            <el-input size="small" v-model="ruleForm.jumpUrl" placeholder="请输入跳转链接"></el-input>
-          </el-col>
+
+          <el-input size="small" v-model="ruleForm.jumpUrl" placeholder="请输入跳转链接"></el-input>
+
         </el-form-item>
         <el-form-item label="权重:">
-          <el-col>
-            <el-input-number size="small" v-model="ruleForm.weight" :min="1" label="请输入权重"></el-input-number>
-          </el-col>
+
+          <el-input-number size="small" v-model="ruleForm.weight" :min="1" label="请输入权重"></el-input-number>
+
         </el-form-item>
         <el-form-item label="备注:">
-          <el-col>
-            <el-input size="small" v-model="ruleForm.remark" placeholder="请输入备注"></el-input>
-          </el-col>
+
+          <el-input size="small" v-model="ruleForm.remark" placeholder="请输入备注"></el-input>
+
         </el-form-item>
         <el-form-item>
           <el-button type="primary" style="width: 100px" size="small" @click.native="determine">确定</el-button>
@@ -158,14 +157,15 @@
           label: '下架',
         }],
         typeList: {
-          value: 'type',
+          value: 'code',
           label: 'typeName',
         },
         bannerTypeList: [],
         isShowAddDialog: false,
+        loading: false,
         ruleForm: {
           bannerUrl: "",
-          bannerTypeEnName: "",
+          bannerType: "",
           bannerName: "",
           jumpUrl: "",
           weight: "",
@@ -180,7 +180,7 @@
           bannerName: [
             { required: true, message: '请选择banner名称', trigger: 'change' }
           ],
-          bannerTypeEnName: [
+          bannerType: [
             { required: true, message: '请选择banner类型', trigger: 'change' }
           ],
           jumpUrl: [
@@ -188,7 +188,7 @@
           ],
         },
         server_path: "",
-        bannerTypeCode: "",
+        // bannerTypeCode: "",
         options: {
           inline: false,
           button: false,
@@ -211,14 +211,14 @@
       resetForm() {
         this.ruleForm = {
           bannerUrl: "",
-          bannerTypeEnName: "",
+          bannerType: "",
           bannerName: "",
           jumpUrl: "",
           weight: "",
           bannerType: "",
           remark: ""
         };
-        this.bannerTypeCode = '';
+        // this.bannerTypeCode = '';
         this.$refs.ruleForm && this.$refs.ruleForm.resetFields(); // 重置query的数据
       },
       submitForm(num) {
@@ -232,7 +232,10 @@
       // banner类型
       getBannerTypeList() {
         this.$http.post("supernode/backmgr/banner/open/getBannerTypeList", this.filterForm).then((res) => {
-          this.bannerTypeList = res.result;
+          this.bannerTypeList = [{
+            typeName: '全部',
+            code: '',
+          }, ...res.result];
         })
       },
       getAppBannerInfos() {
@@ -249,8 +252,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$http.post("wallet/backmgr/banner/updateAppBannerInfoSysStatus.do", {
-            sysStatus: "INVALID0",
+          this.$http.post("supernode/backmgr/banner/delete", {
             id
           }).then((res) => {
             this.$notify({
@@ -264,28 +266,25 @@
       },
       // 上下架
       switchChange(itemData) {
-        const { isOnshelf, id, bannerName } = itemData;
-        this.$http.post("wallet/backmgr/banner/updateAppBannerInfoOnshelf.do", {
-          isOnshelf: isOnshelf ? "YES" : "NO",
+        const { isOnShelf, id, bannerName } = itemData;
+        this.$http.post("supernode/backmgr/banner/isOnShelf", {
+          isOnShelf: isOnShelf ? "1" : "0",
           id
         }).then((res) => {
           this.$notify({
             title: '成功',
-            message: `${bannerName} ${isOnshelf ? "上架" : "下架"} 成功`,
+            message: `${bannerName} ${isOnShelf ? "上架" : "下架"} 成功`,
             type: 'success'
           });
           this.getAppBannerInfos();
         })
       },
-      getbannerTypeEnName(type) {
-        this.bannerTypeList.forEach((item) => {
-          if (item.value == this[type].bannerTypeEnName) {
-            this.bannerTypeCode = item.code;
-          }
-        })
-      },
       upload(response, file, fileList) {
-        this.ruleForm.bannerUrl = response.result.urls[0]
+        this.ruleForm.bannerUrl = response.result.urls[0];
+        this.loading = false;
+      },
+      beforeUpload(){
+        this.loading = true;
       },
       addBanner() {
         this.resetForm();
@@ -294,7 +293,6 @@
       },
       modification(data) {
         this.resetForm();
-        this.bannerTypeCode = data.bannerType;
         this.isShowAddDialog = true;
         this.ruleForm = JSON.parse(JSON.stringify(data));
         this.dialogTitle = `修改 ${this.ruleForm.bannerName} 的banner`;
@@ -303,10 +301,9 @@
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
             if (this.ruleForm.id) {
-              const { bannerTypeEnName, id, bannerName, jumpUrl, bannerUrl, weight, remark } = this.ruleForm;
-              this.$http.post("wallet/backmgr/banner/updateAppBannerInfo.do", {
-                bannerTypeEnName,
-                bannerType: this.bannerTypeCode,
+              const { bannerType, id, bannerName, jumpUrl, bannerUrl, weight, remark } = this.ruleForm;
+              this.$http.post("supernode/backmgr/banner/update", {
+                bannerType,
                 id,
                 bannerName,
                 jumpUrl: jumpUrl || 'empty',
@@ -324,8 +321,7 @@
                 this.getAppBannerInfos();
               })
             } else {
-              this.ruleForm.bannerType = this.bannerTypeCode;
-              this.$http.post("wallet/backmgr/banner/createAppBannerInfo.do", this.ruleForm).then((res) => {
+              this.$http.post("supernode/backmgr/banner/create", this.ruleForm).then((res) => {
                 this.$notify({
                   title: '成功',
                   message: `创建 ${ this.ruleForm.bannerName} banner成功`,
@@ -351,5 +347,9 @@
 </script>
 <style lang="less">
   .banner {
+    .introduce {
+      height: 80px;
+      display: block;
+    }
   }
 </style>

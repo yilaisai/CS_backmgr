@@ -97,6 +97,7 @@
 </template>
 <script>
   import { transactionType, alarmConditionType, transferQueryStatus } from '@/common/constants';
+  import { dateFormat } from '@/common/util';
 
   export default {
     name: 'transfer-query',
@@ -200,6 +201,9 @@
       },
     },
     activated() {
+      const end = dateFormat();
+      const start = dateFormat(new Date().getTime() - 3600 * 1000 * 24 * 30);
+      this.selectedDate = [start, end];
       this.getTradeList();
     }
   };

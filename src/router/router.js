@@ -511,28 +511,36 @@ export const appRouter = [
         component: () => import('@/pages/supersac/user.vue')
       },
       {
-        path: 'capital-detail',
-        name: 'capital-detail',
-        meta: {
-          title: '用户管理'
-        },
-        component: () => import('@/pages/supersac/capital-detail.vue')
-      },
-      {
         path: 'invite-detail',
         name: 'invite-detail',
         meta: {
-          title: '用户管理'
+          title: '邀请详情'
         },
         component: () => import('@/pages/supersac/invite-detail.vue')
       },
+      // {
+      //   path: 'node-detail',
+      //   name: 'node-detail',
+      //   meta: {
+      //     title: '节点管理'
+      //   },
+      //   component: () => import('@/pages/supersac/node-detail.vue')
+      // },
       {
-        path: 'node-detail',
-        name: 'node-detail',
+        path: 'node-modify',
+        name: 'nodeModify',
         meta: {
-          title: '节点管理'
+          title: '节点新增和修改'
         },
-        component: () => import('@/pages/supersac/node-detail.vue')
+        component: () => import('@/pages/supersac/node-modify.vue')
+      },
+      {
+        path: 'sendEmail',
+        name: 'sendEmail',
+        meta: {
+          title: '发送邮件'
+        },
+        component: () => import('@/pages/supersac/sendEmail.vue')
       },
       {
         path: 'node-manage',
@@ -565,6 +573,20 @@ export const appRouter = [
           title: '公告管理'
         },
         component: () => import('@/pages/supersac/notice-manage.vue')
+      }, {
+        path: 'revenue-management',
+        name: 'revenueManagement',
+        meta: {
+          title: '收益管理'
+        },
+        component: () => import('@/pages/supersac/revenue-management.vue')
+      }, {
+        path: 'team-ranking',
+        name: 'teamRanking',
+        meta: {
+          title: '团队排行'
+        },
+        component: () => import('@/pages/supersac/team-ranking.vue')
       }
     ],
   },

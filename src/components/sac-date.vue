@@ -1,7 +1,7 @@
 <template>
   <el-form-item :label="`${label}:`" :prop="prop" class="sac-date">
     <el-date-picker
-      v-model="value"
+      v-model="dateValue"
       :editable="false"
       type="daterange"
       align="center"

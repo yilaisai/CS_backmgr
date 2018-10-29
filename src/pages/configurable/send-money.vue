@@ -5,10 +5,12 @@
 */
 <template>
   <div class='send-money'>
-    <el-col :span="22" style="text-align:right; margin-bottom:30px;">
-      <el-button size="small" type="primary" @click="addSend">创建邀请规则</el-button>
+    <el-col :span="22" style="text-align:right;margin-bottom: 10px;">
+      <h3>邀请好友送币</h3>
+      <el-button size="small" type="primary" @click="addSend">创建规则</el-button>
     </el-col>
 
+    
     <sac-table :data="listData.list">
       <!-- <el-table-column prop="minAmount" label="持币数量" :formatter="formatSex"></el-table-column>
       <el-table-column prop="amount" label="送币数量"></el-table-column> -->
@@ -85,13 +87,34 @@
                      @click.native="switchChange(scope.row)"></el-switch>
         </template>
       </el-table-column>
+    </sac-table><br><br><br><br>
+
+    <el-col :span="22" style="text-align:right;margin-bottom: 10px;">
+      <h3>注册送币</h3>
+      <el-button size="small" type="primary" @click="registerAddSend">创建规则</el-button>
+    </el-col>
+    <sac-table :data="listData.list">
+      <el-table-column prop="beginDate" label="币种"></el-table-column>
+      <el-table-column prop="beginDate" label="送币量"></el-table-column>
+      <el-table-column label="操作">
+
+        <template slot-scope="scope" prop="sysStatus">
+          <el-button type="success" :disabled="scope.row.isOnshelf != 0" size="small"
+                     @click.native="registerModification(scope.row)">修改
+          </el-button>
+          <el-button type="danger" size="small" :disabled="scope.row.sysStatus != 0"
+                     @click.native="registerRemove(scope.row)">删除
+          </el-button>
+        </template>
+      </el-table-column>
+      <el-table-column label="上架">
+        <template slot-scope="scope" prop="isOnshelf">
+          <el-switch v-model="scope.row.isOnshelf" :disabled="scope.row.sysStatus == 0" :inactive-value="0" :active-value="1"
+                     @click.native="switchChange(scope.row)"></el-switch>
+        </template>
+      </el-table-column>
     </sac-table>
-    <sac-pagination v-show="listData.list.length>0"
-                    @handleChange="getPaginationChange"
-                    :total="+listData.total"
-                    :page-size="pageSize"
-                    :current-page="pageNum">
-    </sac-pagination>
+
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
       <el-form :model="ruleForm" ref="ruleForm" :rules="rules" label-width="130px">
         <!-- <el-form-item label="持币数量:" required>
@@ -245,6 +268,33 @@
         <el-button type="primary" @click="determine" size="small">确 定</el-button>
       </div>
     </el-dialog>
+
+
+    <el-dialog :title="registerDialogTitle" :visible.sync="registerDialogFormVisible" class="register_dialog">
+      <el-form :model="ruleForm" ref="ruleForm" :rules="rules" label-width="135px">
+        <div class="from_box">
+          <el-form-item label="币种:" prop="coinId" class="from_box_item">
+            <el-select v-model="ruleForm.coinId" placeholder="请选择">
+              <el-option
+                v-for="item in coinList"
+                :key="item.coinId"
+                :label="item.coinName"
+                :value="item.coinId">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </div>
+        <div class="from_box">
+          <el-form-item label="送币量:" prop="directInvitedAmount"  class="from_box_item">
+            <el-input type="number" v-model="ruleForm.directInvitedAmount" placeholder=""></el-input>
+          </el-form-item>
+        </div>
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="determine" size="small">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -268,7 +318,9 @@ import { dateFormat } from '@/common/util';
           list: [],
         },
         dialogTitle: '',
+        registerDialogTitle: '',
         dialogFormVisible: false,
+        registerDialogFormVisible: false,
         ruleForm: {
           coinId:'',
           directInvitedAmount:'',
@@ -505,8 +557,20 @@ import { dateFormat } from '@/common/util';
         second=second < 10 ? ('0' + second) : second;
         return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
       },
+      registerAddSend() {
+        this.registerDialogTitle = '创建注册送币规则';
+        this.registerDialogFormVisible = true;
+        this.resetForm();
+      },
+      registerModification(itemData) {
+        this.registerDialogTitle = '修改注册送币规则';
+        this.registerDialogFormVisible = true;
+        this.resetForm();
+        this.ruleForm = JSON.parse(JSON.stringify(itemData));
+        this.ruleForm.beginDate=new Date(this.ruleForm.beginDate);
+        this.ruleForm.endDate=new Date(this.ruleForm.endDate)
+      },
       foo(h,{column}){
-        console.log(column);
         if(column.className){
             return(
               <el-tooltip
@@ -528,6 +592,11 @@ import { dateFormat } from '@/common/util';
 </script>
 <style lang="less">
   .send-money {
+    h3 {
+      margin:0;
+      float: left;
+      margin-top: 4px;
+    }
     .el-dialog {
       width: 900px;
     }
@@ -560,6 +629,24 @@ import { dateFormat } from '@/common/util';
           width:80%;
           input{
             width:100%
+          }
+        }
+      }
+    }
+    .register_dialog {
+      .el-dialog {
+        width: 500px;
+        .from_box {
+          .from_box_item {
+            width: 100%;
+          }
+        }
+        .el-dialog__footer {
+          padding: 0 20px 40px;
+          text-align: center;
+          button {
+            width: 68%;
+            margin-left: 20px;
           }
         }
       }

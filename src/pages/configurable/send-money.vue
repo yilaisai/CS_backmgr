@@ -10,19 +10,9 @@
       <el-button size="small" type="primary" @click="addSend">创建规则</el-button>
     </el-col>
 
-    
     <sac-table :data="listData.list">
-      <!-- <el-table-column prop="minAmount" label="持币数量" :formatter="formatSex"></el-table-column>
-      <el-table-column prop="amount" label="送币数量"></el-table-column> -->
-
       <el-table-column prop="createTime" label="创建时间" width="140">
-
-
       </el-table-column>
-       <!-- v-for="item in coinList"
-                :key="item.coinId"
-                :label="item.coinName"
-                :value="item.coinId"> -->
       <el-table-column prop="coinId" label="币种" class-name="选择送出的币类型" :render-header="foo">
         <template slot-scope="scope">
           <div v-for="item in coinList" :key="item.coinId" v-if="scope.row.coinId==item.coinId">{{item.coinName}}</div>
@@ -54,7 +44,6 @@
       <el-table-column prop="maxInviteAmount" label="送币上限"></el-table-column>
       <el-table-column prop="remainAmount" label="奖池余额"></el-table-column>
 
-      <!-- <el-table-column prop="sysStatus" label="系统状态"></el-table-column> -->
       <el-table-column prop="totalAmount" label="奖池总额" width="100" class-name="0表示不限制" :render-header="foo"></el-table-column>
       <el-table-column prop="tranStatus" label="转账">
         <template slot-scope="scope">
@@ -93,53 +82,35 @@
       <h3>注册送币</h3>
       <el-button size="small" type="primary" @click="registerAddSend">创建规则</el-button>
     </el-col>
-    <sac-table :data="listData.list">
-      <el-table-column prop="beginDate" label="币种"></el-table-column>
-      <el-table-column prop="beginDate" label="送币量"></el-table-column>
+    <sac-table :data="registList">
+      <el-table-column prop="coinType" label="币种"></el-table-column>
+      <el-table-column prop="amount" label="送币量"></el-table-column>
+      <el-table-column prop="startTime" label="生效时间"></el-table-column>
+      <el-table-column prop="endTime" label="失效时间"></el-table-column>
       <el-table-column label="操作">
 
         <template slot-scope="scope" prop="sysStatus">
-          <el-button type="success" :disabled="scope.row.isOnshelf != 0" size="small"
+          <el-button type="success" :disabled="scope.row.isShow != 0" size="small"
                      @click.native="registerModification(scope.row)">修改
           </el-button>
-          <el-button type="danger" size="small" :disabled="scope.row.sysStatus != 0"
+          <el-button type="danger" size="small" :disabled="scope.row.isShow != 0"
                      @click.native="registerRemove(scope.row)">删除
           </el-button>
         </template>
       </el-table-column>
       <el-table-column label="上架">
-        <template slot-scope="scope" prop="isOnshelf">
-          <el-switch v-model="scope.row.isOnshelf" :disabled="scope.row.sysStatus == 0" :inactive-value="0" :active-value="1"
-                     @click.native="switchChange(scope.row)"></el-switch>
+        <template slot-scope="scope" prop="isShow">
+          <el-switch v-model="scope.row.isShow" :inactive-value="0" :active-value="1"
+                     @click.native="registerSwitchChange(scope.row)"></el-switch>
         </template>
       </el-table-column>
     </sac-table>
 
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
       <el-form :model="ruleForm" ref="ruleForm" :rules="rules" label-width="130px">
-        <!-- <el-form-item label="持币数量:" required>
-          <el-col :span="11">
-            <el-form-item prop="minAmount">
-              <span class="input-before-lable1">大于等于</span>
-              <el-input style="width:130px" v-model="ruleForm.minAmount" clearable size="small" placeholder="请输入数额"
-                        class="min-input"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col class="line" :span="2"></el-col>
-          <el-col :span="11">
-            <el-form-item prop="maxAmount">
-              <span class="input-before-lable">小于等于</span>
-              <el-input style="width:130px" v-model="ruleForm.maxAmount" clearable size="small" placeholder="请输入数额"
-                        class="min-input"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-form-item>
-        <el-form-item label="送币数量:" prop="amount">
-          <el-input size="small" v-model="ruleForm.amount" placeholder="请输入数额"></el-input>
-        </el-form-item> -->
         <div class="from_box">
           <el-form-item label="币种:" prop="coinId" class="from_box_item">
-            <el-select v-model="ruleForm.coinId" placeholder="请选择">
+            <el-select v-model="ruleForm.coinId" placeholder="请选择" size="small">
               <el-option
                 v-for="item in coinList"
                 :key="item.coinId"
@@ -149,15 +120,15 @@
             </el-select>
           </el-form-item>
           <el-form-item label="邀请奖励:" prop="directInvitedAmount"  class="from_box_item">
-            <el-input type="number" v-model="ruleForm.directInvitedAmount" placeholder=""></el-input>
+            <el-input type="number" size="small" v-model="ruleForm.directInvitedAmount" placeholder=""></el-input>
           </el-form-item>
         </div>
         <div class="from_box">
           <el-form-item label="父奖励:" prop="secInvitedAmount"   class="from_box_item">
-            <el-input type="number" v-model="ruleForm.secInvitedAmount" placeholder=""></el-input>
+            <el-input type="number" size="small" v-model="ruleForm.secInvitedAmount" placeholder=""></el-input>
           </el-form-item>
           <el-form-item label="父奖励状态:" prop="effectSec"   class="from_box_item">
-            <el-select v-model="ruleForm.effectSec" placeholder="请选择">
+            <el-select v-model="ruleForm.effectSec" size="small" placeholder="请选择">
               <el-option
                 v-for="item in effectSecData"
                 :key="item.value"
@@ -169,10 +140,10 @@
         </div>
         <div class="from_box">
           <el-form-item label="邀请数奖励:" prop="inviteAmount" class="from_box_item">
-            <el-input type="number" v-model="ruleForm.inviteAmount" placeholder=""></el-input>
+            <el-input type="number" size="small" v-model="ruleForm.inviteAmount" placeholder=""></el-input>
           </el-form-item>
           <el-form-item label="邀请人实名:" prop="inviteAuthState" class="from_box_item">
-            <el-select v-model="ruleForm.inviteAuthState" placeholder="请选择">
+            <el-select size="small"  v-model="ruleForm.inviteAuthState" placeholder="请选择">
               <el-option
                 v-for="item in needData"
                 :key="item.value"
@@ -184,7 +155,7 @@
         </div>
         <div class="from_box">
           <el-form-item label="被邀请人实名:" prop="invitedAuthState" class="from_box_item">
-            <el-select v-model="ruleForm.invitedAuthState" placeholder="请选择">
+            <el-select size="small" v-model="ruleForm.invitedAuthState" placeholder="请选择">
               <el-option
                 v-for="item in needData"
                 :key="item.value"
@@ -195,23 +166,23 @@
           </el-form-item>
 
           <el-form-item label="邀请人数:" prop="inviteCount" class="from_box_item">
-            <el-input type="number" v-model="ruleForm.inviteCount" placeholder=""></el-input>
+            <el-input size="small" type="number" v-model="ruleForm.inviteCount" placeholder=""></el-input>
           </el-form-item>
         </div>
         <div class="from_box">
           <el-form-item label="登录天数:" prop="loginDay" class="from_box_item">
-            <el-input type="number" v-model="ruleForm.loginDay" placeholder=""></el-input>
+            <el-input size="small" type="number" v-model="ruleForm.loginDay" placeholder=""></el-input>
           </el-form-item>
           <el-form-item label="送币上限:" prop="maxInviteAmount" class="from_box_item">
-            <el-input type="number" v-model="ruleForm.maxInviteAmount" placeholder=""></el-input>
+            <el-input size="small" type="number" v-model="ruleForm.maxInviteAmount" placeholder=""></el-input>
           </el-form-item>
         </div>
         <div class="from_box">
           <el-form-item label="奖池余额:" prop="remainAmount"  class="from_box_item">
-            <el-input type="number" v-model="ruleForm.remainAmount" placeholder=""></el-input>
+            <el-input size="small" type="number" v-model="ruleForm.remainAmount" placeholder=""></el-input>
           </el-form-item>
           <el-form-item label="系统状态:" prop="sysStatus" class="from_box_item">
-            <el-select v-model="ruleForm.sysStatus" placeholder="请选择">
+            <el-select size="small" v-model="ruleForm.sysStatus" placeholder="请选择">
               <el-option
                 v-for="item in sysStatusData"
                 :key="item.value"
@@ -223,10 +194,10 @@
         </div>
         <div class="from_box">
           <el-form-item label="奖池总额:" prop="totalAmount" class="from_box_item">
-            <el-input type="number" v-model="ruleForm.totalAmount" placeholder=""></el-input>
+            <el-input type="number" size="small" v-model="ruleForm.totalAmount" placeholder=""></el-input>
           </el-form-item>
           <el-form-item label="转账:" prop="tranStatus" class="from_box_item">
-            <el-select v-model="ruleForm.tranStatus" placeholder="请选择">
+            <el-select size="small" v-model="ruleForm.tranStatus" placeholder="请选择">
               <el-option
                 v-for="item in tranStatusData"
                 :key="item.value"
@@ -239,6 +210,7 @@
         <div class="from_box">
           <el-form-item label="生效时间:" prop="beginDate" class="from_box_item" >
             <el-date-picker
+              size="small"
               v-model="ruleForm.beginDate"
               type="datetime"
               placeholder="选择生效时间">
@@ -246,6 +218,7 @@
           </el-form-item>
           <el-form-item label="失效时间:" prop="endDate" class="from_box_item">
             <el-date-picker
+              size="small"
               v-model="ruleForm.endDate"
               type="datetime"
               placeholder="选择失效时间">
@@ -254,10 +227,10 @@
         </div>
         <div class="from_box">
           <el-form-item label="数/天:" prop="sendCount" class="from_box_item">
-            <el-input type="number" v-model="ruleForm.sendCount" placeholder=""></el-input>
+            <el-input size="small" type="number" v-model="ruleForm.sendCount" placeholder=""></el-input>
           </el-form-item>
           <el-form-item label="被邀请人奖励:" prop="registAmount"  class="from_box_item" :formatter="formatSex">
-            <el-input type="number" v-model="ruleForm.registAmount" placeholder=""></el-input>
+            <el-input size="small" type="number" v-model="ruleForm.registAmount" placeholder=""></el-input>
           </el-form-item>
         </div>
 
@@ -271,10 +244,10 @@
 
 
     <el-dialog :title="registerDialogTitle" :visible.sync="registerDialogFormVisible" class="register_dialog">
-      <el-form :model="ruleForm" ref="ruleForm" :rules="rules" label-width="135px">
+      <el-form :model="registRuleForm" ref="registRuleForm" :rules="rules" label-width="135px">
         <div class="from_box">
-          <el-form-item label="币种:" prop="coinId" class="from_box_item">
-            <el-select v-model="ruleForm.coinId" placeholder="请选择">
+          <el-form-item label="币种:" prop="coinId" size="small" class="from_box_item">
+            <el-select v-model="registRuleForm.coinId" placeholder="请选择">
               <el-option
                 v-for="item in coinList"
                 :key="item.coinId"
@@ -285,14 +258,32 @@
           </el-form-item>
         </div>
         <div class="from_box">
-          <el-form-item label="送币量:" prop="directInvitedAmount"  class="from_box_item">
-            <el-input type="number" v-model="ruleForm.directInvitedAmount" placeholder=""></el-input>
+          <el-form-item label="送币量:"  prop="amount"  class="from_box_item">
+            <el-input  size="small" v-model="registRuleForm.amount" placeholder=""></el-input>
+          </el-form-item>
+        </div>
+        <div class="from_box">
+          <el-form-item label="生效时间:" prop="startTime" class="from_box_item" >
+            <el-date-picker
+              size="small"
+              v-model="registRuleForm.startTime"
+              type="datetime"
+              placeholder="选择生效时间">
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item label="失效时间:" prop="endTime" class="from_box_item">
+            <el-date-picker
+              size="small"
+              v-model="registRuleForm.endTime"
+              type="datetime"
+              placeholder="选择失效时间">
+            </el-date-picker>
           </el-form-item>
         </div>
 
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="determine" size="small">确 定</el-button>
+        <el-button type="primary" @click="registDetermine" size="small">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -343,18 +334,19 @@ import { dateFormat } from '@/common/util';
           registAmount:''
         },
         rules: {
-          minAmount: [
-            { required: true, message: '请输入数额', trigger: 'blur' },
-            { validator: checkNum, message: '大于等于必须为数字' }
-          ],
-          maxAmount: [
-            { required: true, message: '请输入数额', trigger: 'blur' },
-            { validator: checkNum, message: '小于等于必须为数字' }
+          coinId: [
+            { required: true, message: '请选择币种', trigger: 'change' },
           ],
           amount: [
             { required: true, message: '请输入送币数量', trigger: 'blur' },
             { validator: checkNum, message: '送币数量必须为数字' }
-          ]
+          ],
+          startTime: [
+            { required: true, message: '请选择生效时间', trigger: 'change' },
+          ],
+          endTime: [
+            { required: true, message: '请选择失效时间', trigger: 'change' },
+          ],
         },
         effectSecData:[
           {value:0,text:'不给予'},
@@ -378,6 +370,13 @@ import { dateFormat } from '@/common/util';
           {value:2,text:'链上'}
         ],
         coinList: [],
+        registList: [],
+        registRuleForm:{
+          coinId:'',
+          amount:'',
+          startTime:'',
+          endTime:'',
+        }
       };
     },
     methods: {
@@ -403,22 +402,12 @@ import { dateFormat } from '@/common/util';
         };
         this.$refs.ruleForm && this.$refs.ruleForm.resetFields();
       },
-      getPaginationChange(val, currentPage) {
-        this.pageSize = val;
-        this.pageNum = currentPage;
-        this.getRegistInviteRule();
-      },
       formatSex: function (row, column) {
         return `>=${row.minAmount}  <=${row.maxAmount}`
       },
       async getRegistInviteRule() {
         await this.getSampleCoinInfo()
         const { pageNum, pageSize } = this;
-        // this.$http.post("wallet/backmgr/registInviteRule/getRegistInviteRule.do", { pageNum, pageSize }).then((res) => {
-        //   const { list, total } = res.result.list;
-        //   this.listData.list = list;
-        //   this.listData.total = total;
-        // })
         this.$http.post("wallet/backmgr/registInviteRule/getRegistInviteRule.do", { pageNum, pageSize }).then((res) => {
           const list = res.result.list;
           const total= res.result.list.length
@@ -429,7 +418,6 @@ import { dateFormat } from '@/common/util';
       // 上下架
       switchChange(itemData) {
         if(itemData.sysStatus){
-          //if(itemData.sysStatus)
           const { isOnshelf, id } = itemData;
           this.$http.post("wallet/backmgr/registInviteRule/updateRegistInviteRuleIsOnShelf.do", {
             isOnShelf: isOnshelf ? "YES" : "NO",
@@ -449,7 +437,6 @@ import { dateFormat } from '@/common/util';
       switchSysStatusChange(itemData){
         const { sysStatus, id } = itemData;
         this.$http.post("wallet/backmgr/registInviteRule/updateRegistInviteRuleStatue.do", {
-          //sysStatus: sysStatus ? "YES" : "NO",
           status:sysStatus,
           id
         }).then((res) => {
@@ -557,36 +544,122 @@ import { dateFormat } from '@/common/util';
         second=second < 10 ? ('0' + second) : second;
         return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
       },
+      foo(h,{column}){
+        if(column.className){
+          return(
+            <el-tooltip
+        class="item"
+          effect="dark"
+          content={column.className}
+          placement="bottom"
+            >
+            <span>{column.label}<i class="el-icon-question"></i></span>
+          </el-tooltip>
+        )
+        }
+      },
+      resetRegistRuleForm() {
+        this.registRuleForm = {
+            coinId:'',
+            amount:'',
+          startTime:'',
+          endTime:'',
+        };
+        this.$refs.registRuleForm && this.$refs.registRuleForm.resetFields();
+      },
       registerAddSend() {
         this.registerDialogTitle = '创建注册送币规则';
         this.registerDialogFormVisible = true;
-        this.resetForm();
+        this.resetRegistRuleForm();
       },
       registerModification(itemData) {
+        this.resetRegistRuleForm();
         this.registerDialogTitle = '修改注册送币规则';
         this.registerDialogFormVisible = true;
-        this.resetForm();
-        this.ruleForm = JSON.parse(JSON.stringify(itemData));
-        this.ruleForm.beginDate=new Date(this.ruleForm.beginDate);
-        this.ruleForm.endDate=new Date(this.ruleForm.endDate)
+        this.registRuleForm = JSON.parse(JSON.stringify(itemData));
       },
-      foo(h,{column}){
-        if(column.className){
-            return(
-              <el-tooltip
-              class="item"
-              effect="dark"
-              content={column.className}
-              placement="bottom"
-              >
-                <span>{column.label}<i class="el-icon-question"></i></span>
-              </el-tooltip>
-            )
-        }
+      getRegistRewardRuleList() {
+        this.$http.post("wallet/backmgr/registRewardRule/getRegistRewardRuleList.do", {
+          pageNum: 1,
+          pageSize: 200,
+        }).then((res) => {
+          this.registList = res.result.list;
+        })
+      },
+      registerSwitchChange (itemData) {
+          const { isShow, id } = itemData;
+          this.$http.post("wallet/backmgr/registRewardRule/updateRegistRewardRuleShowType.do", {
+            isShow: isShow ? "SHOW" : "HIDE",
+            id
+          }).then((res) => {
+            this.$notify({
+              title: '成功',
+              message: `${isShow ? "上架" : "下架"} 成功`,
+              type: 'success'
+            });
+            this.getRegistRewardRuleList();
+          }).catch(()=>{
+            this.getRegistRewardRuleList();
+          })
+      },
+      registerRemove(itemData){
+        const { id } = itemData;
+        this.$confirm(`确定删除吗?`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$http.post("wallet/backmgr/registRewardRule/deleteRegistRewardRule.do", {
+            id
+          }).then((res) => {
+            this.$notify({
+              title: '成功',
+              message: `删除成功`,
+              type: 'success'
+            });
+            this.getRegistRewardRuleList();
+          })
+        })
+      },
+      registDetermine(){
+        this.$refs.registRuleForm.validate((valid) => {
+          if (valid) {
+            if(this.registRuleForm.id){
+            const {coinId, id, amount, startTime, endTime} =  this.registRuleForm
+              this.$http.post("wallet/backmgr/registRewardRule/updateRegistRewardRule.do", {
+                coinId,
+                id,
+                amount,
+              }).then((res) => {
+                this.$notify({
+                  title: '成功',
+                  message: `修改成功`,
+                  type: 'success'
+                });
+                this.registerDialogFormVisible = false;
+                this.getRegistRewardRuleList();
+              })
+            } else {
+              this.$http.post("wallet/backmgr/registRewardRule/createRegistRewardRule.do", this.registRuleForm).then((res) => {
+                this.$notify({
+                  title: '成功',
+                  message: `创建成功`,
+                  type: 'success'
+                });
+                this.registerDialogFormVisible = false;
+                this.getRegistRewardRuleList();
+              })
+            }
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
       }
     },
     activated() {
       this.getRegistInviteRule();
+      this.getRegistRewardRuleList();
     }
   };
 </script>
@@ -608,6 +681,9 @@ import { dateFormat } from '@/common/util';
       color: #606266;
       margin-left: 30px;
     }
+    .el-form-item__content {
+      line-height: 33px;
+    }
     .from_box{
       overflow: hidden;
       .from_box_item{
@@ -616,8 +692,7 @@ import { dateFormat } from '@/common/util';
           width:100%
         }
         .el-form-item__label{
-          line-height: 18px;
-          margin-bottom: 15px;
+          line-height: 33px;
         }
         label{
           font-size:13px

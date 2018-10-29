@@ -12,13 +12,14 @@
       <sac-coin ref="coinId" v-model="filterForm.coinId"></sac-coin>
       <sac-select ref="tradeType" label="交易类型" v-model="filterForm.tradeType"
                   :dataList="transactionType"></sac-select>
-      <sac-select ref="alarmType" label="告警情况" multiple v-model="alarmType"
-                  :dataList="alarmConditionType"></sac-select>
       <sac-select ref="tradeStatus" label="状　　态" v-model="filterForm.tradeStatus"
                   :dataList="transferQueryStatus"></sac-select>
       <sac-input ref="fromOrToUserPhone" label="用户账号" v-model.trim="filterForm.fromOrToUserPhone"></sac-input>
       <sac-date ref="selectedDate" label="日　　期" v-model="selectedDate"></sac-date>
-      <sac-input ref="thirdOrderNo" label="txid" v-model.trim="filterForm.thirdOrderNo"></sac-input>
+      <sac-input ref="thirdOrderNo" label="txid" v-model.trim="filterForm.thirdOrderNo" class="thirdOrderNo"></sac-input>
+      <sac-input ref="toAddr" label="交易地址" v-model.trim="filterForm.toAddr" class="toAddr"></sac-input>
+      <sac-select ref="alarmType" label="告警情况" multiple v-model="alarmType"
+                  :dataList="alarmConditionType" class="alarmType"></sac-select>
       <sac-submit-form
         @submitForm="submitForm(1)"
         :isReset="false"></sac-submit-form>
@@ -113,6 +114,7 @@
           fromOrToUserPhone: '',
           startDate: '',
           endDate: '',
+          toAddr: '',
           pageNum: 1,
           pageSize: 20
         },
@@ -130,18 +132,6 @@
       };
     },
     methods: {
-      // resetForm() {
-      //   this.alarmType = [];
-      //   this.$refs.coinId.reset(); // 重置币种
-      //   this.$refs.tradeType.reset();// 重置交易类型
-      //   this.$refs.alarmType.reset(); // 重置告警情况
-      //   this.$refs.tradeStatus.reset(); // 重置状　　态
-      //   this.$refs.fromOrToUserPhone.reset(); // 重置用户账号
-      //   this.$refs.selectedDate.reset(); // 重置日期
-      //   this.$refs.filterForm.resetFields(); // 重置query的数据
-      //   this.filterForm.pageNum = 1;
-      //   this.getTradeList();
-      // },
       submitForm(num) {
         this.filterForm.pageNum = num;
         const { tradeType, tradeStatus } = this.filterForm;
@@ -210,5 +200,26 @@
 </script>
 <style lang="less">
   .transfer-query {
+    .el-form--inline {
+      .el-form-item__content {
+        width: 110px;
+      }
+      .alarmType {
+        .el-form-item__content {
+          width: 290px;
+        }
+      }
+      .thirdOrderNo {
+        .el-form-item__content {
+          width: 150px;
+        }
+      }
+      .toAddr {
+        .el-form-item__content {
+          width: 200px;
+        }
+      }
+    }
+
   }
 </style>

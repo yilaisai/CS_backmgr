@@ -25,12 +25,10 @@
     </el-form>
 
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="总收益" name="first">
+      <el-tab-pane label="团队收益" name="first">
         <div class="totalRevenue">
           本期总收益：<span>{{totalIncome}} </span>PNB
         </div>
-      </el-tab-pane>
-      <el-tab-pane label="团队收益" name="second">
         <sac-table :data="teamIncome">
           <el-table-column prop="teamName" label="商户名"></el-table-column>
           <el-table-column prop="member" label="总人数"></el-table-column>
@@ -38,7 +36,7 @@
           <el-table-column prop="pnbIncome" label="团队总收益（PNB）"></el-table-column>
         </sac-table>
       </el-tab-pane>
-      <el-tab-pane label="个人收益" name="third">
+      <el-tab-pane label="个人收益" name="second">
         <sac-table :data="userIncome">
           <el-table-column prop="phone" label="用户名"></el-table-column>
           <el-table-column prop="teamName" label="节点"></el-table-column>
@@ -53,10 +51,12 @@
                         :current-page="filterForm.pageSize">
         </sac-pagination>
       </el-tab-pane>
-      <el-tab-pane label="商户情况" name="fourth">
-        <span class="amount"> PNB发行总数：<span class="red">{{pnbAmount}}</span></span>
-        <span class="amount"> 投票SAC总消耗：<span class="red">{{sacAmount}}</span></span>
-        <span class="amount"> SAC汇率：<span class="red">{{sacRate}}</span></span>
+      <el-tab-pane label="商户情况" name="third">
+        <div>
+          <span class="amount"> PNB发行总数：<span class="red">{{pnbAmount}}</span></span>
+          <span class="amount"> 投票SAC总消耗：<span class="red">{{sacAmount}}</span></span>
+          <span class="amount"> SAC汇率：<span class="red">{{sacRate}}</span></span>
+        </div>
         <sac-table :data="teamMonEarn">
           <el-table-column prop="teamName" label="商户名称"></el-table-column>
           <el-table-column prop="sacAmount" label="SAC投票净消耗数"></el-table-column>
@@ -153,12 +153,13 @@
       },
       handleClick() {
         const obj = {
-          'first': this.getTotalIncome, // 总收益
-          'second': this.getTeamIncome, // 团队
-          'third': this.getUserIncome, // 个人
-          'fourth': this.getTeamMonEarn // 商户
+          // 'first': this.getTotalIncome, // 总收益
+          'first': this.getTeamIncome, // 团队
+          'second': this.getUserIncome, // 个人
+          'third': this.getTeamMonEarn // 商户
         }
         obj[this.activeName]();
+        this.activeName == 'first' ? this.getTotalIncome() : '';
       },
     },
     activated() {
@@ -177,7 +178,7 @@
       justify-content: center;
     }
     .totalRevenue {
-      margin: 100px auto;
+      margin: 10px auto;
       width: 500px;
       text-align: center;
       font-size: 20px;

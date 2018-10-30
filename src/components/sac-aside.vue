@@ -68,7 +68,12 @@
         this.activeIndex = localStorage.getItem('menuDefaultActive');
         const curHref = location.href.split('#');
         const activeIndex = this.activeIndex.split('-');
-        const historyRout = menuList[activeIndex[0]].children[activeIndex[1]].menuUrl;
+        let historyRout = '';
+        if (activeIndex[1]) {
+          historyRout =  menuList[activeIndex[0]].children[activeIndex[1]].menuUrl;
+        } else {
+          historyRout = menuList[activeIndex[0]].menuUrl
+        }
         if (curHref[1] != historyRout) {
           this.$router.push({
             path: historyRout

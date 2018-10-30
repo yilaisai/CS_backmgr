@@ -7,20 +7,23 @@
   <div class='transfer-query'>
     <el-form :inline="true"
              label-width="80px"
-             ref="filterForm"
-             :model="filterForm">
-      <el-collapse accordion>
-        <el-collapse-item>
-          <template slot="title">
-            <sac-coin ref="coinId" v-model="filterForm.coinId"></sac-coin>
-            <sac-select ref="tradeType" label="交易类型" v-model="filterForm.tradeType"
-                        :dataList="transactionType"></sac-select>
-            <sac-select ref="tradeStatus" label="状　　态" v-model="filterForm.tradeStatus"
-                        :dataList="transferQueryStatus"></sac-select>
-            <sac-submit-form
-              @submitForm="submitForm(1)"
-              :isReset="false"></sac-submit-form>
-          </template>
+             ref="filterForm">
+      <div class="sac-collapse">
+        <div class="title">
+          <sac-coin ref="coinId" v-model="filterForm.coinId"></sac-coin>
+          <sac-select ref="tradeType" label="交易类型" v-model="filterForm.tradeType"
+                      :dataList="transactionType"></sac-select>
+          <sac-select ref="tradeStatus" label="状　　态" v-model="filterForm.tradeStatus"
+                      :dataList="transferQueryStatus"></sac-select>
+          <sac-submit-form
+            @submitForm="submitForm(1)"
+            :isReset="false"></sac-submit-form>
+          <span @click="changeContent" class="changeContent">
+            {{isContent?'合并':'展开'}}
+             <i :class="{'el-icon-arrow-right':!isContent,'el-icon-arrow-down':isContent}"></i>
+          </span>
+        </div>
+        <div class="content" :class="{'is-active2': isContent&isActive,'is-active1': isContent&!isActive}">
           <sac-input ref="fromOrToUserPhone" label="用户账号" v-model.trim="filterForm.fromOrToUserPhone"></sac-input>
           <sac-date ref="selectedDate" label="日　　期" v-model="selectedDate"></sac-date>
           <sac-input ref="thirdOrderNo" label="txid" v-model.trim="filterForm.thirdOrderNo"
@@ -28,8 +31,8 @@
           <sac-input ref="toAddr" label="交易地址" v-model.trim="filterForm.toAddr" class="toAddr"></sac-input>
           <sac-select ref="alarmType" label="告警情况" multiple v-model="alarmType"
                       :dataList="alarmConditionType" class="alarmType"></sac-select>
-        </el-collapse-item>
-      </el-collapse>
+        </div>
+      </div>
     </el-form>
     <sac-table :data="listData.list">
       <el-table-column prop="tradeId" label="序号" min-width="163" fixed="left"></el-table-column>
@@ -136,6 +139,8 @@
         isShowPayTime: true,
         isShowTableCol: true,
         isShowHandle: true,
+        isContent: false,
+        isActive: false,
       };
     },
     methods: {
@@ -196,6 +201,12 @@
             }, 1000);
           });
       },
+      changeContent() {
+        this.isContent = !this.isContent;
+        if (this.isContent) {
+          this.isActive = window.outerWidth > 1584 ? true : false;
+        }
+      }
     },
     activated() {
       const end = dateFormat();
@@ -222,6 +233,23 @@
     }
     .el-collapse-item__header {
       line-height: 40px;
+    }
+    .changeContent {
+      font-size: 14px;
+      color: red;
+      display: inline-block;
+      line-height: 40px;
+    }
+    .content {
+      height: 0;
+      overflow: hidden;
+      transition: all 0.5s;
+    }
+    .is-active1 {
+      height: 80px;
+    }
+    .is-active2 {
+      height: 40px;
     }
   }
 </style>

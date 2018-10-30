@@ -9,17 +9,22 @@
              label-width="120px"
              ref="filterForm"
              :model="filterForm">
-      <el-collapse accordion>
-        <el-collapse-item>
-          <template slot="title">
-            <sac-coin ref="coinId" v-model="filterForm.coinId"></sac-coin>
-            <sac-teamType ref="teamType" v-model="filterForm.teamType"></sac-teamType>
-            <sac-select ref="tradeType" label="交易类型" v-model="filterForm.tradeType"
-                        :dataList="transactionType"></sac-select>
-            <sac-submit-form
-              @submitForm="submitForm(1)"
-              :isReset="false"></sac-submit-form>
-          </template>
+
+      <div class="sac-collapse">
+        <div class="title">
+          <sac-coin ref="coinId" v-model="filterForm.coinId"></sac-coin>
+          <sac-teamType ref="teamType" v-model="filterForm.teamType"></sac-teamType>
+          <sac-select ref="tradeType" label="交易类型" v-model="filterForm.tradeType"
+                      :dataList="transactionType"></sac-select>
+          <sac-submit-form
+            @submitForm="submitForm(1)"
+            :isReset="false"></sac-submit-form>
+          <span @click="changeContent" class="changeContent">
+            {{isContent?'合并':'展开'}}
+             <i :class="{'el-icon-arrow-right':!isContent,'el-icon-arrow-down':isContent}"></i>
+          </span>
+        </div>
+        <div class="content" :class="{'is-active2': isContent&isActive,'is-active1': isContent&!isActive}">
           <sac-select ref="tradeStatus" label="状　　态" v-model="filterForm.tradeStatus"
                       :dataList="transferQueryStatus"></sac-select>
           <sac-input ref="fromOrToUserPhone" label="用户账号" v-model.trim="filterForm.fromOrToUserPhone"
@@ -27,13 +32,11 @@
           <sac-input ref="toAddr" label="交易地址" v-model.trim="filterForm.toAddr" class="inputBox"></sac-input>
           <sac-input ref="thirdOrderNo" label="txid" v-model.trim="filterForm.thirdOrderNo"
                      class="thirdOrderNo"></sac-input>
-          <sac-input ref="toAddr" label="转出方用户编号" v-model.trim="filterForm.fromUserId" class="inputBox"></sac-input>
-          <sac-input ref="toAddr" label="转入方用户编号" v-model.trim="filterForm.toUserId" class="inputBox"></sac-input>
-          <sac-input ref="toAddr" label="转出方用户手机" v-model.trim="filterForm.fromUserPhone" class="inputBox"></sac-input>
-          <sac-input ref="toAddr" label="转入方用户手机" v-model.trim="filterForm.toUserPhone" class="inputBox"></sac-input>
+          <sac-input ref="toAddr" label="付款账号" v-model.trim="filterForm.fromUserPhone" class="inputBox"></sac-input>
+          <sac-input ref="toAddr" label="收款账号" v-model.trim="filterForm.toUserPhone" class="inputBox"></sac-input>
           <sac-date ref="selectedDate" label="日　　期" v-model="selectedDate"></sac-date>
-        </el-collapse-item>
-      </el-collapse>
+        </div>
+      </div>
     </el-form>
     <div class="moneyList">
       <el-tag v-for="(item,index) in moneyList" :key="index">{{item.name}}：{{item.value}}</el-tag>
@@ -81,8 +84,6 @@
           startDate: '',
           endDate: '',
           toAddr: '',
-          fromUserId: '',
-          toUserId: '',
           fromUserPhone: '',
           toUserPhone: '',
           thirdOrderNo: '',
@@ -99,6 +100,8 @@
         selectedDate: [], //已选日期
         transactionType,  // 交易类型
         transferQueryStatus,  // 交易类型
+        isContent: false,
+        isActive: false,
       };
     },
     methods: {
@@ -141,23 +144,39 @@
             const { list, total } = res.result.retMap;
             this.listData.list = list;
             this.listData.total = total;
-            const sumData = res.result.sumData.length && res.result.sumData[0];
-            const isSelf = this.filterForm.teamType == -1;
-            this.moneyList = [{
-              name: isSelf ? '链上转入' : '转入',
-              value: sumData.inSumAmount || 0
-            }, {
-              name: isSelf ? '链上转出' : '转出',
-              value: sumData.outSumAmount || 0
-            }, {
-              name: '余额',
-              value: sumData.sunAmount || 0
-            }]
+            let sumData = [];
+            if (res.result.sumData.length) {
+              if (res.result.sumData.length > 1) {
+                sumData = [];
+                this.moneyList = [{
+                  name: '全部',
+                  value: 0
+                }]
+              } else {
+                sumData = res.result.sumData[0];
+                this.moneyList = [{
+                  name: '转入',
+                  value: sumData.inSumAmount || 0
+                }, {
+                  name: '转出',
+                  value: sumData.outSumAmount || 0
+                }, {
+                  name: '余额',
+                  value: sumData.sunAmount || 0
+                }]
+              }
+            }
           });
       },
       merchantType(row, col) {
         return row.merchantType == 'person' ? '个人' : row.merchantType;
       },
+      changeContent() {
+        this.isContent = !this.isContent;
+        if (this.isContent) {
+          this.isActive = window.outerWidth > 1584 ? true : false;
+        }
+      }
     },
     activated() {
       const end = dateFormat();
@@ -172,29 +191,37 @@
     .el-tag {
       margin-right: 10px;
     }
-    .el-collapse {
-      border-top: none;
-      border-bottom: none;
-    }
-    .el-collapse-item__wrap {
-      border-bottom: none;
-    }
-    .el-collapse-item__header {
-      border-bottom: none;
-    }
     .el-form-item {
       margin-bottom: 3px;
+      line-height: 33px;
+      height: 33px;
     }
-    .el-collapse-item__header {
-      line-height: 40px;
-    }
-    .el-form--inline{
+    .el-form--inline {
       .yh-submit {
         .el-form-item__content {
           width: 80px;
         }
       }
     }
-
+    .changeContent {
+      font-size: 14px;
+      color: red;
+      line-height: 40px;
+      display: inline-block;
+    }
+    .content {
+      height: 0;
+      overflow: hidden;
+      transition: all 0.5s;
+    }
+    .is-active1 {
+      height: 120px;
+    }
+    .is-active2 {
+      height: 80px;
+    }
+    .moneyList {
+      margin-top: 10px;
+    }
   }
 </style>

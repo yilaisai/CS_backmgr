@@ -13,7 +13,6 @@
       <sac-teamType ref="teamType" v-model="filterForm.teamType"></sac-teamType>
       <sac-select ref="tradeType" label="交易类型" v-model="filterForm.tradeType"
                   :dataList="transactionType"></sac-select>
-      <sac-date ref="selectedDate" label="日　　期" v-model="selectedDate"></sac-date>
       <sac-select ref="tradeStatus" label="状　　态" v-model="filterForm.tradeStatus"
                   :dataList="transferQueryStatus"></sac-select>
       <sac-input ref="fromOrToUserPhone" label="用户账号" v-model.trim="filterForm.fromOrToUserPhone" class="inputBox"></sac-input>
@@ -23,7 +22,7 @@
       <sac-input ref="toAddr" label="转入方用户编号" v-model.trim="filterForm.toUserId" class="inputBox"></sac-input>
       <sac-input ref="toAddr" label="转出方用户手机" v-model.trim="filterForm.fromUserPhone" class="inputBox"></sac-input>
       <sac-input ref="toAddr" label="转入方用户手机" v-model.trim="filterForm.toUserPhone" class="inputBox"></sac-input>
-
+      <sac-date ref="selectedDate" label="日　　期" v-model="selectedDate"></sac-date>
       <sac-submit-form
         @submitForm="submitForm(1)"
         :isReset="false"></sac-submit-form>
@@ -165,19 +164,6 @@
     .el-form--inline {
       .el-form-item {
         margin-bottom: 3px;
-      }
-      .el-form-item__content {
-        width: 120px;
-      }
-      .inputBox {
-        .el-form-item__content {
-          width: 200px;
-        }
-      }
-      .thirdOrderNo {
-        .el-form-item__content {
-          width: 150px;
-        }
       }
     }
     .el-tag {

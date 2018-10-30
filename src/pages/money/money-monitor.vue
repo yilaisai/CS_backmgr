@@ -32,7 +32,7 @@
       <!--商户-->
       <sac-bar v-show="seriesDataMerchant.series.length>0" :series-data='seriesDataMerchant'
                :width="'calc((100vw - 220px))'"
-               :height="'calc(100vh - 220px)'"></sac-bar>
+               :height="'calc(100vh + 100px)'"></sac-bar>
 
     </div>
     <div v-show="filterForm.type!=0">
@@ -126,7 +126,9 @@
           title: {
             text: '商户分布'
           },
-          series: []
+          series: [],
+          center: ['50%', '70%'],
+          radius: '30%',
         },
         seriesDataRollInOut: {
           title: {

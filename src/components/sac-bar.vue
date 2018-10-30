@@ -130,6 +130,9 @@
           if (options.series && this.seriesData.center) {
             options.series[0].center = this.seriesData.center;
           }
+          if (options.series && this.seriesData.radius) {
+            options.series[0].radius = this.seriesData.radius;
+          }
         }
         if (Object.keys(options).length > 0) {
           this.chart.setOption(options);

@@ -601,7 +601,7 @@ import { dateFormat } from '@/common/util';
         this.registRuleForm = JSON.parse(JSON.stringify(itemData));
       },
       getRegistRewardRuleList() {
-        this.$http.post("wallet/backmgr/registRewardRule/getRegistRewardRuleList.do", {
+        this.$http.post("wallet/backmgr/reward/getRegistRewardRuleList.do", {
           pageNum: 1,
           pageSize: 200,
         }).then((res) => {
@@ -610,7 +610,7 @@ import { dateFormat } from '@/common/util';
       },
       registerSwitchChange (itemData) {
           const { isShow, id } = itemData;
-          this.$http.post("wallet/backmgr/registRewardRule/updateRegistRewardRuleShowType.do", {
+          this.$http.post("wallet/backmgr/reward/updateRegistRewardRuleShowType.do", {
             isShow: isShow ? "SHOW" : "HIDE",
             id
           }).then((res) => {
@@ -631,7 +631,7 @@ import { dateFormat } from '@/common/util';
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$http.post("wallet/backmgr/registRewardRule/deleteRegistRewardRule.do", {
+          this.$http.post("wallet/backmgr/reward/deleteRegistRewardRule.do", {
             id
           }).then((res) => {
             this.$notify({
@@ -648,7 +648,7 @@ import { dateFormat } from '@/common/util';
           if (valid) {
             const {coinId, id, amount, startTime, endTime} =  this.registRuleForm;
             if(this.registRuleForm.id){
-              this.$http.post("wallet/backmgr/registRewardRule/updateRegistRewardRule.do", {
+              this.$http.post("wallet/backmgr/reward/updateRegistRewardRule.do", {
                 coinId,
                 id,
                 amount,
@@ -664,7 +664,7 @@ import { dateFormat } from '@/common/util';
                 this.getRegistRewardRuleList();
               })
             } else {
-              this.$http.post("wallet/backmgr/registRewardRule/createRegistRewardRule.do", {
+              this.$http.post("wallet/backmgr/reward/createRegistRewardRule.do", {
                 coinId,
                 amount,
                 startTime,

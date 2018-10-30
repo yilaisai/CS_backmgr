@@ -9,20 +9,27 @@
              label-width="80px"
              ref="filterForm"
              :model="filterForm">
-      <sac-coin ref="coinId" v-model="filterForm.coinId"></sac-coin>
-      <sac-select ref="tradeType" label="交易类型" v-model="filterForm.tradeType"
-                  :dataList="transactionType"></sac-select>
-      <sac-select ref="tradeStatus" label="状　　态" v-model="filterForm.tradeStatus"
-                  :dataList="transferQueryStatus"></sac-select>
-      <sac-input ref="fromOrToUserPhone" label="用户账号" v-model.trim="filterForm.fromOrToUserPhone"></sac-input>
-      <sac-date ref="selectedDate" label="日　　期" v-model="selectedDate"></sac-date>
-      <sac-input ref="thirdOrderNo" label="txid" v-model.trim="filterForm.thirdOrderNo" class="thirdOrderNo"></sac-input>
-      <sac-input ref="toAddr" label="交易地址" v-model.trim="filterForm.toAddr" class="toAddr"></sac-input>
-      <sac-select ref="alarmType" label="告警情况" multiple v-model="alarmType"
-                  :dataList="alarmConditionType" class="alarmType"></sac-select>
-      <sac-submit-form
-        @submitForm="submitForm(1)"
-        :isReset="false"></sac-submit-form>
+      <el-collapse accordion>
+        <el-collapse-item>
+          <template slot="title">
+            <sac-coin ref="coinId" v-model="filterForm.coinId"></sac-coin>
+            <sac-select ref="tradeType" label="交易类型" v-model="filterForm.tradeType"
+                        :dataList="transactionType"></sac-select>
+            <sac-select ref="tradeStatus" label="状　　态" v-model="filterForm.tradeStatus"
+                        :dataList="transferQueryStatus"></sac-select>
+            <sac-submit-form
+              @submitForm="submitForm(1)"
+              :isReset="false"></sac-submit-form>
+          </template>
+          <sac-input ref="fromOrToUserPhone" label="用户账号" v-model.trim="filterForm.fromOrToUserPhone"></sac-input>
+          <sac-date ref="selectedDate" label="日　　期" v-model="selectedDate"></sac-date>
+          <sac-input ref="thirdOrderNo" label="txid" v-model.trim="filterForm.thirdOrderNo"
+                     class="thirdOrderNo"></sac-input>
+          <sac-input ref="toAddr" label="交易地址" v-model.trim="filterForm.toAddr" class="toAddr"></sac-input>
+          <sac-select ref="alarmType" label="告警情况" multiple v-model="alarmType"
+                      :dataList="alarmConditionType" class="alarmType"></sac-select>
+        </el-collapse-item>
+      </el-collapse>
     </el-form>
     <sac-table :data="listData.list">
       <el-table-column prop="tradeId" label="序号" min-width="163" fixed="left"></el-table-column>
@@ -200,26 +207,21 @@
 </script>
 <style lang="less">
   .transfer-query {
-    .el-form--inline {
-      .el-form-item__content {
-        width: 110px;
-      }
-      .alarmType {
-        .el-form-item__content {
-          width: 290px;
-        }
-      }
-      .thirdOrderNo {
-        .el-form-item__content {
-          width: 150px;
-        }
-      }
-      .toAddr {
-        .el-form-item__content {
-          width: 200px;
-        }
-      }
+    .el-collapse {
+      border-top: none;
+      border-bottom: none;
     }
-
+    .el-collapse-item__wrap {
+      border-bottom: none;
+    }
+    .el-collapse-item__header {
+      border-bottom: none;
+    }
+    .el-form-item {
+      margin-bottom: 3px;
+    }
+    .el-collapse-item__header {
+      line-height: 40px;
+    }
   }
 </style>

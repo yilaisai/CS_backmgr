@@ -9,23 +9,31 @@
              label-width="120px"
              ref="filterForm"
              :model="filterForm">
-      <sac-coin ref="coinId" v-model="filterForm.coinId"></sac-coin>
-      <sac-teamType ref="teamType" v-model="filterForm.teamType"></sac-teamType>
-      <sac-select ref="tradeType" label="交易类型" v-model="filterForm.tradeType"
-                  :dataList="transactionType"></sac-select>
-      <sac-select ref="tradeStatus" label="状　　态" v-model="filterForm.tradeStatus"
-                  :dataList="transferQueryStatus"></sac-select>
-      <sac-input ref="fromOrToUserPhone" label="用户账号" v-model.trim="filterForm.fromOrToUserPhone" class="inputBox"></sac-input>
-      <sac-input ref="toAddr" label="交易地址" v-model.trim="filterForm.toAddr" class="inputBox"></sac-input>
-      <sac-input ref="thirdOrderNo" label="txid" v-model.trim="filterForm.thirdOrderNo" class="thirdOrderNo"></sac-input>
-      <sac-input ref="toAddr" label="转出方用户编号" v-model.trim="filterForm.fromUserId" class="inputBox"></sac-input>
-      <sac-input ref="toAddr" label="转入方用户编号" v-model.trim="filterForm.toUserId" class="inputBox"></sac-input>
-      <sac-input ref="toAddr" label="转出方用户手机" v-model.trim="filterForm.fromUserPhone" class="inputBox"></sac-input>
-      <sac-input ref="toAddr" label="转入方用户手机" v-model.trim="filterForm.toUserPhone" class="inputBox"></sac-input>
-      <sac-date ref="selectedDate" label="日　　期" v-model="selectedDate"></sac-date>
-      <sac-submit-form
-        @submitForm="submitForm(1)"
-        :isReset="false"></sac-submit-form>
+      <el-collapse accordion>
+        <el-collapse-item>
+          <template slot="title">
+            <sac-coin ref="coinId" v-model="filterForm.coinId"></sac-coin>
+            <sac-teamType ref="teamType" v-model="filterForm.teamType"></sac-teamType>
+            <sac-select ref="tradeType" label="交易类型" v-model="filterForm.tradeType"
+                        :dataList="transactionType"></sac-select>
+            <sac-submit-form
+              @submitForm="submitForm(1)"
+              :isReset="false"></sac-submit-form>
+          </template>
+          <sac-select ref="tradeStatus" label="状　　态" v-model="filterForm.tradeStatus"
+                      :dataList="transferQueryStatus"></sac-select>
+          <sac-input ref="fromOrToUserPhone" label="用户账号" v-model.trim="filterForm.fromOrToUserPhone"
+                     class="inputBox"></sac-input>
+          <sac-input ref="toAddr" label="交易地址" v-model.trim="filterForm.toAddr" class="inputBox"></sac-input>
+          <sac-input ref="thirdOrderNo" label="txid" v-model.trim="filterForm.thirdOrderNo"
+                     class="thirdOrderNo"></sac-input>
+          <sac-input ref="toAddr" label="转出方用户编号" v-model.trim="filterForm.fromUserId" class="inputBox"></sac-input>
+          <sac-input ref="toAddr" label="转入方用户编号" v-model.trim="filterForm.toUserId" class="inputBox"></sac-input>
+          <sac-input ref="toAddr" label="转出方用户手机" v-model.trim="filterForm.fromUserPhone" class="inputBox"></sac-input>
+          <sac-input ref="toAddr" label="转入方用户手机" v-model.trim="filterForm.toUserPhone" class="inputBox"></sac-input>
+          <sac-date ref="selectedDate" label="日　　期" v-model="selectedDate"></sac-date>
+        </el-collapse-item>
+      </el-collapse>
     </el-form>
     <div class="moneyList">
       <el-tag v-for="(item,index) in moneyList" :key="index">{{item.name}}：{{item.value}}</el-tag>
@@ -161,13 +169,32 @@
 </script>
 <style lang="less">
   .statements {
-    .el-form--inline {
-      .el-form-item {
-        margin-bottom: 3px;
-      }
-    }
     .el-tag {
       margin-right: 10px;
     }
+    .el-collapse {
+      border-top: none;
+      border-bottom: none;
+    }
+    .el-collapse-item__wrap {
+      border-bottom: none;
+    }
+    .el-collapse-item__header {
+      border-bottom: none;
+    }
+    .el-form-item {
+      margin-bottom: 3px;
+    }
+    .el-collapse-item__header {
+      line-height: 40px;
+    }
+    .el-form--inline{
+      .yh-submit {
+        .el-form-item__content {
+          width: 80px;
+        }
+      }
+    }
+
   }
 </style>

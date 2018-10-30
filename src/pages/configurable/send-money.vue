@@ -76,12 +76,19 @@
                      @click.native="switchChange(scope.row)"></el-switch>
         </template>
       </el-table-column>
-    </sac-table><br><br><br><br>
-
+    </sac-table>
+    <br>
+    <!--<sac-pagination v-show="listData.list.length>0"-->
+                    <!--@handleChange="getPaginationChange"-->
+                    <!--:total="+listData.total"-->
+                    <!--:page-size="pageSize"-->
+                    <!--:current-page="pageNum">-->
+    <!--</sac-pagination>-->
     <el-col :span="22" style="text-align:right;margin-bottom: 10px;">
       <h3>注册送币</h3>
       <el-button size="small" type="primary" @click="registerAddSend">创建规则</el-button>
     </el-col>
+
     <sac-table :data="registList">
       <el-table-column prop="coinType" label="币种"></el-table-column>
       <el-table-column prop="amount" label="送币量"></el-table-column>
@@ -105,9 +112,14 @@
         </template>
       </el-table-column>
     </sac-table>
-
+    <!--<sac-pagination v-show="listData.list.length>0"-->
+                    <!--@handleChange="getPaginationChangeRegist"-->
+                    <!--:total="+listData.total"-->
+                    <!--:page-size="pageSize"-->
+                    <!--:current-page="pageNum">-->
+    <!--</sac-pagination>-->
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
-      <el-form :model="ruleForm" ref="ruleForm" :rules="rules" label-width="130px">
+      <el-form :model="ruleForm" ref="ruleForm"  label-width="130px">
         <div class="from_box">
           <el-form-item label="币种:" prop="coinId" class="from_box_item">
             <el-select v-model="ruleForm.coinId" placeholder="请选择" size="small">
@@ -266,6 +278,7 @@
           <el-form-item label="生效时间:" prop="startTime" class="from_box_item" >
             <el-date-picker
               size="small"
+              value-format="yyyy-MM-dd HH:mm:ss"
               v-model="registRuleForm.startTime"
               type="datetime"
               placeholder="选择生效时间">
@@ -275,6 +288,7 @@
             <el-date-picker
               size="small"
               v-model="registRuleForm.endTime"
+              value-format="yyyy-MM-dd HH:mm:ss"
               type="datetime"
               placeholder="选择失效时间">
             </el-date-picker>
@@ -376,6 +390,9 @@ import { dateFormat } from '@/common/util';
           amount:'',
           startTime:'',
           endTime:'',
+          // pageNum: 1,
+          // pageSize: 20,
+          // total: null,
         }
       };
     },
@@ -402,6 +419,11 @@ import { dateFormat } from '@/common/util';
         };
         this.$refs.ruleForm && this.$refs.ruleForm.resetFields();
       },
+      // getPaginationChange(val, currentPage) {
+      //   this.pageSize = val;
+      //   this.pageNum = currentPage;
+      //   this.getRegistInviteRule();
+      // },
       formatSex: function (row, column) {
         return `>=${row.minAmount}  <=${row.maxAmount}`
       },
@@ -624,12 +646,14 @@ import { dateFormat } from '@/common/util';
       registDetermine(){
         this.$refs.registRuleForm.validate((valid) => {
           if (valid) {
+            const {coinId, id, amount, startTime, endTime} =  this.registRuleForm;
             if(this.registRuleForm.id){
-            const {coinId, id, amount, startTime, endTime} =  this.registRuleForm
               this.$http.post("wallet/backmgr/registRewardRule/updateRegistRewardRule.do", {
                 coinId,
                 id,
                 amount,
+                startTime,
+                endTime,
               }).then((res) => {
                 this.$notify({
                   title: '成功',
@@ -640,7 +664,12 @@ import { dateFormat } from '@/common/util';
                 this.getRegistRewardRuleList();
               })
             } else {
-              this.$http.post("wallet/backmgr/registRewardRule/createRegistRewardRule.do", this.registRuleForm).then((res) => {
+              this.$http.post("wallet/backmgr/registRewardRule/createRegistRewardRule.do", {
+                coinId,
+                amount,
+                startTime,
+                endTime,
+              }).then((res) => {
                 this.$notify({
                   title: '成功',
                   message: `创建成功`,
@@ -655,7 +684,12 @@ import { dateFormat } from '@/common/util';
             return false;
           }
         });
-      }
+      },
+      // getPaginationChangeRegist(val, currentPage) {
+      //   this.pageSize = val;
+      //   this.pageNum = currentPage;
+      //   this.getRegistInviteRule();
+      // },
     },
     activated() {
       this.getRegistInviteRule();

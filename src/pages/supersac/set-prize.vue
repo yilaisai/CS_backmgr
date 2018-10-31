@@ -244,6 +244,7 @@
       },
     },
     activated() {
+      this.$refs.ruleForm && this.$refs.ruleForm.resetFields();
       this.getCoinInfoList();
       this.server_path = SERVER_PATH;
       if(this.$route.query) {

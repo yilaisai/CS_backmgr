@@ -119,7 +119,7 @@
         });
       },
     },
-    activated() {
+    mounted() {
       this.postObj.validateCode = '';
       this.getImgCode();
     },

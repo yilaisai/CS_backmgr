@@ -93,6 +93,7 @@
           <el-tag v-if='scope.row.tradeStatus === 3' type="warning">审核不通过</el-tag>
           <el-tag v-if='scope.row.tradeStatus === 4' type="danger">审核通过</el-tag>
           <el-tag v-if='scope.row.tradeStatus === 5'>处理中</el-tag>
+          <el-tag v-if='scope.row.tradeStatus === 6'>已支付</el-tag>
           <el-tag v-if='scope.row.tradeStatus === 7'>已发送</el-tag>
         </template>
       </el-table-column>

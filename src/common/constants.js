@@ -57,6 +57,9 @@ export const transferQueryStatus = [{
   value: '5',
   label: '处理中',
 }, {
+  value: '6',
+  label: '已支付',
+}, {
   value: '7',
   label: '已发送',
 }];

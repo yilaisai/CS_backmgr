@@ -24,9 +24,9 @@
              <i :class="{'el-icon-arrow-right':!isContent,'el-icon-arrow-down':isContent}"></i>
           </span>
         </div>
-        <div class="content" :class="{'is-active2': isContent&isActive,'is-active1': isContent&!isActive}">
-          <sac-select ref="tradeStatus" label="状　　态" v-model="filterForm.tradeStatus"
-                      :dataList="transferQueryStatus"></sac-select>
+        <div class="content" :class="{'is-active': isContent}">
+          <!--<sac-select ref="tradeStatus" label="状　　态" v-model="filterForm.tradeStatus"-->
+                      <!--:dataList="transferQueryStatus"></sac-select>-->
           <sac-input ref="fromOrToUserPhone" label="用户账号" v-model.trim="filterForm.fromOrToUserPhone"
                      class="inputBox"></sac-input>
           <sac-input ref="toAddr" label="交易地址" v-model.trim="filterForm.toAddr" class="inputBox"></sac-input>
@@ -101,7 +101,6 @@
         transactionType,  // 交易类型
         transferQueryStatus,  // 交易类型
         isContent: false,
-        isActive: false,
       };
     },
     methods: {
@@ -173,9 +172,6 @@
       },
       changeContent() {
         this.isContent = !this.isContent;
-        if (this.isContent) {
-          this.isActive = window.outerWidth > 1584 ? true : false;
-        }
       }
     },
     activated() {
@@ -214,10 +210,7 @@
       overflow: hidden;
       transition: all 0.5s;
     }
-    .is-active1 {
-      height: 120px;
-    }
-    .is-active2 {
+    .is-active {
       height: 80px;
     }
     .moneyList {

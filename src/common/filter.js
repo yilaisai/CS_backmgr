@@ -38,6 +38,8 @@ export const transferQueryStatusType = (value) => {
       return '审核通过';
     case 5:
       return '处理中';
+    case 6:
+      return '已支付';
     case 7:
       return '已发送';
   }

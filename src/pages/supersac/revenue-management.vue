@@ -165,6 +165,7 @@
     activated() {
       this.getNumGameInfo();
       this.getTotalIncome();
+      this.getTeamIncome();
     }
   };
 </script>

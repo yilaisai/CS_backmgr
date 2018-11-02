@@ -127,7 +127,7 @@
           :on-remove="handleRemove">
           <i class="el-icon-plus"></i>
         </el-upload>
-        
+
         <el-dialog :visible.sync="dialogVisible">
           <img width="100%" :src="dialogImageUrl" alt="">
         </el-dialog>
@@ -398,6 +398,15 @@
           this.ruleForm.destext = this.destext.replace(/<\/?[^>]*>/g, "");
         } else {
           this.ruleForm.destextEn = this.destext.replace(/<\/?[^>]*>/g, "");
+        }
+        //禁止输入脚本语言
+        if(this.ruleForm.destextEn.indexOf('&gt;') >-1 || this.ruleForm.destextEn.indexOf('&lt;') >-1 || this.ruleForm.destext.indexOf('&gt;') >-1 || this.ruleForm.destext.indexOf('&lt;') >-1){
+          this.$notify({
+                  title: '提示',
+                  message: `不可输入特殊符号`,
+                  type: 'error'
+                });
+          return;
         }
         this.destextDialogVisible = false;
       },

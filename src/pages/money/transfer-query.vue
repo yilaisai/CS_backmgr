@@ -25,7 +25,20 @@
         </div>
         <div class="content" :class="{'is-active2': isContent&isActive,'is-active1': isContent&!isActive}">
           <sac-input ref="fromOrToUserPhone" label="用户账号" v-model.trim="filterForm.fromOrToUserPhone"></sac-input>
-          <sac-date ref="selectedDate" label="日　　期" v-model="selectedDate"></sac-date>
+          <el-form-item ref="selectedDate" label="日　　期" class="sac-date">
+            <el-date-picker
+              v-model="selectedDate"
+              :editable="false"
+              type="datetimerange"
+              align="center"
+              size="small"
+              unlink-panels
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              value-format="yyyy-MM-dd HH:mm:ss">
+            </el-date-picker>
+          </el-form-item>
           <sac-input ref="thirdOrderNo" label="txid" v-model.trim="filterForm.thirdOrderNo"
                      class="thirdOrderNo"></sac-input>
           <sac-input ref="toAddr" label="交易地址" v-model.trim="filterForm.toAddr" class="toAddr"></sac-input>
@@ -210,8 +223,8 @@
       }
     },
     activated() {
-      const end = dateFormat();
-      const start = dateFormat(new Date().getTime() - 3600 * 1000 * 24 * 30);
+      const end = dateFormat(new Date, 'YYYY-MM-DD HH:mm:ss');
+      const start = dateFormat(new Date().getTime() - 3600 * 1000 * 24 * 30, 'YYYY-MM-DD HH:mm:ss');
       this.selectedDate = [start, end];
       this.getTradeList();
     }
@@ -251,6 +264,11 @@
     }
     .is-active2 {
       height: 40px;
+    }
+    .sac-date {
+      .el-form-item__content {
+        width: 365px!important;
+      }
     }
   }
 </style>

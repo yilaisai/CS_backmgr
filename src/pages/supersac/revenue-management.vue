@@ -53,8 +53,6 @@
       </el-tab-pane>
       <el-tab-pane label="商户情况" name="third">
         <div>
-          <!-- <span class="amount"> PNB发行总数：<span class="red">{{pnbAmount}}</span></span>
-          <span class="amount"> 投票SAC总消耗：<span class="red">{{sacAmount}}</span></span> -->
           <span class="amount"> SAC汇率：<span class="red">{{sacRate}}</span></span>
         </div>
         <el-table :data="teamMonEarn" border show-summary size="small">

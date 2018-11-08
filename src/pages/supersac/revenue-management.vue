@@ -53,23 +53,28 @@
       </el-tab-pane>
       <el-tab-pane label="商户情况" name="third">
         <div>
-          <span class="amount"> PNB发行总数：<span class="red">{{pnbAmount}}</span></span>
-          <span class="amount"> 投票SAC总消耗：<span class="red">{{sacAmount}}</span></span>
+          <!-- <span class="amount"> PNB发行总数：<span class="red">{{pnbAmount}}</span></span>
+          <span class="amount"> 投票SAC总消耗：<span class="red">{{sacAmount}}</span></span> -->
           <span class="amount"> SAC汇率：<span class="red">{{sacRate}}</span></span>
         </div>
-        <sac-table :data="teamMonEarn">
+        <el-table :data="teamMonEarn" border show-summary size="small">
           <el-table-column prop="teamName" label="商户名称"></el-table-column>
           <el-table-column prop="sacAmount" label="SAC投票净消耗数"></el-table-column>
-          <el-table-column prop="pnbAmount" label="PNB投票净本金"></el-table-column>
+          <el-table-column prop="pnbbitgoAmount" label="PNBBITGO投票净消耗数"></el-table-column>
+          <el-table-column prop="currentPnb" label="当月PNB总票数"></el-table-column>
           <el-table-column prop="pnbIncome" label="PNB利息"></el-table-column>
-          <el-table-column prop="rewardStr" label="奖励"></el-table-column>
+          <el-table-column label="奖励">
+            <template slot-scope="scope">
+              {{scope.row.rewardStr}}
+            </template>
+          </el-table-column>
           <el-table-column prop="toSacAmount" label="PNB折合SAC">
             <template slot-scope="scope" prop="sysStatus">
               <span
                 :style="{color:scope.row.toSacAmount<scope.row.sacAmount?'red': scope.row.toSacAmount>scope.row.sacAmount? '#02bb02':''}">{{scope.row.toSacAmount}}</span>
             </template>
           </el-table-column>
-        </sac-table>
+        </el-table>
       </el-tab-pane>
     </el-tabs>
 

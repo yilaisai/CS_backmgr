@@ -55,7 +55,7 @@
         <div>
           <span class="amount"> SAC汇率：<span class="red">{{sacRate}}</span></span>
         </div>
-        <el-table :data="teamMonEarn" border :summary-method="getSummaries" show-summary size="small">
+        <el-table :data="teamMonEarn" border show-summary size="small">
           <el-table-column prop="teamName" label="商户名称"></el-table-column>
           <el-table-column prop="sacAmount" label="SAC投票净消耗数"></el-table-column>
           <el-table-column prop="pnbbitgoAmount" label="PNBBITGO投票净消耗数"></el-table-column>
@@ -101,30 +101,6 @@
       };
     },
     methods: {
-      getSummaries(param) {
-        const { columns, data } = param;
-        console.log(param)
-        const sums = [];
-        columns.forEach((column, index) => {
-          if (index === 0) {
-            sums[index] = '总计';
-            return;
-          }
-
-          const values = data.map(item => Number(item[column.property]));
-          if (!values.every(value => isNaN(value))) {
-            sums[index] = values.reduce((prev, curr) => {
-              return prev + curr;
-            }, 0);
-            if (index === 6) {
-              sums[index] = '<span style="color:'+(sums[index]<sums[1]?'red': sums[index]>sums[1]? '#02bb02':'')+'" escape="false">'+sums[index]+'</span>';
-            }
-          } else {
-            sums[index] = '';
-          }
-        })
-        return sums;
-      },
       submitForm(num) {
         this.filterForm.pageNum = num;
         this.handleClick();

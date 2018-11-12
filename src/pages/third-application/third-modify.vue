@@ -132,10 +132,12 @@
           <img width="100%" :src="dialogImageUrl" alt="">
         </el-dialog>
       </el-form-item>
-              <el-form-item label=" " prop="disclaimerType">
-
+          <el-form-item label=" " prop="disclaimerType">
           <el-checkbox label="是否免责声明" name="type" v-model="ruleForm.disclaimerType"></el-checkbox>
-
+      </el-form-item>
+      </el-form-item>
+          <el-form-item label=" " prop="isRecommend">
+          <el-checkbox label="是否推荐应用" name="type" v-model="ruleForm.isRecommend"></el-checkbox>
       </el-form-item>
     </el-form>
     <div class="determine">
@@ -194,7 +196,8 @@
           transferTypeId: '',
           ownType: 1,
           position: 0,
-          disclaimerType:false
+          disclaimerType:false,
+          isRecommend:false
         },
         rules: {
           transferTypeId: [
@@ -289,7 +292,8 @@
           transferTypeId: '',
           ownType: 1,
           position: 0,
-          disclaimerType:false
+          disclaimerType:false,
+          isRecommend: false
         };
         this.$refs.ruleForm && this.$refs.ruleForm.resetFields(); // 重置query的数据
       },
@@ -358,6 +362,7 @@
                 }
               })
               this.ruleForm.disclaimerType=this.ruleForm.disclaimerType==true?1:0
+              this.ruleForm.isRecommend=this.ruleForm.isRecommend==true?1:0
               this.$http.post("wallet/backmgr/thirdAppInfo/updateThirdAppInfo.do", this.ruleForm).then((res) => {
                 this.$notify({
                   title: '成功',
@@ -369,6 +374,7 @@
               })
             } else {
               this.ruleForm.disclaimerType=this.ruleForm.disclaimerType==true?1:0
+              this.ruleForm.isRecommend=this.ruleForm.isRecommend==true?1:0
               this.$http.post("wallet/backmgr/thirdAppInfo/createThirdAppInfo.do", this.ruleForm).then((res) => {
                 this.$notify({
                   title: '成功',
@@ -434,6 +440,7 @@
         this.currentForm.appid = res.appId;
         this.appPreviewPics = res.appPreviewPics ? res.appPreviewPics.split(',') : [];
         this.ruleForm.disclaimerType=this.ruleForm.disclaimerType==1?true:false
+        this.ruleForm.isRecommend=this.ruleForm.isRecommend==1?true:false
         this.appPreviewPics.forEach((item, index) => {
           this.fileList.push({
             url: item

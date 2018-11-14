@@ -18,6 +18,7 @@
           <sac-submit-form
             @submitForm="submitForm(1)"
             :isReset="false"></sac-submit-form>
+          <el-button type="primary" @click="exportExcel" size="small">导出Excel</el-button> 
           <span @click="changeContent" class="changeContent">
             {{isContent?'合并':'展开'}}
              <i :class="{'el-icon-arrow-right':!isContent,'el-icon-arrow-down':isContent}"></i>
@@ -182,6 +183,15 @@
           this.isShowTableCol = true;
         }
         this.getTradeList();
+      },
+      exportExcel() {
+        this.$http.get('wallet/backmgr/trade/downTradeList.do', this.filterForm)
+          .then((res) => {
+            this.$message({
+              message: `${res.msg}`,
+              type: 'success'
+            });
+          });
       },
       getTradeList() {
         this.filterForm.startDate = this.selectedDate && this.selectedDate[0];

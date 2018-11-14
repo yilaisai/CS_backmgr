@@ -61,9 +61,10 @@ httpInstance.interceptors.request.use((config) => {
     }
   })
   config.data = obj;
-  if (config.method === 'post') {
-    configs.data = qs.stringify(config.data);
-  }
+  // if (config.method === 'post') {
+    
+  // }
+  configs.data = qs.stringify(config.data);
   return configs;
 }, error => Promise.reject(error));
 

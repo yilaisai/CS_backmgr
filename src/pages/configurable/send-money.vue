@@ -53,6 +53,7 @@
       <el-table-column prop="beginDate" label="生效时间" width="140"></el-table-column>
       <el-table-column prop="endDate" label="失效时间" width="140"></el-table-column>
       <el-table-column prop="sendCount" label="数/天" class-name="每天送币次数，0表示不限制" :render-header="foo"></el-table-column>
+      <el-table-column prop="sendDay" label="分发天数"></el-table-column>
       <el-table-column label="操作" width="150" fixed="right">
 
         <template slot-scope="scope" prop="sysStatus">
@@ -243,6 +244,11 @@
           </el-form-item>
           <el-form-item label="被邀请人奖励:" prop="registAmount"  class="from_box_item" :formatter="formatSex">
             <el-input size="small" type="number" v-model="ruleForm.registAmount" placeholder=""></el-input>
+          </el-form-item>
+        </div>
+        <div class="from_box">
+          <el-form-item label="分发天数:" prop="sendDay" class="from_box_item">
+            <el-input size="small" type="number" v-model="ruleForm.sendDay" placeholder=""></el-input>
           </el-form-item>
         </div>
 

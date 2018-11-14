@@ -51,7 +51,11 @@ function responseErrorHandler(error) {
 httpInstance.interceptors.request.use((config) => {
   const configs = config;
   if (localStorage.getItem('wallet_token')) {
-    configs.data.token = localStorage.getItem('wallet_token');
+    if (configs.method == "post") {
+      configs.data.token = localStorage.getItem('wallet_token');
+    } else {
+      configs.params.token = localStorage.getItem('wallet_token');
+    }
   }
   store.commit('updateLoadingStatus', { isLoading: true });
   const obj = {};
@@ -61,10 +65,9 @@ httpInstance.interceptors.request.use((config) => {
     }
   })
   config.data = obj;
-  // if (config.method === 'post') {
-    
-  // }
-  configs.data = qs.stringify(config.data);
+  if (config.method === 'post') {
+    configs.data = qs.stringify(config.data);
+  }
   return configs;
 }, error => Promise.reject(error));
 

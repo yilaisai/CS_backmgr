@@ -6,6 +6,12 @@
 <template>
   <div class='third-modify'>
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" :inline="true" label-width="150px">
+      <el-form-item label="应用类型" prop="appType">
+        <el-select size="small" v-model="ruleForm.appType" placeholder="请选择应用类型">
+          <el-option :label="item.label" :value="item.value" v-for="(item, index) in applicationType"
+                     :key="index"></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="应用名称:" prop="appName">
         <el-input v-model="ruleForm.appName" size="small" placeholder="请输入名称"></el-input>
       </el-form-item>
@@ -91,7 +97,6 @@
       <el-form-item label="权重:">
         <el-input-number v-model="ruleForm.position" size="small" :min="0"></el-input-number>
       </el-form-item>
-
       <el-form-item label="联系邮箱:" prop="email">
         <el-input v-model="ruleForm.email" size="small" placeholder="请输入联系邮箱"></el-input>
       </el-form-item>
@@ -161,6 +166,7 @@
   import 'quill/dist/quill.bubble.css'
   import { quillEditor } from 'vue-quill-editor'
   import Quill from 'quill'
+  import { applicationType } from '@/common/constants';
 
   export default {
     name: "third-modify",
@@ -170,6 +176,7 @@
         server_path: "",
         currentForm: {},
         ruleForm: {
+          appType: '',
           appid: "",
           phone: "",
           appName: "",
@@ -197,8 +204,9 @@
           ownType: 1,
           position: 0,
           disclaimerType:false,
-          isRecommend:false
+          isRecommend:false,
         },
+        applicationType,  // 应用类型
         rules: {
           transferTypeId: [
             { required: true, message: '请选择商户类型', trigger: 'change' }
@@ -236,6 +244,9 @@
           ownType: [
             { required: true, message: '请选择是否自营', trigger: 'blur' }
           ],
+          appType: [
+            { required: true, message: '请选择应用类型', trigger: 'blur' }
+          ]
         },
         dialogVisible: false,
         dialogImageUrl: '',
@@ -266,6 +277,7 @@
       resetForm() {
         this.destext = '';
         this.ruleForm = {
+          appType: '',
           appid: "",
           phone: "",
           appName: "",
@@ -436,6 +448,7 @@
       if (this.$route.params.id) {
         this.ruleForm = JSON.parse(JSON.stringify(res));
         this.currentForm = JSON.parse(JSON.stringify(res));
+        this.ruleForm.appType = this.applicationType[res.appType].label;
         this.ruleForm.appid = res.appId;
         this.currentForm.appid = res.appId;
         this.appPreviewPics = res.appPreviewPics ? res.appPreviewPics.split(',') : [];

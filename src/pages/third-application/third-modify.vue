@@ -367,6 +367,12 @@
       determine() {
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
+            for (let v in this.applicationType) {
+              if (this.ruleForm.appType == this.applicationType[v].label) {
+                this.ruleForm.appType = this.applicationType[v].value
+                break
+              }
+            }
             if (this.ruleForm.id) {
               Object.entries(this.ruleForm).forEach(([key, value]) => {
                 if (value != this.currentForm[key] && !value) {

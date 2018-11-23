@@ -37,7 +37,7 @@
           <el-button type="success" v-if="scope.row.sendStatues ==1" size="small"
                      @click.native="detailList(scope.row)">查看
           </el-button>
-          <el-button type="warning" v-if="scope.row.sendStatues == 0" size="small"
+          <el-button type="warning" v-if="scope.row.sendStatues == 0 || scope.row.isHomeNotice == true" size="small"
                      @click.native="modification(scope.row)" :disabled="pushMessage">修改
           </el-button>
           <el-button type="danger" v-if="scope.row.sendStatues == 0" size="small" :disabled="pushMessage"
@@ -64,6 +64,7 @@
             <el-option label="系统消息" value='SystemMsg'></el-option>
             <el-option label="运营消息" value='OperationMsg'></el-option>
             <el-option label="动账消息" value='TransferMsg'></el-option>
+            <el-option label="第三方应用更新消息" value='ThirdAppMsg'></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="消息标题:" required prop="title">
@@ -82,7 +83,13 @@
         <el-form-item label="详情信息:">
           <el-col :span="16" style=" position: relative;">
             <el-input size="small" type="textarea" v-model="ruleForm.details" width="100%"
-                      placeholder="请输入消息内容"></el-input>
+                      placeholder="请输入详情信息"></el-input>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="应用名称:" required prop="appName" v-if="ruleForm.noticeType == 'ThirdAppMsg'">
+          <el-col :span="16" style=" position: relative;">
+            <el-input size="small" type="text" v-model="ruleForm.appName" width="100%"
+                      placeholder="请输入应用名称"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="消息跳转地址:" prop="jumpUrl">
@@ -149,6 +156,25 @@
             </el-col>
           </el-radio-group>
         </el-form-item>
+        </el-form-item>
+          <el-form-item label=" ">
+          <el-checkbox label="是否在首页展示" name="type" v-model="ruleForm.isHomeNotice"></el-checkbox>
+        </el-form-item>
+        <el-form-item label="应用图标:" prop="picture">
+          <el-input v-model="ruleForm.picture" size="small" placeholder="请输入应用图标地址" class="picture-input">
+          </el-input>
+          <span class="appIcon">图标尺寸：678*260</span>
+          <el-upload
+            name="files"
+            class="avatar-uploader"
+            :action="server_path + 'wallet/util/open/uploadFile.do'"
+            :show-file-list="false"
+            :on-success="upload"
+            :data="{type:'img'}">
+            <img v-if="ruleForm.picture" :src="ruleForm.picture" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false" size="small">取 消</el-button>
@@ -163,6 +189,7 @@
     name: 'message',
     data() {
       return {
+        server_path: "",
         filterForm: {
           sendStatues: '',
           noticeType: '',
@@ -185,6 +212,9 @@
         }, {
           value: 'TransferMsg',
           label: '动账消息',
+        }, {
+          value: 'ThirdAppMsg',
+          label: '第三方应用更新消息',
         }],
         sendStatuesList: [{
           value: '',
@@ -212,6 +242,7 @@
           minAmount: '',
           maxAmount: '',
           coinId: '', // 币种
+          picture: ''
         },
         rules: {
           type: [
@@ -225,6 +256,9 @@
             { required: true, message: '请输入内容', trigger: 'blur' },
             { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
           ],
+          appName: [
+            { required: true, message: '请输入应用名称', trigger: 'blur' }
+          ],
           jumpUrl: [
             { required: false, message: '请输入消息跳转地址', trigger: 'change' }
           ],
@@ -236,6 +270,9 @@
           ],
           coinId: [
             { required: true, message: '请选择币种', trigger: 'change' }
+          ],
+          picture: [
+            { required: true, message: '请输入应用图标地址', trigger: 'blur' }
           ],
         },
         allAccountValue: '', // 暂存所以新增账号
@@ -267,7 +304,7 @@
         })
       },
       formatSex: function (row, column) {
-        return row.type == 0 ? '系统消息' : row.type == 1 ? '运营消息' : '动账消息'
+        return row.type == 0 ? '系统消息' : row.type == 1 ? '运营消息' : row.type == 2 ? '动账消息' : '第三方应用更新消息'
       },
       // 删除
       remove(itemData) {
@@ -325,7 +362,7 @@
         })
       },
       modification(itemData) {
-        this.dialogTitle = '修改送币规则';
+        this.dialogTitle = '修改推送规则';
         this.dialogFormVisible = true;
         this.resetForm();
         this.getSampleCoinInfo();
@@ -350,6 +387,9 @@
           case 2:
             this.ruleForm.noticeType = 'TransferMsg';
             break;
+          case 3:
+            this.ruleForm.noticeType = 'ThirdAppMsg';
+            break;
         }
       },
       addMessage() {
@@ -369,6 +409,7 @@
           minAmount: '',
           maxAmount: '',
           coinId: '', // 币种
+          picture:''
         };
         this.resetForm();
         this.getSampleCoinInfo();
@@ -441,6 +482,7 @@
             const ruleForm = JSON.parse(JSON.stringify(this.ruleForm))
             ruleForm.timingPush = ruleForm.timingPush ? 'YES' : 'NO';
             ruleForm.pushAll = this.radioValue == 1 ? 'YES' : 'NO';
+            ruleForm.isHomeNotice = ruleForm.isHomeNotice == true ? 1 : 0;
             if (this.ruleForm.id) {
               if (this.radioValue == 1) {
                 ruleForm.minAmount = '';
@@ -484,9 +526,15 @@
       },
       openUrl(url) {
         if (url) window.open(url);
+      },
+      upload(response, file, fileList) {
+        
+        this.ruleForm.picture = response.result.urls[0];
+        console.log(this.ruleForm.picture);
       }
     },
     activated() {
+      this.server_path = SERVER_PATH;
       this.getNoticeInfoList();
     }
   };
@@ -526,6 +574,49 @@
         bottom: -10px;
         right: 10px;
       }
+    }
+  }
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    text-align: center;
+  }
+  .avatar {
+    width: 80px;
+    height: 80px;
+    display: block;
+  }
+  .appIcon {
+    margin-left: 5px;
+    font-size: 12px;
+    color: red;
+  }
+  .el-upload--picture-card {
+    height: 67.5px;
+    width: 127px;
+    line-height: 67.5px;
+  }
+  .el-upload-list__item {
+    height: 67.5px;
+    width: 127px;
+    line-height: 67.5px;
+  }
+  .picture-input {
+    input {
+      width: 220px;
     }
   }
 </style>

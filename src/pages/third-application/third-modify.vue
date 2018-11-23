@@ -143,6 +143,24 @@
       </el-form-item>
           <el-form-item label=" " prop="isRecommend">
           <el-checkbox label="是否推荐应用" name="type" v-model="ruleForm.isRecommend"></el-checkbox>
+          <div v-if="ruleForm.isRecommend == true">
+            <el-input v-model="ruleForm.appLogo" size="small" placeholder="请输入应用图标地址">
+            </el-input>
+            <span class="appIcon">图标尺寸：90*90</span>
+            <el-upload
+              name="files"
+              class="avatar-uploader"
+              :action="server_path + 'wallet/util/open/uploadFile.do'"
+              :show-file-list="false"
+              :on-success="uploadAppLogo"
+              :data="{type:'img'}">
+              <img v-if="ruleForm.appLogo" :src="ruleForm.appLogo" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+            <el-form-item label="推荐权重:" label-width="auto" class="recommend-position">
+              <el-input-number v-model="ruleForm.recommendPosition" size="small" :min="0"></el-input-number>
+            </el-form-item>
+          </div>
       </el-form-item>
     </el-form>
     <div class="determine">
@@ -205,6 +223,8 @@
           position: 0,
           disclaimerType:false,
           isRecommend:false,
+          appLogo: '',
+          recommendPosition: 0
         },
         applicationType,  // 应用类型
         rules: {
@@ -305,7 +325,9 @@
           ownType: 1,
           position: 0,
           disclaimerType:false,
-          isRecommend: false
+          isRecommend: false,
+          appLogo: '',
+          recommendPosition: 0
         };
         this.$refs.ruleForm && this.$refs.ruleForm.resetFields(); // 重置query的数据
       },
@@ -443,7 +465,10 @@
             })
           }
         })
-      }
+      },
+      uploadAppLogo(response, file, fileList) {
+        this.ruleForm.appLogo = response.result.urls[0];
+      },
     },
     activated() {
       this.server_path = SERVER_PATH;
@@ -452,6 +477,7 @@
       this.fileList = [];
       const res = this.$route.params;
       if (this.$route.params.id) {
+        res.recommendPosition = res.recommendAppPosition;
         this.ruleForm = JSON.parse(JSON.stringify(res));
         this.currentForm = JSON.parse(JSON.stringify(res));
         this.ruleForm.appType = this.applicationType[res.appType].label;
@@ -518,6 +544,12 @@
       height: 32px;
       margin: 10px auto 40px auto;
       width: 300px;
+    }
+  }
+  .recommend-position {
+    width: 205px;
+    .el-form-item__content {
+      width: auto;
     }
   }
 </style>

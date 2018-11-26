@@ -198,7 +198,7 @@
           bannerType: "",
           remark: ""
         },
-        platList: ['all','plat','ios'],
+        platList: ['all','adr','ios'],
         dialogTitle: '',
         rules: {
           bannerUrl: [

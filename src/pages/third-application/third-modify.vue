@@ -38,9 +38,6 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="APPID:" prop="appid">
-        <el-input v-model="ruleForm.appid" size="small" placeholder="请输入APPID"></el-input>
-      </el-form-item>
       <el-form-item label="支付通知Url:">
         <el-input v-model="ruleForm.notifyUrl" size="small" placeholder="请输入支付通知Url"></el-input>
       </el-form-item>
@@ -115,7 +112,7 @@
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
       </el-form-item>
-      <el-form-item label="应用预览:" prop="appPreviewPics" class="appPreviewPics">
+      <el-form-item label="应用预览:" class="appPreviewPics">
         <el-input v-model="ruleForm.appPreviewPics" @change="getAppPreviewPics" size="small" placeholder="多个预览地址以逗号隔开">
         </el-input>
         <span class="appIcon">预览尺寸：横：508*284 竖：320*569，最多上传4张</span>
@@ -248,9 +245,6 @@
           ],
           appIcon: [
             { required: true, message: '请输入应用图标地址', trigger: 'blur' }
-          ],
-          appPreviewPics: [
-            { required: true, message: '请输入应用预览地址', trigger: 'blur' }
           ],
           phone: [
             { required: true, message: '请输入商户手机号', trigger: 'blur' }

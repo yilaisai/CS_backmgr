@@ -160,7 +160,7 @@
           <el-form-item label=" ">
           <el-checkbox label="是否在首页展示" name="type" v-model="ruleForm.isHomeNotice"></el-checkbox>
         </el-form-item>
-        <el-form-item label="应用图标:" prop="picture">
+        <el-form-item label="应用图标:" prop="picture" v-if="ruleForm.noticeType != 'SystemMsg'">
           <el-input v-model="ruleForm.picture" size="small" placeholder="请输入应用图标地址" class="picture-input">
           </el-input>
           <span class="appIcon">图标尺寸：678*260</span>

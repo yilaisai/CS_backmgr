@@ -53,6 +53,8 @@
       </el-table-column>
       <el-table-column prop="bannerTypeName" label="banner类型"></el-table-column>
       <el-table-column prop="bannerName" label="banner名称"></el-table-column>
+      <el-table-column prop="version" label="适用版本范围"></el-table-column>
+      <el-table-column prop="plat" label="适用平台"></el-table-column>
       <el-table-column prop="jumpUrl" label="跳转链接">
         <template slot-scope="scope" prop="sysStatus">
           <a target="_brank" :href="scope.row.jumpUrl">{{scope.row.jumpUrl}}</a>

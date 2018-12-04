@@ -38,6 +38,14 @@
         width="50">
       </el-table-column>
       <el-table-column prop="phone" label="好友账户"></el-table-column>
+      <el-table-column label="实名状态">
+        <template slot-scope="scope">
+          <span v-show="scope.row.moneyAudit == -1">未申请</span>
+          <span v-show="scope.row.moneyAudit == 0">不通过</span>
+          <span v-show="scope.row.moneyAudit == 1">通过</span>
+          <span v-show="scope.row.moneyAudit == 2">审核中</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="registTime" label="注册时间"></el-table-column>
       <el-table-column prop="inviteGiveAmount" label="邀请收益"></el-table-column>
     </el-table>
@@ -48,6 +56,14 @@
         width="50">
       </el-table-column>
       <el-table-column prop="phone" label="好友账户"></el-table-column>
+      <el-table-column label="实名状态">
+        <template slot-scope="scope">
+          <span v-show="scope.row.moneyAudit == -1">未申请</span>
+          <span v-show="scope.row.moneyAudit == 0">不通过</span>
+          <span v-show="scope.row.moneyAudit == 1">通过</span>
+          <span v-show="scope.row.moneyAudit == 2">审核中</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="registTime" label="注册时间"></el-table-column>
       <el-table-column prop="inviteGiveAmount" label="邀请收益"></el-table-column>
     </el-table>

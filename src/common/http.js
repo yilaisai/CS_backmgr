@@ -57,7 +57,8 @@ httpInstance.interceptors.request.use((config) => {
       configs.baseURL='http://47.75.14.176:7002/'
     }else{
       //正式环境
-      configs.baseURL='http://13.231.172.222:7002/'
+      //configs.baseURL='http://13.231.172.222:7002/'
+      configs.baseURL='https://apijp.sacbox.net/'
     }
     
   }

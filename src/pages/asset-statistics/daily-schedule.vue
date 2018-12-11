@@ -3,7 +3,7 @@
  * @Date: 2018-12-04 17:30:53 
  * @Last Modified by: dubbing
  * @Content 日总表统计图
- * @Last Modified time: 2018-12-11 10:26:48
+ * @Last Modified time: 2018-12-11 13:51:31
  */
 
 
@@ -47,10 +47,10 @@
       </el-table-column>
     </sac-table>
     <sac-pagination v-show="listData.list.length>0"
-                    @handleChange="getPaginationChange"
-                    :total="+listData.total"
-                    :page-size="filterForm.pageSize"
-                    :current-page="filterForm.pageNum">
+        @handleChange="getPaginationChange"
+        :total="+listData.total"
+        :page-size="filterForm.pageSize"
+        :current-page="filterForm.pageNum">
     </sac-pagination>
     
   </div>

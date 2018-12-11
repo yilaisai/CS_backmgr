@@ -50,6 +50,17 @@ function responseErrorHandler(error) {
 
 httpInstance.interceptors.request.use((config) => {
   const configs = config;
+  //资产统计模块接口使用以下域名
+  if(configs.url.indexOf('cloud/asset')>-1){
+    if(configs.baseURL=='http://api.test.sacbox.net/'){
+      //测试环境
+      configs.baseURL='http://47.75.14.176:7002/'
+    }else{
+      //正式环境
+      configs.baseURL='http://13.231.172.222:7002/'
+    }
+    
+  }
   if (localStorage.getItem('wallet_token')) {
     if (configs.method == "post") {
       configs.data.token = localStorage.getItem('wallet_token');

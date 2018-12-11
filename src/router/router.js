@@ -120,7 +120,7 @@ export const appRouter = [
         },
         component: () => import('@/pages/money/transfer-query.vue'),
       },
-      /* {
+      {
         path: 'statements',
         name: 'statements',
         meta: {
@@ -128,7 +128,7 @@ export const appRouter = [
         },
         component: () => import('@/pages/money/statements.vue'),
       },
-      {
+      /* {
         path: 'asset-overview',
         name: 'asset-overview',
         meta: {

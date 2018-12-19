@@ -30,7 +30,6 @@
         :isReset='false'
         @submitForm="submitForm()"></sac-submit-form>
     </el-form>
-<<<<<<< HEAD
     <el-tabs v-model="activeName2" type="border-card">
       <el-tab-pane label="邀请成功的1级好友" name="first">
         <el-table height="100%" :data="firstList" border size="small">
@@ -39,6 +38,14 @@
             width="50">
           </el-table-column>
           <el-table-column prop="phone" label="好友账户"></el-table-column>
+          <el-table-column label="实名状态">
+            <template slot-scope="scope">
+              <span v-show="scope.row.moneyAudit == -1">未申请</span>
+              <span v-show="scope.row.moneyAudit == 0">不通过</span>
+              <span v-show="scope.row.moneyAudit == 1">通过</span>
+              <span v-show="scope.row.moneyAudit == 2">审核中</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="registTime" label="注册时间"></el-table-column>
           <el-table-column prop="inviteGiveAmount" label="邀请收益"></el-table-column>
         </el-table>
@@ -50,51 +57,20 @@
             width="50">
           </el-table-column>
           <el-table-column prop="phone" label="好友账户"></el-table-column>
+          <el-table-column label="实名状态">
+            <template slot-scope="scope">
+              <span v-show="scope.row.moneyAudit == -1">未申请</span>
+              <span v-show="scope.row.moneyAudit == 0">不通过</span>
+              <span v-show="scope.row.moneyAudit == 1">通过</span>
+              <span v-show="scope.row.moneyAudit == 2">审核中</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="registTime" label="注册时间"></el-table-column>
           <el-table-column prop="inviteGiveAmount" label="邀请收益"></el-table-column>
         </el-table>
       </el-tab-pane>
     </el-tabs>
     
-=======
-
-    <span>邀请成功的1级好友</span>
-    <el-table height="50%" :data="firstList" border size="small">
-      <el-table-column
-        type="index"
-        width="50">
-      </el-table-column>
-      <el-table-column prop="phone" label="好友账户"></el-table-column>
-      <el-table-column label="实名状态">
-        <template slot-scope="scope">
-          <span v-show="scope.row.moneyAudit == -1">未申请</span>
-          <span v-show="scope.row.moneyAudit == 0">不通过</span>
-          <span v-show="scope.row.moneyAudit == 1">通过</span>
-          <span v-show="scope.row.moneyAudit == 2">审核中</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="registTime" label="注册时间"></el-table-column>
-      <el-table-column prop="inviteGiveAmount" label="邀请收益"></el-table-column>
-    </el-table>
-    <span style="margin-top: 20px;">邀请成功的2级好友</span>
-    <el-table height="50%" :data="secondList" border size="small">
-      <el-table-column
-        type="index"
-        width="50">
-      </el-table-column>
-      <el-table-column prop="phone" label="好友账户"></el-table-column>
-      <el-table-column label="实名状态">
-        <template slot-scope="scope">
-          <span v-show="scope.row.moneyAudit == -1">未申请</span>
-          <span v-show="scope.row.moneyAudit == 0">不通过</span>
-          <span v-show="scope.row.moneyAudit == 1">通过</span>
-          <span v-show="scope.row.moneyAudit == 2">审核中</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="registTime" label="注册时间"></el-table-column>
-      <el-table-column prop="inviteGiveAmount" label="邀请收益"></el-table-column>
-    </el-table>
->>>>>>> b56bed0b20f21e5e6e179508fa553b911f57a35f
   </div>
 </template>
 <script>

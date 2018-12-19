@@ -128,6 +128,24 @@ export const appRouter = [
         },
         component: () => import('@/pages/money/statements.vue'),
       },
+      {
+        path: 'red-envelope',
+        name: 'red-envelope',
+        meta: {
+          title: '红包查询',
+        },
+        component: () => import('@/pages/money/red-envelope.vue'),
+      },
+      {
+        path: 'red-envelope-detail',
+        name: 'red-envelope-detail',
+        meta: {
+          title: '红包查询详情',
+        },
+        component: () => import('@/pages/money/red-envelope-detail.vue'),
+      },
+      
+      
       /* {
         path: 'asset-overview',
         name: 'asset-overview',

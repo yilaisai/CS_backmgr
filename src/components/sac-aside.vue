@@ -131,6 +131,9 @@
       background: #436bff !important;
       color: #fff;
     }
+    .el-submenu .el-menu-item{
+          min-width: 183px;
+    }
     .el-submenu.is-active .el-submenu__title {
       background: #242c60 !important;
     }

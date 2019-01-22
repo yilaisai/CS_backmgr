@@ -144,6 +144,14 @@ export const appRouter = [
         },
         component: () => import('@/pages/money/reconciliation.vue'),
       },
+      {
+        path: 'getBlockChainRecd',
+        name: 'getBlockChainRecd',
+        meta: {
+          title: '链上到账审批',
+        },
+        component: () => import('@/pages/money/getBlockChainRecd.vue'),
+      },
     ],
   },
   {

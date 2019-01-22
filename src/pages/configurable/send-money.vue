@@ -119,7 +119,11 @@
                     <!--:page-size="pageSize"-->
                     <!--:current-page="pageNum">-->
     <!--</sac-pagination>-->
-    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
+    <el-dialog
+    :title="dialogTitle"
+    :visible.sync="dialogFormVisible"
+
+    >
       <el-form :model="ruleForm" ref="ruleForm"  label-width="130px">
         <div class="from_box">
           <el-form-item label="币种:" prop="coinId" class="from_box_item">
@@ -251,15 +255,47 @@
             <el-input size="small" type="number" v-model="ruleForm.sendDay" placeholder=""></el-input>
           </el-form-item>
         </div>
-
-
+          <el-card class="box-card" style="overflow:hidden;padding:20px 20px 10px">
+            <div style="width:50%;float:left">
+                  <div class="from_box">
+                  <el-form-item label="累计邀请大于等于:" prop="personNub" class="from_box_item noWidth">
+                    <el-input size="small" type="number"  v-model="ruleForm.personNub"  placeholder="请输入"></el-input>
+                  </el-form-item>
+                </div>
+                <div class="from_box">
+                  <el-form-item label="用户额外送:" prop="personCount" class="from_box_item noWidth">
+                    <el-input size="small" type="number" v-model="ruleForm.personCount" placeholder="请输入"></el-input>
+                  </el-form-item>
+                </div>
+                <div class="from_box">
+                    <el-form-item label="币种:" prop="roleCoinId" class="from_box_item noWidth">
+                    <el-select v-model="ruleForm.roleCoinId" @change="selectGetCoinName" placeholder="请选择" size="small">
+                      <el-option
+                        v-for="item in ruleCoinList"
+                        :key="item.coinId"
+                        :label="item.coinName"
+                        :value="item.coinId">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+                <div class="from_box" style="text-align:center">
+                  <el-button @click="InvitePrizes"  size="small">增加</el-button>
+                </div>
+            </div>
+            <div class="elCard_left" >
+              <div v-if="rulelist.length > 0" v-for="(item,index) in rulelist" :key="index" class="text item" >
+                <i @click="deleteRule(index)" class="el-icon-circle-close-outline"></i>
+                {{`累计邀请大于等于${item.personNub}个用户额外送${item.personCount}个${item.coinName}`}}
+              </div>
+            </div>
+          </el-card>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false" size="small">取 消</el-button>
         <el-button type="primary" @click="determine" size="small">确 定</el-button>
       </div>
     </el-dialog>
-
 
     <el-dialog :title="registerDialogTitle" :visible.sync="registerDialogFormVisible" class="register_dialog">
       <el-form :model="registRuleForm" ref="registRuleForm" :rules="rules" label-width="135px">
@@ -334,6 +370,8 @@ import { dateFormat } from '@/common/util';
         registerDialogFormVisible: false,
         ruleForm: {
           coinId:'',
+          coinName:"",
+          roleCoinId:'',
           directInvitedAmount:'',
           secInvitedAmount:'',
           effectSec:'',
@@ -351,7 +389,9 @@ import { dateFormat } from '@/common/util';
           endDate:'',
           isOnshelf:'',
           sendCount:'',
-          registAmount:''
+          registAmount:'',
+          personCount:'',
+          personNub:''
         },
         rules: {
           coinId: [
@@ -390,6 +430,7 @@ import { dateFormat } from '@/common/util';
           {value:2,text:'链上'}
         ],
         coinList: [],
+        ruleCoinList:[],
         registList: [],
         registRuleForm:{
           coinId:'',
@@ -399,10 +440,31 @@ import { dateFormat } from '@/common/util';
           // pageNum: 1,
           // pageSize: 20,
           // total: null,
-        }
+        },
+        rulelist:[]
+
       };
     },
     methods: {
+      // 制定规则
+      InvitePrizes(){
+        let obj = {};
+        obj.personCount = this.ruleForm.personCount;
+        obj.personNub = this.ruleForm.personNub;
+        obj.roleCoinId = this.ruleForm.roleCoinId;
+        obj.coinName = this.ruleForm.coinName;
+        this.rulelist.push(obj)
+      },
+      selectGetCoinName(coinId){
+        let obj = {};
+        obj = this.ruleCoinList.find((item)=>{
+          return item.coinId === coinId;
+        });
+        this.ruleForm.coinName = obj.coinName;
+      },
+      deleteRule(index){
+        this.rulelist.splice(index,1)
+      },
       resetForm() {
         this.ruleForm = {
           coinId:'',
@@ -554,6 +616,7 @@ import { dateFormat } from '@/common/util';
           return new Promise(function (resolve, reject) {
             _this.$http.post("wallet/backmgr/coin/getSampleCoinInfo.do", {}).then((res) => {
               _this.coinList = res.result.list
+              _this.ruleCoinList = res.result.list
               resolve();
             })
         })
@@ -709,6 +772,7 @@ import { dateFormat } from '@/common/util';
       margin:0;
       float: left;
       margin-top: 4px;
+
     }
     .el-dialog {
       width: 900px;
@@ -746,7 +810,11 @@ import { dateFormat } from '@/common/util';
             width:100%
           }
         }
+        &.noWidth{
+        width: auto;
       }
+      }
+
     }
     .register_dialog {
       .el-dialog {
@@ -765,6 +833,15 @@ import { dateFormat } from '@/common/util';
           }
         }
       }
+    }
+  }
+  .elCard_left{
+    width:50%;float:left;
+    div{
+      margin-bottom:5px;font-size:16px;
+    }
+    i{
+      cursor: pointer;
     }
   }
 </style>

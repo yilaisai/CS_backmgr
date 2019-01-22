@@ -93,8 +93,8 @@
         callback();
       };
       const checkRole = (rule, value, callback) => {
-        if (!value) {
-          callback(new Error('请输选择角色'));
+        if (value===''||value===undefined) {
+          callback(new Error('请选择角色'));
         }
         callback();
       }

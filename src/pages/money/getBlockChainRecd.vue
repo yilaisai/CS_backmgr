@@ -24,7 +24,7 @@
         <template slot-scope="scope">
           <span v-if="scope.row.recdStatus == 2">待审核</span>
           <span style="color:red" v-if="scope.row.recdStatus == 3">不通过</span>
-          <span v-if="scope.row.recdStatus == 4">通过</span>
+          <span style="color:green" v-if="scope.row.recdStatus == 4">通过</span>
         </template>
       </el-table-column>
       <el-table-column prop="direction" label="交易方向">

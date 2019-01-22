@@ -1,0 +1,1 @@
+webpackJsonp([23],{"6xsw":function(e,n,o){"use strict";Object.defineProperty(n,"__esModule",{value:!0});o("Gu7T"),o("s0MJ"),o("EaCm");throw new Error('Cannot find module "clipboard"')},JbLN:function(e,n){}});

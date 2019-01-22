@@ -29,13 +29,28 @@
             <span>{{item.name}}</span>
           </template>
           <template v-for="(itemChildren, itemIndex) in item.children">
+            <el-submenu   :index="`${index}-${itemIndex}`" v-if="itemChildren.children">
+              <span slot="title"  style="padding-left: 10px;">{{itemChildren.name}}</span>
+              <el-menu-item     style="padding-left: 70px;"
+                :index="`${index}-${itemIndex}-${itemIndex2}`" 
+                :key="itemIndex2"
+                :route="`${itemChildren2.menuUrl}`"
+                v-for="(itemChildren2, itemIndex2) in itemChildren.children">
+                {{itemChildren2.name}}
+              </el-menu-item>
+              <!-- <el-submenu  :index="`${index}-${itemIndex}`"  :route="`${itemChildren.menuUrl}`" v-if="itemChildren.children">
+              {{itemChildren.name}}
+              </el-submenu> -->
+            </el-submenu>
             <el-menu-item
-              style="padding-left: 65px;"
+              style="padding-left: 50px;"
               :index="`${index}-${itemIndex}`"
               :route="`${itemChildren.menuUrl}`"
-              :key="itemIndex">{{itemChildren.name}}
+              :key="itemIndex" v-else>{{itemChildren.name}}
+                
             </el-menu-item>
           </template>
+          
         </el-submenu>
       </template>
     </el-menu>
@@ -62,12 +77,17 @@
     mounted() {
       // 默认显示页面菜单设置
       const menuList = JSON.parse(localStorage.getItem('wallet_menuUrls')) || [];
+      console.log(menuList)
       if (location.hash == '#/home' || !localStorage.getItem('menuDefaultActive')) {
+        console.log(1111)
         this.activeIndex = '0';
       } else {
+        console.log(222)
         this.activeIndex = localStorage.getItem('menuDefaultActive');
         const curHref = location.href.split('#');
         const activeIndex = this.activeIndex.split('-');
+        console.log(111)
+        console.log(activeIndex)
         let historyRout = '';
         if (activeIndex[1]) {
           historyRout =  menuList[activeIndex[0]].children[activeIndex[1]].menuUrl;
@@ -103,13 +123,16 @@
       }
     }
     .el-menu-vertical-demo:not(.el-menu--collapse) {
-      width: 200px;
+      //width: 200px;
       height: calc(~'100vh - 48px');
       border: none;
     }
     .el-menu-item.is-active {
       background: #436bff !important;
       color: #fff;
+    }
+    .el-submenu .el-menu-item{
+          min-width: 183px;
     }
     .el-submenu.is-active .el-submenu__title {
       background: #242c60 !important;
@@ -193,6 +216,11 @@
       &supersac {
         padding-left: 20px;
         background: url("~@/assets/supersac.png") no-repeat top left;
+        background-size: 17px 17px;
+      }
+      &asset-statistics {
+        padding-left: 20px;
+        background: url("~@/assets/asset-statistics.png") no-repeat top left;
         background-size: 17px 17px;
       }
     }

@@ -29,9 +29,15 @@ export const sum100 = num => num * 100;
 
 // 日期
 
-export const dateFormat = function dateFormat(date, fmt = 'YYYY-MM-DD') {
+export const dateFormat = function (date, fmt = 'YYYY-MM-DD') {
+  
   let newDate = date;
+
   let fmts = fmt;
+
+  //console.log(fmt)
+
+  //fmts='YYYY-MM-DD HH:mm:ss'
   if (!newDate) {
     newDate = new Date;
   }

@@ -9,16 +9,6 @@
       <el-col :span="4">
         <el-button size="small" type="primary" plain @click="$router.go(-1)">返回</el-button>
       </el-col>
-      <el-col :span="18" style="text-align:right">
-        <el-button size="small" v-show="this.optStatus== 2" type="success" @click="optStatusChange(0,'解冻账号')">解冻账号
-        </el-button>
-        <el-button size="small" v-show="this.optStatus!= 2" type="danger" @click="optStatusChange(2,'冻结账号')">冻结账号
-        </el-button>
-        <el-button size="small" v-show="this.optStatus== 1" type="success" plain @click="optStatusChange(0,'解锁账号')">解锁账号
-        </el-button>
-        <el-button size="small" v-show="this.optStatus== 0" type="warning" @click="optStatusChange(1,'锁定账号')">锁定账号
-        </el-button>
-      </el-col>
     </el-row>
     <el-row class="sac-row" :gutter="10">
       <el-col :span="8">
@@ -48,6 +38,14 @@
       <el-col :span="8">
         <label>最后登录时间:</label>
         <span>{{detais.lastLoginTime}}</span>
+      </el-col>
+      <el-col :span="8">
+        <label>注册IP:</label>
+        <span>{{detais.registerIp}}</span>
+      </el-col>
+      <el-col :span="8">
+        <label>锁定原因:</label>
+        <span>{{detais.optReason}}</span>
       </el-col>
       <!--FIXME 后端暂时没有返回-->
       <!--<el-col :span="8">-->
@@ -88,43 +86,7 @@
             this.tableData = coins;
             this.optStatus = optStatus;
           });
-      },
-      /**
-       * 冻结/解冻 锁定/解锁 用户   optStatus  用户状态：2表示冻结，1表示锁定，0表示解冻
-       * */
-      optStatusChange(type, name) {
-        const h = this.$createElement;
-        this.$msgbox({
-          title: '提示',
-          message: h('p', null, [
-            h('span', null, '确定执行 '),
-            h('span', { style: 'color: red' }, `${name}`),
-            h('span', { style: 'color: #0a52e0' }, `${this.detais.phone}`),
-            h('span', null, ' 吗?'),
-          ]),
-          showCancelButton: true,
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          beforeClose: (action, instance, done) => {
-            if (action === 'confirm') {
-              this.$http.post('wallet/backmgr/user/operatetUser.do', {
-                userId: this.detais.userId,
-                optStatus: type,
-              }).then((res) => {
-                this.$notify({
-                  title: '成功',
-                  message: `${name} ${this.detais.phone} 成功`,
-                  type: 'success'
-                });
-                this.getDetail(this.$route.query.phone);
-                done();
-              })
-            } else {
-              done();
-            }
-          }
-        })
-      },
+      }
     },
     activated() {
       this.getDetail(this.$route.query.phone);

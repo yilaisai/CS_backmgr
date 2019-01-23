@@ -42,7 +42,6 @@ export const dateFormat = function (date, fmt = 'YYYY-MM-DD') {
   }
   if (typeof +newDate === 'number') {
     newDate = new Date(newDate);
-    console.log(newDate)
   }
   const o = {
     'M+': newDate.getMonth() + 1,

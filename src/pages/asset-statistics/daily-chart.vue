@@ -15,7 +15,7 @@
                 <sac-date ref="selectedDate" label="日 期" v-model="selectedDate"></sac-date>
                 <el-form-item label=" ">
                     <el-select v-model="filterForm.time" placeholder="请选择时间">
-                        <el-option :label="item.label" :value="item.value" v-for="item in timeData"></el-option>
+                        <el-option :label="item.label" :value="item.value" v-for="(item,index) in timeData" :key="index"></el-option>
                     </el-select>
                 </el-form-item>
             <sac-submit-form @submitForm="submitForm(1)" :isReset="false"></sac-submit-form>

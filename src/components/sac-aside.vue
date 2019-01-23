@@ -77,17 +77,12 @@
     mounted() {
       // 默认显示页面菜单设置
       const menuList = JSON.parse(localStorage.getItem('wallet_menuUrls')) || [];
-      console.log(menuList)
       if (location.hash == '#/home' || !localStorage.getItem('menuDefaultActive')) {
-        console.log(1111)
         this.activeIndex = '0';
       } else {
-        console.log(222)
         this.activeIndex = localStorage.getItem('menuDefaultActive');
         const curHref = location.href.split('#');
         const activeIndex = this.activeIndex.split('-');
-        console.log(111)
-        console.log(activeIndex)
         let historyRout = '';
         if (activeIndex[1]) {
           historyRout =  menuList[activeIndex[0]].children[activeIndex[1]].menuUrl;

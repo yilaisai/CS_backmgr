@@ -62,7 +62,7 @@
         <el-form :inline="true" label-width="90px" ref="ruleForm" :rules="rules" :model="ruleForm">
             <el-form-item label="币 种:" prop="coinId">
                 <el-select v-model="ruleForm.coinId" placeholder="请选择币种" >
-                    <el-option :label="item.coinName" :value="item.coinId" v-for="item in coinList"></el-option>
+                    <el-option :label="item.coinName" :value="item.coinId" v-for="(item,index) in coinList" :key="index"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="充币地址:" style="width:100%" class="item-width-all">
@@ -70,7 +70,7 @@
             </el-form-item>
             <el-form-item label="状态:" class="radio-box" prop="status">
                 <el-radio-group v-model="ruleForm.status">
-                    <el-radio  :label="item.value" v-for="item in stateData">{{item.label}}</el-radio>
+                    <el-radio  :label="item.value" v-for="(item,index) in stateData" :key="index">{{item.label}}</el-radio>
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="充值金额:" prop="amount">

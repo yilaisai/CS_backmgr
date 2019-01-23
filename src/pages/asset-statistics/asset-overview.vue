@@ -56,7 +56,7 @@
         <!-- <sac-coin  ref="coinId"  v-model="ruleForm.coinId"></sac-coin> -->
         <el-form-item label="币        种:" prop="coinId">
           <el-select v-model="ruleForm.coinId" placeholder="请选择币种">
-            <el-option :label="item.coinName" :value="item.coinId" v-for="item in coinList"></el-option>
+            <el-option :label="item.coinName" :value="item.coinId" v-for="(item,index) in coinList" :key="index"></el-option>
             <!--   <el-option label="ETH" value="2"></el-option> -->
           </el-select>
         </el-form-item>

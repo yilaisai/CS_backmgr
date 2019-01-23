@@ -19,7 +19,6 @@
     <sac-table :data="listData.list">
       <el-table-column prop="coinName" label="币种"></el-table-column>
       <el-table-column prop="amount" label="数量"></el-table-column>
-      <el-table-column prop="balance" label="余额"></el-table-column>
       <el-table-column prop="recdStatus" label="审核状态">
         <template slot-scope="scope">
           <span v-if="scope.row.recdStatus == 2">待审核</span>
@@ -41,9 +40,15 @@
       </el-table-column>
       <el-table-column prop="fromAddr" label="来源地址"></el-table-column>
       <el-table-column prop="toAddr" label="目标地址"></el-table-column>
-      <el-table-column prop="txFee" label="费用"></el-table-column>
+      <el-table-column prop="txId" label="hash值"></el-table-column>
       <el-table-column prop="createTime" label="创建时间"></el-table-column>
-      <el-table-column prop="txTime" label="交易时间"></el-table-column>
+      <el-table-column prop="txTime" label="交易时间">
+        <template slot-scope="scope">
+          <span>
+            {{scope.row.txTime | dateFormat}}
+          </span>
+        </template>
+      </el-table-column>
       <el-table-column label="审核" width="180">
         <template slot-scope="scope">
           <el-button :disabled="scope.row.recdStatus != 2" type="success" size="small"

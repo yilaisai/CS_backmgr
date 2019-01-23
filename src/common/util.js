@@ -30,19 +30,19 @@ export const sum100 = num => num * 100;
 // 日期
 
 export const dateFormat = function (date, fmt = 'YYYY-MM-DD') {
-  
+
   let newDate = date;
 
   let fmts = fmt;
 
   //console.log(fmt)
-
   //fmts='YYYY-MM-DD HH:mm:ss'
   if (!newDate) {
     newDate = new Date;
   }
-  if (typeof newDate === 'number') {
+  if (typeof +newDate === 'number') {
     newDate = new Date(newDate);
+    console.log(newDate)
   }
   const o = {
     'M+': newDate.getMonth() + 1,

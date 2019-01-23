@@ -45,7 +45,7 @@
       <el-table-column prop="txTime" label="交易时间">
         <template slot-scope="scope">
           <span>
-            {{scope.row.txTime | dateFormat}}
+            {{+scope.row.txTime * 1000 | dateFormat}}
           </span>
         </template>
       </el-table-column>

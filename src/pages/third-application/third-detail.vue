@@ -11,6 +11,7 @@
       </el-col>
     </el-row>
     <el-form :inline="true" class="demo-form-inline" label-width="150px">
+      <el-form-item label="应用类型:">{{ruleForm.appType}}</el-form-item>
       <el-form-item label="应用名称:">{{ruleForm.appName}}</el-form-item>
       <el-form-item label="应用英文版名称:">{{ruleForm.appNameEn}}</el-form-item>
       <el-form-item label="应用属性介绍:">{{ruleForm.appProp}}</el-form-item>
@@ -55,11 +56,13 @@
   </div>
 </template>
 <script>
+  import { applicationType } from '@/common/constants';
   export default {
     name: "third-detail",
     data() {
       return {
         ruleForm: {},
+        applicationType,  // 应用类型
         options: {
           inline: false,
           button: false,
@@ -81,6 +84,7 @@
     activated() {
       if (this.$route.params.id) {
         this.ruleForm = this.$route.params;
+        this.ruleForm.appType = this.applicationType[this.ruleForm.appType].label;
       } else {
         this.$router.go(-1);
       }

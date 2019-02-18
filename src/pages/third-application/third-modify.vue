@@ -6,6 +6,12 @@
 <template>
   <div class='third-modify'>
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" :inline="true" label-width="150px">
+      <el-form-item label="应用类型" prop="appType">
+        <el-select size="small" v-model="ruleForm.appType" placeholder="请选择应用类型">
+          <el-option :label="item.label" :value="item.value" v-for="(item, index) in applicationType"
+                     :key="index"></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="应用名称:" prop="appName">
         <el-input v-model="ruleForm.appName" size="small" placeholder="请输入名称"></el-input>
       </el-form-item>
@@ -31,9 +37,6 @@
             :value="item.value">
           </el-option>
         </el-select>
-      </el-form-item>
-      <el-form-item label="APPID:" prop="appid">
-        <el-input v-model="ruleForm.appid" size="small" placeholder="请输入APPID"></el-input>
       </el-form-item>
       <el-form-item label="支付通知Url:">
         <el-input v-model="ruleForm.notifyUrl" size="small" placeholder="请输入支付通知Url"></el-input>
@@ -91,7 +94,6 @@
       <el-form-item label="权重:">
         <el-input-number v-model="ruleForm.position" size="small" :min="0"></el-input-number>
       </el-form-item>
-
       <el-form-item label="联系邮箱:" prop="email">
         <el-input v-model="ruleForm.email" size="small" placeholder="请输入联系邮箱"></el-input>
       </el-form-item>
@@ -110,7 +112,7 @@
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
       </el-form-item>
-      <el-form-item label="应用预览:" prop="appPreviewPics" class="appPreviewPics">
+      <el-form-item label="应用预览:" class="appPreviewPics">
         <el-input v-model="ruleForm.appPreviewPics" @change="getAppPreviewPics" size="small" placeholder="多个预览地址以逗号隔开">
         </el-input>
         <span class="appIcon">预览尺寸：横：508*284 竖：320*569，最多上传4张</span>
@@ -138,6 +140,24 @@
       </el-form-item>
           <el-form-item label=" " prop="isRecommend">
           <el-checkbox label="是否推荐应用" name="type" v-model="ruleForm.isRecommend"></el-checkbox>
+          <div v-if="ruleForm.isRecommend == true">
+            <el-input v-model="ruleForm.appLogo" size="small" placeholder="请输入应用图标地址">
+            </el-input>
+            <span class="appIcon">图标尺寸：90*90</span>
+            <el-upload
+              name="files"
+              class="avatar-uploader"
+              :action="server_path + 'wallet/util/open/uploadFile.do'"
+              :show-file-list="false"
+              :on-success="uploadAppLogo"
+              :data="{type:'img'}">
+              <img v-if="ruleForm.appLogo" :src="ruleForm.appLogo" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+            <el-form-item label="推荐权重:" label-width="auto" class="recommend-position">
+              <el-input-number v-model="ruleForm.recommendPosition" size="small" :min="0"></el-input-number>
+            </el-form-item>
+          </div>
       </el-form-item>
     </el-form>
     <div class="determine">
@@ -161,6 +181,7 @@
   import 'quill/dist/quill.bubble.css'
   import { quillEditor } from 'vue-quill-editor'
   import Quill from 'quill'
+  import { applicationType } from '@/common/constants';
 
   export default {
     name: "third-modify",
@@ -170,6 +191,7 @@
         server_path: "",
         currentForm: {},
         ruleForm: {
+          appType: '',
           appid: "",
           phone: "",
           appName: "",
@@ -197,8 +219,11 @@
           ownType: 1,
           position: 0,
           disclaimerType:false,
-          isRecommend:false
+          isRecommend:false,
+          appLogo: '',
+          recommendPosition: 0
         },
+        applicationType,  // 应用类型
         rules: {
           transferTypeId: [
             { required: true, message: '请选择商户类型', trigger: 'change' }
@@ -221,9 +246,6 @@
           appIcon: [
             { required: true, message: '请输入应用图标地址', trigger: 'blur' }
           ],
-          appPreviewPics: [
-            { required: true, message: '请输入应用预览地址', trigger: 'blur' }
-          ],
           phone: [
             { required: true, message: '请输入商户手机号', trigger: 'blur' }
           ],
@@ -236,6 +258,9 @@
           ownType: [
             { required: true, message: '请选择是否自营', trigger: 'blur' }
           ],
+          appType: [
+            { required: true, message: '请选择应用类型', trigger: 'blur' }
+          ]
         },
         dialogVisible: false,
         dialogImageUrl: '',
@@ -266,6 +291,7 @@
       resetForm() {
         this.destext = '';
         this.ruleForm = {
+          appType: '',
           appid: "",
           phone: "",
           appName: "",
@@ -293,7 +319,9 @@
           ownType: 1,
           position: 0,
           disclaimerType:false,
-          isRecommend: false
+          isRecommend: false,
+          appLogo: '',
+          recommendPosition: 0
         };
         this.$refs.ruleForm && this.$refs.ruleForm.resetFields(); // 重置query的数据
       },
@@ -355,6 +383,12 @@
       determine() {
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
+            for (let v in this.applicationType) {
+              if (this.ruleForm.appType == this.applicationType[v].label) {
+                this.ruleForm.appType = this.applicationType[v].value
+                break
+              }
+            }
             if (this.ruleForm.id) {
               Object.entries(this.ruleForm).forEach(([key, value]) => {
                 if (value != this.currentForm[key] && !value) {
@@ -425,7 +459,10 @@
             })
           }
         })
-      }
+      },
+      uploadAppLogo(response, file, fileList) {
+        this.ruleForm.appLogo = response.result.urls[0];
+      },
     },
     activated() {
       this.server_path = SERVER_PATH;
@@ -434,8 +471,10 @@
       this.fileList = [];
       const res = this.$route.params;
       if (this.$route.params.id) {
+        res.recommendPosition = res.recommendAppPosition;
         this.ruleForm = JSON.parse(JSON.stringify(res));
         this.currentForm = JSON.parse(JSON.stringify(res));
+        this.ruleForm.appType = this.applicationType[res.appType].label;
         this.ruleForm.appid = res.appId;
         this.currentForm.appid = res.appId;
         this.appPreviewPics = res.appPreviewPics ? res.appPreviewPics.split(',') : [];
@@ -499,6 +538,12 @@
       height: 32px;
       margin: 10px auto 40px auto;
       width: 300px;
+    }
+  }
+  .recommend-position {
+    width: 205px;
+    .el-form-item__content {
+      width: auto;
     }
   }
 </style>

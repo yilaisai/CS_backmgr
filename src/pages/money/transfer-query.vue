@@ -185,13 +185,11 @@
         this.getTradeList();
       },
       exportExcel() {
-        this.$http.get('wallet/backmgr/trade/downTradeList.do', this.filterForm)
-          .then((res) => {
-            this.$message({
-              message: `${res.msg}`,
-              type: 'success'
-            });
-          });
+        let param = '';
+        for(let v in this.filterForm) {
+          param += v + '=' + this.filterForm[v] + '&';
+        }
+        location.href = SERVER_PATH + 'wallet/backmgr/trade/downTradeList.do?' + param + 'token=' + localStorage.getItem('wallet_token');
       },
       getTradeList() {
         this.filterForm.startDate = this.selectedDate && this.selectedDate[0];
@@ -234,7 +232,7 @@
     },
     activated() {
       const end = dateFormat(new Date, 'YYYY-MM-DD HH:mm:ss');
-      const start = dateFormat(new Date().getTime() - 3600 * 1000 * 24 * 30, 'YYYY-MM-DD HH:mm:ss');
+      const start = dateFormat(new Date().getTime() - 3600 * 1000 * 24 * 7, 'YYYY-MM-DD HH:mm:ss');
       this.selectedDate = [start, end];
       this.getTradeList();
     }

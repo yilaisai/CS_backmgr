@@ -129,6 +129,56 @@ export const appRouter = [
         component: () => import('@/pages/money/statements.vue'),
       },
       {
+        path: 'red-envelope',
+        name: 'red-envelope',
+        meta: {
+          title: '红包查询',
+        },
+        component: () => import('@/pages/money/red-envelope.vue'),
+      },
+      {
+        path: 'red-envelope-detail',
+        name: 'red-envelope-detail',
+        meta: {
+          title: '红包查询详情',
+        },
+        component: () => import('@/pages/money/red-envelope-detail.vue'),
+      },
+      
+      
+      /* {
+        path: 'asset-overview',
+        name: 'asset-overview',
+        meta: {
+          title: '资产总览',
+        },
+        component: () => import('@/pages/money/asset-overview.vue'),
+      },
+      {
+        path: 'collapse-record',
+        name: 'collapse-record',
+        meta: {
+          title: '归拢记录',
+        },
+        component: () => import('@/pages/money/collapse-record.vue'),
+      },
+      {
+        path: 'daily-schedule',
+        name: 'daily-schedule',
+        meta: {
+          title: '日总表统计图',
+        },
+        component: () => import('@/pages/money/daily-schedule.vue'),
+      },
+      {
+        path: 'daily-chart',
+        name: 'daily-chart',
+        meta: {
+          title: '日总表统计图(图表)',
+        },
+        component: () => import('@/pages/money/daily-chart.vue'),
+      }, */
+      {
         path: 'money-monitor',
         name: 'moneyMonitor',
         meta: {
@@ -143,6 +193,14 @@ export const appRouter = [
           title: '总额对账',
         },
         component: () => import('@/pages/money/reconciliation.vue'),
+      },
+      {
+        path: 'getBlockChainRecd',
+        name: 'getBlockChainRecd',
+        meta: {
+          title: '链上到账审批',
+        },
+        component: () => import('@/pages/money/getBlockChainRecd.vue'),
       },
     ],
   },
@@ -373,6 +431,14 @@ export const appRouter = [
         component: () => import('@/pages/configurable/collect-alarm.vue'),
       },
       {
+        path: 'system-params',
+        name: 'system-params',
+        meta: {
+          title: '系统参数',
+        },
+        component: () => import('@/pages/configurable/system-params.vue'),
+      },
+      {
         path: 'client',
         name: 'client',
         meta: {
@@ -413,6 +479,49 @@ export const appRouter = [
           title: '身份审核详情',
         },
         component: () => import('@/pages/identity/identity-details.vue'),
+      },
+    ],
+  },
+  {
+    path: '/asset-statistics',
+    name: 'asset-statistics',
+    redirect: '/asset-statistics/asset-overview',
+    meta: {
+      title: '资产统计',
+    },
+    component: Index,
+    children: [
+      {
+        path: 'asset-overview',
+        name: 'asset-overview',
+        meta: {
+          title: '资产总览',
+        },
+        component: () => import('@/pages/asset-statistics/asset-overview.vue'),
+      },
+      {
+        path: 'collapse-record',
+        name: 'collapse-record',
+        meta: {
+          title: '归拢记录',
+        },
+        component: () => import('@/pages/asset-statistics/collapse-record.vue'),
+      },
+      {
+        path: 'daily-schedule',
+        name: 'daily-schedule',
+        meta: {
+          title: '日总表统计图',
+        },
+        component: () => import('@/pages/asset-statistics/daily-schedule.vue'),
+      },
+      {
+        path: 'daily-chart',
+        name: 'daily-chart',
+        meta: {
+          title: '日总表统计图(图表)',
+        },
+        component: () => import('@/pages/asset-statistics/daily-chart.vue'),
       },
     ],
   },

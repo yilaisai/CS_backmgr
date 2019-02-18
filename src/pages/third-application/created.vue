@@ -27,6 +27,16 @@
     </el-form>
     <sac-table :data="listData.list">
       <el-table-column prop="id" label="序号" width="100"></el-table-column>
+      <el-table-column label="应用类型">
+        <template slot-scope="scope">
+          <span v-if="scope.row.appType == 0">游戏</span>
+          <span v-if="scope.row.appType == 1">社交</span>
+          <span v-if="scope.row.appType == 2">电商</span>
+          <span v-if="scope.row.appType == 3">平台</span>
+          <span v-if="scope.row.appType == 4">媒体</span>
+          <span v-if="scope.row.appType == 5">其他</span>
+        </template>
+      </el-table-column>
       <el-table-column label="名称" prop="appName"></el-table-column>
       <el-table-column label="英文名称" prop="appNameEn"></el-table-column>
       <el-table-column prop="appIcon" label="图标存储地址">

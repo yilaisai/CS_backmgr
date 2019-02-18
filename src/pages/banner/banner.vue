@@ -53,6 +53,8 @@
       </el-table-column>
       <el-table-column prop="bannerTypeName" label="banner类型"></el-table-column>
       <el-table-column prop="bannerName" label="banner名称"></el-table-column>
+      <el-table-column prop="version" label="适用版本范围"></el-table-column>
+      <el-table-column prop="plat" label="适用平台"></el-table-column>
       <el-table-column prop="jumpUrl" label="跳转链接">
         <template slot-scope="scope" prop="sysStatus">
           <a target="_brank" :href="scope.row.jumpUrl">{{scope.row.jumpUrl}}</a>
@@ -127,6 +129,22 @@
             <el-input size="small" v-model="ruleForm.bannerName" placeholder="请输入banner名称"></el-input>
           </el-col>
         </el-form-item>
+        <el-form-item label="适用版本范围:" class="banner-version">
+          <el-col>
+            <el-input size="small" v-model="ruleForm.bannerVersion1" placeholder="请输入适用版本范围"></el-input> -
+            <el-input size="small" v-model="ruleForm.bannerVersion2" placeholder="请输入适用版本范围"></el-input>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="适用平台:">
+            <!-- <el-input size="small" v-model="ruleForm.bannerPlat" placeholder="请输入适用平台"></el-input> -->
+            <el-select size="small" v-model="ruleForm.bannerPlat" placeholder="请选择适用平台" @change="getbannerPlat('ruleForm')"  style="width:100%;">
+              <el-option
+                v-for="(item, index) in platList"
+                :value="item" 
+                :key="index">
+              </el-option>
+            </el-select>
+        </el-form-item>
         <el-form-item label="跳转链接:" prop="jumpUrl">
           <el-col>
             <el-input size="small" v-model="ruleForm.jumpUrl" placeholder="请输入跳转链接"></el-input>
@@ -173,11 +191,16 @@
           bannerUrlEn: '',
           bannerTypeEnName: "",
           bannerName: "",
+          bannerVersion1: "",
+          bannerVersion2: "",
+          bannerVersion: "",
+          bannerPlat: "",
           jumpUrl: "",
           weight: "",
           bannerType: "",
           remark: ""
         },
+        platList: ['all','adr','ios'],
         dialogTitle: '',
         rules: {
           bannerUrl: [
@@ -223,6 +246,10 @@
           bannerUrlEn: "",
           bannerTypeEnName: "",
           bannerName: "",
+          bannerVersion1: "",
+          bannerVersion2: "",
+          bannerVersion: "",
+          bannerPlat: "",
           jumpUrl: "",
           weight: "",
           bannerType: "",
@@ -255,6 +282,7 @@
             item.label = item.name;
             item.value = item.bannerType;
           })
+          console.log(list);
           this.bannerTypeList = list;
         })
       },
@@ -301,6 +329,17 @@
           }
         })
       },
+      getbannerPlat(type) {
+        console.log(this.ruleForm.bannerPlat);
+        // this.ruleForm.bannerPlat = 1111;
+        // this.ruleForm.bannerPlat == this[type].bannerPlat;
+        // this.platList.forEach((item) => {
+        //   if (item == this[type].bannerPlat) {
+        //     this.ruleForm.bannerPlat = 111;
+            
+        //   }
+        // })
+      },
       upload(response, file, fileList) {
         this.ruleForm.bannerUrl = response.result.urls[0]
       },
@@ -316,19 +355,25 @@
         this.resetForm();
         this.bannerTypeCode = data.bannerType;
         this.isShowAddDialog = true;
+        data.bannerPlat = data.plat;
         this.ruleForm = JSON.parse(JSON.stringify(data));
+        this.ruleForm.bannerVersion1 = data.version.split(',')[0];
+        this.ruleForm.bannerVersion2 = data.version.split(',')[1];
         this.dialogTitle = `修改 ${this.ruleForm.bannerName} 的banner`;
       },
       determine() {
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
+            this.ruleForm.bannerVersion =  this.ruleForm.bannerVersion1 + ',' +  this.ruleForm.bannerVersion2;
             if (this.ruleForm.id) {
-              const { bannerTypeEnName, id, bannerName, jumpUrl, bannerUrl, bannerUrlEn,weight, remark } = this.ruleForm;
+              const { bannerTypeEnName, id, bannerName, bannerVersion, bannerPlat, jumpUrl, bannerUrl, bannerUrlEn,weight, remark } = this.ruleForm;
               this.$http.post("wallet/backmgr/banner/updateAppBannerInfo.do", {
                 bannerTypeEnName,
                 bannerType: this.bannerTypeCode,
                 id,
                 bannerName,
+                bannerVersion,
+                bannerPlat,
                 jumpUrl: jumpUrl || 'empty',
                 bannerUrl,
                 bannerUrlEn,
@@ -372,5 +417,13 @@
 </script>
 <style lang="less">
   .banner {
+  }
+  .banner-version {
+    input {
+      width: 143px;
+    }
+    .el-input {
+      display: inline;
+    }
   }
 </style>

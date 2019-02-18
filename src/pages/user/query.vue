@@ -49,13 +49,13 @@
                      @click="optStatusChange(0,'解冻账号',scope.row)">解冻账号
           </el-button>
           <el-button size="small" v-show="scope.row.optStatus != 2" type="danger"
-                     @click="optStatusChange(2,'冻结账号',scope.row)">冻结账号
+                     @click="optStatusHandle(2,'冻结账号',scope.row)">冻结账号
           </el-button>
           <el-button size="small" v-show="scope.row.optStatus== 1" type="success" plain
                      @click="optStatusChange(0,'解锁账号',scope.row)">解锁账号
           </el-button>
           <el-button size="small" v-show="scope.row.optStatus== 0" type="warning"
-                     @click="optStatusChange(1,'锁定账号',scope.row)">锁定账号
+                     @click="optStatusHandle(1,'锁定账号',scope.row)">锁定账号
           </el-button>
           <el-button type="primary" size="small" @click.native="goDetail(scope.row.phone)">查看详情</el-button>
         </template>
@@ -77,6 +77,21 @@
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false" size="small">取 消</el-button>
         <el-button type="primary" @click="determine" size="small">确 定</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog title="备注" :visible.sync="optDialogFormVisible" class="opt-dialog-wrap">
+      <el-form :model="dialogForm" :rules="optRules" ref="dialogForm">
+        <el-form-item prop="optReason" :label="`${dialogForm.optStatus == 1 ? '锁定':'冻结'}账号${dialogForm.phone}理由：`">
+          <el-input type="textarea"
+                    :autosize="{ minRows: 2, maxRows: 6 }"
+                    v-model="dialogForm.optReason" maxlength="50"
+                    placeHolder="请输入理由"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="optDialogFormVisible = false" size="small">取 消</el-button>
+        <el-button type="primary" @click.native="optSubmit('dialogForm')" size="small">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -129,7 +144,19 @@
             { required: true, validator: checkPwd, trigger: 'blur' },
           ],
         },
+        optRules: {
+          optReason: [
+            { required: true, message: '请输入理由', trigger: 'blur' },
+          ]
+        },
+        dialogForm: {
+          userId: '',
+          optStatus: '',
+          phone:'',
+          optReason: ''
+        },
         dialogFormVisible: false,
+        optDialogFormVisible: false
       };
     },
     methods: {
@@ -172,6 +199,15 @@
       /**
        * 冻结/解冻 锁定/解锁 用户   optStatus  用户状态：2表示冻结，1表示锁定，0表示解冻
        * */
+      optStatusHandle(type, title, data) {
+        this.optDialogFormVisible = true;
+        this.dialogForm = {
+          userId: data.userId,
+          optStatus: type,
+          phone: data.phone,
+          optReason: ''
+        }
+      },
       optStatusChange(type, title, data) {
         const h = this.$createElement;
         this.$msgbox({
@@ -205,6 +241,21 @@
           }
         })
       },
+      optSubmit(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (!valid) return;
+          const title = this.dialogForm.optStatus == 1 ? '锁定' : '冻结';
+          this.$http.post('wallet/backmgr/user/operatetUser.do', this.dialogForm).then((res) => {
+            this.$notify({
+              title: '成功',
+              message: `${title} ${this.dialogForm.phone} 成功`,
+              type: 'success'
+            });
+            this.optDialogFormVisible = false;
+            this.getUserInfoList();
+          })
+        })
+      },
       // 创建用户
       addUser() {
         this.dialogTitle = '创建用户';
@@ -236,6 +287,12 @@
   };
 </script>
 <style lang="less">
-  .query {
+  .opt-dialog-wrap {
+    .el-dialog {
+      padding: 0;
+      &__body {
+        padding: 0 20px;
+      }
+    }
   }
 </style>

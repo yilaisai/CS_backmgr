@@ -5,121 +5,133 @@
 */
 <template>
   <div class='send-money'>
-    <el-col :span="22" style="text-align:right;margin-bottom: 10px;">
-      <h3>邀请好友送币</h3>
-      <el-button size="small" type="primary" @click="addSend">创建规则</el-button>
-    </el-col>
+     <el-tabs v-model="activeName2" type="border-card">
+      <el-tab-pane label="邀请好友送币" name="first">
+        <el-col :span="22" style="text-align:right;margin-bottom: 10px;">
+          <!-- <h3>邀请好友送币</h3> -->
+          <el-button size="small" type="primary" @click="addSend">创建规则</el-button>
+        </el-col>
 
-    <sac-table :data="listData.list">
-      <el-table-column prop="createTime" label="创建时间" width="140">
-      </el-table-column>
-      <el-table-column prop="coinId" label="币种" class-name="选择送出的币类型" :render-header="foo">
-        <template slot-scope="scope">
-          <div v-for="item in coinList" :key="item.coinId" v-if="scope.row.coinId==item.coinId">{{item.coinName}}</div>
-        </template>
-      </el-table-column>
-      <el-table-column prop="directInvitedAmount" label="邀请奖励" width="100" class-name="邀请单个好友时，给予邀请人的奖励" :render-header="foo"></el-table-column>
-      <el-table-column prop="registAmount" label="被邀请人奖励" width="100"></el-table-column>
-      <el-table-column prop="secInvitedAmount" label="父奖励" class-name="邀请单个好友时，给予父邀请人的奖励" :render-header="foo"></el-table-column>
+        <sac-table :data="listData.list">
+          <el-table-column prop="createTime" label="创建时间" width="140">
+          </el-table-column>
+          <el-table-column prop="coinId" label="币种" class-name="选择送出的币类型" :render-header="foo">
+            <template slot-scope="scope">
+              <div v-for="item in coinList" :key="item.coinId" v-if="scope.row.coinId==item.coinId">{{item.coinName}}</div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="directInvitedAmount" label="邀请奖励" width="100" class-name="邀请单个好友时，给予邀请人的奖励" :render-header="foo"></el-table-column>
+          <el-table-column prop="registAmount" label="被邀请人奖励" width="100"></el-table-column>
+          <el-table-column prop="secInvitedAmount" label="父奖励" class-name="邀请单个好友时，给予父邀请人的奖励" :render-header="foo"></el-table-column>
 
-      <el-table-column prop="effectSec" label="父奖励状态" width="100" class-name="是否给予邀请单个好友时，父邀请人的奖励" :render-header="foo">
-        <template slot-scope="scope">
-          <div v-for="item in effectSecData" :key="item.coinId" v-if="scope.row.effectSec==item.value">{{item.text}}</div>
-        </template>
-      </el-table-column>
+          <el-table-column prop="effectSec" label="父奖励状态" width="100" class-name="是否给予邀请单个好友时，父邀请人的奖励" :render-header="foo">
+            <template slot-scope="scope">
+              <div v-for="item in effectSecData" :key="item.coinId" v-if="scope.row.effectSec==item.value">{{item.text}}</div>
+            </template>
+          </el-table-column>
 
-      <el-table-column prop="inviteAmount" label="邀请数奖励" width="100" class-name="邀请人邀请用户数达到一定数量奖励多少币，与邀请单个好友冲突" :render-header="foo"></el-table-column>
-      <el-table-column prop="inviteAuthState" label="邀请人实名" width="100">
-        <template slot-scope="scope">
-          <div v-for="item in needData" :key="item.coinId" v-if="scope.row.inviteAuthState==item.value">{{item.text}}</div>
-        </template>
-      </el-table-column>
-      <el-table-column prop="inviteCount" label="邀请人数"></el-table-column>
-      <el-table-column prop="invitedAuthState" label="被邀请人实名" width="100">
-        <template slot-scope="scope">
-          <div v-for="item in needData" :key="item.coinId" v-if="scope.row.invitedAuthState==item.value">{{item.text}}</div>
-        </template>
-      </el-table-column>
-      <el-table-column prop="loginDay" label="登录天数"></el-table-column>
-      <el-table-column prop="maxInviteAmount" label="送币上限"></el-table-column>
-      <el-table-column prop="remainAmount" label="奖池余额"></el-table-column>
+          <el-table-column prop="inviteAmount" label="邀请数奖励" width="100" class-name="邀请人邀请用户数达到一定数量奖励多少币，与邀请单个好友冲突" :render-header="foo"></el-table-column>
+          <el-table-column prop="inviteAuthState" label="邀请人实名" width="100">
+            <template slot-scope="scope">
+              <div v-for="item in needData" :key="item.coinId" v-if="scope.row.inviteAuthState==item.value">{{item.text}}</div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="inviteCount" label="邀请人数"></el-table-column>
+          <el-table-column prop="invitedAuthState" label="被邀请人实名" width="100">
+            <template slot-scope="scope">
+              <div v-for="item in needData" :key="item.coinId" v-if="scope.row.invitedAuthState==item.value">{{item.text}}</div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="loginDay" label="登录天数"></el-table-column>
+          <el-table-column prop="maxInviteAmount" label="送币上限"></el-table-column>
+          <el-table-column prop="remainAmount" label="奖池余额"></el-table-column>
 
-      <el-table-column prop="totalAmount" label="奖池总额" width="100" class-name="0表示不限制" :render-header="foo"></el-table-column>
-      <el-table-column prop="tranStatus" label="转账">
-        <template slot-scope="scope">
-          <div v-for="item in tranStatusData" :key="item.tranStatus" v-if="scope.row.tranStatus==item.value">{{item.text}}</div>
-        </template>
-      </el-table-column>
-      <el-table-column prop="beginDate" label="生效时间" width="140"></el-table-column>
-      <el-table-column prop="endDate" label="失效时间" width="140"></el-table-column>
-      <el-table-column prop="sendCount" label="数/天" class-name="每天送币次数，0表示不限制" :render-header="foo"></el-table-column>
-      <el-table-column prop="sendDay" label="分发天数"></el-table-column>
-      <el-table-column label="操作" width="150" fixed="right">
+          <el-table-column prop="totalAmount" label="奖池总额" width="100" class-name="0表示不限制" :render-header="foo"></el-table-column>
+          <el-table-column prop="tranStatus" label="转账">
+            <template slot-scope="scope">
+              <div v-for="item in tranStatusData" :key="item.tranStatus" v-if="scope.row.tranStatus==item.value">{{item.text}}</div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="beginDate" label="生效时间" width="140"></el-table-column>
+          <el-table-column prop="endDate" label="失效时间" width="140"></el-table-column>
+          <el-table-column prop="sendCount" label="数/天" class-name="每天送币次数，0表示不限制" :render-header="foo"></el-table-column>
+          <el-table-column prop="sendDay" label="分发天数"></el-table-column>
+          <el-table-column label="操作" width="150" fixed="right">
 
-        <template slot-scope="scope" prop="sysStatus">
-          <el-button type="success" :disabled="scope.row.isOnshelf != 0" size="small"
-                     @click.native="modification(scope.row)">修改
-          </el-button>
-          <el-button type="danger" size="small" :disabled="scope.row.sysStatus != 0"
-                     @click.native="remove(scope.row)">删除
-          </el-button>
-        </template>
-      </el-table-column>
-      <el-table-column label="系统状态" width="100" fixed="right">
-        <template slot-scope="scope" prop="sysStatus">
-          <el-switch v-model="scope.row.sysStatus" :inactive-value="0" :active-value="1"
-                     @click.native="switchSysStatusChange(scope.row)" :aaa="scope.row.sysStatus"></el-switch>
-        </template>
-      </el-table-column>
-      <el-table-column label="上架" width="100" fixed="right">
-        <template slot-scope="scope" prop="isOnshelf">
-          <el-switch v-model="scope.row.isOnshelf" :disabled="scope.row.sysStatus == 0" :inactive-value="0" :active-value="1"
-                     @click.native="switchChange(scope.row)"></el-switch>
-        </template>
-      </el-table-column>
-    </sac-table>
-    <br>
+            <template slot-scope="scope" prop="sysStatus">
+              <el-button type="success" :disabled="scope.row.isOnshelf != 0" size="small"
+                        @click.native="modification(scope.row)">修改
+              </el-button>
+              <el-button type="danger" size="small" :disabled="scope.row.sysStatus != 0"
+                        @click.native="remove(scope.row)">删除
+              </el-button>
+            </template>
+          </el-table-column>
+          <el-table-column label="系统状态" width="100" fixed="right">
+            <template slot-scope="scope" prop="sysStatus">
+              <el-switch v-model="scope.row.sysStatus" :inactive-value="0" :active-value="1"
+                        @click.native="switchSysStatusChange(scope.row)" :aaa="scope.row.sysStatus"></el-switch>
+            </template>
+          </el-table-column>
+          <el-table-column label="上架" width="100" fixed="right">
+            <template slot-scope="scope" prop="isOnshelf">
+              <el-switch v-model="scope.row.isOnshelf" :disabled="scope.row.sysStatus == 0" :inactive-value="0" :active-value="1"
+                        @click.native="switchChange(scope.row)"></el-switch>
+            </template>
+          </el-table-column>
+        </sac-table>
+      </el-tab-pane>
+      <el-tab-pane label="注册送币" name="second">
+        <el-col :span="22" style="text-align:right;margin-bottom: 10px;">
+          <!-- <h3>注册送币</h3> -->
+          <el-button size="small" type="primary" @click="registerAddSend">创建规则</el-button>
+        </el-col>
+
+        <sac-table :data="registList">
+          <el-table-column prop="coinType" label="币种"></el-table-column>
+          <el-table-column prop="amount" label="送币量"></el-table-column>
+          <el-table-column prop="startTime" label="生效时间"></el-table-column>
+          <el-table-column prop="endTime" label="失效时间"></el-table-column>
+          <el-table-column label="操作">
+
+            <template slot-scope="scope" prop="sysStatus">
+              <el-button type="success" :disabled="scope.row.isShow != 0" size="small"
+                        @click.native="registerModification(scope.row)">修改
+              </el-button>
+              <el-button type="danger" size="small" :disabled="scope.row.isShow != 0"
+                        @click.native="registerRemove(scope.row)">删除
+              </el-button>
+            </template>
+          </el-table-column>
+          <el-table-column label="上架">
+            <template slot-scope="scope" prop="isShow">
+              <el-switch v-model="scope.row.isShow" :inactive-value="0" :active-value="1"
+                        @click.native="registerSwitchChange(scope.row)"></el-switch>
+            </template>
+          </el-table-column>
+        </sac-table>
+      </el-tab-pane>
+    </el-tabs>
+    
+    <!-- <br> -->
     <!--<sac-pagination v-show="listData.list.length>0"-->
                     <!--@handleChange="getPaginationChange"-->
                     <!--:total="+listData.total"-->
                     <!--:page-size="pageSize"-->
                     <!--:current-page="pageNum">-->
     <!--</sac-pagination>-->
-    <el-col :span="22" style="text-align:right;margin-bottom: 10px;">
-      <h3>注册送币</h3>
-      <el-button size="small" type="primary" @click="registerAddSend">创建规则</el-button>
-    </el-col>
-
-    <sac-table :data="registList">
-      <el-table-column prop="coinType" label="币种"></el-table-column>
-      <el-table-column prop="amount" label="送币量"></el-table-column>
-      <el-table-column prop="startTime" label="生效时间"></el-table-column>
-      <el-table-column prop="endTime" label="失效时间"></el-table-column>
-      <el-table-column label="操作">
-
-        <template slot-scope="scope" prop="sysStatus">
-          <el-button type="success" :disabled="scope.row.isShow != 0" size="small"
-                     @click.native="registerModification(scope.row)">修改
-          </el-button>
-          <el-button type="danger" size="small" :disabled="scope.row.isShow != 0"
-                     @click.native="registerRemove(scope.row)">删除
-          </el-button>
-        </template>
-      </el-table-column>
-      <el-table-column label="上架">
-        <template slot-scope="scope" prop="isShow">
-          <el-switch v-model="scope.row.isShow" :inactive-value="0" :active-value="1"
-                     @click.native="registerSwitchChange(scope.row)"></el-switch>
-        </template>
-      </el-table-column>
-    </sac-table>
+    
     <!--<sac-pagination v-show="listData.list.length>0"-->
                     <!--@handleChange="getPaginationChangeRegist"-->
                     <!--:total="+listData.total"-->
                     <!--:page-size="pageSize"-->
                     <!--:current-page="pageNum">-->
     <!--</sac-pagination>-->
-    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
+    <el-dialog
+    :title="dialogTitle"
+    :visible.sync="dialogFormVisible"
+
+    >
       <el-form :model="ruleForm" ref="ruleForm"  label-width="130px">
         <div class="from_box">
           <el-form-item label="币种:" prop="coinId" class="from_box_item">
@@ -251,15 +263,47 @@
             <el-input size="small" type="number" v-model="ruleForm.sendDay" placeholder=""></el-input>
           </el-form-item>
         </div>
-
-
+          <el-card class="box-card" style="overflow:hidden;padding:20px 20px 10px">
+            <div style="width:50%;float:left">
+                  <div class="from_box">
+                  <el-form-item label="累计邀请大于等于:" prop="personNub" class="from_box_item noWidth">
+                    <el-input size="small" type="number"  v-model="ruleForm.personNub"  placeholder="请输入"></el-input>
+                  </el-form-item>
+                </div>
+                <div class="from_box">
+                  <el-form-item label="用户额外送:" prop="personCount" class="from_box_item noWidth">
+                    <el-input size="small" type="number" v-model="ruleForm.personCount" placeholder="请输入"></el-input>
+                  </el-form-item>
+                </div>
+                <div class="from_box">
+                    <el-form-item label="币种:" prop="roleCoinId" class="from_box_item noWidth">
+                    <el-select v-model="ruleForm.roleCoinId" @change="selectGetCoinName" placeholder="请选择" size="small">
+                      <el-option
+                        v-for="item in ruleCoinList"
+                        :key="item.coinId"
+                        :label="item.coinName"
+                        :value="item.coinId">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+                <div class="from_box" style="text-align:center">
+                  <el-button @click="InvitePrizes"  size="small">增加</el-button>
+                </div>
+            </div>
+            <div class="elCard_left" >
+              <div v-if="rulelist.length > 0" v-for="(item,index) in rulelist" :key="index" class="text item" >
+                <i @click="deleteRule(index)" class="el-icon-circle-close-outline"></i>
+                {{`累计邀请大于等于${item.personNub}个用户额外送${item.personCount}个${item.coinName}`}}
+              </div>
+            </div>
+          </el-card>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false" size="small">取 消</el-button>
         <el-button type="primary" @click="determine" size="small">确 定</el-button>
       </div>
     </el-dialog>
-
 
     <el-dialog :title="registerDialogTitle" :visible.sync="registerDialogFormVisible" class="register_dialog">
       <el-form :model="registRuleForm" ref="registRuleForm" :rules="rules" label-width="135px">
@@ -322,6 +366,7 @@ import { dateFormat } from '@/common/util';
         }
       };
       return {
+        activeName2: 'first',
         pageNum: 1,
         pageSize: 20,
         listData: {
@@ -334,6 +379,8 @@ import { dateFormat } from '@/common/util';
         registerDialogFormVisible: false,
         ruleForm: {
           coinId:'',
+          coinName:"",
+          roleCoinId:'',
           directInvitedAmount:'',
           secInvitedAmount:'',
           effectSec:'',
@@ -351,7 +398,9 @@ import { dateFormat } from '@/common/util';
           endDate:'',
           isOnshelf:'',
           sendCount:'',
-          registAmount:''
+          registAmount:'',
+          personCount:'',
+          personNub:''
         },
         rules: {
           coinId: [
@@ -390,6 +439,7 @@ import { dateFormat } from '@/common/util';
           {value:2,text:'链上'}
         ],
         coinList: [],
+        ruleCoinList:[],
         registList: [],
         registRuleForm:{
           coinId:'',
@@ -399,10 +449,31 @@ import { dateFormat } from '@/common/util';
           // pageNum: 1,
           // pageSize: 20,
           // total: null,
-        }
+        },
+        rulelist:[]
+
       };
     },
     methods: {
+      // 制定规则
+      InvitePrizes(){
+        let obj = {};
+        obj.personCount = this.ruleForm.personCount;
+        obj.personNub = this.ruleForm.personNub;
+        obj.roleCoinId = this.ruleForm.roleCoinId;
+        obj.coinName = this.ruleForm.coinName;
+        this.rulelist.push(obj)
+      },
+      selectGetCoinName(coinId){
+        let obj = {};
+        obj = this.ruleCoinList.find((item)=>{
+          return item.coinId === coinId;
+        });
+        this.ruleForm.coinName = obj.coinName;
+      },
+      deleteRule(index){
+        this.rulelist.splice(index,1)
+      },
       resetForm() {
         this.ruleForm = {
           coinId:'',
@@ -554,6 +625,7 @@ import { dateFormat } from '@/common/util';
           return new Promise(function (resolve, reject) {
             _this.$http.post("wallet/backmgr/coin/getSampleCoinInfo.do", {}).then((res) => {
               _this.coinList = res.result.list
+              _this.ruleCoinList = res.result.list
               resolve();
             })
         })
@@ -709,6 +781,7 @@ import { dateFormat } from '@/common/util';
       margin:0;
       float: left;
       margin-top: 4px;
+
     }
     .el-dialog {
       width: 900px;
@@ -746,7 +819,11 @@ import { dateFormat } from '@/common/util';
             width:100%
           }
         }
+        &.noWidth{
+        width: auto;
       }
+      }
+
     }
     .register_dialog {
       .el-dialog {
@@ -765,6 +842,27 @@ import { dateFormat } from '@/common/util';
           }
         }
       }
+    }
+    .el-tabs--border-card{
+      height:100%;
+      .el-tabs__content{
+        height:90%;
+        .el-tab-pane{
+          height:100%;
+          .el-table{
+            height:calc(100% - 50px) !important
+          }
+        }
+      }
+    }
+  }
+  .elCard_left{
+    width:50%;float:left;
+    div{
+      margin-bottom:5px;font-size:16px;
+    }
+    i{
+      cursor: pointer;
     }
   }
 </style>

@@ -81,3 +81,24 @@ export const identityType = [{
   value: '4',
   label: '审核通过',
 }];
+
+// 应用类型
+export const applicationType = [{
+  value: '0',
+  label: '游戏',
+}, {
+  value: '1',
+  label: '社交',
+}, {
+  value: '2',
+  label: '电商',
+}, {
+  value: '3',
+  label: '平台',
+}, {
+  value: '4',
+  label: '媒体',
+}, {
+  value: '5',
+  label: '其它',
+}];

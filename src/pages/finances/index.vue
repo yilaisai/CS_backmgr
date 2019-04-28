@@ -126,7 +126,7 @@ export default {
       this.filterParams.dateTime = null
       this.listQuery = {
         pageNum: 1,
-        pageSize: 10
+        pageSize: 20
       }
       if (this.activeName === 'currency') {
         this.$nextTick(() => {

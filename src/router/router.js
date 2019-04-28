@@ -144,8 +144,8 @@ export const appRouter = [
         },
         component: () => import('@/pages/money/red-envelope-detail.vue'),
       },
-      
-      
+
+
       /* {
         path: 'asset-overview',
         name: 'asset-overview',
@@ -699,6 +699,25 @@ export const appRouter = [
       }
     ],
   },
+  {
+    path: '/finances',
+    name: 'finances',
+    redirect: '/finances/index',
+    meta: {
+      title: '理财管理',
+    },
+    component: Index,
+    children: [
+      {
+        path: 'index',
+        name: 'index',
+        meta: {
+          title: '理财管理',
+        },
+        component: () => import('@/pages/finances/index.vue'),
+      }
+    ],
+  }
 ];
 
 export default [

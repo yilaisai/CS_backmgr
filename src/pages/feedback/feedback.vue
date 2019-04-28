@@ -68,13 +68,13 @@
         <el-form-item label="联系方式:" prop="phone">
           <el-input type="text" v-model.number="ruleForm.phone" placeholder="请输入联系方式"></el-input>
         </el-form-item>
-        
+
       </el-form>
       <div slot="footer" class="dialog-footer">
          <el-button @click="dialogFormVisible = false" size="small">取 消</el-button>
         <el-button type="primary" size="medium" @click="determine">提交</el-button>
       </div>
-      
+
     </el-dialog>
   </div>
 </template>
@@ -206,7 +206,7 @@
             break;
         }
         //data.rtypeName = data.rtype == 0 ? '咨询' : data.type == 1 ? '建议' : '其他';
-     
+
         const { rtypeName, createTime, contactData, opStatus, content, otherFile, id ,remark} = data;
         console.log(data)
         this.$router.push({

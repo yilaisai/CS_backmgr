@@ -1,0 +1,82 @@
+<template>
+  <el-table :data="list" max-height="600" border size="small">
+    <el-table-column
+      v-for="(col, index) in cols"
+      :key="index"
+      :prop="col.prop"
+      :label="col.label">
+      <template :slot="col.content ? 'default' : ''" slot-scope="scope">
+        <a v-if="col.prop === 'detailUrl'" :href="col.content(scope)" target="_blank">{{ col.content(scope) }}</a>
+        <span v-else>{{ col.content(scope) }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column label="操作">
+      <template slot-scope="scope">
+        <div class="table-operating">
+          <el-button size="mini" type="primary" @click="modify(scope.row)">修改</el-button>
+          <!-- <el-button size="mini" type="danger">删除</el-button> -->
+        </div>
+      </template>
+    </el-table-column>
+  </el-table>
+</template>
+
+<script>
+export default {
+  props: {
+    listQuery: {
+      type: Object,
+      default: () => { }
+    },
+    coinArr: {
+      type: Array,
+      default: () => []
+    }
+  },
+  computed: {
+    coinObj () {
+      return this.coinArr.reduce((prev, v) => {
+        prev[v.coinId] = v
+        return prev
+      }, {})
+    }
+  },
+  data () {
+    return {
+      // proTypeMap: {
+      //   '0': '活期',
+      //   '1': '定期'
+      // },
+      cols: [
+        { label: '币种名称', prop: 'coinId', content: scope => this.coinObj[scope.row.coinId] && this.coinObj[scope.row.coinId].coinName },
+        { label: '项目URL', prop: 'detailUrl', content: scope => scope.row.detailUrl },
+        { label: '创建时间', prop: 'createTime' },
+      ],
+      list: [],
+    }
+  },
+  methods: {
+    async fetchData () {
+      // console.log('...')
+      let { result } = await this.$http.post('/wallet/backmgr/cloud/coin/listCoinDetail', this.listQuery)
+      this.list = result.list
+      this.$emit('setTotal', parseInt(result.count))
+    },
+    // 修改数据
+    modify (row) {
+      this.$emit('modify', row)
+    }
+  },
+  activated () {
+    this.fetchData()
+  },
+  mounted () {
+    this.fetchData()
+  }
+}
+</script>
+<style lang="less" scoped>
+// .current-table {
+//   height: 100%;
+// }
+</style>

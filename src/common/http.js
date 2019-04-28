@@ -50,6 +50,12 @@ function responseErrorHandler(error) {
 
 httpInstance.interceptors.request.use((config) => {
   const configs = config;
+  // if(config.url.indexOf('wallet/backmgr/cloud') > -1) {
+  //   if(configs.baseURL=='http://api.test.justoken.net/'){
+  //     //测试环境
+  //     configs.baseURL='http://47.75.14.176:7002/'
+  //   }
+  // }
   //资产统计模块接口使用以下域名
   if(configs.url.indexOf('cloud/asset')>-1){
     if(configs.baseURL=='http://api.test.sacbox.net/'){
@@ -60,9 +66,13 @@ httpInstance.interceptors.request.use((config) => {
       //configs.baseURL='http://13.231.172.222:7002/'
       configs.baseURL='https://apijp.sacbox.net/'
     }
-    
   }
   if (localStorage.getItem('wallet_token')) {
+    // if (configs.method == 'get') {
+    //   configs.params.token = localStorage.getItem('wallet_token');
+    // } else {
+    //   configs.data.token = localStorage.getItem('wallet_token');
+    // }
     if (configs.method == "post") {
       configs.data.token = localStorage.getItem('wallet_token');
     } else {
@@ -70,6 +80,7 @@ httpInstance.interceptors.request.use((config) => {
     }
   }
   store.commit('updateLoadingStatus', { isLoading: true });
+  // if (config.method === 'put') return configs
   const obj = {};
   Object.entries(config.data).forEach(([key, value]) => {
     if (value || value === '0' || value === 0 || value == 'empty') {
@@ -108,6 +119,13 @@ export const $http = {
     });
   },
   post: (url, data = null, config = {}) => httpInstance.post(url, data, config),
+  put: (url, params = null, config = {}) => httpInstance({
+    method: 'PUT',
+    url,
+    params,
+    ...config
+  })
+  // put: (url, data = null, config = {}) => httpInstance.put(url, data, config)
 };
 
 export default {

@@ -15,7 +15,7 @@
         <template slot-scope="scope">
           <div class="table-operating">
             <el-button size="mini" type="primary" @click="modify(scope.row)">修改</el-button>
-            <!-- <el-button size="mini" type="danger">删除</el-button> -->
+            <el-button size="mini" type="danger" @click="deleteCurrency(scope.row)">删除</el-button>
           </div>
         </template>
       </el-table-column>
@@ -88,6 +88,20 @@ export default {
       } catch (error) {
         row.sysStatus = row.sysStatus === 1 ? 0 : 1
       }
+    },
+    // 删除活期项目
+    async deleteCurrency (row) {
+      let params = { id: row.id }
+      try {
+        await this.$confirm('确认删除该条活期项目?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+        let result = await this.$http.delete('/wallet/backmgr/cloud/financial/deleteCurrentProById', params)
+        this.$notify.success({ title: '请求成功', message: '删除活期项目成功' });
+        this.fetchData()
+      } catch (error) {}
     }
   },
   activated () {

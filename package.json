@@ -8,13 +8,16 @@
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "lint": "eslint --ext .js,.vue src",
     "build": "node build/build.js",
+    "postbuild": "node compress -t dist -o wallet-backmgr",
     "analyz": "npm run build --report"
   },
   "dependencies": {
+    "archiver": "^3.0.0",
     "axios": "^0.18.0",
     "clipboard": "^2.0.4",
     "echarts": "^4.1.0",
     "element-ui": "^2.4.0",
+    "iconv-lite": "^0.4.24",
     "normalize.css": "^8.0.0",
     "qrcode": "^1.3.2",
     "v-viewer": "^1.2.1",

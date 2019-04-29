@@ -124,6 +124,12 @@ export const $http = {
     url,
     params,
     ...config
+  }),
+  delete: (url, params = null, config = {}) => httpInstance({
+    method: 'DELETE',
+    url,
+    params,
+    ...config
   })
   // put: (url, data = null, config = {}) => httpInstance.put(url, data, config)
 };

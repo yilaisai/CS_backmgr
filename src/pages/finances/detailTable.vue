@@ -15,7 +15,7 @@
       <template slot-scope="scope">
         <div class="table-operating">
           <el-button size="mini" type="primary" @click="modify(scope.row)">修改</el-button>
-          <!-- <el-button size="mini" type="danger">删除</el-button> -->
+          <el-button size="mini" type="danger" @click="deleteDetail(scope.row)">删除</el-button>
         </div>
       </template>
     </el-table-column>
@@ -45,10 +45,6 @@ export default {
   },
   data () {
     return {
-      // proTypeMap: {
-      //   '0': '活期',
-      //   '1': '定期'
-      // },
       cols: [
         { label: '币种名称', prop: 'coinId', content: scope => this.coinObj[scope.row.coinId] && this.coinObj[scope.row.coinId].coinName },
         { label: '项目URL', prop: 'detailUrl', content: scope => scope.row.detailUrl },
@@ -59,7 +55,6 @@ export default {
   },
   methods: {
     async fetchData () {
-      // console.log('...')
       let { result } = await this.$http.post('/wallet/backmgr/cloud/coin/listCoinDetail', this.listQuery)
       this.list = result.list
       this.$emit('setTotal', parseInt(result.count))
@@ -67,6 +62,20 @@ export default {
     // 修改数据
     modify (row) {
       this.$emit('modify', row)
+    },
+    // 删除项目详情
+    async deleteDetail (row) {
+      let params = { id: row.detailId }
+      try {
+        await this.$confirm('确认删除该条项目详情?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+        let result = await this.$http.delete('/wallet/backmgr/cloud/coin/deleteCoinDetailById', params)
+        this.$notify.success({ title: '请求成功', message: '删除项目详情成功' });
+        this.fetchData()
+      } catch (error) {}
     }
   },
   activated () {

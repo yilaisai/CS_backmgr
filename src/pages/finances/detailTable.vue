@@ -1,5 +1,6 @@
 <template>
-  <el-table :data="list" max-height="600" border size="small">
+  <sac-table :data="list">
+  <!-- <el-table :data="list" max-height="600" border size="small"> -->
     <el-table-column
       v-for="(col, index) in cols"
       :key="index"
@@ -18,7 +19,8 @@
         </div>
       </template>
     </el-table-column>
-  </el-table>
+  <!-- </el-table> -->
+  </sac-table>
 </template>
 
 <script>

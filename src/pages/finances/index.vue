@@ -4,12 +4,16 @@
     <div class="finances-container">
       <el-tabs v-model="activeName" type="card" @tab-click="tabChange">
         <el-tab-pane label="活期" name="currency">
-          <el-button size="small" type="primary" @click="createCurrency">创建活期项目</el-button>
+          <div class="button-group">
+            <el-button size="small" type="primary" @click="createCurrency">创建活期项目</el-button>
+          </div>
           <currency-table ref="currencyTable" :listQuery="listQuery" :coinArr="coinArr" @modify="modifyCurrency" @setTotal="count => total = count"/>
         </el-tab-pane>
         <el-tab-pane label="定期" name="regular">定期</el-tab-pane>
         <el-tab-pane label="项目详情" name="detail">
-          <el-button size="small" type="primary" @click="createDetail">创建项目详情</el-button>
+          <div class="button-group">
+            <el-button size="small" type="primary" @click="createDetail">创建项目详情</el-button>
+          </div>
           <detail-table v-if="activeName === 'detail'" ref="detailTable" :listQuery="listQuery" :coinArr="coinArr" @modify="modifyDetail" @setTotal="count => total = count"/>
         </el-tab-pane>
       </el-tabs>
@@ -207,4 +211,23 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.finances-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.el-tabs {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 100%;
+  /deep/ &__content {
+    flex: 1;
+    .el-tab-pane {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+  }
+}
 </style>

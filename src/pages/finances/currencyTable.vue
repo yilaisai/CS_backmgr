@@ -1,7 +1,7 @@
 <template>
   <!-- <div class="current-table"> -->
-    <el-table :data="list" max-height="600" border size="small">
-    <!-- <sac-table :data="list"> -->
+    <!-- <el-table :data="list" style="height: 100%;" border size="small"> -->
+    <sac-table :data="list">
       <el-table-column
         v-for="(col, index) in cols"
         :key="index"
@@ -24,8 +24,8 @@
           <el-switch v-model="scope.row.sysStatus" :active-value="1" :inactive-value="0" @change="switchStatus(scope.row)"></el-switch>
         </template>
       </el-table-column>
-    <!-- </sac-table> -->
-    </el-table>
+    </sac-table>
+    <!-- </el-table> -->
   <!-- </div> -->
 </template>
 

@@ -55,7 +55,7 @@ export default {
   },
   methods: {
     async fetchData () {
-      let { result } = await this.$http.post('/wallet/backmgr/cloud/coin/listCoinDetail', this.listQuery)
+      let { result } = await this.$http.post('/cloud/backmgr/financial/coin/listCoinDetail', this.listQuery)
       this.list = result.list
       this.$emit('setTotal', parseInt(result.count))
     },
@@ -72,7 +72,7 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         })
-        let result = await this.$http.delete('/wallet/backmgr/cloud/coin/deleteCoinDetailById', params)
+        let result = await this.$http.delete('/cloud/backmgr/financial/coin/deleteCoinDetailById', params)
         this.$notify.success({ title: '请求成功', message: '删除项目详情成功' });
         this.fetchData()
       } catch (error) {}

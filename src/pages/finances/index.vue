@@ -140,7 +140,7 @@ export default {
 
     },
     async getAllCoinList () {
-      let { result } = await this.$http.get('/wallet/backmgr/cloud/getAllCoinList')
+      let { result } = await this.$http.get('/cloud/backmgr/financial/getAllCoinList')
       this.coinArr = result.coinInfoList
     },
     // 创建活期

@@ -32,7 +32,7 @@
             <el-submenu   :index="`${index}-${itemIndex}`" v-if="itemChildren.children">
               <span slot="title"  style="padding-left: 10px;">{{itemChildren.name}}</span>
               <el-menu-item     style="padding-left: 70px;"
-                :index="`${index}-${itemIndex}-${itemIndex2}`" 
+                :index="`${index}-${itemIndex}-${itemIndex2}`"
                 :key="itemIndex2"
                 :route="`${itemChildren2.menuUrl}`"
                 v-for="(itemChildren2, itemIndex2) in itemChildren.children">
@@ -47,10 +47,10 @@
               :index="`${index}-${itemIndex}`"
               :route="`${itemChildren.menuUrl}`"
               :key="itemIndex" v-else>{{itemChildren.name}}
-                
+
             </el-menu-item>
           </template>
-          
+
         </el-submenu>
       </template>
     </el-menu>
@@ -217,6 +217,11 @@
         padding-left: 20px;
         background: url("~@/assets/asset-statistics.png") no-repeat top left;
         background-size: 17px 17px;
+      }
+      &finances {
+        padding-left: 20px;
+        background: url("~@/assets/financial.png") no-repeat top left;
+        background-size: 16px 16px;
       }
     }
   }

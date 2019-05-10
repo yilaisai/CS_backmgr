@@ -102,7 +102,7 @@ export default {
       let loading = this.$loading({ text: 'Loading', target: '.currency-dialog'})
       try {
         await this.$refs.currencyForm.validate()
-        let result = await this.$http.post('/wallet/backmgr/cloud/financial/addCurrentFinancialPro', this.currencyParams)
+        let result = await this.$http.post('/cloud/backmgr/financial/financial/addCurrentFinancialPro', this.currencyParams)
         this.$emit('update:visible', false)
         this.$emit('createSuccess')
         this.$notify.success({ title: '请求成功', message: '创建活期项目成功' });
@@ -116,7 +116,7 @@ export default {
       let loading = this.$loading({ text: 'Loading', target: '.currency-dialog'})
       try {
         await this.$refs.currencyForm.validate()
-        let result = await this.$http.put('/wallet/backmgr/cloud/financial/updateCurrentFinancialPro', this.currencyParams)
+        let result = await this.$http.put('/cloud/backmgr/financial/financial/updateCurrentFinancialPro', this.currencyParams)
         this.$emit('update:visible', false)
         this.$emit('createSuccess')
         this.$notify.success({ title: '请求成功', message: '更新活期项目成功' });

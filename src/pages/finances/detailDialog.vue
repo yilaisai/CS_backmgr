@@ -81,7 +81,7 @@ export default {
       let loading = this.$loading({ text: 'Loading', target: '.detail-dialog'})
       try {
         await this.$refs.detailForm.validate()
-        let result = await this.$http.post('/wallet/backmgr/cloud/coin/addCoinDetail', this.detailParams)
+        let result = await this.$http.post('/cloud/backmgr/financial/coin/addCoinDetail', this.detailParams)
         this.$emit('update:visible', false)
         this.$emit('createSuccess')
         this.$notify.success({ title: '请求成功', message: '创建项目详情成功' });
@@ -100,7 +100,7 @@ export default {
       // return
       try {
         await this.$refs.detailForm.validate()
-        let result = await this.$http.put('/wallet/backmgr/cloud/coin/updateCoinDetail', this.detailParams)
+        let result = await this.$http.put('/cloud/backmgr/financial/coin/updateCoinDetail', this.detailParams)
         this.$emit('update:visible', false)
         this.$emit('createSuccess')
         this.$notify.success({ title: '请求成功', message: '更新项目详情成功' });

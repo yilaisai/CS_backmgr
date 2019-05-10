@@ -6,6 +6,7 @@
         <el-tab-pane label="活期" name="currency">
           <div class="button-group">
             <el-button size="small" type="primary" @click="createCurrency">创建活期项目</el-button>
+            <el-button size="small" type="primary" @click="releaseCurrent">活期理财发放</el-button>
           </div>
           <currency-table ref="currencyTable" :listQuery="listQuery" :coinArr="coinArr" @modify="modifyCurrency" @setTotal="count => total = count"/>
         </el-tab-pane>
@@ -140,7 +141,7 @@ export default {
 
     },
     async getAllCoinList () {
-      let { result } = await this.$http.get('/wallet/backmgr/cloud/getAllCoinList')
+      let { result } = await this.$http.get('/cloud/backmgr/financial/getAllCoinList')
       this.coinArr = result.coinInfoList
     },
     // 创建活期
@@ -179,6 +180,19 @@ export default {
         // url: detailInfo.detailUrl
       }
       this.detailDialog = true
+    },
+    // 活期理财发放
+    async releaseCurrent () {
+      try {
+        await this.$confirm('确认发放活期理财?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+        await this.$http.post('/cloud/backmgr/financial/financial/releaseCurrentFinancial')
+        this.$notify.success({ title: '请求成功', message: '活期理财发放成功' })
+      } catch (error) {}
+      // this.coinArr = result.coinInfoList
     },
     // 刷新活期表格
     resetCurrencyTable () {

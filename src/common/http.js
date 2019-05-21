@@ -64,7 +64,7 @@ httpInstance.interceptors.request.use((config) => {
     }else{
       //正式环境
       //configs.baseURL='http://13.231.172.222:7002/'
-      configs.baseURL='https://apijp.sacbox.net/'
+      configs.baseURL='https://apijp.justoken.net/'
     }
   }
   if (localStorage.getItem('wallet_token')) {

@@ -758,7 +758,15 @@ export const appRouter = [
           title: '返佣规则设置',
         },
         component: () => import('@/pages/brush-list/ruleSetting.vue'),
-      }
+      },
+      {
+        path: 'account',
+        name: 'account',
+        meta: {
+          title: '刷单账户管理',
+        },
+        component: () => import('@/pages/brush-list/account.vue'),
+      },
     ],
   }
 ];

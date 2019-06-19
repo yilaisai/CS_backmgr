@@ -9,12 +9,33 @@
       <el-button size="small" type="primary" @click="addSend">创建规则</el-button>
     </el-col>
     <sac-table :data="registList">
-      <el-table-column prop="coinId" label="返佣币种"></el-table-column>
-      <el-table-column prop="lower" label="初级代理提成"></el-table-column>
-      <el-table-column prop="middle" label="中级代理提成"></el-table-column>
-      <el-table-column prop="senior" label="高级代理提成"></el-table-column>
-      <el-table-column prop="service" label="服务中心提成"></el-table-column>
-      <el-table-column prop="peers" label="平级补助"></el-table-column>
+      <el-table-column prop="coinId" label="返佣币种">
+      </el-table-column>
+      <el-table-column prop="lower" label="初级代理提成">
+        <template slot-scope="scope">
+          {{scope.row.lower*100}}%
+        </template>
+      </el-table-column>
+      <el-table-column prop="middle" label="中级代理提成">
+        <template slot-scope="scope">
+          {{scope.row.middle*100}}%
+        </template>
+      </el-table-column>
+      <el-table-column prop="senior" label="高级代理提成">
+        <template slot-scope="scope">
+          {{scope.row.senior*100}}%
+        </template>
+      </el-table-column>
+      <el-table-column prop="service" label="服务中心提成">
+        <template slot-scope="scope">
+          {{scope.row.service*100}}%
+        </template>
+      </el-table-column>
+      <el-table-column prop="peers" label="平级补助">
+        <template slot-scope="scope">
+          {{scope.row.peers*100}}%
+        </template>
+      </el-table-column>
       <el-table-column label="上架">
         <template slot-scope="scope" prop="isShow">
           <el-switch v-model="scope.row.state" :inactive-value="0" :active-value="1"
@@ -170,7 +191,13 @@
             const {coinId, id, lower, middle, senior, service, peers} = this.ruleForm;
             if (this.ruleForm.id) {
               this.$http.put("/cloud/backmgr/shop/updateAgencyRule", {
-                coinId, id, lower, middle, senior, service, peers
+                coinId,
+                id,
+                lower: lower / 100,
+                middle: middle / 100,
+                senior: senior / 100,
+                service: service / 100,
+                peers: peers / 100
               }).then((res) => {
                 this.$notify({
                   title: '成功',
@@ -182,7 +209,12 @@
               })
             } else {
               this.$http.post("/cloud/backmgr/shop/addAgencyRule", {
-                coinId, lower, middle, senior, service, peers
+                coinId,
+                lower: lower / 100,
+                middle: middle / 100,
+                senior: senior / 100,
+                service: service / 100,
+                peers: peers / 100
               }).then((res) => {
                 this.$notify({
                   title: '成功',

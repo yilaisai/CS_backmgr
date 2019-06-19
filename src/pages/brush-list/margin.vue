@@ -42,57 +42,75 @@
         @submitForm="getRegistInviteRule()"></sac-submit-form>
     </el-form>
     <el-col :span="22" style="text-align:right;margin-bottom: 10px;"
-            v-show="activeName=='second'&&registList.length <4">
+    >
+      <!--      v-show="activeName=='second'&&registList.length <4"-->
       <el-button size="small" type="primary" @click="addSend">创建规则</el-button>
     </el-col>
-    <el-tabs v-model="activeName" type="border-card">
-      <el-tab-pane label="记录" name="first">
-        <sac-table :data="listData.list">
-          <el-table-column prop="type" label="方向">
-            <template slot-scope="scope">
-              {{ scope.row.type === 1? '充值 ': '提取'}}
-            </template>
-          </el-table-column>
-          <el-table-column prop="userId" label="账号"></el-table-column>
-          <el-table-column prop="amount" label="金额(USDT)"></el-table-column>
-          <el-table-column prop="level" label="级别"></el-table-column>
-          <el-table-column prop="createTime" label="时间"></el-table-column>
-        </sac-table>
-        <sac-pagination v-show="listData.list.length>0"
-                        @handleChange="getPaginationChange"
-                        :total="+listData.total"
-                        :page-size="filterForm.pageSize"
-                        :current-page="filterForm.pageNum">
-        </sac-pagination>
-      </el-tab-pane>
-      <el-tab-pane label="规则" name="second">
-        <sac-table :data="registList">
-          <el-table-column prop="level" label="等级">
-            <template slot-scope="scope">
-              {{gradeListObj[scope.row.level]}}
-            </template>
-          </el-table-column>
-          <el-table-column prop="amount" label="金额(USDT)"></el-table-column>
-          <el-table-column prop="coinId" label="充值币种"></el-table-column>
-          <el-table-column prop="brushNumber" label="刷单数"></el-table-column>
-          <el-table-column prop="brushRate" label="刷单收益（%）"></el-table-column>
-          <el-table-column prop="payCoinId" label="收益币种"></el-table-column>
-          <el-table-column prop="createTime" width="150px" label="创建时间"></el-table-column>
-          <el-table-column label="操作" width="150px">
+    <div class="margin-main">
+      <el-tabs v-model="activeName" type="border-card">
+        <el-tab-pane label="记录" name="first">
+          <sac-table :data="listData.list">
+            <el-table-column prop="type" label="方向">
+              <template slot-scope="scope">
+                {{ scope.row.type === 1? '充值 ': '提取'}}
+              </template>
+            </el-table-column>
+            <el-table-column prop="userId" label="账号"></el-table-column>
+            <el-table-column prop="amount" label="金额">
+              <template slot-scope="scope">
+                {{ scope.row.amount }} {{scope.row.coinName }}
+              </template>
+            </el-table-column>
+            <el-table-column prop="createTime" label="时间"></el-table-column>
+          </sac-table>
+        </el-tab-pane>
+        <el-tab-pane label="规则" name="second">
+          <sac-table :data="registList">
+            <el-table-column prop="level" label="等级">
+              <template slot-scope="scope">
+                {{scope.row.level}}
+              </template>
+            </el-table-column>
+            <el-table-column prop="amount" label="金额">
+              <template slot-scope="scope">
+                {{ scope.row.amount }} {{scope.row.coinName }}
+              </template>
+            </el-table-column>
+<!--            <el-table-column prop="coinName" label="充值币种"></el-table-column>-->
+            <el-table-column prop="brushNumber" label="刷单数"></el-table-column>
+            <el-table-column prop="brushRate" label="刷单收益">
+              <template slot-scope="scope">
+                {{scope.row.brushRate*100}}%
+              </template>
+            </el-table-column>
+            <el-table-column prop="payCoinName" label="收益币种"></el-table-column>
+            <el-table-column prop="coinDetail" label="项目URL">
+              <template slot-scope="scope">
+                <a :href="scope.row.coinDetail" target="_blank">{{scope.row.coinDetail}}</a>
+              </template>
+            </el-table-column>
+            <el-table-column prop="createTime" width="150px" label="创建时间"></el-table-column>
+            <el-table-column label="操作" width="150px">
 
-            <template slot-scope="scope" prop="sysStatus">
-              <el-button type="success" size="small"
-                         @click.native="modification(scope.row)">修改
-              </el-button>
-              <el-button type="danger" size="small"
-                         @click.native="remove(scope.row)">删除
-              </el-button>
-            </template>
-          </el-table-column>
-        </sac-table>
-      </el-tab-pane>
-    </el-tabs>
-
+              <template slot-scope="scope" prop="sysStatus">
+                <el-button type="success" size="small"
+                           @click.native="modification(scope.row)">修改
+                </el-button>
+                <el-button type="danger" size="small"
+                           @click.native="remove(scope.row)">删除
+                </el-button>
+              </template>
+            </el-table-column>
+          </sac-table>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
+    <sac-pagination v-show="activeName=='first'&&listData.list.length>0"
+                    @handleChange="getPaginationChange"
+                    :total="+listData.total"
+                    :page-size="filterForm.pageSize"
+                    :current-page="filterForm.pageNum">
+    </sac-pagination>
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" class="register_dialog"
                :close-on-click-modal="false">
       <el-form :model="ruleForm" ref="ruleForm" :rules="rules" label-width="135px">
@@ -275,6 +293,7 @@
         })
       },
       addSend() {
+        this.getLevel();
         this.dialogTitle = '新建保证金规则';
         this.dialogFormVisible = true;
         this.isFix = false;    // 控制等级
@@ -328,7 +347,7 @@
                 amount,
                 payCoinId,
                 brushNumber,
-                brushRate,
+                brushRate: brushRate / 100,
                 coinDetail,
               }).then((res) => {
                 this.$notify({
@@ -346,7 +365,7 @@
                 amount,
                 payCoinId,
                 brushNumber,
-                brushRate,
+                brushRate: brushRate / 100,
                 coinDetail,
               }).then((res) => {
                 this.$notify({
@@ -378,6 +397,29 @@
       },
       getLevel() {
         // FIXME:  两个数组去掉相同部分
+        const gradeList = [{
+          label: '铜卡',
+          value: 0
+        }, {
+          label: '银卡',
+          value: 1
+        }, {
+          label: '金卡',
+          value: 2
+        }, {
+          label: '钻石卡',
+          value: 3
+        }];
+        console.log(123);
+        const registList = this.registList;
+        gradeList.forEach((grade) => {
+          console.log(registList.find((regist) => grade.value == regist.level), 7878);
+          // if (!registList.find((regist) => grade.value == regist.level)) {
+          //   console.log(111);
+          // } else {
+          //   console.log(123);
+          // }
+        })
       }
     },
     activated() {
@@ -389,18 +431,18 @@
 </script>
 <style lang="less">
   .margin {
-    .el-tabs--border-card {
-      height: calc(100vh - 120px);
+    &-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
 
+    .el-tabs--border-card {
       .el-tabs__content {
         height: 90%;
 
         .el-tab-pane {
           height: 100%;
-
-          .el-table {
-            height: calc(100% - 50px) !important
-          }
         }
       }
     }

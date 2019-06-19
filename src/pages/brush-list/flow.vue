@@ -58,11 +58,11 @@
     </el-form>
 
     <sac-table :data="listData.list">
-      <el-table-column prop="projectId" label="项目">
+      <el-table-column prop="projectName" label="项目">
       </el-table-column>
       <el-table-column prop="userId" label="刷单账号"></el-table-column>
       <el-table-column prop="orderNo" label="订单号"></el-table-column>
-      <el-table-column prop="brushCoinId" label="刷单币种"></el-table-column>
+      <el-table-column prop="brushCoinName" label="刷单币种"></el-table-column>
       <el-table-column prop="type" label="类型">
         <template slot-scope="scope">
           {{typeListObj[scope.row.type]}}

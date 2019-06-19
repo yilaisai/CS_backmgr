@@ -717,6 +717,49 @@ export const appRouter = [
         component: () => import('@/pages/finances/index.vue'),
       }
     ],
+  },
+  {
+    path: '/brushList',
+    name: 'brushList',
+    redirect: '/brushList/brushUser',
+    meta: {
+      title: '代理刷单',
+    },
+    component: Index,
+    children: [
+      {
+        path: 'brushUser',
+        name: 'brushUser',
+        meta: {
+          title: '用户管理',
+        },
+        component: () => import('@/pages/brush-list/user.vue'),
+      },
+      {
+        path: 'margin',
+        name: 'margin',
+        meta: {
+          title: '保证金',
+        },
+        component: () => import('@/pages/brush-list/margin.vue'),
+      },
+      {
+        path: 'flow',
+        name: 'flow',
+        meta: {
+          title: '刷单流水',
+        },
+        component: () => import('@/pages/brush-list/flow.vue'),
+      },
+      {
+        path: 'ruleSetting',
+        name: 'ruleSetting',
+        meta: {
+          title: '返佣规则设置',
+        },
+        component: () => import('@/pages/brush-list/ruleSetting.vue'),
+      }
+    ],
   }
 ];
 

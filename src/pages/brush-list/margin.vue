@@ -41,9 +41,9 @@
         :isReset='false'
         @submitForm="getRegistInviteRule()"></sac-submit-form>
     </el-form>
-    <el-col :span="22" style="text-align:right;margin-bottom: 10px;"
-    >
-      <!--      v-show="activeName=='second'&&registList.length <4"-->
+    <el-col :span="22"
+            v-show="activeName=='second'&&registList.length <4"
+            style="text-align:right;margin-bottom: 10px;">
       <el-button size="small" type="primary" @click="addSend">创建规则</el-button>
     </el-col>
     <div class="margin-main">
@@ -76,7 +76,7 @@
                 {{ scope.row.amount }} {{scope.row.coinName }}
               </template>
             </el-table-column>
-<!--            <el-table-column prop="coinName" label="充值币种"></el-table-column>-->
+            <!--            <el-table-column prop="coinName" label="充值币种"></el-table-column>-->
             <el-table-column prop="brushNumber" label="刷单数"></el-table-column>
             <el-table-column prop="brushRate" label="刷单收益">
               <template slot-scope="scope">
@@ -409,17 +409,18 @@
         }, {
           label: '钻石卡',
           value: 3
+        }, {
+          label: '钻石卡12',
+          value: 4
         }];
-        console.log(123);
         const registList = this.registList;
+        const arr = [];
         gradeList.forEach((grade) => {
-          console.log(registList.find((regist) => grade.value == regist.level), 7878);
-          // if (!registList.find((regist) => grade.value == regist.level)) {
-          //   console.log(111);
-          // } else {
-          //   console.log(123);
-          // }
+          if (!registList.find((regist) => grade.label == regist.level)) {
+            arr.push(grade);
+          }
         })
+        this.gradeList = arr;
       }
     },
     activated() {

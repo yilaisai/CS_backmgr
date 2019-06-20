@@ -409,9 +409,6 @@
         }, {
           label: '钻石卡',
           value: 3
-        }, {
-          label: '钻石卡12',
-          value: 4
         }];
         const registList = this.registList;
         const arr = [];

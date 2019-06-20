@@ -7,7 +7,7 @@
 <template>
   <div class="sac-main">
     <el-container style="height: calc(100vh);">
-      <sac-aside/>
+      <sac-aside />
       <el-container>
         <el-header>
           <ul class="sac-header__right">

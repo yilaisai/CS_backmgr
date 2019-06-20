@@ -28,6 +28,9 @@
   };
 </script>
 <style lang="less">
-  .sac-table {
+  .el-table--scrollable-y .el-table__body-wrapper {
+    &::-webkit-scrollbar {
+      width: 0;
+    }
   }
 </style>

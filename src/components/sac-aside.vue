@@ -11,7 +11,7 @@
     <el-menu
       @select="handleSelect"
       :default-active="activeIndex"
-      class="el-menu-vertical-demo"
+      class="el-menu-vertical-demo scroll"
       background-color="#1a2238"
       text-color="#fff"
       unique-opened

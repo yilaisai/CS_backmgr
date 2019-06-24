@@ -66,24 +66,28 @@
         </el-tab-pane>
         <el-tab-pane label="规则" name="second">
           <sac-table :data="registList">
-            <el-table-column prop="level" label="等级">
+            <el-table-column prop="levelName" label="等级">
               <template slot-scope="scope">
                 {{scope.row.level}}
               </template>
             </el-table-column>
             <el-table-column prop="amount" label="金额">
               <template slot-scope="scope">
-                {{ scope.row.amount }} {{scope.row.coinName }}
+                {{ scope.row.amount }} {{scope.row.payCoinName }}
               </template>
             </el-table-column>
             <!--            <el-table-column prop="coinName" label="充值币种"></el-table-column>-->
-            <el-table-column prop="brushNumber" label="刷单数"></el-table-column>
+            <el-table-column prop="brushNumber" label="刷单数">
+              <template slot-scope="scope">
+                {{ scope.row.brushNumber }} {{scope.row.payCoinName }}
+              </template>
+            </el-table-column>
             <el-table-column prop="brushRate" label="刷单收益">
               <template slot-scope="scope">
                 {{scope.row.brushRate*100}}%
               </template>
             </el-table-column>
-            <el-table-column prop="payCoinName" label="收益币种"></el-table-column>
+            <el-table-column prop="coinName" label="收益币种"></el-table-column>
             <el-table-column prop="coinDetail" label="项目URL">
               <template slot-scope="scope">
                 <a :href="scope.row.coinDetail" target="_blank">{{scope.row.coinDetail}}</a>

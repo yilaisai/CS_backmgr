@@ -67,9 +67,6 @@
         <el-tab-pane label="规则" name="second">
           <sac-table :data="registList">
             <el-table-column prop="levelName" label="等级">
-              <template slot-scope="scope">
-                {{scope.row.level}}
-              </template>
             </el-table-column>
             <el-table-column prop="amount" label="金额">
               <template slot-scope="scope">

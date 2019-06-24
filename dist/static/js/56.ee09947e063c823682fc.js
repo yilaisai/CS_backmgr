@@ -1,1 +1,0 @@
-webpackJsonp([56],{AHqU:function(e,t){},d105:function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var r={render:function(){var e=this.$createElement;return(this._self._c||e)("div",{staticClass:"brushUser"})},staticRenderFns:[]};var s=n("VU/8")({name:"brushUser",data:function(){return{}}},r,!1,function(e){n("AHqU")},null,null);t.default=s.exports}});

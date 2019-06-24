@@ -271,6 +271,7 @@
         this.isFix = true;
         this.resetRuleForm();
         this.ruleForm = JSON.parse(JSON.stringify(itemData));
+        this.ruleForm.brushRate = this.ruleForm.brushRate * 100;
         this.getCoinName(itemData.coinId);
       },
       remove(itemData) {
@@ -339,6 +340,7 @@
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
             const {coinId, id, level, amount, payCoinId, brushNumber, brushRate, coinDetail} = this.ruleForm;
+
             if (this.ruleForm.id) {
               this.$http.put("/cloud/backmgr/shop/updateMarginRule", {
                 coinId,

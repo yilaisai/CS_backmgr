@@ -45,9 +45,11 @@
       <el-table-column label="操作" width="150px">
         <template slot-scope="scope" prop="sysStatus">
           <el-button type="success" size="small"
+                     :disabled="scope.row.state==1"
                      @click.native="modification(scope.row)">修改
           </el-button>
           <el-button type="danger" size="small"
+                     :disabled="scope.row.state==1"
                      @click.native="remove(scope.row)">删除
           </el-button>
         </template>
@@ -56,7 +58,7 @@
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" class="register_dialog">
       <el-form :model="ruleForm" ref="ruleForm" :rules="rules" label-width="135px">
         <el-form-item label="返佣币种：" prop="coinId" size="small" class="from_box_item">
-          <el-select v-model="ruleForm.coinId" placeholder="请选择返佣币种">
+          <el-select v-model="ruleForm.coinId" placeholder="请选择返佣币种" :disabled="isFix">
             <el-option
               v-for="item in coinList"
               :key="item.coinId"
@@ -114,6 +116,7 @@
           service: '', // 服务中心
           peers: '', // 平级补助
         },
+        isFix: false,
         rules: {
           coinId: [
             {required: true, message: '请选择币种', trigger: 'change'},
@@ -175,14 +178,20 @@
       addSend() {
         this.dialogTitle = '新建返佣规则';
         this.dialogFormVisible = true;
+        this.isFix = false;
         this.$refs.ruleForm && this.$refs.ruleForm.resetFields();
       },
       modification(itemData) {
         this.dialogTitle = '修改返佣规则';
         this.dialogFormVisible = true;
         this.isFix = true;
-        this.ruleForm = JSON.parse(JSON.stringify(itemData));
         this.$refs.ruleForm && this.$refs.ruleForm.resetFields();
+        this.ruleForm = JSON.parse(JSON.stringify(itemData));
+        this.ruleForm.lower = this.ruleForm.lower * 100;
+        this.ruleForm.middle = this.ruleForm.middle * 100;
+        this.ruleForm.senior = this.ruleForm.senior * 100;
+        this.ruleForm.service = this.ruleForm.service * 100;
+        this.ruleForm.peers = this.ruleForm.peers * 100;
         this.getSampleCoinInfo();
       },
       registDetermine() {
@@ -191,7 +200,6 @@
             const {coinId, id, lower, middle, senior, service, peers} = this.ruleForm;
             if (this.ruleForm.id) {
               this.$http.put("/cloud/backmgr/shop/updateAgencyRule", {
-                coinId,
                 id,
                 lower: lower / 100,
                 middle: middle / 100,

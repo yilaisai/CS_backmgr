@@ -17,6 +17,9 @@
       <sac-submit-form
         :isReset='false'
         @submitForm="getList()"></sac-submit-form>
+      <el-form-item  style="text-align: right">
+        <el-button type="primary" size="small" @click="syncInfo">同步商户信息</el-button>
+      </el-form-item>
     </el-form>
     <sac-table :data="listData.list">
       <el-table-column prop="userId" label="用户ID">
@@ -89,6 +92,15 @@
           this.listData.total = res.result.count;
         })
       },
+      syncInfo() {
+        this.$http.post("/wallet/backmgr/user/migrationShopUser.do").then((res) => {
+          this.$notify({
+            title: '成功',
+            message: `同步成功`,
+            type: 'success'
+          });
+        })
+      }
     },
     activated() {
       this.getList();

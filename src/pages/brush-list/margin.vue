@@ -416,7 +416,7 @@
         const registList = this.registList;
         const arr = [];
         gradeList.forEach((grade) => {
-          if (!registList.find((regist) => grade.label == regist.level)) {
+          if (registList.find((regist) => +grade.value == +regist.level)) {
             arr.push(grade);
           }
         })

@@ -115,8 +115,8 @@
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" class="register_dialog"
                :close-on-click-modal="false">
       <el-form :model="ruleForm" ref="ruleForm" :rules="rules" label-width="135px">
-        <el-form-item label="充值币种：" prop="coinId" size="small" class="from_box_item">
-          <el-select v-model="ruleForm.coinId" @change="getCoinName" placeholder="请选择充值币种">
+        <el-form-item label="充值币种：" prop="payCoinId" size="small" class="from_box_item">
+          <el-select v-model="ruleForm.payCoinId" @change="getCoinName" placeholder="请选择充值币种">
             <el-option
               v-for="item in coinList"
               :key="item.coinId"
@@ -148,8 +148,8 @@
             <span slot="suffix">%</span>
           </el-input>
         </el-form-item>
-        <el-form-item label="收益币种：" prop="payCoinId" size="small" class="from_box_item">
-          <el-select v-model="ruleForm.payCoinId" placeholder="请选择收益币种">
+        <el-form-item label="收益币种：" prop="coinId" size="small" class="from_box_item">
+          <el-select v-model="ruleForm.coinId" placeholder="请选择收益币种">
             <el-option
               v-for="item in coinList"
               :key="item.coinId"
@@ -225,10 +225,10 @@
         dialogTitle: '',
         dialogFormVisible: false,
         ruleForm: {
-          coinId: '', // 项目币种id
+          coinId: '', // 收益币种
           level: '', // 等级
           amount: '', // 保证金金额
-          payCoinId: '', // 支付币种id
+          payCoinId: '', // 充值币种
           brushNumber: '', // 刷单数量
           brushRate: '', // 刷单收益比例
           coinDetail: '', // 币详情信息

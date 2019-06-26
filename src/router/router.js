@@ -768,6 +768,25 @@ export const appRouter = [
         component: () => import('@/pages/brush-list/account.vue'),
       },
     ],
+  },
+  {
+    path: '/exchange',
+    name: 'exchange',
+    redirect: '/exchange/SAC',
+    meta: {
+      title: '兑换SAC',
+    },
+    component: Index,
+    children: [
+      {
+        path: 'SAC',
+        name: 'exchangeSAC',
+        meta: {
+          title: '兑换SAC',
+        },
+        component: () => import('@/pages/exchange/exchangeSAC.vue'),
+      },
+    ],
   }
 ];
 

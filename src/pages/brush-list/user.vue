@@ -41,7 +41,6 @@
         </template>
       </el-table-column>
     </sac-table>
-
     <sac-pagination v-show="listData.list.length>0"
                     @handleChange="getPaginationChange"
                     :total="+listData.total"

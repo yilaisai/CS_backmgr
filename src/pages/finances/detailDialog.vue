@@ -3,6 +3,7 @@
     custom-class="detail-dialog"
     :title="titleMap[status]"
     :visible="visible"
+    :close-on-click-modal="false"
     @update:visible="val => $emit('update:visible', val)">
     <el-form ref="detailForm" :model="detailParams" :rules="rules" label-width="120px">
       <el-form-item label="币种名称：" prop="coinId" style="width: 100%;">

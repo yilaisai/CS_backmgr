@@ -67,7 +67,9 @@ export default {
   },
   methods: {
     async fetchData () {
-      let { result } = await this.$http.post('/cloud/backmgr/financial/financial/getProList', this.listQuery)
+      // proType:产品类型,0-活期，1-定期
+    // ,proType:0
+      let { result } = await this.$http.post('/cloud/backmgr/financial/financial/getProList', {...this.listQuery})
       this.list = result.list
       this.$emit('setTotal', parseInt(result.count))
     },

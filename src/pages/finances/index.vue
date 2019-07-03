@@ -1,3 +1,4 @@
+
 <template>
   <div class="finances">
     <yh-filter :filterParams="filterParams" :coinArr="coinArr" @search="search"/>
@@ -10,20 +11,23 @@
           </div>
           <currency-table ref="currencyTable" :listQuery="listQuery" :coinArr="coinArr" @modify="modifyCurrency" @setTotal="count => total = count"/>
         </el-tab-pane>
-        <el-tab-pane label="定期" name="regular">定期</el-tab-pane>
+
+        <el-tab-pane label="定期" name="regular">
+          <div class="button-group">
+            <el-button size="small" type="primary" @click="createRegular">创建定期项目</el-button>
+          </div>
+          <regular-table ref="regularTable" :listQuery="listQuery" :coinArr="coinArr" @modify="modifyRegular" @setTotal="count => total = count"/>
+        </el-tab-pane>
+
         <el-tab-pane label="项目详情" name="detail">
           <div class="button-group">
             <el-button size="small" type="primary" @click="createDetail">创建项目详情</el-button>
           </div>
           <detail-table v-if="activeName === 'detail'" ref="detailTable" :listQuery="listQuery" :coinArr="coinArr" @modify="modifyDetail" @setTotal="count => total = count"/>
         </el-tab-pane>
+
       </el-tabs>
-      <!-- <sac-pagination
-        @handleChange="getPaginationChange"
-        :total="total"
-        :page-size="listQuery.pageSize"
-        :currency-page="listQuery.pageNum" /> -->
-        <el-pagination
+      <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="listQuery.pageNum"
@@ -39,6 +43,13 @@
       :coinArr="coinArr"
       :currencyParams="currencyParams"
       @createSuccess="resetCurrencyTable"/>
+    <regular-dialog
+      ref="regularDialog"
+      :visible.sync="regularDialog"
+      :status="regularStatus"
+      :coinArr="coinArr"
+      :regularParams="regularParams"
+      @createSuccess="resetRegularTable"/>
     <detail-dialog
       ref="detailDialog"
       :visible.sync="detailDialog"
@@ -55,6 +66,8 @@ import CurrencyTable from './currencyTable'
 import CurrencyDialog from './currencyDialog'
 import DetailTable from './detailTable'
 import DetailDialog from './detailDialog'
+import RegularTable from './regularTable'
+import RegularDialog from './regularDialog'
 export default {
   name: 'finances',
   components: {
@@ -62,7 +75,9 @@ export default {
     CurrencyTable,
     CurrencyDialog,
     DetailTable,
-    DetailDialog
+    DetailDialog,
+    RegularTable,
+   RegularDialog
   },
   data () {
     return {
@@ -88,6 +103,21 @@ export default {
       },
       currencyStatus: 'create',
       currencyDialog: false,
+      // 定期dialog
+      regularParams: {
+        coinId: null, // 币种id
+        minAmount: null, // 最小计息数量
+        getCoinId: null, // 获取收益币种id
+        bindCycle: '', // 结算时间
+        rate: '', // 年化收益
+        proTags: '', // 产品标签
+        weight: '', // 权重
+        colId: '', // 集合产品id
+        feature: '', // 产品特点
+        desctxt: ''
+      },
+      regularStatus: 'create',
+      regularDialog: false,
       // 项目详情
       detailParams: {
         coinId: null,
@@ -96,6 +126,7 @@ export default {
       detailStatus: 'create',
       detailDialog: false
     }
+
   },
   methods: {
     search () {
@@ -112,6 +143,15 @@ export default {
     resetCurrencyParams () {
       this.$refs.currencyDialog && this.$refs.currencyDialog.resetFields()
       this.currencyParams = {
+        coinId: null,
+        rate: '',
+        minAmount: '',
+        weight: ''
+      }
+    },
+    resetRegularParams () {
+      this.$refs.regularDialog && this.$refs.regularDialog.resetFields()
+      this.regularParams = {
         coinId: null,
         rate: '',
         minAmount: '',
@@ -138,7 +178,11 @@ export default {
           this.resetCurrencyTable()
         })
       }
-
+      if (this.activeName === 'regular') {
+        this.$nextTick(() => {
+          this.resetRegularTable()
+        })
+      }
     },
     async getAllCoinList () {
       let { result } = await this.$http.get('/cloud/backmgr/financial/getAllCoinList')
@@ -162,6 +206,25 @@ export default {
         weight: currencyInfo.weight
       }
       this.currencyDialog = true
+    },
+    // 创建定期
+    createRegular() {
+      this.resetRegularParams()
+      this.regularStatus = 'create'
+      this.regularDialog = true
+    },
+    // 修改定期内容
+    modifyRegular (currencyInfo) {
+      this.resetRegularParams()
+      this.regularStatus = 'modify'
+      this.regularParams = {
+        id: currencyInfo.id,
+        coinId: currencyInfo.getCoinId,
+        rate: currencyInfo.rate,
+        minAmount: currencyInfo.minAmount,
+        weight: currencyInfo.weight
+      }
+      this.regularDialog = true
     },
     // 创建项目详情
     createDetail () {
@@ -198,6 +261,10 @@ export default {
     resetCurrencyTable () {
       this.$refs.currencyTable.fetchData()
     },
+    // 刷新定期表格
+    resetRegularTable () {
+      this.$refs.regularTable.fetchData()
+    },
     // 刷新项目详情表格
     resetDetailTable () {
       this.$refs.detailTable.fetchData()
@@ -214,6 +281,7 @@ export default {
     resetTable () {
       switch(this.activeName) {
         case 'currency': this.resetCurrencyTable(); break;
+        case 'regular': this.resetRegularTable(); break;
         case 'detail': this.resetDetailTable(); break;
       }
     }

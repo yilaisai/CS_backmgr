@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    :close-on-click-modal="false"
     custom-class="currency-dialog"
     :title="titleMap[status]"
     :visible="visible"

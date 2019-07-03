@@ -42,7 +42,7 @@
         @submitForm="getRegistInviteRule()"></sac-submit-form>
     </el-form>
     <el-col :span="22"
-            v-show="activeName=='second'&&registList.length <4"
+            v-show="activeName=='second'"
             style="text-align:right;margin-bottom: 10px;">
       <el-button size="small" type="primary" @click="addSend">创建规则</el-button>
     </el-col>
@@ -295,7 +295,7 @@
         })
       },
       addSend() {
-        this.getLevel();
+        // this.getLevel();
         this.dialogTitle = '新建保证金规则';
         this.dialogFormVisible = true;
         this.isFix = false;    // 控制等级
@@ -399,28 +399,28 @@
         })
       },
       getLevel() {
-        // FIXME:  两个数组去掉相同部分
-        const gradeList = [{
-          label: '铜卡',
-          value: 0
-        }, {
-          label: '银卡',
-          value: 1
-        }, {
-          label: '金卡',
-          value: 2
-        }, {
-          label: '钻石卡',
-          value: 3
-        }];
-        const registList = this.registList;
-        const arr = [];
-        gradeList.forEach((grade) => {
-          if (registList.find((regist) => +grade.value == +regist.level)) {
-            arr.push(grade);
-          }
-        })
-        this.gradeList = arr;
+        // // FIXME:  两个数组去掉相同部分
+        // const gradeList = [{
+        //   label: '铜卡',
+        //   value: 0
+        // }, {
+        //   label: '银卡',
+        //   value: 1
+        // }, {
+        //   label: '金卡',
+        //   value: 2
+        // }, {
+        //   label: '钻石卡',
+        //   value: 3
+        // }];
+        // const registList = this.registList;
+        // const arr = [];
+        // gradeList.forEach((grade) => {
+        //   if (registList.find((regist) => +grade.value == +regist.level)) {
+        //     arr.push(grade);
+        //   }
+        // })
+        // this.gradeList = arr;
       }
     },
     activated() {

@@ -6,7 +6,7 @@
                 <div class="left">
                     <el-input placeholder="请输入订单号" v-model="filterForm.tradeId" class="input-with-select">
                         <el-select v-model="filterForm.appealStatus"  slot="prepend" style="width:130px">
-                            <el-option :label="item.label" :value="item.value" v-for="item in stateData"></el-option>
+                            <el-option :label="item.label" :value="item.value" v-for="(item,index) in stateData" :key="index"></el-option>
                         </el-select>
                         
                         <el-button slot="append" icon="el-icon-search" @click="search">搜索</el-button>

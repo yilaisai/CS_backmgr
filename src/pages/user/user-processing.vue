@@ -13,7 +13,7 @@
                 <div class="left">
                     <el-input :placeholder="`请输入${placeWord}`" v-model="filter_text" class="input-with-select">
                         <el-select v-model="status"  slot="prepend" @change="selChange" style="width:130px">
-                            <el-option :label="item.label" :value="item.value" v-for="item in stateData"></el-option>
+                            <el-option :label="item.label" :value="item.value" v-for="(item,index) in stateData" :key="index"></el-option>
                         </el-select>
                         
                         <el-button slot="append" icon="el-icon-search" @click="search">搜索</el-button>
@@ -58,7 +58,7 @@
                 <el-form :inline="true" label-width="90px" ref="ruleForm"  :model="ruleForm">
                     <el-form-item label="状态调整:" prop="status">
                         <el-select v-model="ruleForm.status">
-                            <el-option :label="item.label" :value="item.value" v-for="item in ruleState"></el-option>
+                            <el-option :label="item.label" :value="item.value" v-for="(item,index) in ruleState" :key="index"></el-option>
                             <!--   <el-option label="ETH" value="2"></el-option> -->
                         </el-select>
                     </el-form-item>

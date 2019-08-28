@@ -116,21 +116,21 @@
                 <div>
                     <el-form-item label="判断输赢:" prop="appealResult" class="judgment-box">
                         <el-select v-model="ruleForm.appealResult">
-                            <el-option :label="item.label" :value="item.value" v-for="item in appealResultData"></el-option>
+                            <el-option :label="item.label" :value="item.value" v-for="(item,index) in appealResultData" :key="index"></el-option>
                         </el-select>
                     </el-form-item>
                 </div>
                  <div>
                     <el-form-item label="处理买方:" prop="buyerResult"  class="judgment-box">
                         <el-select v-model="ruleForm.buyerResult">
-                            <el-option :label="item.label" :value="item.value" v-for="item in dealData"></el-option>
+                            <el-option :label="item.label" :value="item.value" v-for="(item,index) in dealData" :key="index"></el-option>
                         </el-select>
                     </el-form-item>
                 </div>
                 <div>
                     <el-form-item label="处理卖方:" prop="salerResult"  class="judgment-box">
                         <el-select v-model="ruleForm.salerResult">
-                            <el-option :label="item.label" :value="item.value" v-for="item in dealData"></el-option>
+                            <el-option :label="item.label" :value="item.value" v-for="(item,index) in dealData" :key="index"></el-option>
                         </el-select>
                     </el-form-item>
                 </div>

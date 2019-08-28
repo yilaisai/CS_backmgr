@@ -169,6 +169,8 @@ export const appRouter = [
         component: () => import('@/pages/transaction/transaction-details.vue'),
       }, 
     ],
+  },
+  {
 	  path: '/blockchain',
 	  name: 'blockchain',
 	  redirect: '/blockchain/withdraw-check',

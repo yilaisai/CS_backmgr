@@ -38,7 +38,7 @@
     </div>
 </template>
 <script>
-import { tokenHandler } from '@/common/util'
+// import { tokenHandler } from '@/common/util'
 export default {
     props: ['showDialog', 'type', 'item'],
     data () {
@@ -81,7 +81,7 @@ export default {
         },
         confirm () {
             const params = {
-                sysUserId: tokenHandler('sysUserId'),
+                // sysUserId: tokenHandler('sysUserId'),
                 recdId: this.item.recdId
             }
             const form = this.form

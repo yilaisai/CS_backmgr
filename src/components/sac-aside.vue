@@ -98,7 +98,8 @@
       menuList.forEach((item) => {
         item.icon = item.menuUrl.split('/')[1] ? item.menuUrl.split('/')[1] : 'home';
       });
-      this.menuList = menuList;
+	  this.menuList = menuList;
+	  console.log(this.menuList)
     },
   };
 </script>
@@ -221,6 +222,11 @@
       &finances {
         padding-left: 20px;
         background: url("~@/assets/financial.png") no-repeat top left;
+        background-size: 16px 16px;
+	  }
+	  &blockchain {
+        padding-left: 20px;
+        background: url("~@/assets/blockchain.png") no-repeat top left;
         background-size: 16px 16px;
       }
     }

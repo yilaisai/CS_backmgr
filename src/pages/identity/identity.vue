@@ -104,7 +104,7 @@
         this.submitForm(currentPage);
       },
       getWaittingAuditUser() {
-        this.$http.post('wallet/backmgr/user/getWaittingAuditUser.do', this.filterForm)
+        this.$http.post('wallet/backmgr/user/getWaittingAuditUser', this.filterForm)
           .then((res) => {
             const { list, total } = res.result.list;
             this.listData.list = list;
@@ -123,7 +123,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$http.post('/wallet/backmgr/user/quickAudit.do').then((res) => {
+          this.$http.post('/wallet/backmgr/user/quickAudit').then((res) => {
             this.$notify({
               title: '成功',
               message: '一键审核成功',

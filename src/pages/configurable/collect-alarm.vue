@@ -100,7 +100,7 @@
       },
       getAlarmList() {
         const { pageNum, pageSize } = this;
-        this.$http.post("wallet/backmgr/alarm/getAlarmList.do", { pageNum, pageSize }).then((res) => {
+        this.$http.post("wallet/backmgr/alarm/getAlarmList", { pageNum, pageSize }).then((res) => {
           const { list } = res.result;
           this.list = list;
         })
@@ -112,7 +112,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$http.post("wallet/backmgr/alarm/deleteAlarm.do", {
+          this.$http.post("wallet/backmgr/alarm/deleteAlarm", {
             id
           }).then((res) => {
             this.$notify({
@@ -129,7 +129,7 @@
           id: id,
           activeStatus: activeStatus == 1 ? 0 : 1
         }
-        this.$http.post("wallet/backmgr/alarm/addOrUpdateAlarm.do", opt).then((res) => {
+        this.$http.post("wallet/backmgr/alarm/addOrUpdateAlarm", opt).then((res) => {
           this.$notify({
             title: '成功',
             message: `${activeStatus == 1 ? '暂停' : '生效'}成功`,
@@ -140,7 +140,7 @@
       },
       getSysAlarmType() {
         if (!this.alarmlist.length) {
-          this.$http.post("/wallet/backmgr/alarm/getSysAlarmType.do", {}).then((res) => {
+          this.$http.post("/wallet/backmgr/alarm/getSysAlarmType", {}).then((res) => {
             this.alarmlist = res.result.list
           })
         }
@@ -154,7 +154,7 @@
       determine() {
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
-            this.$http.post("wallet/backmgr/alarm/addOrUpdateAlarm.do", this.ruleForm).then((res) => {
+            this.$http.post("wallet/backmgr/alarm/addOrUpdateAlarm", this.ruleForm).then((res) => {
               this.$notify({
                 title: '成功',
                 message: `创建成功`,

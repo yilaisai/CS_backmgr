@@ -120,7 +120,7 @@
       },
       getComputePowerRule() {
         const { pageNum, pageSize } = this;
-        this.$http.post("wallet/backmgr/computePower/getComputePowerRule.do", { pageNum, pageSize }).then((res) => {
+        this.$http.post("wallet/backmgr/computePower/getComputePowerRule", { pageNum, pageSize }).then((res) => {
           const { list, total } = res.result.list;
           this.listData.list = list;
           this.listData.total = total;
@@ -129,7 +129,7 @@
       // 上下架
       switchChange(itemData) {
         const { isOnshelf, id } = itemData;
-        this.$http.post("wallet/backmgr/computePower/updateComputePowerRuleIsOnShelf.do", {
+        this.$http.post("wallet/backmgr/computePower/updateComputePowerRuleIsOnShelf", {
           isOnShelf: isOnshelf ? "YES" : "NO",
           id
         }).then((res) => {
@@ -149,7 +149,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$http.post("wallet/backmgr/computePower/updateComputePowerRuleStatus.do", {
+          this.$http.post("wallet/backmgr/computePower/updateComputePowerRuleStatus", {
             status: "INVALID0",
             id
           }).then((res) => {
@@ -178,7 +178,7 @@
           if (valid) {
             console.log(this.ruleForm, 99);
             if(this.ruleForm.id){
-              this.$http.post("wallet/backmgr/computePower/updateComputePowerRule.do", this.ruleForm).then((res) => {
+              this.$http.post("wallet/backmgr/computePower/updateComputePowerRule", this.ruleForm).then((res) => {
                 this.$notify({
                   title: '成功',
                   message: `修改成功`,
@@ -188,7 +188,7 @@
                 this.getComputePowerRule();
               })
             } else {
-              this.$http.post("wallet/backmgr/computePower/createComputePowerRule.do", this.ruleForm).then((res) => {
+              this.$http.post("wallet/backmgr/computePower/createComputePowerRule", this.ruleForm).then((res) => {
                 this.$notify({
                   title: '成功',
                   message: `创建成功`,

@@ -80,7 +80,7 @@
       getUserNoticeRecd() {
             this.filterForm.id=this.$route.query.id
             this.status=this.$route.query.status
-            this.$http.post("wallet/backmgr/push/getMsgPushPlanProgressById.do", this.filterForm).then((res) => {
+            this.$http.post("wallet/backmgr/push/getMsgPushPlanProgressById", this.filterForm).then((res) => {
             const {failed_count,finished_count,id,title,total_count}=res.result;
             this.listData.list[0].failed_count=failed_count
             this.listData.list[0].finished_count=finished_count
@@ -93,7 +93,7 @@
         const postdata={
             id:this.filterForm.id
         }
-        this.$http.post("wallet/backmgr/push/reExecuteMsgPushPlan.do", postdata).then((res) => {
+        this.$http.post("wallet/backmgr/push/reExecuteMsgPushPlan", postdata).then((res) => {
             this.$notify({
                 title: '成功',
                 message: `重新推送成功`,

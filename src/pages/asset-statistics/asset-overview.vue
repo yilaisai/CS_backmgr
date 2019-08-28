@@ -276,7 +276,7 @@ export default {
     },
     getOtherData() {
       //币种
-      /* this.$http.post("wallet/backmgr/coin/getSampleCoinInfo.do", {}).then(res => {
+      /* this.$http.post("wallet/backmgr/coin/getSampleCoinInfo", {}).then(res => {
         this.coinData = res.result.list;
       }); */
 

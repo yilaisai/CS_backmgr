@@ -162,7 +162,7 @@
             if(num){
                 this.filterForm.pageNum=num
             }
-            this.$http.post("wallet/backmgr/SysConfig/getSysConfigList.do", this.filterForm).then((res) => {
+            this.$http.post("wallet/backmgr/SysConfig/getSysConfigList", this.filterForm).then((res) => {
                 const { list,total } = res.result.list;
                 this.listData.list = list;
                 this.listData.total = total;
@@ -176,7 +176,7 @@
             cancelButtonText: '取消',
             type: 'warning'
             }).then(() => {
-            this.$http.post("wallet/backmgr/SysConfig/deleteSysConfig.do", {
+            this.$http.post("wallet/backmgr/SysConfig/deleteSysConfig", {
                 id
             }).then((res) => {
                 this.$notify({
@@ -193,7 +193,7 @@
                 id: id,
                 activeStatus: activeStatus == 1 ? 0 : 1
             }
-            this.$http.post("wallet/backmgr/alarm/addOrUpdateAlarm.do", opt).then((res) => {
+            this.$http.post("wallet/backmgr/alarm/addOrUpdateAlarm", opt).then((res) => {
             this.$notify({
                 title: '成功',
                 message: `${activeStatus == 1 ? '暂停' : '生效'}成功`,
@@ -204,7 +204,7 @@
         },
         /* getSysAlarmType() {
             if (!this.alarmlist.length) {
-            this.$http.post("/wallet/backmgr/alarm/getSysAlarmType.do", {}).then((res) => {
+            this.$http.post("/wallet/backmgr/alarm/getSysAlarmType", {}).then((res) => {
                 this.alarmlist = res.result.list
             })
             }
@@ -227,7 +227,7 @@
                 this.$refs.ruleForm.validate((valid) => {
                     if (valid) {
                        
-                        this.$http.post("wallet/backmgr/SysConfig/updateSysConfig.do", this.ruleForm).then((res) => {
+                        this.$http.post("wallet/backmgr/SysConfig/updateSysConfig", this.ruleForm).then((res) => {
                             this.$notify({
                                 title: '成功',
                                 message: `修改成功`,
@@ -246,7 +246,7 @@
                 this.$refs.ruleForm.validate((valid) => {
                     if (valid) {
                    
-                        this.$http.post("wallet/backmgr/SysConfig/createSysConfig.do", this.ruleForm).then((res) => {
+                        this.$http.post("wallet/backmgr/SysConfig/createSysConfig", this.ruleForm).then((res) => {
                             this.$notify({
                                 title: '成功',
                                 message: `创建成功`,

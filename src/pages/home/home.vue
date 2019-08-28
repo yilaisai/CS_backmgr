@@ -37,7 +37,7 @@
     },
     methods: {
       getData() {
-        this.$http.post('wallet/backmgr/user/selectSysInfo.do')
+        this.$http.post('wallet/backmgr/user/selectSysInfo')
           .then((res) => {
             const { list, total, tdCount, ytdCount } = res.result;
             this.account = list;

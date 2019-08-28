@@ -108,7 +108,7 @@
       },
       // 获取未审核/待审核列表
       getThirdAppInfoList() {
-        this.$http.post("/wallet/backmgr/thirdAppInfo/getWaitingThirdAppList.do", {
+        this.$http.post("/wallet/backmgr/thirdAppInfo/getWaitingThirdAppList", {
           pageSize: this.pageSize,
           pageNum: this.pageNum
         }).then((res) => {
@@ -134,7 +134,7 @@
         } else {
           postData.auditStatus = 'pass'
         }
-        this.$http.post("/wallet/backmgr/thirdAppInfo/updateThirdAppInfoAuditStatus.do", postData).then((res) => {
+        this.$http.post("/wallet/backmgr/thirdAppInfo/updateThirdAppInfoAuditStatus", postData).then((res) => {
           this.$notify({
             title: '成功',
             message: `处理 ${appName}成功`,

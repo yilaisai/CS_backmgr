@@ -138,7 +138,7 @@
       getbill() {
         this.filterForm.startDate = this.selectedDate && this.selectedDate[0];
         this.filterForm.endDate = this.selectedDate && this.selectedDate[1];
-        this.$http.post('wallet/backmgr/trade/getbill.do', this.filterForm)
+        this.$http.post('wallet/backmgr/trade/getbill', this.filterForm)
           .then((res) => {
             const { list, total } = res.result.retMap;
             this.listData.list = list;

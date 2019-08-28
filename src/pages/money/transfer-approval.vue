@@ -109,7 +109,7 @@
         this.getTradeList();
       },
       getTradeList() {
-        this.$http.post('wallet/backmgr/trade/getTradeList.do', this.filterForm)
+        this.$http.post('wallet/backmgr/trade/getTradeList', this.filterForm)
           .then((res) => {
             const { list, total } = res.result.retMap ? res.result.retMap : res.result;
             this.listData.list = list;
@@ -133,7 +133,7 @@
       auditSubmit(formName) {
         this.$refs[formName].validate((valid) => {
           if (!valid) return;
-          this.$http.post("wallet/backmgr/trade/auditTrade.do", this.dialogForm).then((res) => {
+          this.$http.post("wallet/backmgr/trade/auditTrade", this.dialogForm).then((res) => {
             this.$message({
               message: res.msg,
               type: 'success'

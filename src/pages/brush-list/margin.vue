@@ -387,7 +387,7 @@
         });
       },
       getSampleCoinInfo() {
-        this.$http.post("wallet/backmgr/coin/getSampleCoinInfo.do", {}).then((res) => {
+        this.$http.post("wallet/backmgr/coin/getSampleCoinInfo", {}).then((res) => {
           this.coinList = res.result.list
         })
       },

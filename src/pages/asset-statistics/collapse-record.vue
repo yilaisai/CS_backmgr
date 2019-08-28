@@ -284,7 +284,7 @@ import { mapState, mapActions } from 'vuex';
             for(let v in this.filterForm) {
                 param += v + '=' + this.filterForm[v] + '&';
             }
-                location.href = SERVER_PATH + 'wallet/backmgr/trade/downTradeList.do?' + param + 'token=' + localStorage.getItem('wallet_token');
+                location.href = SERVER_PATH + 'wallet/backmgr/trade/downTradeList?' + param + 'token=' + localStorage.getItem('wallet_token');
             },
         //编辑
         edit(itemData){
@@ -328,7 +328,7 @@ import { mapState, mapActions } from 'vuex';
       },
         /* getOtherData(){
             //币种
-            this.$http.post('wallet/backmgr/coin/getSampleCoinInfo.do', {}).then((res) => {
+            this.$http.post('wallet/backmgr/coin/getSampleCoinInfo', {}).then((res) => {
                 this.coinData=res.result.list
             });
         }, */

@@ -3,7 +3,7 @@ import { $http } from '@/common/http';
 
 export const getSampleCoinInfo = ({ state, commit }) => {
   if (!state.coinList.length) {
-    $http.post('wallet/backmgr/coin/getSampleCoinInfo.do')
+    $http.post('wallet/backmgr/coin/getSampleCoinInfo')
       .then((res) => {
         const { list } = res.result;
         list.forEach((item) => {
@@ -20,7 +20,7 @@ export const getSampleCoinInfo = ({ state, commit }) => {
 
 export const getQueryOrderType = ({ state, commit }) => {
   if (!state.teamTypeList.length) {
-    $http.post('wallet/backmgr/trade/getQueryOrderType.do')
+    $http.post('wallet/backmgr/trade/getQueryOrderType')
       .then((res) => {
         const { list } = res.result;
         commit('setQueryOrderType', list);

@@ -215,7 +215,7 @@
       },
       getCoinPlanInfo() {
         const { pageNum, pageSize } = this;
-        this.$http.post("wallet/backmgr/plan/getCoinPlanInfo.do", { pageNum, pageSize }).then((res) => {
+        this.$http.post("wallet/backmgr/plan/getCoinPlanInfo", { pageNum, pageSize }).then((res) => {
           const { list, total } = res.result.list;
           this.listData.list = list;
           this.listData.total = total;
@@ -224,7 +224,7 @@
       // 上下架
       switchChange(itemData) {
         const { isOnshelf, id, planName } = itemData;
-        this.$http.post("wallet/backmgr/plan/updateCoinPlanOnshelf.do", {
+        this.$http.post("wallet/backmgr/plan/updateCoinPlanOnshelf", {
           isOnshelf: isOnshelf ? "YES" : "NO",
           planId: id
         }).then((res) => {
@@ -244,7 +244,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$http.post("wallet/backmgr/plan/updateCoinPlanSysStatus.do", {
+          this.$http.post("wallet/backmgr/plan/updateCoinPlanSysStatus", {
             sysStatus: sysStatus == 1 ? "INVALID0" : "VALID1",
             planId: id
           }).then((res) => {
@@ -278,7 +278,7 @@
           if (valid) {
             if (this.ruleForm.id) {
               this.ruleForm.planId = this.ruleForm.id;
-              this.$http.post("wallet/backmgr/plan/updateCoinPlanInfo.do", this.ruleForm).then((res) => {
+              this.$http.post("wallet/backmgr/plan/updateCoinPlanInfo", this.ruleForm).then((res) => {
                 this.dialogFormVisible = false;
                 this.resetForm();
                 this.$notify({
@@ -289,7 +289,7 @@
                 this.getCoinPlanInfo();
               })
             } else {
-              this.$http.post("wallet/backmgr/plan/createCoinPlanInfo.do", this.ruleForm).then((res) => {
+              this.$http.post("wallet/backmgr/plan/createCoinPlanInfo", this.ruleForm).then((res) => {
                 this.dialogFormVisible = false;
                 this.resetForm();
                 this.$notify({

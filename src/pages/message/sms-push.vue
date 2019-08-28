@@ -307,7 +307,7 @@
 
       },
       getNoticeInfoList() {
-        this.$http.post("wallet/backmgr/push/getMsgPushPlanList.do", this.filterForm).then((res) => {
+        this.$http.post("wallet/backmgr/push/getMsgPushPlanList", this.filterForm).then((res) => {
           const { list, total } = res.result.list;
           list.forEach((item) => {
             item.isLoading = false;
@@ -325,7 +325,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$http.post("wallet/backmgr/push/deleteMsgPushPlan.do", {
+          this.$http.post("wallet/backmgr/push/deleteMsgPushPlan", {
             id
           }).then((res) => {
             this.$notify({
@@ -342,7 +342,7 @@
         this.listData.list[index].isLoading = true;
         this.pushMessage = true;
         const { id, title } = itemData;
-        this.$http.post("wallet/backmgr/push/executeMsgPushPlan.do", {
+        this.$http.post("wallet/backmgr/push/executeMsgPushPlan", {
           id
         }).then((res) => {
           const self = this;
@@ -422,7 +422,7 @@
       },
       getSampleCoinInfo() {
         if (!this.coinList.length) {
-          this.$http.post("wallet/backmgr/coin/getSampleCoinInfo.do", {}).then((res) => {
+          this.$http.post("wallet/backmgr/coin/getSampleCoinInfo", {}).then((res) => {
             this.coinList = res.result.list
           })
         }
@@ -433,10 +433,10 @@
             const ruleForm = JSON.parse(JSON.stringify(this.ruleForm))
             let posturl,postmsg,postdata
             if (this.ruleForm.id) {
-              posturl='wallet/backmgr/push/updateMsgPushPlan.do'
+              posturl='wallet/backmgr/push/updateMsgPushPlan'
               postmsg='修改成功'
             }else{
-              posturl='wallet/backmgr/push/createMsgPushPlan.do'
+              posturl='wallet/backmgr/push/createMsgPushPlan'
               postmsg='新增成功'
             }
 
@@ -530,7 +530,7 @@
             const ruleForm2 = JSON.parse(JSON.stringify(this.ruleForm2))
             console.log(ruleForm2);
             ruleForm2.auditResult = ruleForm2.tplId ? 'pass' : 'not_pass'
-            this.$http.post("wallet/backmgr/push/updateTplAuditStatus.do", ruleForm2).then((res) => {
+            this.$http.post("wallet/backmgr/push/updateTplAuditStatus", ruleForm2).then((res) => {
               this.$notify({
                 title: '成功',
                 message: `修改成功`,

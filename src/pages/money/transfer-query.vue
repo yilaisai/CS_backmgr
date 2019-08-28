@@ -189,13 +189,13 @@
         for(let v in this.filterForm) {
           param += v + '=' + this.filterForm[v] + '&';
         }
-        location.href = SERVER_PATH + 'wallet/backmgr/trade/downTradeList.do?' + param + 'token=' + localStorage.getItem('wallet_token');
+        location.href = SERVER_PATH + 'wallet/backmgr/trade/downTradeList?' + param + 'token=' + localStorage.getItem('wallet_token');
       },
       getTradeList() {
         this.filterForm.startDate = this.selectedDate && this.selectedDate[0];
         this.filterForm.endDate = this.selectedDate && this.selectedDate[1];
         this.filterForm.alarmType = this.alarmType.join(',');
-        this.$http.post('wallet/backmgr/trade/getTradeList.do', this.filterForm)
+        this.$http.post('wallet/backmgr/trade/getTradeList', this.filterForm)
           .then((res) => {
             const { list, total } = res.result.retMap ? res.result.retMap : res.result;
             this.listData.list = list;
@@ -208,7 +208,7 @@
       },
       transferRecordHandle(recdId, recdStatus) {
         const msg = recdStatus == 3 ? '取消操作：' : '打币操作：';
-        this.$http.post('wallet/backmgr/trade/operateTransferOutCoin.do', {
+        this.$http.post('wallet/backmgr/trade/operateTransferOutCoin', {
           recdId,
           recdStatus
         })

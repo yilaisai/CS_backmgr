@@ -151,7 +151,7 @@
               })
               if (Object.entries(obj).length > 0) {
                 obj.id = this.ruleForm.id
-                this.$http.post('wallet/backmgr/privilege/updateSysUrl.do', obj).then((res) => {
+                this.$http.post('wallet/backmgr/privilege/updateSysUrl', obj).then((res) => {
                   this.$notify({
                     title: '成功',
                     message: `修改 ${this.ruleForm.name} 菜单成功`,
@@ -175,7 +175,7 @@
                 this.ruleForm.parentId = 0;
               }
 
-              this.$http.post('wallet/backmgr/privilege/createSysUrl.do', this.ruleForm).then((res) => {
+              this.$http.post('wallet/backmgr/privilege/createSysUrl', this.ruleForm).then((res) => {
                 this.$notify({
                   title: '成功',
                   message: `创建${this.ruleForm.name}菜单成功`,
@@ -205,7 +205,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$http.post('wallet/backmgr/privilege/deleteSysUrl.do', {
+          this.$http.post('wallet/backmgr/privilege/deleteSysUrl', {
             id: data.id
           }).then((res) => {
             this.$notify({
@@ -223,7 +223,7 @@
         });
       },
       getAllSysUrl() {
-        this.$http.post('wallet/backmgr/privilege/getAllSysUrl.do').then((res) => {
+        this.$http.post('wallet/backmgr/privilege/getAllSysUrl').then((res) => {
           const { list } = res.result;
           this.treeData = list;
         })

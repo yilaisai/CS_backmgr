@@ -167,7 +167,7 @@
           <el-upload
             name="files"
             class="avatar-uploader"
-            :action="server_path + 'wallet/util/open/uploadFile.do'"
+            :action="server_path + 'wallet/util/open/uploadFile'"
             :show-file-list="false"
             :on-success="upload"
             :data="{type:'img'}">
@@ -291,7 +291,7 @@
         this.submitForm(currentPage);
       },
       getNoticeInfoList() {
-        this.$http.post("wallet/backmgr/noticeInfo/getNoticeInfoList.do", this.filterForm).then((res) => {
+        this.$http.post("wallet/backmgr/noticeInfo/getNoticeInfoList", this.filterForm).then((res) => {
           const { list, total } = res.result.list;
           list.forEach((item) => {
             item.isLoading = false;
@@ -311,7 +311,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$http.post("/wallet/backmgr/noticeInfo/updateNoticeInfoSysStatus.do", {
+          this.$http.post("/wallet/backmgr/noticeInfo/updateNoticeInfoSysStatus", {
             sysStatus: 'INVALID0',
             id
           }).then((res) => {
@@ -329,7 +329,7 @@
         this.listData.list[index].isLoading = true;
         this.pushMessage = true;
         const { id, title } = itemData;
-        this.$http.post("wallet/backmgr/userNoticeRecd/pushUserAll.do", {
+        this.$http.post("wallet/backmgr/userNoticeRecd/pushUserAll", {
           version: '1.0.0',
           plat: 'web',
           noticeInfoId: id,
@@ -468,7 +468,7 @@
       },
       getSampleCoinInfo() {
         if (!this.coinList.length) {
-          this.$http.post("wallet/backmgr/coin/getSampleCoinInfo.do", {}).then((res) => {
+          this.$http.post("wallet/backmgr/coin/getSampleCoinInfo", {}).then((res) => {
             this.coinList = res.result.list
           })
         }
@@ -495,7 +495,7 @@
               }
               ruleForm.details = ruleForm.details || 'empty';
               ruleForm.jumpUrl = ruleForm.jumpUrl || 'empty';
-              this.$http.post("wallet/backmgr/noticeInfo/updateNoticeInfo.do", ruleForm).then((res) => {
+              this.$http.post("wallet/backmgr/noticeInfo/updateNoticeInfo", ruleForm).then((res) => {
                 this.$notify({
                   title: '成功',
                   message: `修改成功`,
@@ -505,7 +505,7 @@
                 this.getNoticeInfoList();
               })
             } else {
-              this.$http.post("wallet/backmgr/noticeInfo/createNoticeInfo.do", ruleForm).then((res) => {
+              this.$http.post("wallet/backmgr/noticeInfo/createNoticeInfo", ruleForm).then((res) => {
                 this.$notify({
                   title: '成功',
                   message: `创建成功`,

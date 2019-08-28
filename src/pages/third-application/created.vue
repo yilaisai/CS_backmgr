@@ -121,7 +121,7 @@
     },
     methods: {
       sendAPPID() {
-        this.$http.post("wallet/backmgr/thirdAppInfo/sendEmailByAppId.do", {
+        this.$http.post("wallet/backmgr/thirdAppInfo/sendEmailByAppId", {
           value: this.filterForm.value,
           key: this.filterForm.key
         }).then((res) => {
@@ -133,7 +133,7 @@
         })
       },
       queryEvents() {
-        this.$http.post("wallet/backmgr/thirdAppInfo/findAppByField.do", {
+        this.$http.post("wallet/backmgr/thirdAppInfo/findAppByField", {
           value: this.filterForm.value,
           key: this.filterForm.key
         }).then((res) => {
@@ -146,7 +146,7 @@
         this.getThirdAppInfoList();
       },
       getThirdAppInfoList() {
-        this.$http.post("wallet/backmgr/thirdAppInfo/getThirdAppInfoList.do", {
+        this.$http.post("wallet/backmgr/thirdAppInfo/getThirdAppInfoList", {
           pageSize: this.pageSize,
           pageNum: this.pageNum
         }).then((res) => {
@@ -157,7 +157,7 @@
       // 上下架
       switchChange(itemData) {
         const { isShow, id, appName } = itemData;
-        this.$http.post("wallet/backmgr/thirdAppInfo/updateThirdAppInfoIsShow.do", {
+        this.$http.post("wallet/backmgr/thirdAppInfo/updateThirdAppInfoIsShow", {
           isShow: isShow ? "SHOW" : "HIDE",
           id: id
         }).then((res) => {
@@ -176,7 +176,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$http.post("wallet/backmgr/thirdAppInfo/updateThirdAppInfoSysStatus.do", {
+          this.$http.post("wallet/backmgr/thirdAppInfo/updateThirdAppInfoSysStatus", {
             sysStatus: "INVALID0",
             id
           }).then((res) => {

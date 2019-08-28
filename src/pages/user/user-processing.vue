@@ -154,7 +154,7 @@ export default {
                 })
             }
             //console.log(postData)
-            this.$http.post('/wallet/app/otc/backmgr/getCustomList.do',postData).then(res=>{
+            this.$http.post('/wallet/app/otc/backmgr/getCustomList',postData).then(res=>{
                 const { list ,total} = res;
                 this.listData.list = list;
                 this.listData.total = total;
@@ -194,7 +194,7 @@ export default {
             //console.log(this.ruleForm)
             this.$refs.ruleForm.validate(valid => {
                 if (valid) {
-                this.$http.post("/wallet/app/otc/backmgr/setCustomStatus.do", this.ruleForm).then(res => {
+                this.$http.post("/wallet/app/otc/backmgr/setCustomStatus", this.ruleForm).then(res => {
                     this.$notify({
                         title: "成功",
                         message: `修改成功`,

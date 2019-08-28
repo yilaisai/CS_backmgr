@@ -94,7 +94,7 @@ export default {
   },
   methods: {
    getList(){
-     this.$http.post('/wallet/backmgr/block/getBlockChainRecdList.do',this.option).then(res=>{
+     this.$http.post('/wallet/backmgr/block/getBlockChainRecdList',this.option).then(res=>{
        this.listData = res.result.list;
      })
    },
@@ -113,7 +113,7 @@ export default {
             recdStatus:tradeStatus,
             recdId:recdId
           }
-          this.$http.post('/wallet/backmgr/block/auditBlockChainRecd.do',obj).then(res=>{
+          this.$http.post('/wallet/backmgr/block/auditBlockChainRecd',obj).then(res=>{
             this.$message({
               type: 'success',
               message: '审核成功!'

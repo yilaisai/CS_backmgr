@@ -224,6 +224,11 @@
         padding-left: 20px;
         background: url("~@/assets/financial.png") no-repeat top left;
         background-size: 16px 16px;
+	  }
+	  &blockchain {
+        padding-left: 20px;
+        background: url("~@/assets/blockchain.png") no-repeat top left;
+        background-size: 16px 16px;
       }
     }
   }

@@ -232,7 +232,7 @@ export default {
     },
     methods:{
 		getProofInfo() {
-			this.$http.post('/wallet/app/otc/backmgr/proofInfo.do', {
+			this.$http.post('/wallet/app/otc/backmgr/proofInfo', {
 				appealId: this.appealId
 			}).then(res=>{
 				res.forEach((val, idx) => {
@@ -249,7 +249,7 @@ export default {
             const postdata={
                 appealId:this.appealId
             }
-            this.$http.post('/wallet/app/otc/backmgr/infoBuyList.do',postdata).then(res=>{
+            this.$http.post('/wallet/app/otc/backmgr/infoBuyList',postdata).then(res=>{
                 //console.log(res)
                 const { list} = res;
                 this.BuyList = list;
@@ -257,7 +257,7 @@ export default {
                     appealId:this.appealId,
                     userId:res.list[0].userId
                 }
-                // this.$http.post('/wallet/app/otc/backmgr/proofInfo.do',postdata2).then(res2=>{
+                // this.$http.post('/wallet/app/otc/backmgr/proofInfo',postdata2).then(res2=>{
                 //     this.BuyProofInfo = res2;
                 // })
             })
@@ -266,14 +266,14 @@ export default {
             const postdata={
                 appealId:this.appealId
             }
-            this.$http.post('/wallet/app/otc/backmgr/infoSaleList.do',postdata).then(res=>{
+            this.$http.post('/wallet/app/otc/backmgr/infoSaleList',postdata).then(res=>{
                 const { list} = res;
                 this.SaleList = list;
                 const postdata2={
                     appealId:this.appealId,
                     userId:res.list[0].userId
                 }
-                // this.$http.post('/wallet/app/otc/backmgr/proofInfo.do',postdata2).then(res2=>{
+                // this.$http.post('/wallet/app/otc/backmgr/proofInfo',postdata2).then(res2=>{
                     
                 //     this.SaleProofInfo = res2;
                 // })
@@ -297,7 +297,7 @@ export default {
         dialogConfirm(){
             
             this.ruleForm.appealId=this.appealId;
-            this.$http.post('/wallet/app/otc/backmgr/adjustAppeal.do',this.ruleForm).then(res2=>{
+            this.$http.post('/wallet/app/otc/backmgr/adjustAppeal',this.ruleForm).then(res2=>{
                 this.$notify({
                     title: "成功",
                     message: `裁决成功`,

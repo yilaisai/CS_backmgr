@@ -12,7 +12,7 @@
       <el-form-item label="应用图标:" prop="iconUrl">
         <el-input style="width:80%" v-model="ruleForm.iconUrl" clearable size="small" placeholder="请输入应用图标地址">
           <el-upload
-            :action="server_path + 'wallet/util/open/uploadFile.do'"
+            :action="server_path + 'wallet/util/open/uploadFile'"
             multiple
             name="files"
             :data="{type:'img'}"
@@ -258,7 +258,7 @@
             ruleForm.tranOutFee = (this.ruleForm.tranOutFee + this.tranOutFeeUnit).trim();
             if (ruleForm.coinId) {
               ruleForm.contractadres = ruleForm.contractadres || 'empty';
-              this.$http.post("wallet/backmgr/coin/updateCoinInfo.do", ruleForm).then((res) => {
+              this.$http.post("wallet/backmgr/coin/updateCoinInfo", ruleForm).then((res) => {
                 this.$notify({
                   title: '成功',
                   message: `${ruleForm.coinName} 修改成功`,
@@ -273,7 +273,7 @@
                 this.$store.dispatch('getSampleCoinInfo');
               })
             } else {
-              this.$http.post("wallet/backmgr/coin/createCoinInfo.do", ruleForm).then((res) => {
+              this.$http.post("wallet/backmgr/coin/createCoinInfo", ruleForm).then((res) => {
                 this.$notify({
                   title: '成功',
                   message: `${ruleForm.coinName} 创建成功`,

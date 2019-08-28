@@ -91,7 +91,7 @@
         this.ruleForm.id = roleId;
         this.currentForm.name = roleName;
         this.currentForm.id = roleId;
-        this.$http.post('wallet/backmgr/privilege/getRoleUrl.do', {
+        this.$http.post('wallet/backmgr/privilege/getRoleUrl', {
           roleId
         }).then((res) => {
           const { idsList } = res.result
@@ -115,7 +115,7 @@
               })
               if (Object.entries(obj).length > 0) {
                 obj.id = this.currentForm.id
-                this.$http.post('wallet/backmgr/privilege/updateSysRole.do', obj).then((res) => {
+                this.$http.post('wallet/backmgr/privilege/updateSysRole', obj).then((res) => {
                   this.$notify({
                     title: '成功',
                     message: `修改${this.ruleForm.name}角色成功`,
@@ -126,7 +126,7 @@
                 })
               }
             } else {
-              this.$http.post('wallet/backmgr/privilege/createSysRole.do', this.ruleForm).then((res) => {
+              this.$http.post('wallet/backmgr/privilege/createSysRole', this.ruleForm).then((res) => {
                 this.$notify({
                   title: '成功',
                   message: `创建${this.ruleForm.name}角色成功`,
@@ -149,7 +149,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$http.post('wallet/backmgr/privilege/deleteSysRole.do', {
+          this.$http.post('wallet/backmgr/privilege/deleteSysRole', {
             roleId: data.roleId
           }).then((res) => {
             this.$notify({
@@ -167,7 +167,7 @@
         });
       },
       getSysRoleList() {
-        this.$http.post('wallet/backmgr/privilege/getSysRoleList.do').then((res) => {
+        this.$http.post('wallet/backmgr/privilege/getSysRoleList').then((res) => {
           const { roleList } = res.result;
           roleList.forEach((item) => {
             if (item.sysUserList && item.sysUserList.length) {
@@ -182,7 +182,7 @@
         })
       },
       getAllSysUrl() {
-        this.$http.post('wallet/backmgr/privilege/getAllSysUrl.do').then((res) => {
+        this.$http.post('wallet/backmgr/privilege/getAllSysUrl').then((res) => {
           const { list } = res.result;
           this.treeData = list;
         })

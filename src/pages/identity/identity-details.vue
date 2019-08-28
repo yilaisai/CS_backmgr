@@ -141,7 +141,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$http.post("/wallet/backmgr/user/checkRealInfo.do", {
+          this.$http.post("/wallet/backmgr/user/checkRealInfo", {
             userId: this.details.userId,
           }).then((res) => {
             if (res.result.verifyMsg && res.result.verifyMsg.indexOf(':') > -1) {
@@ -159,7 +159,7 @@
         });
       },
       getAuditRecdList() {
-        this.$http.post("/wallet/backmgr/user/getAuditRecdList.do", {
+        this.$http.post("/wallet/backmgr/user/getAuditRecdList", {
           userId: this.details.userId,
         }).then((res) => {
           this.list = res.result.list;
@@ -180,7 +180,7 @@
           if (valid) {
             const { userId, antiMoneyAudit } = this.details; // auditStatus 状态0表示不通过，1表示通过  auditType 1表示实名认证，2表示高级认证
             const { reason } = this.dialogForm;
-            this.$http.post("wallet/backmgr/user/updateAuditStatus.do", {
+            this.$http.post("wallet/backmgr/user/updateAuditStatus", {
               userId,
               auditStatus: antiMoneyAudit == '-1' || antiMoneyAudit == '2' ? (this.isAuditPass ? '1' : '0') : (antiMoneyAudit == '1' ? '0' : '1'),
               auditType: 1,

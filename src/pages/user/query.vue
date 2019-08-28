@@ -181,7 +181,7 @@
         }
       },
       getUserInfoList() {
-        this.$http.post('/wallet/backmgr/user/getUserInfoList.do', this.filterForm)
+        this.$http.post('/wallet/backmgr/user/getUserInfoList', this.filterForm)
           .then((res) => {
             const { list, total } = res.result.list;
             this.listData.list = list;
@@ -223,7 +223,7 @@
           cancelButtonText: '取消',
           beforeClose: (action, instance, done) => {
             if (action === 'confirm') {
-              this.$http.post('wallet/backmgr/user/operatetUser.do', {
+              this.$http.post('wallet/backmgr/user/operatetUser', {
                 userId: data.userId,
                 optStatus: type,
               }).then((res) => {
@@ -245,7 +245,7 @@
         this.$refs[formName].validate((valid) => {
           if (!valid) return;
           const title = this.dialogForm.optStatus == 1 ? '锁定' : '冻结';
-          this.$http.post('wallet/backmgr/user/operatetUser.do', this.dialogForm).then((res) => {
+          this.$http.post('wallet/backmgr/user/operatetUser', this.dialogForm).then((res) => {
             this.$notify({
               title: '成功',
               message: `${title} ${this.dialogForm.phone} 成功`,
@@ -270,7 +270,7 @@
       determine() {
         const { phone, nickName } = this.ruleForm;
         const pwd = Md5(this.ruleForm.pwd);
-        this.$http.post('wallet/backmgr/user/addUsers.do', {
+        this.$http.post('wallet/backmgr/user/addUsers', {
           pwd,
           phone,
           nickName

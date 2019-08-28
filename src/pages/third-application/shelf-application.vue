@@ -95,7 +95,7 @@
         this.getThirdAppInfoList();
       },
       getThirdAppInfoList() {
-        this.$http.post("wallet/backmgr/thirdAppInfo/getThirdAppInfoList.do", {
+        this.$http.post("wallet/backmgr/thirdAppInfo/getThirdAppInfoList", {
           pageSize: this.pageSize,
           pageNum: this.pageNum,
           isShow: 'SHOW'

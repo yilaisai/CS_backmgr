@@ -98,7 +98,7 @@
       getUserInviteReward() {
         this.filterForm.updateStartTime = this.dateTime[0];
         this.filterForm.updateEndTime = this.dateTime[1];
-        this.$http.post("wallet/backmgr/registInviteRecd/getUserInviteReward.do", this.filterForm).then((res) => {
+        this.$http.post("wallet/backmgr/registInviteRecd/getUserInviteReward", this.filterForm).then((res) => {
           const { firstList, secondList } = res.result;
           this.firstList = firstList;
           this.secondList = secondList;

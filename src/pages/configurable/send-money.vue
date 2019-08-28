@@ -507,7 +507,7 @@ import { dateFormat } from '@/common/util';
       async getRegistInviteRule() {
         await this.getSampleCoinInfo()
         const { pageNum, pageSize } = this;
-        this.$http.post("wallet/backmgr/registInviteRule/getRegistInviteRule.do", { pageNum, pageSize }).then((res) => {
+        this.$http.post("wallet/backmgr/registInviteRule/getRegistInviteRule", { pageNum, pageSize }).then((res) => {
           const list = res.result.list;
           const total= res.result.list.length
           this.listData.list = list;
@@ -518,7 +518,7 @@ import { dateFormat } from '@/common/util';
       switchChange(itemData) {
         if(itemData.sysStatus){
           const { isOnshelf, id } = itemData;
-          this.$http.post("wallet/backmgr/registInviteRule/updateRegistInviteRuleIsOnShelf.do", {
+          this.$http.post("wallet/backmgr/registInviteRule/updateRegistInviteRuleIsOnShelf", {
             isOnShelf: isOnshelf ? "YES" : "NO",
             id
           }).then((res) => {
@@ -535,7 +535,7 @@ import { dateFormat } from '@/common/util';
       //更改状态
       switchSysStatusChange(itemData){
         const { sysStatus, id } = itemData;
-        this.$http.post("wallet/backmgr/registInviteRule/updateRegistInviteRuleStatue.do", {
+        this.$http.post("wallet/backmgr/registInviteRule/updateRegistInviteRuleStatue", {
           status:sysStatus,
           id
         }).then((res) => {
@@ -555,7 +555,7 @@ import { dateFormat } from '@/common/util';
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$http.post("wallet/backmgr/registInviteRule/delRegistInviteRule.do", {
+          this.$http.post("wallet/backmgr/registInviteRule/delRegistInviteRule", {
             id
           }).then((res) => {
             this.$notify({
@@ -591,7 +591,7 @@ import { dateFormat } from '@/common/util';
               delete postdata.updateTime
               postdata.endDate=this.formatDateTime(new Date(postdata.endDate))
               postdata.beginDate=this.formatDateTime(new Date(postdata.beginDate))
-              this.$http.post("wallet/backmgr/registInviteRule/updateRegistInviteRule.do", postdata).then((res) => {
+              this.$http.post("wallet/backmgr/registInviteRule/updateRegistInviteRule", postdata).then((res) => {
                 this.$notify({
                   title: '成功',
                   message: `修改成功`,
@@ -604,7 +604,7 @@ import { dateFormat } from '@/common/util';
               let postdata=this.ruleForm
               postdata.endDate=this.formatDateTime(new Date(postdata.endDate))
               postdata.beginDate=this.formatDateTime(new Date(postdata.beginDate))
-              this.$http.post("wallet/backmgr/registInviteRule/createRegistInviteRule.do", postdata).then((res) => {
+              this.$http.post("wallet/backmgr/registInviteRule/createRegistInviteRule", postdata).then((res) => {
                 this.$notify({
                   title: '成功',
                   message: `创建成功`,
@@ -623,7 +623,7 @@ import { dateFormat } from '@/common/util';
       getSampleCoinInfo() {
         let _this=this
           return new Promise(function (resolve, reject) {
-            _this.$http.post("wallet/backmgr/coin/getSampleCoinInfo.do", {}).then((res) => {
+            _this.$http.post("wallet/backmgr/coin/getSampleCoinInfo", {}).then((res) => {
               _this.coinList = res.result.list
               _this.ruleCoinList = res.result.list
               resolve();
@@ -679,7 +679,7 @@ import { dateFormat } from '@/common/util';
         this.registRuleForm = JSON.parse(JSON.stringify(itemData));
       },
       getRegistRewardRuleList() {
-        this.$http.post("wallet/backmgr/reward/getRegistRewardRuleList.do", {
+        this.$http.post("wallet/backmgr/reward/getRegistRewardRuleList", {
           pageNum: 1,
           pageSize: 200,
         }).then((res) => {
@@ -688,7 +688,7 @@ import { dateFormat } from '@/common/util';
       },
       registerSwitchChange (itemData) {
           const { isShow, id } = itemData;
-          this.$http.post("wallet/backmgr/reward/updateRegistRewardRuleShowType.do", {
+          this.$http.post("wallet/backmgr/reward/updateRegistRewardRuleShowType", {
             isShow: isShow ? "SHOW" : "HIDE",
             id
           }).then((res) => {
@@ -709,7 +709,7 @@ import { dateFormat } from '@/common/util';
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$http.post("wallet/backmgr/reward/deleteRegistRewardRule.do", {
+          this.$http.post("wallet/backmgr/reward/deleteRegistRewardRule", {
             id
           }).then((res) => {
             this.$notify({
@@ -726,7 +726,7 @@ import { dateFormat } from '@/common/util';
           if (valid) {
             const {coinId, id, amount, startTime, endTime} =  this.registRuleForm;
             if(this.registRuleForm.id){
-              this.$http.post("wallet/backmgr/reward/updateRegistRewardRule.do", {
+              this.$http.post("wallet/backmgr/reward/updateRegistRewardRule", {
                 coinId,
                 id,
                 amount,
@@ -742,7 +742,7 @@ import { dateFormat } from '@/common/util';
                 this.getRegistRewardRuleList();
               })
             } else {
-              this.$http.post("wallet/backmgr/reward/createRegistRewardRule.do", {
+              this.$http.post("wallet/backmgr/reward/createRegistRewardRule", {
                 coinId,
                 amount,
                 startTime,

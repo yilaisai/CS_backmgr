@@ -39,7 +39,7 @@
             </el-col>
             <el-col :span="8" style="">
               <img @click="getImgCode" ref="imgcode" class="imgcode"
-                   :src="SERVER_PATH +'/wallet/backmgr/sysuser/open/getValidateCode.do'" alt="验证码">
+                   :src="SERVER_PATH +'/wallet/backmgr/sysuser/open/getValidateCode'" alt="验证码">
             </el-col>
           </el-row>
         </div>
@@ -83,7 +83,7 @@
     },
     methods: {
       getImgCode() {
-        this.$refs.imgcode.src = `${SERVER_PATH}/wallet/backmgr/sysuser/open/getValidateCode.do?${Math.random()}`;
+        this.$refs.imgcode.src = `${SERVER_PATH}/wallet/backmgr/sysuser/open/getValidateCode?${Math.random()}`;
       },
       login() {
         this.$refs.postObj.validate((valid) => {
@@ -95,7 +95,7 @@
               version: '1.0.0',
               plat: 'web',
             };
-            this.$http.post('wallet/backmgr/sysuser/open/sysUserLogin.do', postObj).then((res) => {
+            this.$http.post('wallet/backmgr/sysuser/open/sysUserLogin', postObj).then((res) => {
               const { token, userName, roleName, menuUrls } = res.result;
               const { msg } = res;
               localStorage.setItem('wallet_token', token);

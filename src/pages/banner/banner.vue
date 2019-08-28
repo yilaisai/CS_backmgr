@@ -91,7 +91,7 @@
           <el-col>
             <el-input size="small" v-model="ruleForm.bannerUrl" placeholder="请选择上传">
               <el-upload
-                :action="server_path + 'wallet/util/open/uploadFile.do'"
+                :action="server_path + 'wallet/util/open/uploadFile'"
                 multiple
                 name="files"
                 :data="{type:'img'}"
@@ -106,7 +106,7 @@
           <el-col>
             <el-input size="small" v-model="ruleForm.bannerUrlEn" placeholder="请选择上传">
               <el-upload
-                :action="server_path + 'wallet/util/open/uploadFile.do'"
+                :action="server_path + 'wallet/util/open/uploadFile'"
                 multiple
                 name="files"
                 :data="{type:'img'}"
@@ -267,13 +267,13 @@
         this.submitForm(currentPage);
       },
       getAppBannerInfos() {
-        this.$http.post("wallet/backmgr/banner/getAppBannerInfos.do", this.filterForm).then((res) => {
+        this.$http.post("wallet/backmgr/banner/getAppBannerInfos", this.filterForm).then((res) => {
           this.listData.list = res.result.list.list;
           this.listData.total = res.result.list.total;
         })
       },
       getBannerType() {
-        this.$http.post("wallet/backmgr/banner/getBannerType.do", {
+        this.$http.post("wallet/backmgr/banner/getBannerType", {
           version: '1.0.0',
           plat: 'web',
         }).then((res) => {
@@ -294,7 +294,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$http.post("wallet/backmgr/banner/updateAppBannerInfoSysStatus.do", {
+          this.$http.post("wallet/backmgr/banner/updateAppBannerInfoSysStatus", {
             sysStatus: "INVALID0",
             id
           }).then((res) => {
@@ -310,7 +310,7 @@
       // 上下架
       switchChange(itemData) {
         const { isOnshelf, id, bannerName } = itemData;
-        this.$http.post("wallet/backmgr/banner/updateAppBannerInfoOnshelf.do", {
+        this.$http.post("wallet/backmgr/banner/updateAppBannerInfoOnshelf", {
           isOnshelf: isOnshelf ? "YES" : "NO",
           id
         }).then((res) => {
@@ -367,7 +367,7 @@
             this.ruleForm.bannerVersion =  this.ruleForm.bannerVersion1 + ',' +  this.ruleForm.bannerVersion2;
             if (this.ruleForm.id) {
               const { bannerTypeEnName, id, bannerName, bannerVersion, bannerPlat, jumpUrl, bannerUrl, bannerUrlEn,weight, remark } = this.ruleForm;
-              this.$http.post("wallet/backmgr/banner/updateAppBannerInfo.do", {
+              this.$http.post("wallet/backmgr/banner/updateAppBannerInfo", {
                 bannerTypeEnName,
                 bannerType: this.bannerTypeCode,
                 id,
@@ -391,7 +391,7 @@
               })
             } else {
               this.ruleForm.bannerType = this.bannerTypeCode;
-              this.$http.post("wallet/backmgr/banner/createAppBannerInfo.do", this.ruleForm).then((res) => {
+              this.$http.post("wallet/backmgr/banner/createAppBannerInfo", this.ruleForm).then((res) => {
                 this.$notify({
                   title: '成功',
                   message: `创建 ${ this.ruleForm.bannerName} banner成功`,

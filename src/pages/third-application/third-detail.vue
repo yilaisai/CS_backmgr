@@ -29,7 +29,7 @@
       <el-form-item label="android 包名:">{{ruleForm.adrPackageName}}</el-form-item>
       <el-form-item label="android 包大小:">{{ruleForm.adrSize}}</el-form-item>
       <el-form-item label="android 签名:">{{ruleForm.adrSign}}</el-form-item>
-      <el-form-item label="android 下载地址:">{{ruleForm.downloadUrl}}</el-form-item>
+      <el-form-item label="android 下载地址:">{{ruleFormwnloadUrl}}</el-form-item>
       <el-form-item label="跳转地址:">{{ruleForm.jumpUrl}}</el-form-item>
       <el-form-item label="是否自营:">{{ruleForm.ownType?'是':'否'}}</el-form-item>
       <el-form-item label="应用介绍:" class="destext">

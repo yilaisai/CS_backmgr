@@ -39,7 +39,7 @@
           v-loading="loading"
           name="files"
           class="avatar-uploader"
-          :action="server_path + 'wallet/util/open/uploadFile.do'"
+          :action="server_path + 'wallet/util/open/uploadFile'"
           :show-file-list="false"
           :on-success="upload"
           :before-upload="logoUpload"
@@ -63,7 +63,7 @@
           name="files"
           class="upload-demo"
           v-loading="uploadTeamLoading"
-          :action="server_path + 'wallet/util/open/uploadFile.do'"
+          :action="server_path + 'wallet/util/open/uploadFile'"
           :show-file-list="false"
           :on-success="uploadTeamIntroduce"
           :before-upload="teamUpload"
@@ -88,7 +88,7 @@
           name="files"
           class="upload-demo"
           v-loading="uploadIntroduceLoading"
-          :action="server_path + 'wallet/util/open/uploadFile.do'"
+          :action="server_path + 'wallet/util/open/uploadFile'"
           :show-file-list="false"
           :before-upload="introduceUpload"
           :on-success="uploadIntroduceUrl"
@@ -207,7 +207,7 @@
       },
       beforeUpload(file) {
         // 只能上传 pdf/word/ppt/jpg/png 文件，且不超过 3M
-        const type = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/pdf', 'application/msword', 'application/vnd.ms-powerpoint', 'image/jpeg', 'image/png']
+        const type = ['application/vnd.openxmlformats-officedocument.wordprocessingmlcument', 'application/pdf', 'application/msword', 'application/vnd.ms-powerpoint', 'image/jpeg', 'image/png']
         const isJPG = type.includes(file.type)
         const isLt3M = file.size / 1024 / 1024 < 3; // 小于3M;
 

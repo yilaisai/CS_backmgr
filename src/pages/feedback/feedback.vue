@@ -174,7 +174,7 @@
       getfeedBackList() {
         this.filterForm.beginTime = this.dateTime[0];
         this.filterForm.endTime = this.dateTime[1];
-        this.$http.post("/wallet/backmgr/feedback/getfeedBackList.do", this.filterForm).then((res) => {
+        this.$http.post("/wallet/backmgr/feedback/getfeedBackList", this.filterForm).then((res) => {
           const { list, total } = res.result.pageInfo;
           this.listData.list = list;
           this.listData.total = total;
@@ -228,7 +228,7 @@
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
             const ruleForm = JSON.parse(JSON.stringify(this.ruleForm))
-            this.$http.post("wallet/backmgr/feedback/createFeedBack.do", ruleForm).then((res) => {
+            this.$http.post("wallet/backmgr/feedback/createFeedBack", ruleForm).then((res) => {
               this.$notify({
                   title: '成功',
                   message: `添加成功`,

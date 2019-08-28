@@ -64,7 +64,7 @@
         this.submitForm(currentPage);
       },
       getCoinPlanRecd() {
-        this.$http.post("wallet/backmgr/plan/getCoinPlanRecd.do", this.filterForm).then((res) => {
+        this.$http.post("wallet/backmgr/plan/getCoinPlanRecd", this.filterForm).then((res) => {
           this.listData.list = res.result.list.list;
           this.listData.total = res.result.list.total;
         })

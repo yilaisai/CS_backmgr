@@ -124,7 +124,7 @@ export default {
             this.getList(this.option)
         }, */
         getList(option){
-            this.$http.post('/wallet/app/otc/backmgr/getAuditList.do',option).then((res)=>{
+            this.$http.post('/wallet/app/otc/backmgr/getAuditList',option).then((res)=>{
 				console.log(res)
                 this.tableData = res.list;
                 this.total = +res.total;
@@ -139,7 +139,7 @@ export default {
 				});
 				return
 			}
-			this.$http.post('/wallet/app/otc/backmgr/updateAuditStatus.do', {
+			this.$http.post('/wallet/app/otc/backmgr/updateAuditStatus', {
 				recdId: this.activeItemData.recdId,
 				remark: this.remark,
 				status: status

@@ -29,7 +29,7 @@
             <div slot="tip" class="attention">*证件照在有效期内，照片文字清晰可见，图片格式支持jpg/png</div>
             <el-upload
               class="avatar-uploader"
-              :action="server_path + 'wallet/util/open/uploadFile.do'"
+              :action="server_path + 'wallet/util/open/uploadFile'"
               name="files"
               :data="upData"
               :show-file-list="false"
@@ -46,7 +46,7 @@
             <div slot="tip" class="attention">*证件照在有效期内，照片文字清晰可见，图片格式支持jpg/png</div>
             <el-upload
               class="avatar-uploader"
-              :action="server_path + 'wallet/util/open/uploadFile.do'"
+              :action="server_path + 'wallet/util/open/uploadFile'"
               name="files"
               :data="upData"
               :show-file-list="false"
@@ -63,7 +63,7 @@
         <div slot="tip" class="attention">*证件照在有效期内，照片文字清晰可见，图片格式支持jpg/png</div>
         <el-upload
           class="avatar-uploader"
-          :action="server_path + 'wallet/util/open/uploadFile.do'"
+          :action="server_path + 'wallet/util/open/uploadFile'"
           name="files"
           :data="upData"
           :show-file-list="false"
@@ -125,7 +125,7 @@
           if (valid) {
             const ruleForm = JSON.parse(JSON.stringify(this.ruleForm));
             let data = JSON.parse(JSON.stringify(this.$route.params));
-            this.$http.post("wallet/backmgr/user/updateUserInfo.do", ruleForm).then((res) => {
+            this.$http.post("wallet/backmgr/user/updateUserInfo", ruleForm).then((res) => {
               this.$notify({
                 title: '成功',
                 message: `${this.details.phone} 修改成功`,

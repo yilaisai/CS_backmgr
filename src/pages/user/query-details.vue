@@ -77,7 +77,7 @@
     },
     methods: {
       getDetail(phone) {
-        this.$http.post('wallet/backmgr/user/queryUserInfo.do', {
+        this.$http.post('wallet/backmgr/user/queryUserInfo', {
           phone
         })
           .then((res) => {

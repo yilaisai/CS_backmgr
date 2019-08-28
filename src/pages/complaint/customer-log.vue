@@ -80,7 +80,7 @@ export default {
     },
     methods:{
         getList(){
-            this.$http.post('/wallet/app/otc/backmgr/appealRecdOperHistory.do',this.filterForm).then(res=>{
+            this.$http.post('/wallet/app/otc/backmgr/appealRecdOperHistory',this.filterForm).then(res=>{
                 const { list ,total} = res;
                 this.listData.list = list;
                 this.listData.total = total;

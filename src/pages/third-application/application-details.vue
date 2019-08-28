@@ -152,7 +152,7 @@
       },
       getThirdAppTradeForSac() {
         const { recdStatus, appId, pageSize, pageNum } = this;
-        this.$http.post("wallet/backmgr/thirdAppInfo/getThirdAppTradeForSac.do", {
+        this.$http.post("wallet/backmgr/thirdAppInfo/getThirdAppTradeForSac", {
           recdStatus,
           appId,
           pageSize,
@@ -168,7 +168,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$http.post("wallet/backmgr/trade/auditTrade.do", {
+          this.$http.post("wallet/backmgr/trade/auditTrade", {
             tradeId,
             tradeStatus
           }).then((res) => {
@@ -185,7 +185,7 @@
         this.filterForm.startDate = this.dateTime && this.dateTime[0];
         this.filterForm.endDate = this.dateTime && this.dateTime[1];
         const { appId, pageNum, pageSize } = this;
-        this.$http.post("wallet/backmgr/thirdAppInfo/getThirdAppTradeRecds.do", {
+        this.$http.post("wallet/backmgr/thirdAppInfo/getThirdAppTradeRecds", {
           appid: appId,
           pageNum,
           pageSize,
@@ -198,7 +198,7 @@
         this.filterForm.beginTime = this.dateTime && this.dateTime[0];
         this.filterForm.endTime = this.dateTime && this.dateTime[1];
         const { appId, pageNum, pageSize } = this;
-        this.$http.post("wallet/backmgr/thirdAppInfo/getThirdAppStats.do", {
+        this.$http.post("wallet/backmgr/thirdAppInfo/getThirdAppStats", {
           appid: appId,
           pageNum,
           pageSize,

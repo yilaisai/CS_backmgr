@@ -64,7 +64,7 @@
         },
         // 查询代理用户列表
         getQueryExchangeLogList() {
-          this.$http.post("/wallet/backmgr/exchange/queryExchangeLogList.do", this.filterForm).then((res) => {
+          this.$http.post("/wallet/backmgr/exchange/queryExchangeLogList", this.filterForm).then((res) => {
             this.listData.list = res.result.list;
             this.listData.total = res.result.count;
           })

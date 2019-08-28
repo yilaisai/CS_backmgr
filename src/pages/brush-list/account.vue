@@ -93,7 +93,7 @@
         })
       },
       syncInfo() {
-        this.$http.post("/wallet/backmgr/user/migrationShopUser.do").then((res) => {
+        this.$http.post("/wallet/backmgr/user/migrationShopUser").then((res) => {
           this.$notify({
             title: '成功',
             message: `同步成功`,

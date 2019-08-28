@@ -73,7 +73,7 @@
         this.submitForm(currentPage);
       },
       getUserNoticeRecd() {
-        this.$http.post("wallet/backmgr/userNoticeRecd/getUserNoticeRecd.do", {
+        this.$http.post("wallet/backmgr/userNoticeRecd/getUserNoticeRecd", {
           ...this.filterForm,
           noticeInfoId: this.$route.query.id,
         }).then((res) => {

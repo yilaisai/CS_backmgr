@@ -72,7 +72,7 @@
         <el-input v-model="ruleForm.adrSign" size="small" placeholder="请输入android 签名"></el-input>
       </el-form-item>
       <el-form-item label="android下载地址:">
-        <el-input v-model="ruleForm.downloadUrl" size="small" placeholder="请输入android下载地址"></el-input>
+        <el-input v-model="ruleFormwnloadUrl" size="small" placeholder="请输入android下载地址"></el-input>
       </el-form-item>
 
       <el-form-item label="跳转地址:">
@@ -104,7 +104,7 @@
         <el-upload
           name="files"
           class="avatar-uploader"
-          :action="server_path + 'wallet/util/open/uploadFile.do'"
+          :action="server_path + 'wallet/util/open/uploadFile'"
           :show-file-list="false"
           :on-success="upload"
           :data="{type:'img'}">
@@ -119,7 +119,7 @@
         <el-upload
           multiple
           name="files"
-          :action="server_path + 'wallet/util/open/uploadFile.do'"
+          :action="server_path + 'wallet/util/open/uploadFile'"
           :data="{type:'img'}"
           :on-success="uploadSuccess"
           :file-list="fileList"
@@ -147,7 +147,7 @@
             <el-upload
               name="files"
               class="avatar-uploader"
-              :action="server_path + 'wallet/util/open/uploadFile.do'"
+              :action="server_path + 'wallet/util/open/uploadFile'"
               :show-file-list="false"
               :on-success="uploadAppLogo"
               :data="{type:'img'}">
@@ -327,7 +327,7 @@
       },
       getTransferTypeInfoList() {
         if (!this.transferTypeInfoList.length) {
-          this.$http.post("wallet/backmgr/transferType/getTransferTypeInfoList.do", {
+          this.$http.post("wallet/backmgr/transferType/getTransferTypeInfoList", {
             version: '1.0.0',
             plat: 'web'
           }).then((res) => {
@@ -397,7 +397,7 @@
               })
               this.ruleForm.disclaimerType=this.ruleForm.disclaimerType==true?1:0
               this.ruleForm.isRecommend=this.ruleForm.isRecommend==true?1:0
-              this.$http.post("wallet/backmgr/thirdAppInfo/updateThirdAppInfo.do", this.ruleForm).then((res) => {
+              this.$http.post("wallet/backmgr/thirdAppInfo/updateThirdAppInfo", this.ruleForm).then((res) => {
                 this.$notify({
                   title: '成功',
                   message: `修改 ${this.ruleForm.appName} 应用成功`,
@@ -409,7 +409,7 @@
             } else {
               this.ruleForm.disclaimerType=this.ruleForm.disclaimerType==true?1:0
               this.ruleForm.isRecommend=this.ruleForm.isRecommend==true?1:0
-              this.$http.post("wallet/backmgr/thirdAppInfo/createThirdAppInfo.do", this.ruleForm).then((res) => {
+              this.$http.post("wallet/backmgr/thirdAppInfo/createThirdAppInfo", this.ruleForm).then((res) => {
                 this.$notify({
                   title: '成功',
                   message: `创建 ${ this.ruleForm.appName} 应用成功`,

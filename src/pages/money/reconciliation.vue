@@ -71,7 +71,7 @@
       getBlockChainBillToInsiteBill() {
         this.filterForm.beginCreateDate = this.selectedDate && this.selectedDate[0];
         this.filterForm.endCreateDate = this.selectedDate && this.selectedDate[1];
-        this.$http.post('wallet/backmgr/trade/blockChainBillToInsiteBill.do', this.filterForm)
+        this.$http.post('wallet/backmgr/trade/blockChainBillToInsiteBill', this.filterForm)
           .then((res) => {
             const { nowSumData, historyData } = res.result
             const { teamTypeName, coinName } = this.content;

@@ -80,7 +80,7 @@
           <img v-show="ruleForm.bannerUrl" v-viewer :src="ruleForm.bannerUrl" class="introduce">
           <el-upload
             v-loading="loading"
-            :action="server_path + 'wallet/util/open/uploadFile.do'"
+            :action="server_path + 'wallet/util/open/uploadFile'"
             multiple
             name="files"
             :before-upload="beforeUpload"

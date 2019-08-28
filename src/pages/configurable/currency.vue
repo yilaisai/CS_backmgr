@@ -92,7 +92,7 @@
       },
       getCoinInfoList() {
         const { pageNum, pageSize } = this;
-        this.$http.post("wallet/backmgr/coin/getCoinInfoList.do", { pageNum, pageSize }).then((res) => {
+        this.$http.post("wallet/backmgr/coin/getCoinInfoList", { pageNum, pageSize }).then((res) => {
           const { list, total } = res.result.list;
           this.listData.list = list;
           this.listData.total = total;
@@ -101,7 +101,7 @@
       // 收款充值
       updateCoinInfo(itemData) {
         const { coinId, isDeposit, coinName } = itemData;
-        this.$http.post("wallet/backmgr/coin/updateCoinInfoIsDeposit.do", {
+        this.$http.post("wallet/backmgr/coin/updateCoinInfoIsDeposit", {
           isDeposit: isDeposit ? "YES" : "NO",
           id: coinId
         }).then((res) => {
@@ -116,7 +116,7 @@
       // 转账提币提取
       withdrawCoin(itemData) {
         const { coinId, isWithdraw, coinName } = itemData;
-        this.$http.post("wallet/backmgr/coin/updateCoinInfoIsWithdraw.do", {
+        this.$http.post("wallet/backmgr/coin/updateCoinInfoIsWithdraw", {
           isWithdraw: isWithdraw ? "YES" : "NO",
           id: coinId
         }).then((res) => {
@@ -132,7 +132,7 @@
       updateCoinInfoStatus(itemData) {
         console.log(itemData);
         const { sysStatus, coinId, coinName } = itemData;
-        this.$http.post("wallet/backmgr/coin/updateCoinInfoStatus.do", {
+        this.$http.post("wallet/backmgr/coin/updateCoinInfoStatus", {
           status: sysStatus ? "VALID1" : "INVALID0",
           coinId: coinId,
           version: '10.24',

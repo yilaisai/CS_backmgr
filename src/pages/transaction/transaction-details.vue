@@ -151,7 +151,7 @@ export default {
         getList(){
             this.filterForm.startDate = this.selectedDate && this.selectedDate[0];
             this.filterForm.endDate = this.selectedDate && this.selectedDate[1];
-            this.$http.post('/wallet/app/otc/backmgr/getTradeList.do',this.filterForm).then(res=>{
+            this.$http.post('/wallet/app/otc/backmgr/getTradeList',this.filterForm).then(res=>{
                 const { list ,total} = res;
                 this.listData.list = list;
                 this.listData.total = total;
@@ -181,7 +181,7 @@ export default {
         }, */
         download(){
 
-            location.href =`${ SERVER_PATH}/wallet/app/otc/backmgr/exportExcel.do?startDate=${this.filterForm.startDate}&endDate=${this.filterForm.endDate}&userId=${this.filterForm.userId}&token=${localStorage.getItem('cus_token')}`;
+            location.href =`${ SERVER_PATH}/wallet/app/otc/backmgr/exportExcel?startDate=${this.filterForm.startDate}&endDate=${this.filterForm.endDate}&userId=${this.filterForm.userId}&token=${localStorage.getItem('cus_token')}`;
         }
     },
     activated(){

@@ -137,7 +137,7 @@
           if (valid) {
             const { roleId, userName, pwd } = this.ruleForm;
             const md5Pwd = Md5(pwd);
-            this.$http.post('wallet/backmgr/sysuser/addSysUser.do', {
+            this.$http.post('wallet/backmgr/sysuser/addSysUser', {
               roleId,
               userName,
               md5Pwd
@@ -174,7 +174,7 @@
             const { id, name } = this.currentData;
             const Md5Pwd = Md5(pwd);
             const ownMd5Pwd = Md5(ownPwd);
-            this.$http.post('wallet/backmgr/sysuser/changeSysUserPwd.do', {
+            this.$http.post('wallet/backmgr/sysuser/changeSysUserPwd', {
               sysUserId: id,
               Md5Pwd,
               ownMd5Pwd,
@@ -212,7 +212,7 @@
             const { id, name, roleId } = this.currentData;
             const roleIdNew = this.ruleForm.roleId;
             if (roleId != roleIdNew) {
-              this.$http.post('wallet/backmgr/privilege/setSysRole.do', {
+              this.$http.post('wallet/backmgr/privilege/setSysRole', {
                 sysUserId: id,
                 roleId: roleIdNew,
               }).then((res) => {
@@ -251,7 +251,7 @@
           cancelButtonText: '取消',
           beforeClose: (action, instance, done) => {
             if (action === 'confirm') {
-              this.$http.post('wallet/backmgr/sysuser/updateSysUserStatus.do', {
+              this.$http.post('wallet/backmgr/sysuser/updateSysUserStatus', {
                 sysUserId: id,
                 status,
               }).then((res) => {
@@ -271,14 +271,14 @@
       },
       // 获取用户列表
       getSysUserList() {
-        this.$http.post('wallet/backmgr/privilege/getSysUserList.do').then((res) => {
+        this.$http.post('wallet/backmgr/privilege/getSysUserList').then((res) => {
           const { sysUserList } = res.result;
           this.listData = sysUserList;
         })
       },
       // 获取角色
       getSysRoleList() {
-        this.$http.post('wallet/backmgr/privilege/getSysRoleList.do').then((res) => {
+        this.$http.post('wallet/backmgr/privilege/getSysRoleList').then((res) => {
           const { roleList } = res.result;
           roleList.forEach((item) => {
             item.label = item.roleName;

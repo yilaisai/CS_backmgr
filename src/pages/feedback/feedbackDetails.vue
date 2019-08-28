@@ -82,7 +82,7 @@
           remark:this.details.remark,
           fId:this.submitForm.fId
         }
-        this.$http.post("/wallet/backmgr/feedback/operateFeedback.do", postdata).then((res) => {
+        this.$http.post("/wallet/backmgr/feedback/operateFeedback", postdata).then((res) => {
           this.$message({
             message: res.msg,
             type: 'success'

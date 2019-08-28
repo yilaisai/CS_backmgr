@@ -38,7 +38,7 @@
           <el-input size="small" v-model="ruleForm.version" placeholder="请输入版本号"></el-input>
         </el-form-item>
         <el-form-item label="下载链接：" prop="version">
-          <el-input size="small" v-model="ruleForm.downUrl" placeholder="请输入下载链接"></el-input>
+          <el-input size="small" v-model="ruleFormwnUrl" placeholder="请输入下载链接"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -66,14 +66,14 @@
     methods: {
       getAppVersionInfoList() {
         const { pageNum, pageSize } = this;
-        this.$http.post("wallet/backmgr/version/getAppVersionInfoList.do").then((res) => {
+        this.$http.post("wallet/backmgr/version/getAppVersionInfoList").then((res) => {
           const { list } = res.result.list;
           this.list = list;
         })
       },
       // 是否强制更新
       updateAppversionInfoForceUpdate(itemData) {
-        this.$http.post("wallet/backmgr/version/updateAppversionInfoForceUpdate.do", {
+        this.$http.post("wallet/backmgr/version/updateAppversionInfoForceUpdate", {
           isForceUpdate: itemData.forceUpdate ? "YES" : "NO",
           versionId: itemData.id
         }).then((res) => {
@@ -87,7 +87,7 @@
       },
       // 上下架
       switchChange(itemData) {
-        this.$http.post("wallet/backmgr/version/updateAppVersionInfoOnshelf.do", {
+        this.$http.post("wallet/backmgr/version/updateAppVersionInfoOnshelf", {
           isOnshelf: itemData.isOnShelf ? "YES" : "NO",
           versionId: itemData.id
         }).then((res) => {
@@ -108,11 +108,11 @@
       determine() {
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
-            this.$http.post("wallet/backmgr/version/updateAppversionInfo.do", {
+            this.$http.post("wallet/backmgr/version/updateAppversionInfo", {
               plat: this.ruleForm.plat == 2 ? 'ios' : 'adr',
               versionId: this.ruleForm.id,
               version: this.ruleForm.version || 'empty',
-              downUrl: this.ruleForm.downUrl || 'empty'
+              downUrl: this.ruleFormwnUrl || 'empty'
             }).then((res) => {
               this.$notify({
                 title: '成功',

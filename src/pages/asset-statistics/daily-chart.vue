@@ -478,7 +478,7 @@
             for(let v in this.filterForm) {
                 param += v + '=' + this.filterForm[v] + '&';
             }
-            location.href = SERVER_PATH + 'wallet/backmgr/trade/downTradeList.do?' + param + 'token=' + localStorage.getItem('wallet_token');
+            location.href = SERVER_PATH + 'wallet/backmgr/trade/downTradeList?' + param + 'token=' + localStorage.getItem('wallet_token');
         },
         //编辑
         edit(data){

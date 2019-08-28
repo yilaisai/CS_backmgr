@@ -115,7 +115,7 @@
     computed: {},
     methods: {
       goLogout() {
-        this.$http.post('wallet/backmgr/sysuser/logout.do', {})
+        this.$http.post('wallet/backmgr/sysuser/logout', {})
           .then((res) => {
             localStorage.removeItem('wallet_roleName');
             localStorage.removeItem('wallet_menuUrls');
@@ -131,7 +131,7 @@
             const { oldPwd, pwd, checkPass } = this.ruleForm
             const oldMd5Pwd = Md5(oldPwd);
             const newMd5Pwd = Md5(pwd);
-            this.$http.post('wallet/backmgr/sysuser/changePwd.do', {
+            this.$http.post('wallet/backmgr/sysuser/changePwd', {
               oldMd5Pwd,
               newMd5Pwd
             }).then((res) => {

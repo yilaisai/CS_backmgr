@@ -169,6 +169,31 @@ export const appRouter = [
         component: () => import('@/pages/transaction/transaction-details.vue'),
       }, 
     ],
+	  path: '/blockchain',
+	  name: 'blockchain',
+	  redirect: '/blockchain/withdraw-check',
+	  meta: {
+		  title: '区块链监控'
+	  },
+	  component: Index,
+	  children: [
+		  {
+			  path: 'withdraw-check',
+			  name: 'withdrawCheck',
+			  meta: {
+				  title: '提币审核'
+			  },
+			  component: () => import('@/pages/withdraw-check/index.vue')
+		  },
+		  {
+			path: 'blockchain-statistics',
+			name: 'blockchainStatistics',
+			meta: {
+				title: '区块链数据统计'
+			},
+			component: () => import('@/pages/blockchain-statistics/index.vue')
+		  }
+	  ]
   },
   {
     path: '/money',

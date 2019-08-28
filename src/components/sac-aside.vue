@@ -76,7 +76,8 @@
     },
     mounted() {
       // 默认显示页面菜单设置
-	  const menuList = JSON.parse(localStorage.getItem('wallet_menuUrls')) || [];
+    const menuList = JSON.parse(localStorage.getItem('wallet_menuUrls')) || [];
+    console.log(menuList)
       if (location.hash == '#/home' || !localStorage.getItem('menuDefaultActive')) {
         this.activeIndex = '0';
       } else {
@@ -99,6 +100,7 @@
         item.icon = item.menuUrl.split('/')[1] ? item.menuUrl.split('/')[1] : 'home';
       });
       this.menuList = menuList;
+      console.log(this.menuList)
     },
   };
 </script>

@@ -96,6 +96,81 @@ export const appRouter = [
       }],
   },
   {
+    path: '/complaint',
+    name: 'complaint',
+    redirect: '/complaint/complaint',
+    meta: {
+      title: '法币交易',
+    },
+    component: Index,
+    children: [
+      {
+        path: 'complaint',
+        name:'complaint',
+        meta: {
+          title: '投诉管理',
+        },
+        component: () => import('@/pages/complaint/complaint.vue'),
+      },
+      {
+        path: 'customer-log',
+        name:'customer-log',
+        meta: {
+          title: '投诉管理-查看客服操作日志',
+        },
+        component: () => import('@/pages/complaint/customer-log.vue'),
+      },
+      {
+        path: 'complaint-details',
+        name:'complaint-details',
+        meta: {
+          title: '投诉管理-查看详情',
+        },
+        component: () => import('@/pages/complaint/complaint-details.vue'),
+      },
+      {
+        path: 'complaint-more',
+        name: 'complaint-more',
+        meta: {
+          title: '投诉管理-查看更多',
+        },
+        component: () => import('@/pages/complaint/complaint-more.vue'),
+      },
+      {
+        path: 'userProcessing',
+        name: 'userProcessing',
+        meta: {
+          title: '用户处理',
+        },
+        component: () => import('@/pages/user/user-processing.vue'),
+      },
+      {
+        path: 'user-history',
+        name: 'user-history',
+        meta: {
+          title: '用户处理-查看用户历史处理记录',
+        },
+        component: () => import('@/pages/user/user-history.vue'),
+      },
+      {
+        path: 'merchantAudit',
+        name: 'merchantAudit',
+        meta: {
+          title: '商家申请审核',
+        },
+        component: () => import('@/pages/merchant-audit/index'),
+      },
+      {
+        path: 'transactionDetails',
+        name: 'transactionDetails',
+        meta: {
+          title: '交易详情',
+        },
+        component: () => import('@/pages/transaction/transaction-details.vue'),
+      }, 
+    ],
+  },
+  {
     path: '/money',
     name: 'money',
     redirect: '/money/transfer-approval',

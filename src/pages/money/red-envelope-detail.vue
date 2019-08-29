@@ -56,7 +56,7 @@ export default {
     },
     methods:{
         getbill() {
-            this.$http.post('cloud/asset/open/queryDrawRecdList',this.filterForm).then((res) => {
+            this.$http.post('/wallet/backmgr/queryDrawRecdList',this.filterForm).then((res) => {
                 this.listData.list = res.result.list;
             });
         }

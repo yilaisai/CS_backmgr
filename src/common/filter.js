@@ -8,16 +8,18 @@ import Vue from "vue";
 
 export const convertTransactionType = (value) => {
   switch (value) {
-    case 'inner':
-      return '个人互转';
-    case 'msend':
-      return '转出商户';
-    case 'mreceive':
-      return '转入商户';
-    case 'csend':
-      return '链上转出';
-    case 'creceive':
-      return '链上转入';
+    case '1':
+      return '全部';
+    case '2':
+      return '充币';
+    case '3':
+      return '提币';
+    case '4':
+      return '站内互转';
+    case '5':
+	  return '红包';
+	case '6':
+	  return '划转';
   }
   return '';
 };

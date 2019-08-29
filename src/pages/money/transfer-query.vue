@@ -72,7 +72,11 @@
       <el-table-column prop="thirdOrderNo" label="txid" min-width="150"></el-table-column>
       <el-table-column prop="confirmTime" label="到账时间" min-width="153"></el-table-column>
       <div v-if="isShowPayTime">
-        <el-table-column prop="payTime" label="上链时间" min-width="153"></el-table-column>
+        <el-table-column prop="payTime" label="上链时间" min-width="153">
+			<template slot-scope="scope">
+			  <span>{{scope.row.payTime*1 | dateFormat('YYYY-MM-DD HH:mm:ss')}}</span>
+		  	</template>
+		</el-table-column>
       </div>
       <el-table-column prop="alarmType" label="时间告警" min-width="80">
         <template slot-scope="scope">

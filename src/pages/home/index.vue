@@ -72,9 +72,9 @@
         if (value == this.ruleForm.oldPwd) {
           callback(new Error('新旧密码不能一致!'));
         }
-        if (!/(?=.*[a-z])(?=.*\d)(?=.*[#@!~%^&*.])[a-z\d#@!~%^&*.]/i.test(value)) {
-          return callback(new Error('登录密码必须是字母、数字和符号的组合'));
-        }
+        // if (!/(?=.*[a-z])(?=.*\d)(?=.*[#@!~%^&*.])[a-z\d#@!~%^&*.]/i.test(value)) {
+        //   return callback(new Error('登录密码必须是字母、数字和符号的组合'));
+        // }
         if (this.ruleForm.checkPass !== '') {
           this.$refs.ruleForm.validateField('checkPass');
         }

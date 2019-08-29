@@ -45,6 +45,9 @@
       <el-table-column prop="registTime" label="注册时间"></el-table-column>
       <el-table-column label="操作" width="300">
         <template slot-scope="scope">
+          <!-- <el-button size="small"  type="success"
+                     @click="modify(scope.row)">修改
+          </el-button> -->
           <el-button size="small" v-show="scope.row.optStatus== 2" type="success"
                      @click="optStatusChange(0,'解冻账号',scope.row)">解冻账号
           </el-button>
@@ -94,6 +97,20 @@
         <el-button type="primary" @click.native="optSubmit('dialogForm')" size="small">确 定</el-button>
       </div>
     </el-dialog>
+    <el-dialog title="修改用户状态" :visible.sync="dialogVisible" width="40%">
+        <el-form :inline="true" label-width="90px" ref="ruleForm"  :model="ruleForm">
+            <el-form-item label="状态调整:" prop="status">
+                <el-select v-model="ruleForm.status">
+                    <el-option :label="item.label" :value="item.value" v-for="(item,index) in ruleState" :key="index"></el-option>
+                    <!--   <el-option label="ETH" value="2"></el-option> -->
+                </el-select>
+            </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogConfirm">确认</el-button>
+        </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -109,15 +126,31 @@
         callback();
       }
       const checkPwd = (rule, value, callback) => {
+        console.log(value)
         if (!value || value.length < 6 || value.length > 16) {
           return callback(new Error('请输入6-16位密码'));
         }
-        if (!/(?=.*[a-z])(?=.*\d)(?=.*[#@!~%^&*.])[a-z\d#@!~%^&*.]/i.test(value)) {
-          return callback(new Error('登录密码必须是字母、数字和符号的组合'));
-        }
+        // if (!/(?=.*[a-z])(?=.*\d)(?=.*[#@!~%^&*.])[a-z\d#@!~%^&*.]/i.test(value)) {
+        //   return callback(new Error('登录密码必须是字母、数字和符号的组合'));
+        // }
         callback();
       };
       return {
+        dialogVisible:false,
+        ruleState:[
+            {
+                label:'正常状态',
+                value:0
+            },
+            {
+                label:'24小时冻结',
+                value:1
+            },
+            {
+                label:'永远冻结',
+                value:2
+            }
+        ],
         filterForm: {
           phone: '',
           nickName: '',
@@ -159,7 +192,48 @@
         optDialogFormVisible: false
       };
     },
+    mounted(){
+      this.getUserInfoList()
+    },
     methods: {
+      dialogConfirm(){
+            this.ruleState.forEach(v=>{
+                if(v.value==this.ruleForm.status){
+                    this.ruleForm.reason=v.label
+                    return
+                }
+            })
+            //console.log(this.ruleForm)
+            this.$refs.ruleForm.validate(valid => {
+                if (valid) {
+                this.$http.post("/wallet/app/otc/backmgr/setCustomStatus", this.ruleForm).then(res => {
+                    this.$notify({
+                        title: "成功",
+                        message: `修改成功`,
+                        type: "success"
+                    });
+                        this.dialogVisible = false;
+                        // this.getList();
+                    });
+                } else {
+                    console.log("error submit!!");
+                    return false;
+                }
+            });
+        },
+      modify(itemData){
+        this.$refs.ruleForm && this.$refs.ruleForm.resetFields();
+        let default_status=0
+        this.ruleState.forEach(v=>{
+            if(v.label==itemData.reason){
+                default_status=v.value
+                return
+            }
+        })
+        this.ruleForm.userId=itemData.userId
+        this.ruleForm.status=default_status
+        this.dialogVisible=true
+    },
       resetForm() {
         this.$refs.phone.reset();
         this.$refs.nickName.reset();

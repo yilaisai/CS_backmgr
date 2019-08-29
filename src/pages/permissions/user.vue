@@ -87,9 +87,9 @@
         if (!value || value.length < 6 || value.length > 16) {
           return callback(new Error('请输入6-16位密码'));
         }
-        if (!/(?=.*[a-z])(?=.*\d)(?=.*[#@!~%^&*.])[a-z\d#@!~%^&*.]/i.test(value)) {
-          return callback(new Error('登录密码必须是字母、数字和符号的组合'));
-        }
+        // if (!/(?=.*[a-z])(?=.*\d)(?=.*[#@!~%^&*.])[a-z\d#@!~%^&*.]/i.test(value)) {
+        //   return callback(new Error('登录密码必须是字母、数字和符号的组合'));
+        // }
         callback();
       };
       const checkRole = (rule, value, callback) => {

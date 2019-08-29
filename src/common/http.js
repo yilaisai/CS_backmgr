@@ -50,23 +50,6 @@ function responseErrorHandler(error) {
 
 httpInstance.interceptors.request.use((config) => {
   const configs = config;
-  // if(config.url.indexOf('wallet/backmgr/cloud') > -1) {
-  //   if(configs.baseURL=='http://api.test.justoken.net/'){
-  //     //测试环境
-  //     configs.baseURL='http://47.75.14.176:7002/'
-  //   }
-  // }
-  //资产统计模块接口使用以下域名
-  if(configs.url.indexOf('cloud/asset')>-1){
-    if(configs.baseURL=='http://api.test.sacbox.net/'){
-      //测试环境
-      configs.baseURL='http://47.75.14.176:7002/'
-    }else{
-      //正式环境
-      //configs.baseURL='http://13.231.172.222:7002/'
-      configs.baseURL='https://apijp.justoken.net/'
-    }
-  }
   if (localStorage.getItem('wallet_token')) {
     // if (configs.method == 'get') {
     //   configs.params.token = localStorage.getItem('wallet_token');

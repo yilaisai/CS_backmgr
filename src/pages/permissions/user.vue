@@ -11,7 +11,11 @@
     <sac-table :data="listData">
       <el-table-column prop="name" label="用户名称"></el-table-column>
       <el-table-column prop="roleName" label="角色名称"></el-table-column>
-      <el-table-column prop="createTime" label="创建时间"></el-table-column>
+      <el-table-column prop="createTime" label="创建时间">
+		  <template slot-scope="scope">
+			  <span>{{scope.row.createTime*1 | dateFormat('YYYY-MM-DD HH:mm:ss')}}</span>
+		  </template>
+	  </el-table-column>
       <el-table-column label="操作" width="360">
         <template slot-scope="scope" prop="sysStatus">
           <el-button type="primary" size="small" @click.native="changePassword(scope.row)">修改登录密码</el-button>

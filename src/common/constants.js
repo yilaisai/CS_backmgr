@@ -2,24 +2,24 @@
 import Vue from 'vue';
 
 export const transactionType = [{
-  value: '',
-  label: '全部',
-}, {
-  value: 'inner',
-  label: '个人互转',
-}, {
-  value: 'msend',
-  label: '转出商户',
-}, {
-  value: 'mreceive',
-  label: '转入商户',
-}, {
-  value: 'csend',
-  label: '链上转出',
-}, {
-  value: 'creceive',
-  label: '链上转入',
-}];
+	value: '1',
+	label: '全部',
+  }, {
+	value: '2',
+	label: '充币',
+  }, {
+	value: '3',
+	label: '提币',
+  }, {
+	value: '4',
+	label: '站内互转',
+  }, {
+	value: '5',
+	label: '红包',
+  }, {
+	value: '6',
+	label: '划转',
+  }];
 
 
 // 告警情况

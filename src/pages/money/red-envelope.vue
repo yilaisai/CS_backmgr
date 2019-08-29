@@ -114,7 +114,7 @@ export default {
                 });
                 return false
             }
-            this.$http.post('cloud/asset/open/queryRedPacketRecd', this.filterForm).then((res) => {
+            this.$http.post('/wallet/backmgr/queryRedPacketRecd', this.filterForm).then((res) => {
                 const { list,total } = res.result.list;
                 this.listData.list = list;
                 this.listData.total = total;

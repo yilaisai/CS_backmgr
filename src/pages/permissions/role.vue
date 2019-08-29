@@ -11,8 +11,16 @@
     <sac-table :data="listData">
       <el-table-column prop="roleName" label="角色名称" width="130"></el-table-column>
       <el-table-column label="用户" prop="sysUserList"></el-table-column>
-      <el-table-column prop="createTime" label="创建时间" width="150"></el-table-column>
-      <el-table-column prop="updateTime" label="更新时间" width="150"></el-table-column>
+      <el-table-column prop="createTime" label="创建时间" width="150">
+		  <template slot-scope="scope">
+			  <span>{{scope.row.createTime*1 | dateFormat('YYYY-MM-DD HH:mm:ss')}}</span>
+		  </template>
+	  </el-table-column>
+      <el-table-column prop="updateTime" label="更新时间" width="150">
+		  <template slot-scope="scope">
+			  <span>{{scope.row.updateTime*1 | dateFormat('YYYY-MM-DD HH:mm:ss')}}</span>
+		  </template>
+	  </el-table-column>
       <el-table-column label="操作" width="300">
         <template slot-scope="scope">
           <el-button type="danger" size="small" @click.native="modify(scope.row)">修改角色名称或权限</el-button>

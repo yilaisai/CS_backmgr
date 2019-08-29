@@ -104,10 +104,10 @@
         <el-upload
           name="files"
           class="avatar-uploader"
-          :action="server_path + 'wallet/util/open/uploadFile'"
+          :action="server_path + 'wallet/backmgr/uploadFile'"
           :show-file-list="false"
           :on-success="upload"
-          :data="{type:'img'}">
+          :data="{type:'img',token:token}">
           <img v-if="ruleForm.appIcon" :src="ruleForm.appIcon" class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
@@ -119,8 +119,8 @@
         <el-upload
           multiple
           name="files"
-          :action="server_path + 'wallet/util/open/uploadFile'"
-          :data="{type:'img'}"
+          :action="server_path + 'wallet/backmgr/uploadFile'"
+          :data="{type:'img',token:token}"
           :on-success="uploadSuccess"
           :file-list="fileList"
           list-type="picture-card"
@@ -147,10 +147,10 @@
             <el-upload
               name="files"
               class="avatar-uploader"
-              :action="server_path + 'wallet/util/open/uploadFile'"
+              :action="server_path + 'wallet/backmgr/uploadFile'"
               :show-file-list="false"
               :on-success="uploadAppLogo"
-              :data="{type:'img'}">
+              :data="{type:'img',token:token}">
               <img v-if="ruleForm.appLogo" :src="ruleForm.appLogo" class="avatar">
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
@@ -189,6 +189,7 @@
       return {
         transferTypeInfoList: [],
         server_path: "",
+        token:localStorage.getItem('wallet_token'),
         currentForm: {},
         ruleForm: {
           appType: '',

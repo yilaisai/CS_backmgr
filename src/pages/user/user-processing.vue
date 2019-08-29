@@ -155,7 +155,7 @@ export default {
             }
             //console.log(postData)
             this.$http.post('/wallet/app/otc/backmgr/getCustomList',postData).then(res=>{
-                const { list ,total} = res;
+                const { list ,total} = res.result;
                 this.listData.list = list;
                 this.listData.total = total;
             })

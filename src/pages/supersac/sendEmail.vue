@@ -38,7 +38,7 @@
       </el-form-item>
       <quill-editor :disabled="disabled" v-model.trim="postObj.content" ref="myQuillEditor"></quill-editor>
       <el-upload class="upload"
-                 :action="serverPath+'wallet/util/open/uploadFile'"
+                 :action="serverPath+'wallet/backmgr/uploadFile'"
                  name="files"
                  :data="{type:'html'}"
                  :on-success='upScuccess'

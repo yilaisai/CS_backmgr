@@ -147,7 +147,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$http.delete("/cloud/backmgr/shop/deleteAgencyRuleById", {
+          this.$http.delete("/wallet/backmgr/shop/deleteAgencyRuleById", {
             id
           }).then((res) => {
             this.$notify({
@@ -161,7 +161,7 @@
       },
       registerSwitchChange(itemData) {
         const {state, id} = itemData;
-        this.$http.get("/cloud/backmgr/shop/updateRuleStatus", {
+        this.$http.get("/wallet/backmgr/shop/updateRuleStatus", {
           status: state ? "enable" : "disable",
           id
         }).then((res) => {
@@ -199,7 +199,7 @@
           if (valid) {
             const {coinId, id, lower, middle, senior, service, peers} = this.ruleForm;
             if (this.ruleForm.id) {
-              this.$http.put("/cloud/backmgr/shop/updateAgencyRule", {
+              this.$http.put("/wallet/backmgr/shop/updateAgencyRule", {
                 id,
                 lower: lower / 100,
                 middle: middle / 100,
@@ -216,7 +216,7 @@
                 this.getList();
               })
             } else {
-              this.$http.post("/cloud/backmgr/shop/addAgencyRule", {
+              this.$http.post("/wallet/backmgr/shop/addAgencyRule", {
                 coinId,
                 lower: lower / 100,
                 middle: middle / 100,
@@ -245,7 +245,7 @@
         })
       },
       getList() {
-        this.$http.post("/cloud/backmgr/shop/listAgencyRule", {
+        this.$http.post("/wallet/backmgr/shop/listAgencyRule", {
           pageNum: 1,
           pageSize: 200,
         }).then((res) => {

@@ -69,7 +69,7 @@ export default {
     async fetchData () {
       // proType:产品类型,0-活期，1-定期
     // ,proType:0
-      let { result } = await this.$http.post('/cloud/backmgr/financial/financial/getProList', {...this.listQuery})
+      let { result } = await this.$http.post('/wallet/backmgr/financial/financial/getProList', {...this.listQuery})
       this.list = result.list
       this.$emit('setTotal', parseInt(result.count))
     },
@@ -84,7 +84,7 @@ export default {
         status: row.sysStatus === 1 ? 'enable' : 'disable'
       }
       try {
-        let result = await this.$http.get('/cloud/backmgr/financial/financial/updateProStatus', params)
+        let result = await this.$http.get('/wallet/backmgr/financial/financial/updateProStatus', params)
         let text = row.sysStatus === 1 ? '上架' : '下架'
         this.$notify.success({ title: '请求成功', message: `${text}成功` });
       } catch (error) {
@@ -100,7 +100,7 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         })
-        let result = await this.$http.delete('/cloud/backmgr/financial/financial/deleteCurrentProById', params)
+        let result = await this.$http.delete('/wallet/backmgr/financial/financial/deleteCurrentProById', params)
         this.$notify.success({ title: '请求成功', message: '删除活期项目成功' });
         this.fetchData()
       } catch (error) {}

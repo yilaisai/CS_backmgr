@@ -185,7 +185,7 @@ export default {
       }
     },
     async getAllCoinList () {
-      let { result } = await this.$http.get('/cloud/backmgr/financial/getAllCoinList')
+      let { result } = await this.$http.get('/wallet/backmgr/financial/getAllCoinList')
       this.coinArr = result.coinInfoList
     },
     // 创建活期
@@ -252,7 +252,7 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         })
-        await this.$http.post('/cloud/backmgr/financial/financial/releaseCurrentFinancial')
+        await this.$http.post('/wallet/backmgr/financial/financial/releaseCurrentFinancial')
         this.$notify.success({ title: '请求成功', message: '活期理财发放成功' })
       } catch (error) {}
       // this.coinArr = result.coinInfoList

@@ -76,7 +76,7 @@
         this.getPersonalRanking();
       },
       getPersonalRanking() {
-        this.$http.post("cloud/backmgr/statics/personalRanking", this.filterForm).then((res) => {
+        this.$http.post("wallet/backmgr/statics/personalRanking", this.filterForm).then((res) => {
           const { list, total } = res.result;
           list.forEach((item) => {
             item.lastLoginTime = item.lastLoginTime ? dateFormat(item.lastLoginTime, 'YYYY-MM-DD HH:mm:ss') : item.lastLoginTime;

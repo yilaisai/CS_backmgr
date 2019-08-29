@@ -125,9 +125,10 @@ export default {
         }, */
         getList(option){
             this.$http.post('/wallet/app/otc/backmgr/getAuditList',option).then((res)=>{
-				console.log(res)
-                this.tableData = res.list;
-                this.total = +res.total;
+				
+                this.tableData = res.result.list;
+                this.total = +res.result.total;
+                console.log(this.tableData)
             })
 		},
 		// 修改审核状态

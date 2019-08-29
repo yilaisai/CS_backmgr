@@ -87,7 +87,7 @@
         this.getList();
       },
       getList() {
-        this.$http.post("/cloud/backmgr/shop/listMarginAccount", this.filterForm).then((res) => {
+        this.$http.post("/wallet/backmgr/shop/listMarginAccount", this.filterForm).then((res) => {
           this.listData.list = res.result.list;
           this.listData.total = res.result.count;
         })

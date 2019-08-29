@@ -112,13 +112,13 @@
       getPageInfoList() {
         this.filterForm.startTime = this.dateTime[0]
         this.filterForm.endTime = this.dateTime[1]
-        this.$http.post("/cloud/backmgr/page/open/getPageInfoList", this.filterForm).then((res) => {
+        this.$http.post("/wallet/backmgr/page/open/getPageInfoList", this.filterForm).then((res) => {
           this.listData.list = res.result.list.list;
           this.listData.total = res.result.list.total;
         })
       },
       getPageType() {
-        this.$http.post('/cloud/backmgr/page/open/getPageTypeList',{
+        this.$http.post('/wallet/backmgr/page/open/getPageTypeList',{
           version: '1.0.0',
           plat: 'web',
         }).then(res => {
@@ -141,7 +141,7 @@
         console.log('modification');
       },
       switchChange(data) {
-        this.$http.post('/cloud/backmgr/page/updatePageInfoStatus', {
+        this.$http.post('/wallet/backmgr/page/updatePageInfoStatus', {
           id: data.id,
           status: ['INVALID0', 'VALID1'][data.status]
         }).then(res => {

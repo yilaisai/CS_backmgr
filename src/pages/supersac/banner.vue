@@ -80,11 +80,11 @@
           <img v-show="ruleForm.bannerUrl" v-viewer :src="ruleForm.bannerUrl" class="introduce">
           <el-upload
             v-loading="loading"
-            :action="server_path + 'wallet/util/open/uploadFile'"
+            :action="server_path + 'wallet/backmgr/uploadFile'"
             multiple
             name="files"
             :before-upload="beforeUpload"
-            :data="{type:'img'}"
+            :data="{type:'img',token:token}"
             :show-file-list="false"
             :on-success="upload">
             <el-button size="small" type="primary">点击上传</el-button>
@@ -142,6 +142,7 @@
           pageNum: 1,
           pageSize: 20
         },
+        token:localStorage.getItem('wallet_token'),
         listData: {
           total: null,
           list: [],

@@ -71,7 +71,7 @@
                 </el-table>
             </el-main>
             <el-footer>
-                <sac-pagination v-show="listData.list.length>0"
+                <sac-pagination v-show="listData.list.length > 0"
                                 @handleChange="handleCurrentChange"
                                 :total="+listData.total"
                                 :page-size="filterForm.pageSize"
@@ -127,7 +127,8 @@ export default {
     methods:{
         getList(){
             this.$http.post('/wallet/app/otc/backmgr/infoShortList',this.filterForm).then(res=>{
-                const { list ,total} = res;
+                console.log(res)
+                const { list ,total} = res.result;
                 this.listData.list = list;
                 this.listData.total = total;
             })

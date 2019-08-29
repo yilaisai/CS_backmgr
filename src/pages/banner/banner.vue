@@ -91,10 +91,10 @@
           <el-col>
             <el-input size="small" v-model="ruleForm.bannerUrl" placeholder="请选择上传">
               <el-upload
-                :action="server_path + 'wallet/util/open/uploadFile'"
+                :action="server_path + 'wallet/backmgr/uploadFile'"
                 multiple
                 name="files"
-                :data="{type:'img'}"
+                :data="{type:'img',token :token}"
                 :show-file-list="false"
                 :on-success="upload" slot="append">
                 <el-button size="small" type="primary">点击上传</el-button>
@@ -106,10 +106,10 @@
           <el-col>
             <el-input size="small" v-model="ruleForm.bannerUrlEn" placeholder="请选择上传">
               <el-upload
-                :action="server_path + 'wallet/util/open/uploadFile'"
+                :action="server_path + 'wallet/backmgr/uploadFile'"
                 multiple
                 name="files"
-                :data="{type:'img'}"
+                :data="{type:'img',token:token}"
                 :show-file-list="false"
                 :on-success="uploadEnPic" slot="append">
                 <el-button size="small" type="primary">点击上传</el-button>
@@ -236,7 +236,8 @@
           fullscreen: true,
           keyboard: true,
           url: 'data-source'
-        }
+        },
+        token:localStorage.getItem('wallet_token')
       };
     },
     methods: {

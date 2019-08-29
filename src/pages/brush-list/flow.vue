@@ -126,7 +126,7 @@
       getList() {
         this.filterForm.startTime = this.dateTime && this.dateTime[0];
         this.filterForm.endTime = this.dateTime && this.dateTime[1];
-        this.$http.post("/cloud/backmgr/shop/listBrushLog", this.filterForm).then((res) => {
+        this.$http.post("/wallet/backmgr/shop/listBrushLog", this.filterForm).then((res) => {
           this.listData.list = res.result.list;
           this.listData.total = res.result.count;
         })

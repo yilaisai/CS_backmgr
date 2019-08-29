@@ -8,6 +8,7 @@ import Http from './common/http';
 import components from './common/components';
 import filter from './common/filter';
 import Viewer from 'v-viewer'
+import utils from '@/assets/js/utils'
 import 'viewerjs/dist/viewer.css';
 
 
@@ -16,6 +17,7 @@ Vue.config.productionTip = false;
 Vue.use(Http);
 Vue.use(components);
 Vue.use(Viewer);
+Vue.use(utils);
 
 /* eslint-disable no-new */
 new Vue({

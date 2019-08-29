@@ -232,8 +232,9 @@
       }
       &complaint{
         padding-left: 20px;
-        background: url("~@/assets/complaint.png") no-repeat top left;
-        background-size: 16px 16px;
+        height: 18px;
+        background: url("~@/assets/complaint.png") no-repeat center left;
+        background-size: 18px 18px;
       }
     }
       

@@ -49,21 +49,17 @@ function responseErrorHandler(error) {
 }
 
 httpInstance.interceptors.request.use((config) => {
-  const configs = config;
-  if (localStorage.getItem('wallet_token')) {
-    // if (configs.method == 'get') {
-    //   configs.params.token = localStorage.getItem('wallet_token');
-    // } else {
-    //   configs.data.token = localStorage.getItem('wallet_token');
-    // }
+  const configs = config
+  const token = localStorage.getItem('wallet_token')
+  if (token) {
+	  config.headers.token = token
     if (configs.method == "post") {
-      configs.data.token = localStorage.getItem('wallet_token');
+      configs.data.token = token;
     } else {
-      configs.params.token = localStorage.getItem('wallet_token');
+      configs.params.token = token;
     }
   }
   store.commit('updateLoadingStatus', { isLoading: true });
-  // if (config.method === 'put') return configs
   const obj = {};
   Object.entries(config.data).forEach(([key, value]) => {
     if (value || value === '0' || value === 0 || value == 'empty') {

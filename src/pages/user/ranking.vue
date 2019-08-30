@@ -9,20 +9,18 @@
              label-width="80px"
              ref="filterForm"
              :model="filterForm">
-      <sac-coin ref="coinId" :isAll="false" v-model="filterForm.coinId" @change="coinChange"></sac-coin>
+      <sac-coin ref="coinId" :isAll="true" v-model="filterForm.coinId" @change="coinChange"></sac-coin>
       <sac-submit-form
         @submitForm="submitForm"
         @resetForm="resetForm"></sac-submit-form>
     </el-form>
     <el-table height="100%" border size="small" :data="listData.list">
-      <el-table-column prop="rank" label="排名" width="100"></el-table-column>
-      <el-table-column prop="phone" label="账号" width="130"></el-table-column>
-      <el-table-column prop="amount" :label="coinRand">
-      </el-table-column>
+      <el-table-column prop="rank" label="排名" width="100" align="center"></el-table-column>
+      <el-table-column prop="phone" label="账号" width="130" align="center"></el-table-column>
+      <el-table-column prop="amount" :label="coinRand" align="center"></el-table-column>
       <el-table-column prop="coinAddr" label="收款地址"></el-table-column>
-      <el-table-column prop="lastLoginTime" label="最后登录时间" width="140">
-      </el-table-column>
-      <el-table-column label="操作" width="130">
+      <el-table-column prop="lastLoginTime" label="最后登录时间" width="140"></el-table-column>
+      <el-table-column label="操作" width="130" align="center">
         <template slot-scope="scope" prop="sysStatus">
           <el-button type="primary" size="small" @click.native="goDetail(scope.row.phone)">查看详情</el-button>
         </template>
@@ -76,10 +74,10 @@
         this.getPersonalRanking();
       },
       getPersonalRanking() {
-        this.$http.post("cloud/backmgr/statics/personalRanking", this.filterForm).then((res) => {
+        this.$http.post("/wallet/backmgr/personalRanking", this.filterForm).then((res) => {
           const { list, total } = res.result;
           list.forEach((item) => {
-            item.lastLoginTime = item.lastLoginTime ? dateFormat(item.lastLoginTime, 'YYYY-MM-DD HH:mm:ss') : item.lastLoginTime;
+            item.lastLoginTime = item.lastLoginTime ? dateFormat(item.lastLoginTime*1, 'YYYY-MM-DD HH:mm:ss') : item.lastLoginTime;
           })
           this.listData.list = list;
           this.listData.total = total

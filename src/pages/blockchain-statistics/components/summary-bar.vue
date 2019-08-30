@@ -263,7 +263,7 @@ export default {
             if (filter.coinName) params.coinName = filter.coinName
 
             this.$http
-                .get(`${this.$config.fundAddr}/backmgr/getDailySumInfo`, params)
+                .get(`/wallet/block/backmgr/getDailySumInfo`, params)
                 .then(({ code, result }) => {
                     if (code === 200) {
                         this.count = result
@@ -312,10 +312,17 @@ export default {
         cursor: grab;
         
         ul {
+			margin: 0;
+			padding: 0;
             li {
 				white-space: nowrap;
+				list-style: none;
             }
-        }
+		}
+		p {
+			padding: 0;
+			margin: 0;
+		}
         .address-wrap {
             span {
                 display: inline-block;

@@ -8,17 +8,18 @@ import Vue from "vue";
 
 export const convertTransactionType = (value) => {
   switch (value) {
-    case '1':
-      return '全部';
-    case '2':
+    case 1:
+	  return '全部';
+	  break
+    case 2:
       return '充币';
-    case '3':
+    case 3:
       return '提币';
-    case '4':
+    case 4:
       return '站内互转';
-    case '5':
+    case 5:
 	  return '红包';
-	case '6':
+	case 6:
 	  return '划转';
   }
   return '';

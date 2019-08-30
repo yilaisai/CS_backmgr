@@ -120,7 +120,7 @@ export default {
             if (filter.recdStatus) params.recdStatus = filter.recdStatus
             if (filter.transType) params.transType = filter.transType
             if (filter.address) params.address = filter.address
-            this.$http.get(`/backmgr/getWithdrawList`, params)
+            this.$http.get(`/wallet/block/backmgr/getWithdrawList`, params)
                 .then(data => {
                     const { code, result } = data
                     if (code === 200) {

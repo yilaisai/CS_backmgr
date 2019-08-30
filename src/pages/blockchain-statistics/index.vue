@@ -88,19 +88,20 @@
 import qs from 'qs'
 import SummaryBar from './components/summary-bar.vue'
 import Columns from './components/columns'
+import {fundTypes} from '@/common/constants'
 export default {
     name: 'monotoring',
     data () {
         return {
             data: [],
-            coins: [],
+            coins: [{coinName: 'USDT'}],
             defaultCoin: 'USDT',
             tableData: [],
             pageSize: 20,
             loading: false,
             pageNum: 1,
 			total: 0,
-			fundTypes: [],
+			fundTypes: fundTypes,
             filter: {
                 coinName: "",
                 create_time: null,
@@ -203,7 +204,6 @@ export default {
                 pageSize: this.pageSize
             }
             if (filter.create_time) {
-                console.log(filter.create_time)
                 params.startTime = filter.create_time[0] + ' 00:00:00'
                 params.endTime = filter.create_time[1] + ' 23:59:59'
             } else {
@@ -212,7 +212,7 @@ export default {
                 params.feeCoinName = filter.coinName
             }
             if (filter.transType) params.transType = filter.transType
-            this.$http.get(`/backmgr/getBlockTransList`, params)
+            this.$http.get(`/wallet/block/backmgr/getBlockTransList`, params)
                 .then(({ code, result }) => {
                     if (code === 200) {
                         this.total = result.total
@@ -245,7 +245,7 @@ export default {
             }
             if (filter.transType) params.transType = filter.transType
             params.token = localStorage.getItem('token')
-            window.open('/backmgr/open/opsExportBlockRecdList?' + qs.stringify(params))
+            window.open('/wallet/block/backmgr/opsExportBlockRecdList?' + qs.stringify(params))
 			// this.$http.get('/backmgr/exportBlockRecdList', params).then(res => {
 			// 	if(res.code == 200) {
 			// 		window.open(res.result)
@@ -260,17 +260,9 @@ export default {
         hideCount (refer) {
             this.rowHeight = refer ? '500px' : '30px'
             // 等待动画结束之后再计算表格高度
-            setTimeout(() => {
-                this.setHeight()
-            }, 250)
-        },
-        setHeight () {
-            // const ch = document.body.clientHeight
-            // const ph = this.$el.querySelector('.monotoring .count-row').offsetHeight
-            // this.tableHeight = ch - ph - 225 + 'px'
         },
         allCoins () {
-            this.$http.get(`/backmgr/coin/getAllCoinInfo`)
+            this.$http.get(`/wallet/block/backmgr/getAllCoinInfo`)
                 .then(({ code, result }) => {
                     if (code === 200) {
                         let USDT = false
@@ -368,7 +360,12 @@ export default {
 <style lang="less" scoped>
 .blockchain-monotoring {
     overflow: hidden;
-    padding: 20px;
+	padding: 20px;
+	.el-form--inline {
+		/deep/.el-form-item__content {
+			width: auto;
+		}
+	}
     .select {
         width: 120px;
     }

@@ -10,6 +10,7 @@ import filter from './common/filter';
 import Viewer from 'v-viewer'
 import utils from '@/assets/js/utils'
 import 'viewerjs/dist/viewer.css';
+import VueClipboard from 'vue-clipboard2'
 
 
 Vue.use(ElementUI);
@@ -18,6 +19,7 @@ Vue.use(Http);
 Vue.use(components);
 Vue.use(Viewer);
 Vue.use(utils);
+Vue.use(VueClipboard)
 
 /* eslint-disable no-new */
 new Vue({

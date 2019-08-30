@@ -102,3 +102,12 @@ export const applicationType = [{
   value: '5',
   label: '其它',
 }];
+
+export const fundTypes = {
+	in: '充币',
+	cool: '冷钱包',
+	out: 'CFO提币',
+	to_cfo: 'CFO充值',
+	fee: '充值归拢费',
+	manual: '手动打币'
+}

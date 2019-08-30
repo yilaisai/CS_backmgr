@@ -100,7 +100,7 @@
         item.icon = item.menuUrl.split('/')[1] ? item.menuUrl.split('/')[1] : 'home';
       });
       this.menuList = menuList;
-      // console.log(this.menuList)
+      console.log(this.menuList)
     },
   };
 </script>

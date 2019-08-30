@@ -190,7 +190,7 @@
         let loading = this.$loading({ text: 'Loading', target: '.currency-dialog'})
         try {
           await this.$refs.currencyForm.validate()
-          let result = await this.$http.post('/cloud/backmgr/financial/financial/addIntervalFinancialPro', this.regularParams)
+          let result = await this.$http.post('/wallet/backmgr/financial/financial/addIntervalFinancialPro', this.regularParams)
           this.$emit('update:visible', false)
           this.$emit('createSuccess')
           this.$notify.success({ title: '请求成功', message: '创建定期项目成功' });
@@ -204,7 +204,7 @@
         let loading = this.$loading({ text: 'Loading', target: '.currency-dialog'})
         try {
           await this.$refs.currencyForm.validate()
-          let result = await this.$http.put('/cloud/backmgr/financial/financial/updateIntervalFinancialPro', this.regularParams)
+          let result = await this.$http.put('/wallet/backmgr/financial/financial/updateIntervalFinancialPro', this.regularParams)
           this.$emit('update:visible', false)
           this.$emit('createSuccess')
           this.$notify.success({ title: '请求成功', message: '更新定期项目成功' });

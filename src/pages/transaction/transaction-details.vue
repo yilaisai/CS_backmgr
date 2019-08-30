@@ -152,7 +152,7 @@ export default {
             this.filterForm.startDate = this.selectedDate && this.selectedDate[0];
             this.filterForm.endDate = this.selectedDate && this.selectedDate[1];
             this.$http.post('/wallet/app/otc/backmgr/getTradeList',this.filterForm).then(res=>{
-                const { list ,total} = res;
+                const { list ,total} = res.result;
                 this.listData.list = list;
                 this.listData.total = total;
             })
@@ -187,7 +187,7 @@ export default {
     activated(){
         const end = dateFormat(new Date())
         //const start = dateFormat(new Date().getTime() - 3600 * 1000 * 24 * 30);
-        this.selectedDate = ['', end];
+        this.selectedDate = [end, end];
         //console.log(this.selectedDate)
         this.getList()
     }

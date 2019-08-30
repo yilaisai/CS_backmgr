@@ -167,10 +167,10 @@
           <el-upload
             name="files"
             class="avatar-uploader"
-            :action="server_path + 'wallet/util/open/uploadFile'"
+            :action="server_path + 'wallet/backmgr/uploadFile'"
             :show-file-list="false"
             :on-success="upload"
-            :data="{type:'img'}">
+            :data="{type:'img',token:token}">
             <img v-if="ruleForm.picture" :src="ruleForm.picture" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
@@ -200,6 +200,7 @@
           total: null,
           list: [],
         },
+        token:localStorage.getItem('wallet_token'),
         noticeTypeList: [{
           value: '',
           label: '全部消息',

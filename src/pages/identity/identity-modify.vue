@@ -29,7 +29,7 @@
             <div slot="tip" class="attention">*证件照在有效期内，照片文字清晰可见，图片格式支持jpg/png</div>
             <el-upload
               class="avatar-uploader"
-              :action="server_path + 'wallet/util/open/uploadFile'"
+              :action="server_path + 'wallet/backmgr/uploadFile'"
               name="files"
               :data="upData"
               :show-file-list="false"
@@ -46,7 +46,7 @@
             <div slot="tip" class="attention">*证件照在有效期内，照片文字清晰可见，图片格式支持jpg/png</div>
             <el-upload
               class="avatar-uploader"
-              :action="server_path + 'wallet/util/open/uploadFile'"
+              :action="server_path + 'wallet/backmgr/uploadFile'"
               name="files"
               :data="upData"
               :show-file-list="false"
@@ -63,7 +63,7 @@
         <div slot="tip" class="attention">*证件照在有效期内，照片文字清晰可见，图片格式支持jpg/png</div>
         <el-upload
           class="avatar-uploader"
-          :action="server_path + 'wallet/util/open/uploadFile'"
+          :action="server_path + 'wallet/backmgr/uploadFile'"
           name="files"
           :data="upData"
           :show-file-list="false"

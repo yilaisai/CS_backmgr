@@ -61,7 +61,7 @@ export default {
     methods:{
         getList(){
             this.$http.post('/wallet/app/otc/backmgr/customInfoOperHistory',this.filterForm).then(res=>{
-                const { list ,total} = res;
+                const { list ,total} = res.result;
                 this.listData.list = list;
                 this.listData.total = total;
             })

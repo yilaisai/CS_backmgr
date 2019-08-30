@@ -12,10 +12,10 @@
       <el-form-item label="应用图标:" prop="iconUrl">
         <el-input style="width:80%" v-model="ruleForm.iconUrl" clearable size="small" placeholder="请输入应用图标地址">
           <el-upload
-            :action="server_path + 'wallet/util/open/uploadFile'"
+            :action="server_path + 'wallet/backmgr/uploadFile'"
             multiple
             name="files"
-            :data="{type:'img'}"
+            :data="{type:'img',token:token}"
             :show-file-list="false"
             :on-success="upload" slot="append">
             <el-button size="small" type="primary">点击上传</el-button>
@@ -242,7 +242,8 @@
           chineseDesc: [
             { required: true, message: '请输入币种介绍', trigger: 'blur' },
           ]
-        }
+        },
+        token:localStorage.getItem('wallet_token')
       };
     },
     methods: {

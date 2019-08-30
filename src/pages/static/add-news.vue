@@ -32,7 +32,7 @@
         </el-form>
         <quill-editor :disabled="disabled" v-model.trim="postObj.content" ref="myQuillEditor"></quill-editor>
         <el-upload class="upload"
-            :action="serverPath+'wallet/util/open/uploadFile'"
+            :action="serverPath+'wallet/backmgr/uploadFile'"
             name="files"
             :data="{type:'html'}"
             :on-success='upScuccess'
@@ -86,9 +86,9 @@ export default {
         save() {
             this.$refs.form.validate((valid) => {
                 if (valid) {
-                    let postUrl = '/cloud/backmgr/page/createPageInfo'
+                    let postUrl = '/wallet/backmgr/page/createPageInfo'
                     if(this.postObj.id) {
-                        postUrl = '/cloud/backmgr/page/updatePageInfo'
+                        postUrl = '/wallet/backmgr/page/updatePageInfo'
                     }
                     if(this.postObj.url.trim() != '' && this.postObj.url !== this.originUrl && this.postObj.content.trim() != '') {
                         // 修改过url
@@ -115,12 +115,12 @@ export default {
             });
         },
         getPageType() {
-            this.$http.post('/cloud/backmgr/page/open/getPageTypeList').then(res => {
+            this.$http.post('/wallet/backmgr/page/open/getPageTypeList').then(res => {
                 this.pageTypeList = res.result.list
             })
         },
         getContent(id) {
-            this.$http.post('/cloud/backmgr/page/open/getPageInfo', {
+            this.$http.post('/wallet/backmgr/page/open/getPageInfo', {
                 id: id
             }).then(res => {
                 this.postObj.content = res.result.appPageInfo.content || ''

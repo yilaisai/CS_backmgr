@@ -282,7 +282,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$http.delete("/cloud/backmgr/shop/deleteMarginRuleById", {
+          this.$http.delete("/wallet/backmgr/shop/deleteMarginRuleById", {
             id
           }).then((res) => {
             this.$notify({
@@ -317,7 +317,7 @@
       async getRegistInviteRule() {
         this.filterForm.startTime = this.dateTime && this.dateTime[0];
         this.filterForm.endTime = this.dateTime && this.dateTime[1];
-        this.$http.post("/cloud/backmgr/shop/listMarginLog", this.filterForm).then((res) => {
+        this.$http.post("/wallet/backmgr/shop/listMarginLog", this.filterForm).then((res) => {
           this.listData.list = res.result.list;
           this.listData.total = res.result.count;
         })
@@ -327,7 +327,7 @@
         const startTime = this.dateTime && this.dateTime[0];
         const endTime = this.dateTime && this.dateTime[1];
         const {userId} = this.filterForm;
-        this.$http.post("/cloud/backmgr/shop/listMarginRule", {
+        this.$http.post("/wallet/backmgr/shop/listMarginRule", {
           pageNum: 1,
           pageSize: 200,
           userId,
@@ -343,7 +343,7 @@
             const {coinId, id, level, amount, payCoinId, brushNumber, brushRate, coinDetail} = this.ruleForm;
 
             if (this.ruleForm.id) {
-              this.$http.put("/cloud/backmgr/shop/updateMarginRule", {
+              this.$http.put("/wallet/backmgr/shop/updateMarginRule", {
                 coinId,
                 id,
                 level,
@@ -362,7 +362,7 @@
                 this.getRegistRewardRuleList();
               })
             } else {
-              this.$http.post("/cloud/backmgr/shop/addMarginRule", {
+              this.$http.post("/wallet/backmgr/shop/addMarginRule", {
                 coinId,
                 level,
                 amount,

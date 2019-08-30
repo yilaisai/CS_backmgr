@@ -86,7 +86,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$http.post("/cloud/backmgr/shop/updateShopForService", {
+          this.$http.post("/wallet/backmgr/shop/updateShopForService", {
             userId,
             state
           }).then((res) => {
@@ -101,7 +101,7 @@
       },
       // 查询代理用户列表
       getListAgencyUser() {
-        this.$http.post("/cloud/backmgr/shop/listAgencyUser", this.filterForm).then((res) => {
+        this.$http.post("/wallet/backmgr/shop/listAgencyUser", this.filterForm).then((res) => {
           this.listData.list = res.result.list;
           this.listData.total = res.result.count;
         })

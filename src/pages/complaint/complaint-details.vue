@@ -235,7 +235,7 @@ export default {
 			this.$http.post('/wallet/app/otc/backmgr/proofInfo', {
 				appealId: this.appealId
 			}).then(res=>{
-				res.forEach((val, idx) => {
+				res.result.forEach((val, idx) => {
 					console.log(val)
 					if(val.isBuyer == 1) {
 						this.BuyProofInfo = val
@@ -251,7 +251,7 @@ export default {
             }
             this.$http.post('/wallet/app/otc/backmgr/infoBuyList',postdata).then(res=>{
                 //console.log(res)
-                const { list} = res;
+                const { list} = res.result;
                 this.BuyList = list;
                 const postdata2={
                     appealId:this.appealId,
@@ -267,7 +267,7 @@ export default {
                 appealId:this.appealId
             }
             this.$http.post('/wallet/app/otc/backmgr/infoSaleList',postdata).then(res=>{
-                const { list} = res;
+                const { list} = res.result;
                 this.SaleList = list;
                 const postdata2={
                     appealId:this.appealId,

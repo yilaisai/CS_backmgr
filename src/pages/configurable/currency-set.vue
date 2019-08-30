@@ -141,6 +141,20 @@
         <el-input style="width:80%" type="textarea" :rows="2" size="small" placeholder="请输入币种介绍"
                   v-model="ruleForm.chineseDesc"></el-input>
       </el-form-item>
+
+         
+      <el-form-item label="是否支持法币保证金:" prop="isOtcDeposit">
+        <el-radio-group v-model="ruleForm.isOtcDeposit">
+          <el-radio v-model="ruleForm.isOtcDeposit" :label="1">是</el-radio>
+          <el-radio v-model="ruleForm.isOtcDeposit" :label="0">否</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="是否支持法币交易:" prop="isEnableOtc">
+        <el-radio-group v-model="ruleForm.isEnableOtc">
+          <el-radio v-model="ruleForm.isEnableOtc" :label="1">是</el-radio>
+          <el-radio v-model="ruleForm.isEnableOtc" :label="0">否</el-radio>
+        </el-radio-group>
+      </el-form-item>
       <el-form-item size="small" style="text-align:center; width:80%; margin-top:60px;">
         <el-button type="primary" style="width: 100px" @click="onSubmit">{{buttonTitle}}</el-button>
         <el-button type="danger" style="width: 100px;" @click="$router.go(-1)">取消</el-button>
@@ -196,9 +210,9 @@
             { required: true, message: '请输入数额', trigger: 'blur' },
             { validator: checkNum, message: '转账限额必须为数字' }
           ],
-          isErc20: [
-            { required: true, message: '请选择是否是ETH代币', trigger: 'change' },
-          ],
+          // isErc20: [
+          //   { required: true, message: '请选择是否是ETH代币', trigger: 'change' },
+          // ],
           tranInMinAmount: [
             { required: true, message: '请输入最小转账数额', trigger: 'blur' },
             { validator: checkNum, message: '账数额必须为数字' }

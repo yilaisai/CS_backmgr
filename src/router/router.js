@@ -113,6 +113,14 @@ export const appRouter = [
         component: () => import('@/pages/complaint/complaint.vue'),
       },
       {
+        path: 'LegalCurrencyTop',
+        name:'LegalCurrencyTop',
+        meta: {
+          title: '法币资产排名',
+        },
+        component: () => import('@/pages/complaint/LegalCurrencyTop.vue'),
+      },
+      {
         path: 'customer-log',
         name:'customer-log',
         meta: {

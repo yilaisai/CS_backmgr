@@ -39,7 +39,7 @@
             </el-col>
             <el-col :span="8" style="">
               <img @click="getImgCode" ref="imgcode" class="imgcode"
-                   :src="SERVER_PATH +'/wallet/backmgr/sysuser/open/getValidateCode'" alt="验证码">
+                   :src="SERVER_PATH +'wallet/backmgr/sysuser/open/getValidateCode'" alt="验证码">
             </el-col>
           </el-row>
         </div>
@@ -83,7 +83,7 @@
     },
     methods: {
       getImgCode() {
-        this.$refs.imgcode.src = `${SERVER_PATH}/wallet/backmgr/sysuser/open/getValidateCode?${Math.random()}`;
+        this.$refs.imgcode.src = `${SERVER_PATH}wallet/backmgr/sysuser/open/getValidateCode?${Math.random()}`;
       },
       login() {
         this.$refs.postObj.validate((valid) => {

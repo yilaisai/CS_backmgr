@@ -181,8 +181,7 @@
   import 'quill/dist/quill.bubble.css'
   import { quillEditor } from 'vue-quill-editor'
   import Quill from 'quill'
-  import { applicationType } from '@/common/constants';
-
+  import { applicationType,transactionType } from '@/common/constants';
   export default {
     name: "third-modify",
     data() {
@@ -191,6 +190,7 @@
         server_path: "",
         token:localStorage.getItem('wallet_token'),
         currentForm: {},
+        ruleFormwnloadUrl:'',
         ruleForm: {
           appType: '',
           appid: "",
@@ -327,19 +327,21 @@
         this.$refs.ruleForm && this.$refs.ruleForm.resetFields(); // 重置query的数据
       },
       getTransferTypeInfoList() {
-        if (!this.transferTypeInfoList.length) {
-          this.$http.post("wallet/backmgr/transferType/getTransferTypeInfoList", {
-            version: '1.0.0',
-            plat: 'web'
-          }).then((res) => {
-            const date = res.result.list.list;
-            date.forEach((item) => {
-              item.label = item.transferTypeName;
-              item.value = (item.id).toString();
-            });
-            this.transferTypeInfoList = date;
-          })
-        }
+        // if (!this.transferTypeInfoList.length) {
+        //   this.$http.post("wallet/backmgr/transferType/getTransferTypeInfoList", {
+        //     version: '1.0.0',
+        //     plat: 'web'
+        //   }).then((res) => {
+        //     const date = res.result.list.list;
+        //     date.forEach((item) => {
+        //       item.label = item.transferTypeName;
+        //       item.value = (item.id).toString();
+        //     });
+        //     this.transferTypeInfoList = date;
+        this.transferTypeInfoList=transactionType
+        console.log(this.transferTypeInfoList)
+        //   })
+        // }
       },
       upload(response, file, fileList) {
         this.ruleForm.appIcon = response.result.urls[0];

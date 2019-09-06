@@ -230,7 +230,7 @@
         background: url("~@/assets/blockchain.png") no-repeat top left;
         background-size: 16px 16px;
       }
-      &complaint{
+      &LegalCurrency{
         padding-left: 20px;
         height: 18px;
         background: url("~@/assets/complaint.png") no-repeat center left;

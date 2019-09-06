@@ -1,0 +1,254 @@
+<template>
+    <div class='exchangeSAC'>
+      <el-form :inline="true"
+               label-width="90px"
+               ref="filterForm"
+               :model="filterForm">
+        <sac-input
+          ref="phone"
+          label="账号"
+          v-model.trim="filterForm.phoneOrEmail"></sac-input>
+				<el-form-item label="状态">
+					<el-select class="select" v-model="filterForm.status" >
+							<el-option v-for="(item, key) in stateList" :key="key" :value="item.value" :label="item.name"></el-option>
+					</el-select>
+				</el-form-item>
+        
+        <sac-submit-form
+          :isReset='false'
+          @submitForm="getUserRaking()"></sac-submit-form>
+      </el-form>
+			
+      <el-table stripe border height="100%" :default-sort = "{prop: 'usdtAmount', order: 'descending'}" :data="listData.list" @sort-change='sortChange'>
+				
+        <el-table-column prop="phone" label="账号"></el-table-column>
+        <el-table-column prop="nickName" label="昵称"></el-table-column>
+				<el-table-column prop="userLevel" label="用户类型">
+          <template slot-scope="scope">
+            {{  scope.row.userLevel ==1?'广告商':'普通用户' }}
+          </template>
+        </el-table-column>
+				<el-table-column  label="支付宝">
+          <template slot-scope="scope">
+							<p v-if="scope.row.alipay" style="color:#409EFF">{{scope.row.alipay}}</p>
+							<p v-else> 当前未使用 </p>
+          </template>
+        </el-table-column>
+				<el-table-column  label="微信支付">
+          <template slot-scope="scope">
+							<p v-if="scope.row.wechat" style="color:#409EFF">{{scope.row.wechat}}</p>
+							<p v-else> 当前未使用 </p>
+          </template>
+        </el-table-column>
+				<el-table-column  label="银行卡">
+          <template slot-scope="scope">
+							<p v-if="scope.row.bank" style="color:#409EFF">{{scope.row.bank}}</p>
+							<p v-else> 当前未使用 </p>
+          </template>
+        </el-table-column>
+				<el-table-column  label="状态">
+          <template slot-scope="scope">
+            {{  scope.row.status ==1?'已审核':'待审核' }}
+          </template>
+        </el-table-column>
+				<el-table-column fixed="right" label="操作" width="200">
+					<template slot-scope="scope">
+						<el-button @click="goDetaile(scope)" type="text" size="mini">查看审核</el-button>
+						<el-button @click="showQRcode(scope)" type="text" size="mini">收款测试</el-button>
+						<el-button @click="showStopWindow(scope)" type="text" size="mini">停止使用</el-button>
+					</template>
+				</el-table-column>
+        
+      </el-table>
+      <sac-pagination v-show="listData.list.length>0"
+                      @handleChange="getPaginationChange"
+                      :total="+listData.total"
+                      :page-size="filterForm.pageSize"
+                      :current-page="filterForm.pageNum">
+      </sac-pagination>
+			<el-dialog
+				title="停止使用"
+				:visible.sync="stopWindon"
+				width="30%">
+				<p>点击后，用户该收款方式将下架，确认操作？</p>
+				<el-form ref="form"   >
+					<!-- <el-form-item label="审核备注">
+						<el-input type="textarea" v-model.trim="stopType"></el-input>
+					</el-form-item> -->
+					<el-form-item label="停止类型" >
+						<el-select class="select" v-model="stopType">
+								<el-option v-for="(item, key) in payList" :key="key" :value="item.value" :label="item.name"></el-option>
+						</el-select>
+					</el-form-item>
+				</el-form>
+				<span slot="footer" class="dialog-footer">
+					<el-button @click="stopWindon = false">取 消</el-button>
+					<el-button type="success" @click="stop">停 止</el-button>
+				</span>
+			</el-dialog>
+			<el-dialog
+				title="当前使用"
+				:visible.sync="QRcodeWindow"
+				width="400">
+				<div v-if=" obj.alipayQrcode||obj.wechatQrcode " class="qr-box">
+					<div v-show="obj.alipayQrcode">
+						<img :src="obj.alipayQrcode" alt="">
+						<p>支付宝收款码</p>
+					</div>
+					<div v-show="obj.wechatQrcode">
+						<img :src="obj.wechatQrcode" alt="">
+						<p>微信收款码</p>
+					</div>
+				</div>
+				<p style="text-align: center" v-else>暂未使用二维码收款码</p>
+			
+			</el-dialog>
+			
+    </div>
+</template>
+<script>
+    export default {
+        name: "exchangeSAC",
+        data() {
+            return {
+              filterForm: {
+                phoneOrEmail: '',
+                pageNum: 1,
+                pageSize: 20,
+                status:'',//'BTC'
+                order:'desc'//和asc
+              },
+              listData: {
+                total: null,
+                list: [],
+							},
+							stateList:[
+								{name:'全部',value:''},
+								{name:'待审核',value:'0'},
+								{name:'已审核',value:'1'}
+							],
+							payList:[],
+							stopType:'0',
+							stopWindon:false,
+							QRcodeWindow:false,
+							dialogVisible:true,
+							obj:{},
+            };
+        },
+      methods: {
+				showStopWindow(scope){
+					this.obj = scope.row
+					this.stopType = 0
+					this.payList = []
+					if(this.obj.wechat){
+						this.payList.unshift({
+							name:'微信支付',value:this.obj.wechatId
+						})
+					}
+					if(this.obj.alipay){
+						this.payList.unshift({
+							name:'支付宝',value:this.obj.alipayId
+						})
+					}
+					if(this.obj.bank){
+						this.payList.unshift({
+							name:'银行卡',value:this.obj.bankId
+						})
+					}
+					console.log(this.obj.bankId)
+					if(this.payList.length>1){
+						this.payList.unshift({
+							name:'全部',value:'0'
+						})
+					}
+					if(this.payList.length>0){
+						this.stopType = this.payList[0].value
+						this.stopWindon = true
+					}else{
+						this.$alert('当前未使用支付方式', {
+							dangerouslyUseHTMLString: true
+						});	
+					}
+				},
+				stop(){
+					this.$http.post("/wallet/app/otc/backmgr/updatePayStatus", {
+						userId:this.obj.userId,
+						payId:this.stopType,
+						status:2
+					}).then((res) => {
+						this.$message('操作成功');
+						this.stopWindon = false
+						this.getUserRaking()
+          })
+				},
+				goDetaile(scope){
+					this.$router.push({
+						name:'accountsReceivableDetaile',
+						query:{
+							userId:scope.row.userId,
+							nickName:scope.row.nickName,
+							phone:scope.row.phone,
+							userLevel:scope.row.userLevel
+						}
+					})
+				},
+				showQRcode(scope){
+					console.log(scope)
+					this.obj = scope.row
+					this.QRcodeWindow = true
+				},
+        sortChange(a){
+          if(a.order=="ascending"){//上升
+            this.filterForm.order = 'asc'
+          }else{//下降
+            this.filterForm.order = 'desc'
+          }
+          if(a.prop=="btcAmount"){
+            this.filterForm.coinName = 'BTC'
+          }else{
+            this.filterForm.coinName = 'USDT'
+          }
+          // this.filterForm.pageSize = 1;
+          this.filterForm.pageNum = 1;
+          this.getUserRaking();
+        },
+        getPaginationChange(val, currentPage) {
+          this.filterForm.pageSize = val;
+          this.filterForm.pageNum = currentPage;
+          this.getUserRaking();
+        },
+        // 查询用户列表
+        getUserRaking() {
+          this.$http.post("/wallet/app/otc/backmgr/getCustomPayInfo", this.filterForm).then((res) => {
+            this.listData.list = res.result.list;
+            this.listData.total = res.result.total;
+          })
+        },
+        detail(data){
+          console.log(data)
+        }
+      },
+      activated() {
+        this.getUserRaking();      // 查询代理用户列表
+      }
+    };
+</script>
+<style lang="">
+    .qr-box{
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-around;
+			
+		}
+		.qr-box>div{
+			width: 150px;
+		}
+		.qr-box>div>img{
+			width: 100%
+		}
+		.qr-box>div>p{
+			text-align: center;
+		}
+</style>
+

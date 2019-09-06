@@ -96,14 +96,38 @@ export const appRouter = [
       }],
   },
   {
-    path: '/complaint',
-    name: 'complaint',
-    redirect: '/complaint/complaint',
+    path: '/LegalCurrency',
+    name: 'LegalCurrency',
+    redirect: '/LegalCurrency/complaint',
     meta: {
       title: '法币交易',
     },
     component: Index,
     children: [
+      {
+        path: 'verify',
+        name:'verify',
+        meta: {
+          title: '审核模块',
+        },
+        component:() => import('@/pages/LegalCurrency/verify/accountsReceivable.vue'),
+      },
+      {
+        path: 'accountsReceivable',
+        name:'accountsReceivable',
+        meta: {
+          title: '收款账户',
+        },
+        component: () => import('@/pages/LegalCurrency/verify/accountsReceivable.vue'),
+      },
+      {
+        path: 'accountsReceivableDetaile',
+        name:'accountsReceivableDetaile',
+        meta: {
+          title: '收款账户-详情',
+        },
+        component: () => import('@/pages/LegalCurrency/verify/accountsReceivableDetaile.vue'),
+      },
       {
         path: 'complaint',
         name:'complaint',

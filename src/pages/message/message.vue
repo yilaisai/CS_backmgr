@@ -273,7 +273,7 @@
             { required: true, message: '请选择币种', trigger: 'change' }
           ],
         },
-        allAccountValue: '', // 暂存所以新增账号
+        allAccountValue: '', // 暂存所有新增账号
         radioValue: null,
         currentObj: {},
         coinList: [],

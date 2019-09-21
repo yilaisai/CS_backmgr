@@ -279,7 +279,7 @@
             { required: true,validator:validateTargetPhone, trigger: 'blur' }
           ],
         },
-        allAccountValue: '', // 暂存所以新增账号
+        allAccountValue: '', // 暂存所有新增账号
         targetId: null,
         currentObj: {},
         coinList: [],

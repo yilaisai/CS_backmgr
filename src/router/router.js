@@ -262,6 +262,32 @@ export const appRouter = [
 	  ]
   },
   {
+	  path: '/merchant',
+	  name: 'merchant',
+	  redirect: '/merchant/merchantList',
+	  meta: {
+		  title: '商户模块'
+	  },
+	  component: Index,
+	  children: [
+		  {
+			  path: 'merchantList',
+			  name: 'merchantList',
+			  meta: {
+				  title: '商户查询'
+			  },
+			  component: () => import('@/pages/merchant/index.vue')
+      },{
+			  path: 'merchantDetaile',
+			  name: 'merchantDetaile',
+			  meta: {
+				  title: '商户审核详情'
+			  },
+			  component: () => import('@/pages/merchant/merchantDetaile.vue')
+      }
+    ]
+  },
+  {
     path: '/money',
     name: 'money',
     redirect: '/money/transfer-approval',

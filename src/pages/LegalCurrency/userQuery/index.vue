@@ -17,14 +17,14 @@
 								<div class="radioBox">
 									<label >广告商类型:</label>
 									<el-radio-group v-model="filterForm.userLevel">
-										<el-radio  label="">所以</el-radio>
+										<el-radio  label="">所有</el-radio>
 										<el-radio v-for="(item,index) in advList" :key="index" :label="item.label">{{item.value}}</el-radio>
 									</el-radio-group>
 								</div>
 								<div class="radioBox">
 									<label >企业类型：</label>
 									<el-radio-group v-model="filterForm.company">
-										<el-radio  label="">所以</el-radio>
+										<el-radio  label="">所有</el-radio>
 										<el-radio v-for="(item,index) in companyType" :key="index" :label="item.label">{{item.value}}</el-radio>
 									</el-radio-group>
 								</div>

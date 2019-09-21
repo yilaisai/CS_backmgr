@@ -158,12 +158,12 @@ export default {
 							{value:'申述中',label:"5"},
 						],
 						coinList:[
-							{value:'所以',label:""},
+							{value:'所有',label:""},
 							{value:'USDT',label:"USDT"},
 							{value:'BTC',label:"BTC"},
 						],
 						transList:[
-							{value:'所以',label:""},
+							{value:'所有',label:""},
 							{value:'购买',label:"1"},
 							{value:'出售',label:"0"},
 						],

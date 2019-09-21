@@ -1,10 +1,3 @@
-/*
- * @Author: dubbing 
- * @Date: 2018-12-13 16:12:04 
- * @Last Modified by: dubbing
- * @Content: 查看用户历史处理记录
- * @Last Modified time: 2018-12-16 16:07:46
- */
 
 <template>
     <div class="user-history">

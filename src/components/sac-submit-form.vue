@@ -36,6 +36,9 @@
 <style lang='less'>
   .yh-submit {
     text-align: right;
+    &>.el-form-item__content{
+      width: auto;
+    }
   }
 </style>
 

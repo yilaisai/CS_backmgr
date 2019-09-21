@@ -10,12 +10,9 @@
         <el-container>
             <el-header class="filter-header">
                 
-                <el-form :inline="true" label-width="120px" ref="filterForm" :model="filterForm">
+                <el-form :inline="true"  ref="filterForm" :model="filterForm">
                     <div class="title">
-                        <el-form-item label="币种:">
-                            <el-input v-model="filterForm.coinName" placeholder=请输入币种></el-input>
-                        </el-form-item>
-                        <el-form-item label="时间:">
+                        <el-form-item class='dateItem' label="时间:">
                             <el-date-picker
                                 v-model="selectedDate"
                                 type="daterange"
@@ -24,9 +21,13 @@
                                 end-placeholder="结束日期">
                             </el-date-picker>
                         </el-form-item>
+                        <el-form-item label="币种:">
+                            <el-input v-model="filterForm.coinName" placeholder=请输入币种></el-input>
+                        </el-form-item>
+                        
                         <el-form-item label="用户ID:">
                             <el-input placeholder="请输入用户ID" v-model="filterForm.userId" class="input-with-select">
-                                <el-button slot="append" icon="el-icon-search" @click="search">搜索</el-button>
+                                <el-button slot="append"  icon="el-icon-search" @click="search">搜索</el-button>
                             </el-input>
                         </el-form-item>
                         <div class="el-form-item__content" style="width:100px">
@@ -219,6 +220,9 @@ export default {
             overflow: hidden;
         }
     }  
+   /deep/ .dateItem  .el-form-item__content{
+        width: 340px;
+    }
 }
   
 </style>

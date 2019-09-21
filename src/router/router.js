@@ -113,6 +113,38 @@ export const appRouter = [
         component:() => import('@/pages/LegalCurrency/verify/accountsReceivable.vue'),
       },
       {
+        path: 'userQuery',
+        name:'userQuery',
+        meta: {
+          title: '用户查询',
+        },
+        component:() => import('@/pages/LegalCurrency/userQuery/index.vue'),
+      },
+      {
+        path: 'userQueryDetaile',
+        name:'userQueryDetaile',
+        meta: {
+          title: '查看用户详情',
+        },
+        component:() => import('@/pages/LegalCurrency/userQuery/detaile.vue'),
+      },
+      {
+        path: 'tradingFlow',
+        name:'tradingFlow',
+        meta: {
+          title: '交易流水',
+        },
+        component:() => import('@/pages/LegalCurrency/tradingFlow/index.vue'),
+      },
+      {
+        path: 'tradingFlowDetaile',
+        name:'tradingFlowDetaile',
+        meta: {
+          title: '交易详情',
+        },
+        component:() => import('@/pages/LegalCurrency/tradingFlow/detaile.vue'),
+      },
+      {
         path: 'accountsReceivable',
         name:'accountsReceivable',
         meta: {

@@ -12,6 +12,11 @@
           ref="phone"
           label="昵称"
           v-model.trim="filterForm.nickName"></sac-input>
+        <el-form-item label="币种">
+					<el-select class="select" v-model="coinType" >
+							<el-option v-for="(item, key) in coinList" :key="key" :value="item" :label="item"></el-option>
+					</el-select>
+				</el-form-item>  
         <sac-submit-form
           :isReset='false'
           @submitForm="getUserRaking()"></sac-submit-form>
@@ -58,6 +63,8 @@
                 coinName:'USDT',//'BTC'
                 order:'desc'//和asc
               },
+              coinType:'BTC',
+              coinList:['BTC','USDT','ETH'],
               listData: {
                 total: null,
                 list: [],

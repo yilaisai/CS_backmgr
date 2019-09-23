@@ -8,7 +8,7 @@
   <div class="login">
     <div class="content">
       <img src="@/assets/login_logo.png" alt="">
-      <p class="title">Sacbox后台管理系统</p>
+      <p class="title">HOMO后台管理系统</p>
       <el-form :model="postObj" :rules="rules" ref="postObj"
                label-width="0px" class="demo-ruleForm">
         <div class="form">

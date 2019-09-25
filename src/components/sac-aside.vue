@@ -236,6 +236,12 @@
         background: url("~@/assets/complaint.png") no-repeat center left;
         background-size: 18px 18px;
       }
+      &merchant{
+        padding-left: 20px;
+        height: 18px;
+        background: url("~@/assets/merchant.png") no-repeat center left;
+        background-size: 18px 18px;
+      }
     }
       
   }

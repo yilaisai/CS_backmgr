@@ -7,7 +7,10 @@
 const Index = () => import('@/pages/home');
 const Login = () => import('@/pages/login/index');
 
+import systemRouter from './routers/system'  //系统页面
+console.log(systemRouter)
 export const appRouter = [
+	...systemRouter,
   {
     path: '/',
     name: 'Index',

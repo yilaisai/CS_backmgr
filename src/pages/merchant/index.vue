@@ -97,8 +97,10 @@ export default {
     },
     methods:{
         getList(){
-					this.filterForm.startDate = this.selectedDate && this.selectedDate[0]+' 00:00:00';
-					this.filterForm.endDate = this.selectedDate && this.selectedDate[1]+' 23:59:59';;
+					if(this.selectedDate.length==2){
+						this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
+						this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
+					}
 					this.$http.post('/wallet/backmgr/merchant/list',this.filterForm).then(res=>{
 						const { list ,total} = res.result.page;
 						this.listData.list = list;
@@ -124,7 +126,8 @@ export default {
         },
     },
     activated(){
-        this.setDateType()
+				// this.setDateType()
+				
         this.getList()
     }
 }

@@ -36,7 +36,8 @@
 										type="daterange"
 										range-separator="至"
 										start-placeholder="开始日期"
-										end-placeholder="结束日期" @change='filterForm.dateType=""'>
+										format="yyyy-MM-dd "
+										end-placeholder="结束日期" @change='dateChange'>
 									</el-date-picker>
 								</el-form-item>
 								
@@ -59,8 +60,8 @@
 							</el-table-column>
 								<el-table-column  label="企业类型" >
 									<div slot-scope="scope">
-										<span v-if="scope.row.userRole==0">非企业号</span>
-										<span v-if="scope.row.userRole==1">企业号</span>
+										<span v-if="scope.row.userEnterprise==0">非企业号</span>
+										<span v-if="scope.row.userEnterprise==1">企业号</span>
 									</div>
 								</el-table-column>
 							
@@ -93,14 +94,14 @@
 							</el-select>
 						</el-form-item>
 						<el-form-item label="企业类型调整：" label-width="140px" >
-							<el-select v-model="userTypeForm.userRole" placeholder="请选择企业类型">
+							<el-select v-model="userTypeForm.userEnterprise" placeholder="请选择企业类型">
 								<el-option v-for="(item,index) in companyType" :key = 'index' :label="item.value" :value="item.label "></el-option>
 							</el-select>
 						</el-form-item>
 					</el-form>
 					<div slot="footer" class="dialog-footer">
 						<el-button @click="dialogFormVisible = false">取 消</el-button>
-						<el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+						<el-button type="primary" @click="updateOtcUserLevel">确 定</el-button>
 					</div>
 				</el-dialog>
 
@@ -127,7 +128,7 @@ export default {
 						},
 						userTypeForm:{
 							userLevel:'1',
-							userRole:'1'
+							userEnterprise:'1',
 						},
 						advList:[
 							{value:'普通用户',label:"0"},
@@ -136,8 +137,8 @@ export default {
 							{value:'企业广告商',label:"3"},
 						],
 						companyType:[
-							{value:'非企业',label:"1"},
-							{value:'企业号',label:"2"},
+							{value:'非企业',label:"0"},
+							{value:'企业号',label:"1"},
 						],
             listData: {
                 total: null,
@@ -148,18 +149,31 @@ export default {
     },
     methods:{
         getList(){
-					this.filterForm.startDate = this.selectedDate && this.selectedDate[0]+' 00:00:00';
-					this.filterForm.endDate = this.selectedDate && this.selectedDate[1]+' 23:59:59';;
+					if(this.selectedDate.length == 2 ){
+					this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
+					this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
+					}
 					this.$http.post('/wallet/app/otc/backmgr/queryOtcUser',this.filterForm).then(res=>{
 						const { list ,total} = res.result;
 						this.listData.list = list;
 						this.listData.total = total;
 					})
 				},
+				// 
+				updateOtcUserLevel(userid){
+					this.$http.post('/wallet/app/otc/backmgr/updateOtcUserLevel',this.userTypeForm).then(res=>{
+						this.$message.success('取消申诉操作成功')
+						this.dialogFormVisible=false
+						this.getList()
+					})
+				},
+				dateChange(){
+				},
 				editType(data){
 					this.userTypeForm = {
 							userLevel:data.userLevel+'',
-							userRole:data.userRole+''
+							userEnterprise:data.userEnterprise+'',
+							userId:data.userId
 						}
 					this.dialogFormVisible=true
 				},
@@ -200,7 +214,7 @@ export default {
         }
     },
     activated(){
-        this.setDateType()
+        // this.setDateType()
         this.getList()
     }
 }

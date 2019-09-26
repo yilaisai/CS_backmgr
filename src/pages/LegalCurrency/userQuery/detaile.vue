@@ -62,53 +62,73 @@
 					<el-form-item label="广告商状态:">
 						<el-input :value=" detaileData.sysStatus==0?'失效':'有效'" disabled></el-input>
 					</el-form-item>
-
-					
-					<!--<el-form-item label="下单时间">
-						<el-input :value=" $fmtDate(detaileData.createStamp,'full') " disabled></el-input>
-					</el-form-item>
-					<el-form-item label="maker昵称:">
-						<el-input v-model="detaileData.makerName"  disabled></el-input>
-					</el-form-item>
-					 <el-form-item label="maker佣金" class="big">
-						<el-input :value=" '一级佣金'+detaileData.makerCommission+detaileData.coinName+',二级级佣金'+detaileData.makerFirstCommission+detaileData.coinName+',三级级佣金'+detaileData.makerSecondaryCommission+detaileData.coinName  " disabled></el-input>
-					</el-form-item> -->
 				</el-form>
 			</div>
 			<div>
 				<h3>邀请关系</h3>
 				<el-table
-					:data="tableData"
+					:data="inviteList"
 					style="width: 100%;margin-bottom: 20px;"
-					row-key="id"
+					row-key="inviteeId"
 					border
 					default-expand-all
 					:tree-props="{children: 'children', hasChildren: 'hasChildren'}">
 					<el-table-column
-						prop="date"
-						label="日期"
-						sortable
-						width="180">
+						prop="inviteeName"
+						label="昵称">
 					</el-table-column>
 					<el-table-column
-						prop="name"
-						label="姓名"
-						sortable
-						width="180">
-					</el-table-column>
-					<el-table-column
-						prop="address"
-						label="地址">
+						prop="reward"
+						label="佣金">
+						<div slot-scope="scope">
+							{{ Math.floor(scope.row.reward*100)/100 }}%
+						</div>
 					</el-table-column>
 					<el-table-column label="操作" width="120">
-						<template slot-scope="scope">   
-							<el-button type="text" size="mini" >修改佣金</el-button>
-								<el-button type="text" size="mini" >迁移</el-button>
+						<template slot-scope="scope"  >   
+							<el-button  type="text" size="mini" @click="EditRate(scope.row) ">修改佣金</el-button>
+								<el-button type="text" size="mini" @click="brokerage(scope.row)  ">迁移</el-button>
 						</template>
 					</el-table-column>
 				</el-table>
 			</div>
 		</div>
+		<el-dialog title="修改佣金" :visible.sync="showDialog">
+			<div class=" inputGroup ">
+				<span>佣金费率：</span>
+				<el-input placeholder="请输入内容" v-model="rate" >
+				<template slot="append">%</template>
+			</el-input>
+			</div>
+			<div slot="footer" class="dialog-footer">
+				<el-button @click="showDialog = false">取 消</el-button>
+				<el-button type="primary" @click="updateRewardRate()">确认修改</el-button>
+			</div>
+		</el-dialog>
+		<el-dialog title="迁移关系" :visible.sync="showDialog2" width="650px" class="brokerageTable">
+			<div class=" inputGroup ">
+				<span>账号/昵称：</span>
+				<el-input placeholder="请输入账号/昵称" v-model="account" ></el-input>
+			<el-button type="primary" @click="saerch">搜索</el-button>
+			</div>
+			<el-table size="mini" :data="listData.list" border height="500px" >
+					<el-table-column prop="account" label="账号" ></el-table-column>
+					<el-table-column prop="nickName" label="昵称" ></el-table-column>
+					<el-table-column prop="account" label="操作" fixed="right">
+						<template slot-scope="scope">
+							<el-button type="text" @click.native=" updateInviteShip(scope.row.userId) ">迁移至该账号下</el-button>
+						</template>
+					</el-table-column>
+			</el-table>
+			<div slot="footer" class="dialog-footer">
+				 <sac-pagination v-show="listData.list.length>0"
+						@handleChange="handleCurrentChange"
+						:total="+listData.total"
+						:page-size="listData.pageSize"
+						:current-page="listData.pageNum">
+				</sac-pagination>
+			</div>
+		</el-dialog>
 	</div>
 </template>
 <script>
@@ -118,84 +138,33 @@ export default {
 	},
 	data(){
 		return {
+			//editBrokerage
+			account:'',
+			rate:'',
+			showDialog:false,
+			showDialog2:false,
 			filterForm:{
 				coinName:'USDT',
 				userId:'',
 			},
+			listData:{
+				pageSize:10,
+				pageNum:1,
+				total:'',
+				list:[]
+			},
 			coinList:['USDT','BTC'],
 			defaultProps: {},
-			tableData: [{
-          id: 1,
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          id: 2,
-          date: '2016-05-04',
-          name: '王小虎',
-					address: '上海市普陀区金沙江路 1517 弄',
-					 children: [{
-              id: 21,
-              date: '2016-05-01',
-              name: '王小虎',
-              address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-              id: 22,
-              date: '2016-05-01',
-              name: '王小虎',
-              address: '上海市普陀区金沙江路 1519 弄'
-          }]
-        }, {
-          id: 3,
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄',
-          children: [{
-              id: 31,
-              date: '2016-05-01',
-              name: '王小虎',
-              address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-              id: 32,
-              date: '2016-05-01',
-              name: '王小虎',
-              address: '上海市普陀区金沙江路 1519 弄'
-          }]
-        }, {
-          id: 4,
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }],
+			currItem:{},
+			inviteList:[],
 			detaileData:{
-				list:[{
-          label: '一级 1',
-          children: [{
-            label: '二级 1-1',
-            children: [{
-              label: '三级 1-1-1'
-            },{
-              label: '12345678901234567890'
-            },{
-              label: '三级 1-1-3'
-            }]
-          },{
-            label: '二级 1-2',
-            children: [{
-              label: '三级 1-2-1'
-            },{
-              label: '三级 1-2-2'
-            },{
-              label: '三级 1-2-3'
-            }]
-          }]
-        }],
 			}
 		}
 	},
 	activated(){
 		this.filterForm.userId = this.$route.query.userId
 		this.getData()
+		this.findInviteTree()
 	},
 	mounted(){
 		
@@ -204,6 +173,80 @@ export default {
 		selectCoin(){
 			console.log(1)
 			this.getData()
+		},
+		handleCurrentChange(val,currentPage) {
+			this.listData.pageSize=val
+			this.listData.pageNum=currentPage
+			this.getList()
+		},
+		saerch(){
+			this.listData.pageNum=1
+			this.getList()
+		},
+		findInviteTree(){
+			this.$http.post('/wallet/invite/backmgr/findInviteTree',{
+				// inviteeId:this.filterForm.userId
+				inviteeId:32
+			}).then(res=>{
+				if(res.code==200){
+					this.inviteList = [res.result]
+				}
+			})
+		},
+		EditRate(data){
+			this.currItem = data
+			this.showDialog=true
+		} ,
+		brokerage(data){
+			this.currItem = data
+			this.showDialog2=true
+			this.listData.pageNum = 1
+			this.getList()
+		} ,
+		updateInviteShip(inviterId){
+
+			this.$confirm('确定要执行迁移操作吗?', '提示', {
+				confirmButtonText: '确定',
+				cancelButtonText: '取消',
+				type: 'warning'
+			}).then(() => {
+					this.$http.post('/wallet/invite/backmgr/updateInviteShip',{
+						inviterId:inviterId,
+						inviteeId:this.currItem.inviteeId
+					}).then(res=>{
+						if(res.code==200){
+							this.showDialog2 = false
+							this.findInviteTree()
+							this.$message.success('迁移成功')
+						}
+					})
+			}).catch(() => {})
+		
+		},
+		updateRewardRate(){
+			this.$http.post('/wallet/invite/backmgr/updateRewardRate',{
+				rate:this.rate,
+				inviteeId:this.currItem.inviteeId
+			}).then(res=>{
+				if(res.code==200){
+					this.showDialog = false
+					this.findInviteTree()
+				}
+			})
+		},
+		getList(){
+			this.$http.post('/wallet/invite/backmgr/queryInviteShip',{
+				account:this.account,
+				inviteeId:this.currItem.inviteeId,
+				pageNum:this.listData.pageNum,
+				pageSize:this.listData.pageSize
+			}).then(res=>{
+				if(res.code==200){
+					this.listData.list = res.result.list
+					this.listData.total = res.result.total
+					// this.findInviteTree()
+				}
+			})
 		},
 		getData(){
 			this.$http.post('/wallet/app/otc/backmgr/queryOtcUserDetail',this.filterForm).then(res=>{
@@ -304,6 +347,25 @@ export default {
 				}
 			}
 		}
+		
 	}
+	.brokerageTable{
+		/deep/.el-dialog__body{
+			padding-right: 0;
+			padding-bottom: 0;
+		}
+	}
+	 .inputGroup{
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+			/deep/.el-input{
+				margin-right: 20px;
+			}
+			&>span{
+				width: 110px;
+			}
+		}
 }
 </style>

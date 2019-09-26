@@ -22,6 +22,9 @@ export default {
       isLoading: 'isLoading',
     }),
   },
+  mounted() {
+	  console.log(this.$router)
+  }
 };
 </script>
 

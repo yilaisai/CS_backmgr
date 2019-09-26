@@ -21,15 +21,16 @@
 							</div><div class="form-group">
 								<div class="radioBox">
 									<label >状态:</label>
-									<el-radio-group v-model="filterForm.tradeStatus">
-										<el-radio v-for="(item,index) in statusList" :key="index" :label="item.label">{{item.value}}</el-radio>
-									</el-radio-group>
+									<el-select v-model="filterForm.tradeStatus" >
+										<el-option v-for="(item, key) in statusList" :key="key" :value="item.label" :label="item.value"></el-option>
+									</el-select>
 								</div>
 								<div class="radioBox">
 									<label >币种:</label>
-									<el-radio-group v-model="filterForm.coinName">
-										<el-radio v-for="(item,index) in coinList" :key="index" :label="item.label">{{item.value}}</el-radio>
-									</el-radio-group>
+									<el-select v-model="filterForm.coinName" >
+										<el-option v-for="(item, key) in coinList" :key="key" :value="item.label" :label="item.value"></el-option>
+									</el-select>
+									
 								</div>
 								<div class="radioBox">
 									<label >广告类型:</label>
@@ -293,6 +294,7 @@ export default {
 				&>label{
 					font-size: 14px;
 					color: #000;
+					margin-right: 10px;
 					// font-weight: 500;
 				}
 				/deep/ .el-radio{margin-right: 0;}

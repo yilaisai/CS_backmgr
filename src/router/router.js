@@ -166,7 +166,7 @@ export const appRouter = [
         meta: {
           title: '投诉管理',
         },
-        component: () => import('@/pages/complaint/complaint.vue'),
+        component: () => import('@/pages/LegalCurrency/complaint.vue'),
       },
       {
         path: 'LegalCurrencyTop',
@@ -174,7 +174,23 @@ export const appRouter = [
         meta: {
           title: '法币资产排名',
         },
-        component: () => import('@/pages/complaint/LegalCurrencyTop.vue'),
+        component: () => import('@/pages/LegalCurrency/leaderboard/LegalCurrencyTop.vue'),
+      },
+      {
+        path: 'personalAssets',
+        name:'personalAssets',
+        meta: {
+          title: '个人资产',
+        },
+        component: () => import('@/pages/LegalCurrency/leaderboard/personalAssets.vue'),
+      },
+      {
+        path: 'billingRecord',
+        name:'billingRecord',
+        meta: {
+          title: '账单流水',
+        },
+        component: () => import('@/pages/LegalCurrency/leaderboard/billingRecord.vue'),
       },
       {
         path: 'customer-log',
@@ -182,7 +198,7 @@ export const appRouter = [
         meta: {
           title: '投诉管理-查看客服操作日志',
         },
-        component: () => import('@/pages/complaint/customer-log.vue'),
+        component: () => import('@/pages/LegalCurrency/customer-log.vue'),
       },
       {
         path: 'complaint-details',
@@ -190,7 +206,7 @@ export const appRouter = [
         meta: {
           title: '投诉管理-查看详情',
         },
-        component: () => import('@/pages/complaint/complaint-details.vue'),
+        component: () => import('@/pages/LegalCurrency/complaint-details.vue'),
       },
       {
         path: 'complaint-more',
@@ -198,7 +214,7 @@ export const appRouter = [
         meta: {
           title: '投诉管理-查看更多',
         },
-        component: () => import('@/pages/complaint/complaint-more.vue'),
+        component: () => import('@/pages/LegalCurrency/complaint-more.vue'),
       },
       {
         path: 'userProcessing',

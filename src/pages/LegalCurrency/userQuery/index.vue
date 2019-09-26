@@ -16,17 +16,17 @@
 							<div class="form-group">
 								<div class="radioBox">
 									<label >广告商类型:</label>
-									<el-radio-group v-model="filterForm.userLevel">
-										<el-radio  label="">所有</el-radio>
-										<el-radio v-for="(item,index) in advList" :key="index" :label="item.label">{{item.value}}</el-radio>
-									</el-radio-group>
+									<el-select v-model="filterForm.userLevel" >
+										<el-option value="" label='所有'></el-option>
+										<el-option v-for="(item, key) in advList" :key="key" :value="item.label" :label="item.value"></el-option>
+									</el-select>
 								</div>
 								<div class="radioBox">
 									<label >企业类型：</label>
-									<el-radio-group v-model="filterForm.company">
-										<el-radio  label="">所有</el-radio>
-										<el-radio v-for="(item,index) in companyType" :key="index" :label="item.label">{{item.value}}</el-radio>
-									</el-radio-group>
+									<el-select v-model="filterForm.company" >
+										<el-option value="" label='所有'></el-option>
+										<el-option v-for="(item, key) in companyType" :key="key" :value="item.label" :label="item.value"></el-option>
+									</el-select>
 								</div>
 							</div>
 							<div class="form-group">
@@ -120,6 +120,7 @@ export default {
 								pageNum:1,
 								pageSize: 20,
 								startDate:'',
+								company:'',
 								endDate:'',
 								account:'',
 								nickName:'',
@@ -256,6 +257,7 @@ export default {
 				&>label{
 					font-size: 14px;
 					color: #000;
+					margin-right: 10px;
 					// font-weight: 500;
 				}
 				/deep/ .el-radio{margin-right: 0;}

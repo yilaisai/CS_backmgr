@@ -1,6 +1,6 @@
 <template>
     <el-form ref="form" :model="filter" label-width="100px" size="mini" inline>
-        <el-form-item label="创建时间：">
+        <el-form-item label="创建时间：" class="dataSelect">
             <el-date-picker
                 id="createtime"
                 v-model="filter.create_time"
@@ -148,5 +148,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-
+/deep/.dataSelect  .el-form-item__content{
+    width: 350px;
+}
 </style>

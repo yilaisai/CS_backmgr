@@ -21,7 +21,7 @@
         <el-table-column
           type="index"
           label="序号"
-          :index="indexMethod">
+          :index="index">
         </el-table-column>
         <el-table-column prop="phone" label="手机号"></el-table-column>
         <el-table-column prop="nickName" label="昵称"></el-table-column>
@@ -126,7 +126,7 @@
         },
       methods: {
         indexMethod(index) {
-          return   (this.filterForm.pageNum-1)*20+index+1
+          return   (this.filterForm.pageNum-1)*this.filterForm.pageSize+index+1
         },
         sortChange(a){
           if(a.order=="ascending"){//上升

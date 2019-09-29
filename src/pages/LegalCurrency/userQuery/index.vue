@@ -163,7 +163,7 @@ export default {
 				// 
 				updateOtcUserLevel(userid){
 					this.$http.post('/wallet/app/otc/backmgr/updateOtcUserLevel',this.userTypeForm).then(res=>{
-						this.$message.success('取消申诉操作成功')
+						this.$message.success('类型修改成功')
 						this.dialogFormVisible=false
 						this.getList()
 					})

@@ -74,10 +74,10 @@
             </el-main>
             <el-footer>
                 <sac-pagination v-show="listData.list.length > 0"
-                                @handleChange="handleCurrentChange"
-                                :total="+listData.total"
-                                :page-size="filterForm.pageSize"
-                                :current-page="filterForm.pageNum">
+                    @handleChange="handleCurrentChange"
+                    :total="+listData.total"
+                    :page-size="filterForm.pageSize"
+                    :current-page="filterForm.pageNum">
                 </sac-pagination>
                 <!-- <el-pagination
                     v-show="listData.list.length>0"

@@ -265,7 +265,8 @@
       getPaginationChange(val, currentPage) {
         this.filterForm.pageSize = val;
         // this.filterForm.pageNum = currentPage;
-        this.submitForm(currentPage);
+        this.filterForm.pageNum = currentPage;
+        this.getUserInfoList()
       },
       goDetail(phone) {
         this.$router.push({ name: 'queryDetails', query: { phone } });

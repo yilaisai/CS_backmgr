@@ -30,9 +30,17 @@
 						{{optType(scope.row)}}
 					</div>
 				</el-table-column>
-				<el-table-column prop="balanceChangeAmount" :label="'可用资金变化（'+coinName+'）'"></el-table-column>
+				<el-table-column  :label="'可用资金变化（'+coinName+'）'">
+					<div slot-scope="scope">
+						{{ type==1?scope.row.balanceChangeAmount:scope.row.balanceChange }}
+					</div>
+				</el-table-column>
 				<el-table-column prop="balance"  :label="'可用余额('+coinName+'）'"></el-table-column>
-				<el-table-column prop="frozenChangeAmount"  :label="'冻结资金变化（'+coinName+'）'"></el-table-column>
+				<el-table-column prop="frozenChangeAmount"  :label="'冻结资金变化（'+coinName+'）'">
+					<div slot-scope="scope">
+						{{ type==1?scope.row.frozenChangeAmount:scope.row.frozenAmountChange }}
+					</div>
+				</el-table-column>
 				<el-table-column prop="frozenAmount"  :label="'冻结（'+coinName+'）'"></el-table-column>
 			
 			</el-table>
@@ -106,7 +114,7 @@ export default {
 			})
 		},
 		optType(data){
-			if(this.type == 1){
+			if(this.type == 2){
 				switch(data.optType*1) {
 					case 0:
 						return '创建订单'

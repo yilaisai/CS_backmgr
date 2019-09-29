@@ -12,16 +12,33 @@
           ref="phone"
           label="昵称"
           v-model.trim="filterForm.nickName"></sac-input>
-        <el-form-item label="币种">
-					<el-select class="select" v-model="coinType" >
-							<el-option v-for="(item, key) in coinList" :key="key" :value="item" :label="item"></el-option>
-					</el-select>
-				</el-form-item>  
         <sac-submit-form
           :isReset='false'
           @submitForm="getUserRaking()"></sac-submit-form>
       </el-form>
-      <el-table stripe border height="100%" :default-sort = "{prop: 'usdtAmount', order: 'descending'}" :data="listData.list" @sort-change='sortChange'>
+      
+       <el-table stripe border class="ExList" size="mini"   :default-sort = "{prop: 'usdtAmount', order: 'descending'}" :data="ExList" @sort-change='sortChange'>
+        <el-table-column
+          type="index"
+          label="序号"
+          :index="indexMethod">
+        </el-table-column>
+        <el-table-column prop="phone" label="手机号"></el-table-column>
+        <el-table-column prop="nickName" label="昵称"></el-table-column>
+        <el-table-column prop="usdtAmount" sortable='custom' label="USDT"></el-table-column>
+        <el-table-column prop="btcAmount" sortable ='custom' label="BTC"></el-table-column>
+        <el-table-column prop="registTime" label="时间">
+          <template slot-scope="scope">
+            {{  $fmtDate(scope.row.registTime,'full')}}
+          </template>
+        </el-table-column>
+         <el-table-column  label="操作" width="180px" fixed="right" >
+          <template slot-scope="scope">
+            <el-button size="mini" @click="$router.push({path:'/LegalCurrency/personalAssets',query:{userId:scope.row.userId}})" >详情</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-table stripe border height="100%" size="mini"    :default-sort = "{prop: 'usdtAmount', order: 'descending'}" :data="listData.list" @sort-change='sortChange'>
         <el-table-column
           type="index"
           label="序号"
@@ -32,9 +49,6 @@
         <el-table-column prop="usdtAmount" sortable='custom' label="USDT"></el-table-column>
         <el-table-column prop="btcAmount" sortable ='custom' label="BTC"></el-table-column>
         <el-table-column prop="userStatusName" sortable ='custom' label="状态"></el-table-column>
-        
-       
-        
         <el-table-column prop="registTime" label="时间">
           <template slot-scope="scope">
             {{  $fmtDate(scope.row.registTime,'full')}}
@@ -48,10 +62,10 @@
         </el-table-column>
       </el-table>
       <sac-pagination v-show="listData.list.length>0"
-                      @handleChange="getPaginationChange"
-                      :total="+listData.total"
-                      :page-size="filterForm.pageSize"
-                      :current-page="filterForm.pageNum">
+        @handleChange="getPaginationChange"
+        :total="+listData.total"
+        :page-size="filterForm.pageSize"
+        :current-page="filterForm.pageNum">
       </sac-pagination>
       <el-dialog title="修改用户状态" :visible.sync="dialogVisible" width="500">
         <el-form :inline="true" label-width="90px" ref="ruleForm"  :model="ruleForm">
@@ -107,6 +121,7 @@
               total: null,
               list: [],
             },
+            ExList:[]
           };
         },
       methods: {
@@ -175,6 +190,7 @@
         getUserRaking() {
           this.$http.post("/wallet/app/otc/backmgr/getUserRaking", this.filterForm).then((res) => {
             this.listData.list = res.result.CustomerInfoExList.list;
+            this.ExList = res.result.sysCustomerInfoExList
             this.listData.total = res.result.CustomerInfoExList.total;
           })
         },
@@ -187,7 +203,10 @@
       }
     };
 </script>
-<style lang="">
+<style lang="less">
     .exchangeSAC {
+      /deep/.ExList{
+        flex: none;
+      }
     }
 </style>

@@ -54,10 +54,31 @@
                             <td>申诉对接口令：{{SaleList[0].code}}</td>
                             <td>投诉类型：{{SaleList[0].appealType | filterType}}</td>
                         </tr>
-                        <tr>
-                            <td>支付宝：<img :src='SaleList[0].alipayAccount'/> </td>
-                            <td>微信： <img :src='SaleList[0].wecharAccount'/></td>
-                            <td>银行：{{SaleList[0].bankAccount}}</td>
+                        <tr class="payList">
+                            <td >
+                                <div>
+                                    <p>支付宝：</p>
+                                    <ul>
+                                        <li v-for=" (item,index) in SaleList[0].aPayList " :key="index"> 账号 <span v-show="SaleList[0].aPayList.length>1">{{index+1}}</span> ： {{  item.num }} <el-button  type="text" @click="payDetaile(item)">详情</el-button></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <p>微信：</p>
+                                    <ul>
+                                        <li v-for=" (item,index) in SaleList[0].wPayList " :key="index"> 账号 <span v-show="SaleList[0].wPayList.length>1">{{index+1}}</span> ： {{  item.num }}<el-button  type="text" @click="payDetaile(item)">详情</el-button></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <p>银行：</p>
+                                    <ul>
+                                        <li v-for=" (item,index) in SaleList[0].bankPayList " :key="index"> 账号 <span v-show="SaleList[0].bankPayList.length>1">{{index+1}}</span> ： {{  item.num }}<el-button  type="text" @click="payDetaile(item)">详情</el-button></li>
+                                    </ul>
+                                </div>
+                            </td>
                         </tr>
                     </table>
                 </el-card>
@@ -82,7 +103,7 @@
                             </viewer>
                             </td>
                             <td>{{BuyProofInfo.proofTxt}}</td>
-                            <td>{{BuyProofInfo.createTime}}</td>
+                            <td>{{  $fmtDate(BuyProofInfo.createTime,'full') }}</td>
                         </tr>
                     </table>
                 </el-card>
@@ -105,7 +126,7 @@
                                 </viewer>
                             </td>
                             <td>{{SaleProofInfo.proofTxt}}</td>
-                            <td>{{SaleProofInfo.createTime}}</td>
+                            <td>{{ $fmtDate(SaleProofInfo.createTime,'full') }}</td>
                         </tr>
                     </table>
                 </el-card>
@@ -145,6 +166,16 @@
                 <el-button type="primary" @click="dialogConfirm">确认</el-button>
             </span>
         </el-dialog>
+         <el-dialog title="收款信息" :visible.sync="payDetaileShow" width="500px">
+
+             <div>
+                <p>收款姓名：{{payItem.userName}}</p>
+                <p v-if="payItem.payType==1">银行名称：{{payItem.bankName}}</p>
+                <p v-if="payItem.payType==1&&payItem.bankBranch">支行名称：{{payItem.bankBranch}}</p>
+                <p> {{ payItem.payType==1?'银行卡号码：':'收款账号：' }} {{payItem.num}}</p>
+                <p  v-if="payItem.payType!=1&&payItem.qrcode">收款码：<img style="width:384px;vertical-align: text-top;" :src="payItem.qrcode" alt=""></p>
+             </div>
+         </el-dialog>
     </div>
 </template>
 <script>
@@ -154,6 +185,7 @@ export default {
         return{
             dialogTitle:'结果裁定',
             dialogVisible:false,
+            payDetaileShow:false,
             tradeId:'',
             appealId:'',
             BuyList:[],
@@ -211,7 +243,8 @@ export default {
                 fullscreen: true,
                 keyboard: true,
                 url: 'data-source'
-                }
+            },
+            payItem:{}
         }
     },
     filters: {
@@ -261,6 +294,11 @@ export default {
                 //     this.BuyProofInfo = res2;
                 // })
             })
+        },
+        payDetaile(data){
+            console.log(data)
+            this.payItem = data
+            this.payDetaileShow = true
         },
         getSaleList(){
             const postdata={
@@ -321,7 +359,7 @@ export default {
     .card-all-box{
         margin-bottom:15px;
         .box-card{
-            width:48%;
+            width: 700px;
             float:left;
             margin:0 1%;
             .three-width{
@@ -344,6 +382,27 @@ export default {
                         padding:8px 5px;
                         line-height:25px;
                         text-align: center;
+                    }
+                    &.payList{
+                        td{
+                            div{
+                                p{
+                                    text-align: left;
+                                }
+                                ul{
+                                    list-style: none;
+                                    flex: 1;
+                                    margin: 0;
+                                    padding: 0;
+                                    li{
+                                        text-align: left;
+                                    }
+                                }
+                            }
+
+                            
+                        }
+                        
                     }
                 }
             }

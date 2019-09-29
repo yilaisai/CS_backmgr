@@ -140,14 +140,6 @@ export const appRouter = [
         component:() => import('@/pages/LegalCurrency/tradingFlow/index.vue'),
       },
       {
-        path: 'tradingFlowDetaile',
-        name:'tradingFlowDetaile',
-        meta: {
-          title: '交易详情',
-        },
-        component:() => import('@/pages/LegalCurrency/tradingFlow/detaile.vue'),
-      },
-      {
         path: 'accountsReceivable',
         name:'accountsReceivable',
         meta: {
@@ -303,6 +295,21 @@ export const appRouter = [
 				  title: '商户审核详情'
 			  },
 			  component: () => import('@/pages/merchant/merchantDetaile.vue')
+      },{
+			  path: 'merchantTradingFlow',
+			  name: 'merchantTradingFlow',
+			  meta: {
+				  title: '商户交易流水'
+			  },
+			  component: () => import('@/pages/merchant/tradingFlow.vue')
+      }
+      ,{
+			  path: 'merchantTradingFlowDetaile',
+			  name: 'merchantTradingFlowDetaile',
+			  meta: {
+				  title: '商户交易流水详情'
+			  },
+			  component: () => import('@/pages/merchant/tradingFlowDetaile.vue')
       }
     ]
   },

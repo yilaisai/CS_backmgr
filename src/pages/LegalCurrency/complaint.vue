@@ -41,7 +41,7 @@
             <el-main>
                 <el-table :data="listData.list" border style="width: 100%" height="100%">
                     <el-table-column prop="tradeId" label="订单号" ></el-table-column>
-                    <el-table-column prop="userId" label="用户id" ></el-table-column>
+                    <el-table-column prop="userId" label="用户id" width="50" ></el-table-column>
                     <el-table-column prop="appealType" label="投诉类型" >
                         <template slot-scope="scope">
                             <span v-if="scope.row.appealType==0">其他</span>
@@ -62,7 +62,7 @@
                     <el-table-column prop="slaveCode" label="被申诉对接口令" ></el-table-column>
                     
                     <el-table-column prop="appealId" label="申诉号" ></el-table-column>
-                    <el-table-column prop="tradeTime" label="投诉时间" ></el-table-column>
+                    <el-table-column width="170px" prop="tradeTime" label="投诉时间" ></el-table-column>
                     <el-table-column label="操作" width="120" >
                         <template slot-scope="scope">
                             <el-button  plain size="small" 

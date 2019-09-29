@@ -23,7 +23,7 @@
         <el-form-item label="订单状态：">
             <el-select v-model="filter.recdStatus" placeholder="选择订单状态" clearable style="width: 185px">
                 <el-option :value="null" label="全部"></el-option>
-                <el-option v-for="(item, key) in $config.recdStatus" :key="key" :value="key" :label="item"></el-option>
+                <el-option v-for="(item, key) in recdStatus" :key="key" :value="key" :label="item"></el-option>
             </el-select>
         </el-form-item>
         <el-form-item label="地址：">
@@ -44,7 +44,7 @@
         <el-form-item label="类型：">
             <el-select v-model="filter.transType" placeholder="选择类型" clearable style="width: 185px">
                 <el-option value="" label="全部"></el-option>
-                <el-option v-for="(item, key) in $config.fundTypes" :key="key" :value="key" :label="item"></el-option>
+                <el-option v-for="(item, key) in fundTypes" :key="key" :value="key" :label="item"></el-option>
             </el-select>
         </el-form-item>
         <el-form-item>
@@ -63,6 +63,27 @@ export default {
     },
     data () {
         return {
+            fundTypes: {
+                in: '充币',
+                cool: '冷钱包',
+                out: 'CFO提币',
+                to_cfo: 'CFO充值',
+                fee: '充值归拢费',
+                manual: '手动打币'
+            },
+            recdStatus: {
+                1: '充值',
+                2: '提现',
+                3: '购买扣费',
+                4: '卖出扣费',
+                5: '系统返还',
+                6: '买入',
+                7: '卖出',
+                8: '冻结',
+                9: '返佣金',
+                10: '提现扣费',
+                11: 'CREDIT'
+            }, 
             types: [],
             pickerOptions: {
                 disabledDate(time) {

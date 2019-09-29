@@ -17,7 +17,7 @@
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 :current-page="pageNum"
-                :page-sizes="30"
+                :page-sizes="[20, 30, 50, 100]"
                 :page-size="pageSize"
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="data.total*1">
@@ -149,7 +149,7 @@ export default {
         },
         getCoins () {
             this.$http
-            .get(`/backmgr/coin/getAllCoinInfo`)
+            .get(`/wallet/block/backmgr/coin/getAllCoinInfo`)
             .then(({ code, result }) => {
                 if (code === 200) {
                     let USDT = false

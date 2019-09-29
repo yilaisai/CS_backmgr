@@ -12,12 +12,6 @@
 									<el-input placeholder="请输入用户账号" v-model="filterForm.userId" class="input-with-select"></el-input>
 								</el-form-item>
 								<br>
-								<div class="radioBox">
-									<label >类型:</label>
-									<el-radio-group v-model="filterForm.tradeType">
-										<el-radio v-for="(item,index) in tradeTypeList" :key="index" :label="item.label">{{item.value}}</el-radio>
-									</el-radio-group>
-								</div>
 							</div><div class="form-group">
 								<div class="radioBox">
 									<label >状态:</label>
@@ -34,9 +28,9 @@
 								</div>
 								<div class="radioBox">
 									<label >广告类型:</label>
-									<el-radio-group v-model="filterForm.trans">
-										<el-radio v-for="(item,index) in transList" :key="index" :label="item.label">{{item.value}}</el-radio>
-									</el-radio-group>
+									<el-select v-model="filterForm.trans" >
+										<el-option v-for="(item, key) in transList" :key="key" :value="item.label" :label="item.value"></el-option>
+									</el-select>
 								</div>
 							</div>
 							<div class="form-group">
@@ -49,68 +43,50 @@
 										end-placeholder="结束日期" @change='filterForm.dateType=""'>
 									</el-date-picker>
 								</el-form-item>
-								<div class="radioBox">
-									<label >最近:</label>
-									<el-radio-group v-model="filterForm.dateType" @change=" setDateType ">
-										<el-radio v-for="(item,index) in dateList" :key="index" :label="item.label">{{item.value}}</el-radio>
-									</el-radio-group>
-								</div>
-								
 								<el-button  type="primary"  size="mini"
 									@click.native="search">搜索
 								</el-button>
 							</div>
 						</el-form>
-						<el-table :data="listData.list" border >
-								<el-table-column  label="类型" >
-									<div slot-scope="scope">
-										<span v-if="scope.row.tradeType==0">C2C</span>
-										<span v-if="scope.row.tradeType==1">派单</span>
-										<span v-if="scope.row.tradeType==2">抢单</span>
-									</div>
-								</el-table-column>
-								<el-table-column  label="单号/下单时间" width="180" >
+						<el-table :data="listData.list" border height="100%">
+								<el-table-column  label="单号/下单时间" width="180"  align="center">
 									<div slot-scope="scope">
 										<p>{{scope.row.recdId}}</p>
 										<p>{{ $fmtDate(scope.row.createStamp,'full') }}</p>
 									</div>
 								</el-table-column>
-								<el-table-column label="taker昵称/账户" width="150" >
+								<el-table-column label="taker昵称/账户" width="150"  align="center">
 									<div slot-scope="scope">
 										<p>{{scope.row.takerName}}</p>
 										<p>{{scope.row.takerPhone}}</p>
 									</div>
 								</el-table-column>
-								<el-table-column label="maker昵称/账户" width="150" >
+								<el-table-column label="maker昵称/账户" width="150"  align="center">
 								<div slot-scope="scope">
 										<p>{{scope.row.makerName}}</p>
 										<p>{{scope.row.makerPhone}}</p>
 									</div></el-table-column>
-								<el-table-column prop="tradeTime" label="状态" >
+								<el-table-column prop="tradeTime" label="状态" align="center" >
 									<div slot-scope="scope">
-										<span >{{ scope.row.tradeStatus==1?'未付款':scope.row.tradeStatus==2?'待放行':scope.row.tradeStatus==3?'已完成':scope.row.tradeStatus==4?'已取消':scope.row.tradeStatus==5?'申述中':'' }}</span>
+										<span >{{ scope.row.tradeStatus==1?'未付款':scope.row.tradeStatus==2?'待放行':scope.row.tradeStatus==3?'已完成':scope.row.tradeStatus==4?'已取消':scope.row.tradeStatus==5?'申述':'' }}</span>
 									</div>
 								</el-table-column>
-								<el-table-column prop="tradeType" label="广告类型" width="80">
+								<el-table-column prop="tradeType" label="广告类型" width="80" align="center">
 										<template slot-scope="scope">
 												<span v-if="scope.row.trans==1">购买</span>
 												<span v-else>出售</span>
 										</template>
 								</el-table-column>
-								<el-table-column label="价格/数量/金额" width="120">
+								<el-table-column label="价格/数量/金额" width="120" align="center">
 									<div slot-scope="scope">
 										<p>{{scope.row.price}}</p>
 										<p>{{scope.row.amount}}</p>
 										<p>{{scope.row.money}}</p>
 									</div>
 								</el-table-column>
-								<el-table-column prop="coinName" label="币种" ></el-table-column>
-								<el-table-column prop="fee" label="手续费" ></el-table-column>
-								<el-table-column prop="price" label="操作" fixed="right">
-									<template slot-scope="scope">
-										<el-button type="text" @click.native="$router.push({path:'/LegalCurrency/tradingFlowDetaile',query:{recdId:scope.row.recdId}})">查看详情</el-button>
-									</template>
-								</el-table-column>
+								<el-table-column prop="coinName" label="币种" align="center" ></el-table-column>
+								<el-table-column prop="fee" label="手续费" align="center" ></el-table-column>
+							
 						</el-table>
 				</el-main>
             <el-footer>
@@ -140,7 +116,7 @@ export default {
 								endDate:'',
 								coinName:'',
 								tradeStatus:'',
-								tradeType:'',
+								tradeType:'0',
 								trans:'',
 								dateType:'1'
 						},
@@ -267,8 +243,10 @@ export default {
     .el-container{
         height:100%;
         .el-main{
-            height:100%;
-            width: 100%;
+					height:100%;
+					width: 100%;
+					display: flex;
+					flex-direction: column;
         }
     } 
     .el-form--inline .el-form-item__label{

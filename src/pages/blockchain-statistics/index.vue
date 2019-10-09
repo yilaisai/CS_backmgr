@@ -262,7 +262,7 @@ export default {
             // 等待动画结束之后再计算表格高度
         },
         allCoins () {
-            this.$http.get(`/wallet/block/backmgr/getAllCoinInfo`)
+            this.$http.get(`/wallet/block/backmgr/coin/getAllCoinInfo`)
                 .then(({ code, result }) => {
                     if (code === 200) {
                         let USDT = false

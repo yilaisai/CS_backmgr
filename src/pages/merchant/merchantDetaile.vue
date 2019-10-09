@@ -76,7 +76,7 @@ export default {
 			})
 		},
 		merchantCheck(status){
-			this.$http.post('/wallet/backmgr/merchant/check',{
+			this.$http.post('/wallet/backmgr/merchant/apply/check',{
 				applyId:this.detaileData.id,
 				desc:this.desc,
 				status:status

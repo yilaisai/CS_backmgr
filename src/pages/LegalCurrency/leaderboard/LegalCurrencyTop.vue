@@ -48,7 +48,7 @@
         <el-table-column prop="nickName" label="昵称"></el-table-column>
         <el-table-column prop="usdtAmount" sortable='custom' label="USDT"></el-table-column>
         <el-table-column prop="btcAmount" sortable ='custom' label="BTC"></el-table-column>
-        <el-table-column prop="userStatusName" sortable ='custom' label="状态"></el-table-column>
+        <el-table-column prop="userStatusName"  label="状态"></el-table-column>
         <el-table-column prop="registTime" label="时间">
           <template slot-scope="scope">
             {{  $fmtDate(scope.row.registTime,'full')}}

@@ -8,9 +8,10 @@ const Index = () => import('@/pages/home');
 const Login = () => import('@/pages/login/index');
 
 import systemRouter from './routers/system'  //系统页面
-console.log(systemRouter)
+import brm from './routers/brm'
 export const appRouter = [
 	...systemRouter,
+	...brm,
   {
     path: '/',
     name: 'Index',
@@ -984,25 +985,6 @@ export const appRouter = [
           title: '刷单账户管理',
         },
         component: () => import('@/pages/brush-list/account.vue'),
-      },
-    ],
-  },
-  {
-    path: '/exchange',
-    name: 'exchange',
-    redirect: '/exchange/SAC',
-    meta: {
-      title: '兑换SAC',
-    },
-    component: Index,
-    children: [
-      {
-        path: 'SAC',
-        name: 'exchangeSAC',
-        meta: {
-          title: '兑换SAC',
-        },
-        component: () => import('@/pages/exchange/exchangeSAC.vue'),
       },
     ],
   }

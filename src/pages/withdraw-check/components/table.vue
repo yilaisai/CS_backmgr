@@ -3,10 +3,10 @@
 		<div class="table-title">
         	<h4>审核列表</h4>
 			<div class="btn-wrap">
-				<el-button type="primary" size="mini" icon="el-icon-circle-plus" @click="$emit('hideDialogMR', true)">手动录单</el-button>
+				<!-- <el-button type="primary" size="mini" icon="el-icon-circle-plus" @click="$emit('hideDialogMR', true)">手动录单</el-button> -->
 			</div>
 		</div>
-        <el-table :data="tableData" border size="mini" style="width: 100%">
+        <el-table :data="tableData" border size="mini" style="width: 100%" height="auto">
             <el-table-column prop="createTime" label="时间" width="140" align="center"></el-table-column>
             <el-table-column prop="account" label="账号" width="120" align="center"></el-table-column>
             <el-table-column prop="coinName" label="币种" width="80" align="center"></el-table-column>
@@ -36,7 +36,6 @@
             </el-table-column>
         </el-table>
     </div>
-  
 </template>
 
 <script>
@@ -91,12 +90,18 @@ export default {
 
 <style lang="less" scoped>
 .withdraw-check-table-cpt {
-    margin-top: 20px;
+	margin-top: 20px;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
     h4 {
-        padding: 0 10px;
+		padding: 0 10px;
+		margin: 0;
+		font-size: 14px;
     }
     .el-table {
-        margin-top: 10px;
+		margin-top: 10px;
+		flex: 1;
         /deep/ .gutter {
             display: block !important;
         }

@@ -360,7 +360,6 @@ export default {
 <style lang="less" scoped>
 .blockchain-monotoring {
     overflow: hidden;
-	padding: 20px;
 	.el-form--inline {
 		/deep/.el-form-item__content {
 			width: auto;

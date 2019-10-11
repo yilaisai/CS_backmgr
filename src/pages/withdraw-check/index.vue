@@ -10,8 +10,7 @@
         <!-- 分页器 -->
         <div class="load-more" style="display: flex;">
             <div class="count">
-                <span>提币数量：<i>{{blockSumReAndWdResultDto.withAmount}}</i> USDT</span>
-                <span>手续费：<i>{{blockSumReAndWdResultDto.fee}}</i> USDT</span>
+                
             </div>
             <el-pagination
                 @size-change="handleSizeChange"
@@ -176,9 +175,8 @@ export default {
 </script>
 <style lang="less" scoped>
 .withdraw-check-page {
-    margin: 20px;
     /deep/ .el-collapse-item__header {
-        font-size: 16px;
+        font-size: 14px;
         font-weight: 600;
         padding: 0 10px;
     }
@@ -186,7 +184,6 @@ export default {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-top: 10px; 
         .count {
             font-size: 14px;
             span {

@@ -1,6 +1,6 @@
 <template>
      <div class="withdraw-check-page">
-        <el-collapse v-model="activeNames" @change="handleChange">
+        <el-collapse>
             <el-collapse-item title="查询条件" name="filter">
                 <Query ref="query" @queryData='getData' @resetFilter="resetFilter" :coins="coins"/>
             </el-collapse-item>

@@ -3,7 +3,7 @@
 		<!-- 筛选条件 -->
         <Query ref="query" @queryData='getData' :orderStatus="orderStatus"/>
 		<!-- 表格 -->
-		<Table :list="pageData.list" :orderStatus="orderStatus" @hideDialogMR="hideDialogMR" @hideDialogMT="hideDialogMT"></Table>
+		<Table :list="pageData.list" :orderStatus="orderStatus" @hideDialogMR="hideDialogMR"></Table>
 		<!-- 分页器 -->
 		<div class="load-more" style="display: flex;">
             <div class="count">
@@ -21,8 +21,6 @@
         </div>
 		<!-- 手动录单弹框 -->
 		<ManualRecordDialog :showDialogMR='showDialogMR' @hideDialogMR="hideDialogMR" @getData="getData" />
-		<!-- 手动打币弹框 -->
-		<ManualTransferDialog :showDialogMT='showDialogMT' @hideDialogMT="hideDialogMT"></ManualTransferDialog>
 	</div>
 </template>
 
@@ -30,7 +28,6 @@
 import Query from './components/query.vue'
 import Table from './components/table.vue'
 import ManualRecordDialog from './components/manual-record-dialog'
-import ManualTransferDialog from './components/manual-transfer-dialog'
 export default {
 	data() { 
 		return {
@@ -48,7 +45,7 @@ export default {
 				{name: '审核通过', val: 4},
 			],
 			showDialogMR: false,
-			showDialogMT: false
+			
 		}
 	},
 	mounted() {
@@ -70,9 +67,6 @@ export default {
 		hideDialogMR(b) {
 			this.showDialogMR = b
 		},
-		hideDialogMT(b) {
-			this.showDialogMT = b
-		}
 	},
 	filters: {
 		filterStatus(status) {
@@ -87,7 +81,6 @@ export default {
 		Query,
 		Table,
 		ManualRecordDialog,
-		ManualTransferDialog
 	}
 }
 </script>

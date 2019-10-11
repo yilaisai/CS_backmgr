@@ -6,7 +6,7 @@
 		<el-form ref="form" :model="form" label-width="80px" size="mini">
 			<el-form-item label="币种">
 				<el-select v-model="form.coinName" placeholder="请选择币种">
-					<el-option label="USDT" value="USDT"></el-option>
+					<el-option v-for="(item, key) in ['USDT', 'ETH', 'BTC', 'EOS']" :key="key" :value="item" :label="item"></el-option>
 				</el-select>
 			</el-form-item>
 			<el-form-item label="TXID">
@@ -23,11 +23,6 @@
 					<template slot="append">USDT</template>
 				</el-input>
 			</el-form-item>
-			<!-- <el-form-item label="手续费">
-				<el-input v-model.trim="form.blockFee">
-					<template slot="append">USDT</template>
-				</el-input>
-			</el-form-item> -->
 		</el-form>
 		<span slot="footer" class="dialog-footer">
 			<el-button @click="dialogVisible = false" size="mini">取 消</el-button>

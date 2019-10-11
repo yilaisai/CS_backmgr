@@ -7,7 +7,9 @@
 			</div>
 		</div>
         <el-table :data="tableData" border size="mini" style="width: 100%" height="auto">
-            <el-table-column prop="createTime" label="时间" width="140" align="center"></el-table-column>
+            <el-table-column prop="createTime" label="时间" width="140" align="center">
+				<!-- <span slot-scope="scope">{{ $fmtDate(scope.row.createTime,'full') }}</span> -->
+			</el-table-column>
             <el-table-column prop="account" label="账号" width="120" align="center"></el-table-column>
             <el-table-column prop="coinName" label="币种" width="80" align="center"></el-table-column>
             <el-table-column prop="amount" label="数量" width="100" align="center"></el-table-column>
@@ -17,10 +19,10 @@
                     <span>{{scope.row.recdStatus | recdStatusMap}}</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="fromAddr" label="From地址" width="150" align="center"></el-table-column>
-            <el-table-column prop="toAddr" label="To地址" width="150" align="center"></el-table-column>
+            <el-table-column prop="fromAddr" label="From地址" width="200" align="center"></el-table-column>
+            <el-table-column prop="toAddr" label="To地址" width="200" align="center"></el-table-column>
             <el-table-column prop="orderId" label="订单号" width="150" align="center"></el-table-column>
-            <el-table-column prop="txId" label="TXID" width="150" align="center">
+            <el-table-column prop="txId" label="TXID" width="300" align="center">
                 <template slot-scope="scope">
                     <a :href="'https://www.omniexplorer.info/search/'+ scope.row.txId" target="_blank">{{scope.row.txId}}</a>
                 </template>

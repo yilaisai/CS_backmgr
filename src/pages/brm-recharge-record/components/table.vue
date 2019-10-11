@@ -1,7 +1,7 @@
 <template>
 	<div class="table-wrap">
 		<div class="table-title">
-			<h4>审核列表</h4>
+			<h4>充提记录列表</h4>
 			<div class="btn-wrap">
 				<el-button type="primary" size="mini" icon="el-icon-circle-plus" @click="$emit('hideDialogMR', true)">手动录单</el-button>
 			</div>
@@ -30,7 +30,7 @@
 			<el-table-column prop="from_addr" label="From" width="200"></el-table-column>
 			<el-table-column prop="to_addr" label="To" width="200"></el-table-column>
 			<el-table-column prop="id" label="订单号"></el-table-column>
-			<el-table-column prop="tx_id" label="Txid" width="200">
+			<el-table-column prop="tx_id" label="Txid" width="300">
 				<template slot-scope="scope">
                     <a :href="'https://www.omniexplorer.info/search/'+ scope.row.tx_id" target="_blank">{{scope.row.tx_id}}</a>
                 </template>
@@ -50,11 +50,14 @@
 				</template>
 			</el-table-column>
 		</el-table>
+		<!-- 手动打币弹框 -->
+		<ManualTransferDialog :showDialogMT='showDialogMT' @hideDialogMT="hideDialogMT"></ManualTransferDialog>
 	</div>
 </template>
 
 <script>
 let orderStatus = []
+import ManualTransferDialog from './manual-transfer-dialog'
 export default {
 	props: {
 		list: {
@@ -69,7 +72,7 @@ export default {
 	},
 	data() { 
 		return {
-			
+			showDialogMT: false
 		}
 	},
 	filters: {
@@ -84,9 +87,15 @@ export default {
 		}
 	},
 	methods: {
-		handleEdit() {
-			this.$emit('hideDialogMT', true)
+		handleEdit(idx, row) {
+			this.showDialogMT = true
+		},
+		hideDialogMT(b) {
+			this.showDialogMT = b
 		}
+	},
+	components: {
+		ManualTransferDialog
 	}
 }
 </script>

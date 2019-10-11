@@ -6,93 +6,83 @@
 <template>
   <div class='transfer-query'>
     <el-form :inline="true"
-             label-width="80px"
+             label-width="86px"
              ref="filterForm">
-      <div class="sac-collapse">
-        <div class="title">
-          <sac-coin ref="coinId" v-model="filterForm.coinId"></sac-coin>
-          <sac-select ref="tradeType" label="交易类型" v-model="filterForm.tradeType"
-                      :dataList="transactionType"></sac-select>
-          <sac-select ref="tradeStatus" label="状　　态" v-model="filterForm.tradeStatus"
-                      :dataList="transferQueryStatus"></sac-select>
-          <sac-submit-form
-            @submitForm="submitForm(1)"
-            :isReset="false"></sac-submit-form>
-          <el-button type="primary" @click="exportExcel" size="small">导出Excel</el-button> 
-          <span @click="changeContent" class="changeContent">
-            {{isContent?'合并':'展开'}}
-             <i :class="{'el-icon-arrow-right':!isContent,'el-icon-arrow-down':isContent}"></i>
-          </span>
-        </div>
-        <div class="content" :class="{'is-active2': isContent&isActive,'is-active1': isContent&!isActive}">
-          <sac-input ref="fromOrToUserPhone" label="用户账号" v-model.trim="filterForm.fromOrToUserPhone"></sac-input>
-          <el-form-item ref="selectedDate" label="日　　期" class="sac-date">
-            <el-date-picker
-              v-model="selectedDate"
-              :editable="false"
-              type="datetimerange"
-              align="center"
-              size="small"
-              unlink-panels
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              value-format="yyyy-MM-dd HH:mm:ss">
-            </el-date-picker>
-          </el-form-item>
-          <sac-input ref="thirdOrderNo" label="txid" v-model.trim="filterForm.thirdOrderNo"
-                     class="thirdOrderNo"></sac-input>
-          <sac-input ref="toAddr" label="交易地址" v-model.trim="filterForm.toAddr" class="toAddr"></sac-input>
-          <sac-select ref="alarmType" label="告警情况" multiple v-model="alarmType"
-                      :dataList="alarmConditionType" class="alarmType"></sac-select>
-        </div>
-      </div>
+      <el-form-item ref="selectedDate" label="日　　期" class="sac-date">
+        <el-date-picker
+          v-model="selectedDate"
+          :editable="false"
+          type="datetimerange"
+          align="center"
+          size="small"
+          unlink-panels
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          value-format="yyyy-MM-dd HH:mm:ss">
+        </el-date-picker>
+      </el-form-item>
+      <sac-input ref="fromOrToUserPhone" label="用户账号" v-model.trim="filterForm.fromOrToUserPhone"></sac-input>
+      <sac-coin ref="coinId" v-model="filterForm.coinId"></sac-coin>
+      <sac-select ref="tradeType" label="交易类型" v-model="filterForm.tradeType"
+                  :dataList="transactionType"></sac-select>
+      <sac-select ref="tradeStatus" label="状　　态" v-model="filterForm.tradeStatus"
+                  :dataList="transferQueryStatus"></sac-select>
+      <sac-input ref="thirdOrderNo" label="txid" v-model.trim="filterForm.thirdOrderNo"
+                  class="thirdOrderNo"></sac-input>
+      <sac-input ref="toAddr" label="交易地址" v-model.trim="filterForm.toAddr" class="toAddr"></sac-input>
+      <sac-select ref="alarmType" label="告警情况" multiple v-model="alarmType"
+                  :dataList="alarmConditionType" class="alarmType"></sac-select>
+                  <sac-submit-form
+        @submitForm="submitForm(1)"
+        :isReset="false"></sac-submit-form>
+      <!-- <el-button type="primary" @click="exportExcel" size="small">导出Excel</el-button>  -->
     </el-form>
     <sac-table :data="listData.list">
-      <el-table-column prop="tradeId" label="序号" min-width="163" fixed="left"></el-table-column>
-      <el-table-column label="收款方" min-width="123">
+      <el-table-column align="center"  prop="tradeId"  label="序号" min-width="50" fixed="left"></el-table-column>
+      <el-table-column align="center" label="收款方" min-width="123">
         <template slot-scope="scope">
           <span v-if="scope.row.toUserPhone">{{scope.row.toUserPhone}}</span>
           <span v-else>{{scope.row.targetCoinAddr}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="付款方" min-width="123">
+      <el-table-column align="center" label="付款方" min-width="123">
         <template slot-scope="scope">
           <span v-if="scope.row.fromUserPhone">{{scope.row.fromUserPhone}}</span>
           <span v-else>{{scope.row.fromAddr}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="coinName" label="币种" min-width="60"></el-table-column>
-      <el-table-column prop="tradeType" label="交易类型" min-width="80">
+      <el-table-column align="center" prop="coinName" label="币种" min-width="60"></el-table-column>
+      <el-table-column align="center" prop="tradeType" label="交易类型" min-width="80">
         <template slot-scope="scope">
           <span>{{scope.row.tradeType | convertTransactionType}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="amount" label="转账金额" min-width="150"></el-table-column>
-      <el-table-column prop="thirdOrderNo" label="txid" min-width="150"></el-table-column>
-      <el-table-column prop="confirmTime" label="到账时间" min-width="153"></el-table-column>
+      <el-table-column align="center" prop="amount" label="转账金额" min-width="150"></el-table-column>
+      <el-table-column align="center" prop="thirdOrderNo" label="txid" min-width="150"></el-table-column>
+      <el-table-column align="center"  label="到账时间" min-width="140">
+        <div slot-scope="scope"> {{ $fmtDate(scope.row.confirmTime, 'full') }} </div>
+      </el-table-column>
       <div v-if="isShowPayTime">
-        <el-table-column prop="payTime" label="上链时间" min-width="153">
-			<template slot-scope="scope">
-			  <span>{{scope.row.payTime*1 | dateFormat('YYYY-MM-DD HH:mm:ss')}}</span>
-		  	</template>
-		</el-table-column>
+        <el-table-column align="center" prop="payTime" label="上链时间" width="140">
+          <div slot-scope="scope"> {{ $fmtDate(scope.row.payTime, 'full') }} </div>
+        </el-table-column>
       </div>
-      <el-table-column prop="alarmType" label="时间告警" min-width="80">
+      <el-table-column align="center" prop="alarmType" label="时间告警" min-width="80">
         <template slot-scope="scope">
           <span style="color: red;">{{ scope.row.alarmType }}</span>
         </template>
       </el-table-column>
       <!--解决乱序问题-->
-      <el-table-column label="" width="0">
+      <el-table-column align="center" label="" width="0">
       </el-table-column>
       <div v-show="isShowTableCol" key="isShowTableCol">
-        <el-table-column prop="tradeTime" label="创建时间" min-width="153"></el-table-column>
-        <el-table-column prop="auditTime" label="审核时间" min-width="153"></el-table-column>
-        <el-table-column prop="sysRemark" label="备注" min-width="150"></el-table-column>
+        <el-table-column align="center" prop="tradeTime" label="创建时间" min-width="153"></el-table-column>
+        <el-table-column align="center" prop="auditTime" label="审核时间" min-width="153"></el-table-column>
+        <el-table-column align="center" prop="sysRemark" label="备注" min-width="150"></el-table-column>
       </div>
-      <div v-show="isShowHandle" key="isShowHandle">
-        <el-table-column label="操作" min-width="150" fixed="right">
+      <!-- <div v-show="isShowHandle" key="isShowHandle">
+        <el-table-column align="center" label="操作" min-width="150" fixed="right">
           <template slot-scope="scope" prop="tradeStatus">
             <el-button type="danger" :disabled="scope.row.tradeStatus != 4 || scope.row.tradeType != 'csend'"
                        size="small" @click.native="transferRecordHandle(scope.row.tradeId, 4)">打币
@@ -102,8 +92,8 @@
             </el-button>
           </template>
         </el-table-column>
-      </div>
-      <el-table-column label="状态" min-width="110" fixed="right">
+      </div> -->
+      <el-table-column align="center" label="状态" min-width="110" fixed="right">
         <template slot-scope="scope">
           <el-tag v-if='scope.row.tradeStatus === 0' type="info">失败</el-tag>
           <el-tag v-if='scope.row.tradeStatus === 1' type="success">成功</el-tag>
@@ -158,8 +148,6 @@
         isShowPayTime: true,
         isShowTableCol: true,
         isShowHandle: true,
-        isContent: false,
-        isActive: false,
       };
     },
     methods: {
@@ -227,17 +215,11 @@
             }, 1000);
           });
       },
-      changeContent() {
-        this.isContent = !this.isContent;
-        if (this.isContent) {
-          this.isActive = window.outerWidth > 1584 ? true : false;
-        }
-      }
     },
     activated() {
-      const end = dateFormat(new Date, 'YYYY-MM-DD HH:mm:ss');
-      const start = dateFormat(new Date().getTime() - 3600 * 1000 * 24 * 7, 'YYYY-MM-DD HH:mm:ss');
-      this.selectedDate = [start, end];
+      // const end = dateFormat(new Date, 'YYYY-MM-DD HH:mm:ss');
+      // const start = dateFormat(new Date().getTime() - 3600 * 1000 * 24 * 7, 'YYYY-MM-DD HH:mm:ss');
+      // this.selectedDate = [start, end];
       this.getTradeList();
     }
   };
@@ -267,19 +249,12 @@
       line-height: 40px;
     }
     .content {
-      height: 0;
       overflow: hidden;
       transition: all 0.5s;
     }
-    .is-active1 {
-      height: 80px;
-    }
-    .is-active2 {
-      height: 40px;
-    }
     .sac-date {
       .el-form-item__content {
-        width: 365px!important;
+        width: 430px!important;
       }
     }
   }

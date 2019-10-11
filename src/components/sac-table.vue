@@ -4,7 +4,7 @@
 *  Content
 */
 <template>
-  <el-table height="100%" :data="data" border size="small">
+  <el-table  height="100%" :data="data" border size="small">
     <slot></slot>
   </el-table>
 </template>
@@ -30,7 +30,7 @@
 <style lang="less">
   .el-table--scrollable-y .el-table__body-wrapper {
     &::-webkit-scrollbar {
-      width: 0;
+      // width: 0;
     }
   }
 </style>

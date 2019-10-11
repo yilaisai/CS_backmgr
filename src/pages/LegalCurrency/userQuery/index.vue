@@ -3,34 +3,30 @@
     <div class="userQuery-page">
         <el-container>
 					<el-main>
-						<el-form :inline="true"  ref="filterForm" :model="filterForm">
+						<el-form :inline="true"  ref="filterForm" :model="filterForm" label-width="86px">
 							<div class="form-group">
-								<el-form-item label="账号:">
+								<el-form-item label="账号:" >
 									<el-input placeholder="请输入用户账号" v-model="filterForm.account" class="input-with-select"></el-input>
 								</el-form-item>
-									<el-form-item label="昵称:">
+									<el-form-item label="昵称:" >
 									<el-input placeholder="请输入用户昵称" v-model="filterForm.nickName" class="input-with-select"></el-input>
 								</el-form-item>
-								
-							</div>
-							<div class="form-group">
-								<div class="radioBox">
-									<label >广告商类型:</label>
+								<el-form-item  label="广告商类型:" >
 									<el-select v-model="filterForm.userLevel" >
 										<el-option value="" label='所有'></el-option>
 										<el-option v-for="(item, key) in advList" :key="key" :value="item.label" :label="item.value"></el-option>
 									</el-select>
-								</div>
-								<div class="radioBox">
-									<label >企业类型：</label>
+								</el-form-item>
+								<el-form-item  label="企业类型:" >
 									<el-select v-model="filterForm.company" >
-										<el-option value="" label='所有'></el-option>
-										<el-option v-for="(item, key) in companyType" :key="key" :value="item.label" :label="item.value"></el-option>
-									</el-select>
-								</div>
+											<el-option value="" label='所有'></el-option>
+											<el-option v-for="(item, key) in companyType" :key="key" :value="item.label" :label="item.value"></el-option>
+										</el-select>
+								</el-form-item>
+								
 							</div>
 							<div class="form-group">
-								<el-form-item class='dateItem' label="时间:">
+								<el-form-item class='dateItem' label="时间:" >
 									<el-date-picker
 										v-model="selectedDate"
 										type="daterange"

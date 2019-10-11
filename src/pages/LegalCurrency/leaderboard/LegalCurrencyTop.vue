@@ -17,7 +17,7 @@
           @submitForm="getUserRaking()"></sac-submit-form>
       </el-form>
       
-       <el-table stripe border class="ExList" size="mini"   :default-sort = "{prop: 'usdtAmount', order: 'descending'}" :data="ExList" @sort-change='sortChange'>
+       <el-table stripe border class="ExList" size="mini"    :data="ExList">
         <el-table-column
           type="index"
           label="序号"
@@ -25,8 +25,8 @@
         </el-table-column>
         <el-table-column prop="phone" label="手机号"></el-table-column>
         <el-table-column prop="nickName" label="昵称"></el-table-column>
-        <el-table-column prop="usdtAmount" sortable='custom' label="USDT"></el-table-column>
-        <el-table-column prop="btcAmount" sortable ='custom' label="BTC"></el-table-column>
+        <el-table-column prop="usdtAmount"  label="USDT"></el-table-column>
+        <el-table-column prop="btcAmount"  label="BTC"></el-table-column>
         <el-table-column prop="registTime" label="时间">
           <template slot-scope="scope">
             {{  $fmtDate(scope.row.registTime,'full')}}

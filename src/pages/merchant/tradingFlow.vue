@@ -61,7 +61,7 @@
 								</el-button>
 							</div>
 						</el-form>
-						<ul class="statistics" v-if="statistics.appealNum">
+						<ul class="statistics" v-if="statistics">
 							<li>
 								<p>待付款</p>
 								<p>交易数：{{ statistics.pendingGoNum }}</p>
@@ -115,8 +115,8 @@
 								</el-table-column>
 								<el-table-column prop="tradeType" label="广告类型" width="80" align="center">
 										<template slot-scope="scope">
-												<span v-if="scope.row.trans==1">兑入</span>
-												<span v-else>兑出</span>
+												<span v-if="scope.row.trans==1"> 兑出 </span>
+												<span v-else>兑入</span>
 										</template>
 								</el-table-column>
 								<el-table-column label="价格/数量/金额" width="120" align="center">
@@ -205,7 +205,7 @@ export default {
     },
     methods:{
         getList(){
-					console.log(this.selectedDate)
+					// console.log(this.selectedDate)
 					if(this.selectedDate.length==2){
 						this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
 						this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
@@ -214,6 +214,7 @@ export default {
 						this.SumTradeRecd()
 						const { list ,total} = res.result;
 						this.listData.list = list;
+						console.log(this.listData.list)
 						this.listData.total = total;
 					})
 				},

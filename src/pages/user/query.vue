@@ -5,62 +5,73 @@
 */
 <template>
   <div class='query'>
-    <el-col :span="22" style="text-align:right; margin-bottom: 30px;">
+    <!-- <el-col :span="22" style="text-align:right; margin-bottom: 30px;">
       <el-button size="small" type="primary" @click="addUser">创建用户</el-button>
-    </el-col>
+    </el-col> -->
     <el-form :inline="true"
-             label-width="80px"
+             label-width="86px"
              ref="filterForm"
              :model="filterForm">
-      <sac-input
-        ref="phone"
-        label="手机号"
-        v-model.trim="filterForm.phone"
-        prop="phone"></sac-input>
-      <sac-input
-        ref="nickName"
-        label="昵称"
-        v-model.trim="filterForm.nickName"
-        prop="nickName"></sac-input>
-      <sac-input
-        ref="cardNo"
-        label="身份证"
-        v-model.trim="filterForm.cardNo"
-        prop="cardNo"></sac-input>
-      <sac-input
-        ref="coinAddr"
-        label="收款地址"
-        v-model="filterForm.coinAddr"
-        prop="coinAddr"></sac-input>
-      <sac-submit-form
-        @submitForm="submitForm(1)"
-        @resetForm="resetForm"></sac-submit-form>
+      <el-form-item class='dateItem' label="时间:">
+        <el-date-picker
+          v-model="selectedDate"
+          type="daterange"
+          range-separator="至"
+          start-placeholder="开始日期"
+          format="yyyy-MM-dd "
+          end-placeholder="结束日期" >
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item label="账号:" >
+        <el-input placeholder="请输入用户账号" v-model="filterForm.phone" ></el-input>
+      </el-form-item>
+      <el-form-item label="昵称:" >
+        <el-input placeholder="请输入用户昵称" v-model="filterForm.nickName" ></el-input>
+      </el-form-item>
+      
+      <el-form-item label="广告商类型:" >
+        <el-select v-model="filterForm.userLevel" >
+          <el-option value="" label='所有'></el-option>
+          <el-option v-for="(item, key) in advList" :key="key" :value="item.label" :label="item.value"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item  label="企业类型:" >
+         <el-select v-model="filterForm.company" >
+            <el-option value="" label='所有'></el-option>
+            <el-option v-for="(item, key) in companyType" :key="key" :value="item.label" :label="item.value"></el-option>
+          </el-select>
+      </el-form-item>
+      <el-button class="search" size="small"  type="primary" @click="submitForm(1)">搜索</el-button>
     </el-form>
     <sac-table :data="listData.list">
-      <el-table-column prop="userId" label="序号" width="100"></el-table-column>
-      <el-table-column prop="phone" label="手机号码" width="130"></el-table-column>
-      <el-table-column prop="realName" label="姓名"></el-table-column>
-      <el-table-column prop="nickName" label="昵称"></el-table-column>
-      <el-table-column prop="cardNo" label="身份证号"></el-table-column>
-      <el-table-column prop="registTime" label="注册时间"></el-table-column>
-      <el-table-column label="操作" width="300">
+      <el-table-column align="center" label="序号" type="index" :index="indexMethod" width="50">
+      </el-table-column>
+      <!-- <el-table-column align="center" prop="userId" label="序号" width="100"></el-table-column> -->
+      <el-table-column align="center" prop="phone" label="手机号码" width="130"></el-table-column>
+      <el-table-column align="center" prop="nickName" label="昵称"></el-table-column>
+      <el-table-column align="center" prop="realName" label="真实姓名"></el-table-column>
+      <el-table-column align="center" prop="cardNo" label="身份证号"></el-table-column>
+      <el-table-column align="center" prop="registTime" label="注册时间" width="138">
+        <div slot-scope="scope"> {{ $fmtDate(scope.row.registTime, 'full') }} </div>
+      </el-table-column>
+      <el-table-column align="center" label="操作" fixed="right" >
         <template slot-scope="scope">
           <!-- <el-button size="small"  type="success"
                      @click="modify(scope.row)">修改
           </el-button> -->
-          <el-button size="small" v-show="scope.row.optStatus== 2" type="success"
+          <el-button size="mini" v-show="scope.row.optStatus== 2" type="text"
                      @click="optStatusChange(0,'解冻账号',scope.row)">解冻账号
           </el-button>
-          <el-button size="small" v-show="scope.row.optStatus != 2" type="danger"
+          <el-button size="mini" v-show="scope.row.optStatus != 2" type="text"
                      @click="optStatusHandle(2,'冻结账号',scope.row)">冻结账号
           </el-button>
-          <el-button size="small" v-show="scope.row.optStatus== 1" type="success" plain
+          <el-button size="mini" v-show="scope.row.optStatus== 1" type="text" plain
                      @click="optStatusChange(0,'解锁账号',scope.row)">解锁账号
           </el-button>
-          <el-button size="small" v-show="scope.row.optStatus== 0" type="warning"
+          <el-button size="mini" v-show="scope.row.optStatus== 0" type="text"
                      @click="optStatusHandle(1,'锁定账号',scope.row)">锁定账号
           </el-button>
-          <el-button type="primary" size="small" @click.native="goDetail(scope.row.phone)">查看详情</el-button>
+          <el-button type="text" size="mini" @click.native="goDetail(scope.row.phone)">查看详情</el-button>
         </template>
       </el-table-column>
     </sac-table>
@@ -136,6 +147,7 @@
         callback();
       };
       return {
+        selectedDate: [],
         dialogVisible:false,
         ruleState:[
             {
@@ -151,13 +163,25 @@
                 value:2
             }
         ],
+        advList:[
+          {value:'普通用户',label:"0"},
+          {value:'普通广告商',label:"1"},
+          {value:'高级广告商',label:"2"},
+          {value:'企业广告商',label:"3"},
+        ],
+        companyType:[
+          {value:'非企业',label:"0"},
+          {value:'企业号',label:"1"},
+        ],
         filterForm: {
+          userLevel:'',
+          company:"",
           phone: '',
           nickName: '',
           cardNo: '',
           coinAddr: '',
           pageNum: 1,
-          pageSize: 20
+          pageSize: 10
         },
         listData: {
           total: null,
@@ -196,6 +220,9 @@
       this.getUserInfoList()
     },
     methods: {
+       indexMethod(index) {
+        return   10*(this.filterForm.pageNum-1)+(index+1)
+      },
       dialogConfirm(){
             this.ruleState.forEach(v=>{
                 if(v.value==this.ruleForm.status){
@@ -234,18 +261,14 @@
         this.ruleForm.status=default_status
         this.dialogVisible=true
     },
-      resetForm() {
-        this.$refs.phone.reset();
-        this.$refs.nickName.reset();
-        this.$refs.cardNo.reset();
-        this.$refs.coinAddr.reset();
-        this.$refs.filterForm.resetFields(); // 重置query的数据
-        this.listData.list = [];
-      },
       submitForm(num) {
+        if(this.selectedDate.length == 2 ){
+					this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
+					this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
+					}
         this.filterForm.pageNum = num;
-        const { phone, nickName, cardNo, coinAddr } = this.filterForm;
-        if (phone || nickName || cardNo || coinAddr) {
+        const { phone, nickName, userLevel,company, endDate } = this.filterForm
+        if (phone || nickName || userLevel || company||endDate) {
           this.getUserInfoList();
         } else {
           this.$notify.error({
@@ -361,7 +384,13 @@
     }
   };
 </script>
-<style lang="less">
+<style lang="less" scoped>
+.dateItem{
+  width: 442px;
+}
+.search{
+  height: 39px;
+}
   .opt-dialog-wrap {
     .el-dialog {
       padding: 0;

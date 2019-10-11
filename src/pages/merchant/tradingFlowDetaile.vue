@@ -34,13 +34,13 @@
 				<el-form :inline="true" :model="detaileData" class="demo-form-inline">
 
 					<el-form-item label="商户昵称:">
-						<el-input v-model="detaileData.takerPhone"  disabled></el-input>
+						<el-input v-model="detaileData.takerName"  disabled></el-input>
 					</el-form-item>
 					<el-form-item label="商户账户:">
 						<el-input v-model="detaileData.takerPhone"  disabled></el-input>
 					</el-form-item>
-					<el-form-item label="交易类型">
-						<el-input :value=" detaileData.trans==0?'兑出':detaileData.trans==1?'兑入':''" disabled></el-input>
+					<el-form-item label="交易类型:">
+						<el-input :value=" detaileData.trans==0?'兑入':detaileData.trans==1?'兑出 ':''" disabled></el-input>
 					</el-form-item>
 
 					<el-form-item label="承兑商昵称:">
@@ -65,17 +65,17 @@
 						<el-input v-model="detaileData.fee" disabled></el-input>
 					</el-form-item>
 					<el-form-item label="吃单价格:">
-						<el-input v-model="detaileData.makerPrice" disabled></el-input>
+						<el-input v-model="detaileData.takerPrice" disabled></el-input>
 					</el-form-item>
 					
 					<el-form-item label="吃单数量:">
-						<el-input v-model="detaileData.makerAmount" disabled></el-input>
+						<el-input v-model="detaileData.takerAmount" disabled></el-input>
 					</el-form-item>
-					<el-form-item label="报单价格:">
+					<el-form-item label="接单价格:">
 						<el-input v-model="detaileData.makerPrice" disabled></el-input>
 					</el-form-item>
 					<el-form-item label="接单数量:">
-						<el-input v-model="detaileData.takerAmount" disabled></el-input>
+						<el-input v-model="detaileData.makerAmount " disabled></el-input>
 					</el-form-item>
 					<el-form-item label="撮合费:">
 						<el-input v-model="detaileData.couplingFee" disabled></el-input>

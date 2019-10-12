@@ -8,16 +8,16 @@
                 <el-input type="textarea" v-model="form.remark" placeholder="请输入备注信息"></el-input>
             </template>
             <template v-else-if="type === 'manual'">
-                <el-form :model="form" label-width="110px">
+                <el-form :model="form" label-width="60px">
                     <el-form-item label="TXID" prop="txid：">
                         <el-input size="small" placeholder="请输入TXID" v-model="form.txid"></el-input>
                     </el-form-item>
-                    <el-form-item label="实际到账金额：" prop="blockAmount">
+                    <!-- <el-form-item label="实际到账金额：" prop="blockAmount">
                         <el-input size="small" v-model="form.blockAmount" placeholder="请输入实际到账金额"></el-input>
                     </el-form-item>
                     <el-form-item label="上链手续费：" prop="blockFee">
                         <el-input size="small" placeholder="请输入上链手续费" v-model="form.blockFee"></el-input>
-                    </el-form-item>
+                    </el-form-item> -->
                 </el-form>
             </template>
             <template v-else-if="type === 'reject'">
@@ -38,7 +38,6 @@
     </div>
 </template>
 <script>
-// import { tokenHandler } from '@/common/util'
 export default {
     props: ['showDialog', 'type', 'item'],
     data () {
@@ -81,67 +80,66 @@ export default {
         },
         confirm () {
             const params = {
-                // sysUserId: tokenHandler('sysUserId'),
                 recdId: this.item.recdId
             }
             const form = this.form
             if (this.type === 'auto') {
-                params.recdStatus = 'SUCCESS'
-                params.sysRemark = form.remark
-                this.$http.get('/backmgr/auditOrder', params)
-                    .then(data => {
-                        if (data.ret === 0) {
-                            this.$notify.success({
-                                title: '提示',
-                                message: '放行成功'
-                            })
-                        } else {
-                            this.$notify.error({
-                                title: '提示',
-                                message: '放行失败'
-                            })
-                        }
-                    })
-                    .catch(e => console.warn(e))
+				params.tradeStatus = '4'
+				params.tradeId = this.item.id
+				params.sysRemark = form.remark
+				
+                this.$http.post('/wallet/backmgr/trade/auditTrade', params).then(res => {
+					if(res.code == 200) {
+						this.$notify.success({
+							title: '提示',
+							message: res.msg
+						})
+					}else {
+						this.$notify.error({
+							title: '提示',
+							message: res.msg
+						})
+					}
+					this.visible = false
+					this.$emit('getData')
+				}).catch(e => console.warn(e))
             } else if (this.type === 'manual') {
-                params.txId = form.txId
-                params.blockAmount = form.blockAmount
-                params.blockFee = form.blockFee
-                this.$http
-                    .get('/backmgr/manualAudit', params)
-                    .then(({ data }) => {
-                        if (data.ret === 0) {
-                            this.$notify.success({
-                                title: '提示',
-                                message: '放行成功'
-                            })
-                        } else {
-                            this.$notify.error({
-                                title: '提示',
-                                message: '放行失败'
-                            })
-                        }
-                    })
-                    .catch(e => console.warn(e))
+				params.txId = form.txId
+                params.orderId = this.item.id
+                this.$http.post('/wallet/backmgr/trade/updateWithdrawSuccess', params).then((res) => {
+					if(res.code == 200) {
+						this.$notify.success({
+							title: '提示',
+							message: res.msg
+						})
+					}else {
+						this.$notify.error({
+							title: '提示',
+							message: res.msg
+						})
+					}
+					this.visible = false
+					this.$emit('getData')
+                }).catch(e => console.warn(e))
             } else if (this.type === 'reject') {
-                params.recdStatus = 'AUDIT_FAIL'
-                params.sysRemark = form.reason
-                this.$http
-                    .get('/backmgr/auditOrder', params)
-                    .then(({ code }) => {
-                        if (code === 200) {
-                            this.$notify.success({
-                                title: '提示',
-                                message: '拒绝成功'
-                            })
-                        } else {
-                            this.$notify.error({
-                                title: '提示',
-                                message: '拒绝失败'
-                            })
-                        }
-                    })
-                    .catch(e => console.warn(e))
+                params.tradeStatus = '3'
+				params.sysRemark = form.reason
+				params.tradeId = this.item.id
+                this.$http.post('/wallet/backmgr/trade/auditTrade', params).then(res => {
+					if(res.code == 200) {
+						this.$notify.success({
+							title: '提示',
+							message: res.msg
+						})
+					}else {
+						this.$notify.error({
+							title: '提示',
+							message: res.msg
+						})
+					}
+					this.visible = false
+					this.$emit('getData')
+				}).catch(e => console.warn(e))
             }
         }
     }

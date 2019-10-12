@@ -8,10 +8,13 @@ const Index = () => import('@/pages/home');
 const Login = () => import('@/pages/login/index');
 
 import systemRouter from './routers/system'  //系统页面
-import brm from './routers/brm'
+import brm from './routers/brm'   //资金管理
+import merchant from './routers/merchant'  //商户服务
+
 export const appRouter = [
 	...systemRouter,
 	...brm,
+	...merchant,
   {
     path: '/',
     name: 'Index',

@@ -22,10 +22,11 @@
                 :total="data.total*1">
             </el-pagination>
         </div>
-        <ReleaseDialog @hideDialog="hideDialog" :showDialog="showDialog" :item="item" :type="type" />
+		<!-- 放行 -->
+        <ReleaseDialog @hideDialog="hideDialog" :showDialog="showDialog" :item="item" :type="type" @getData="getData" />
 
 		<!-- 手动录单弹框 -->
-		<ManualRecordDialog :showDialogMR='showDialogMR' @hideDialogMR="hideDialogMR" @getData="getData" />
+		<ManualRecordDialog :showDialogMR='showDialogMR' @hideDialogMR="hideDialogMR" />
      </div>
  </template>
 <script>
@@ -102,29 +103,22 @@ export default {
         getData () {
             this.data = []
             this.loading = true
-            const params = {
-                pageNum: this.pageNum,
-                pageSize: this.pageSize
-            }
-            const filter = this.$refs.query && this.$refs.query.fetchFilter() || {}
+            let filter = this.$refs.query && this.$refs.query.fetchFilter() || {}
             if (filter.create_time) {
-                params.beginTime = filter.create_time[0] + ' 00:00:00'
-                params.endTime = filter.create_time[1] + ' 23:59:59'
-            }
-            if (filter.coinName) params.coinName = filter.coinName
-            if (filter.account) params.account = filter.account
-            if (filter.id) params.recdId = filter.id
-            if (filter.orderId) params.orderId = filter.orderId
-            if (filter.txId) params.txId = filter.txId
-            if (filter.recdStatus) params.recdStatus = filter.recdStatus
-            if (filter.transType) params.transType = filter.transType
-            if (filter.address) params.address = filter.address
-            this.$http.get(`/wallet/block/backmgr/getWithdrawList`, params)
-                .then(data => {
-                    const { code, result } = data
+                filter.beginTime = filter.create_time[0] + ' 00:00:00'
+                filter.endTime = filter.create_time[1] + ' 23:59:59'
+			}
+			filter = Object.assign(filter, {
+				pageNum: this.pageNum,
+                pageSize: this.pageSize
+			})
+			
+            this.$http.post(`/wallet/backmgr/trade/getAuditingWithdraw`, filter)
+                .then(res => {
+					console.log(res)
+                    const { code, result } = res
                     if (code === 200) {
-                        this.data = result.blockWithdrawDtoPageInfo
-                        this.blockSumReAndWdResultDto = result.blockSumReAndWdResultDto
+                        this.data = result.pageInfo
                     } else {
                         this.$notify.error({
                             title: '提示',

@@ -2,42 +2,37 @@
 <template>
     <div class="transaction-details">
         <el-container>
-					<el-main>
-						<el-form :inline="true"  ref="filterForm" :model="filterForm">
+					<div class="main">
+						<el-form :inline="true"  ref="filterForm" :model="filterForm" size="mini" label-width="80px">
 							<div class="form-group">
 								<el-form-item label="订单号:">
 									<el-input placeholder="请输入单号" v-model="filterForm.userId" class="input-with-select"></el-input>
 								</el-form-item>
-									<el-form-item label="账号:">
+								<el-form-item label="账号:">
 									<el-input placeholder="请输入用户账号" v-model="filterForm.userId" class="input-with-select"></el-input>
 								</el-form-item>
-								<br>
-								<div class="radioBox">
-									<label >类型:</label>
+								<el-form-item label="类型:">
 									<el-select v-model="filterForm.tradeType" >
 										<el-option v-for="(item, key) in tradeTypeList" :key="key" :value="item.label" :label="item.value"></el-option>
 									</el-select>
-								</div>
-							</div><div class="form-group">
-								<div class="radioBox">
-									<label >状态:</label>
+								</el-form-item>
+							</div>
+							<div class="form-group">
+								<el-form-item label="状态:">
 									<el-select v-model="filterForm.tradeStatus" >
 										<el-option v-for="(item, key) in statusList" :key="key" :value="item.label" :label="item.value"></el-option>
 									</el-select>
-								</div>
-								<div class="radioBox">
-									<label >币种:</label>
+								</el-form-item>
+								<el-form-item label="币种:">
 									<el-select v-model="filterForm.coinName" >
 										<el-option v-for="(item, key) in coinList" :key="key" :value="item.label" :label="item.value"></el-option>
 									</el-select>
-									
-								</div>
-								<div class="radioBox">
-									<label >广告类型:</label>
+								</el-form-item>
+								<el-form-item label="广告类型:">
 									<el-select v-model="filterForm.trans" >
 										<el-option v-for="(item, key) in transList" :key="key" :value="item.label" :label="item.value"></el-option>
 									</el-select>
-								</div>
+								</el-form-item>
 							</div>
 							<div class="form-group">
 								<el-form-item class='dateItem' label="时间:">
@@ -55,10 +50,9 @@
 										<el-radio v-for="(item,index) in dateList" :key="index" :label="item.label">{{item.value}}</el-radio>
 									</el-radio-group>
 								</div> -->
-								
-								<el-button  type="primary"  size="mini"
-									@click.native="search">搜索
-								</el-button>
+								<el-form-item>
+									<el-button type="primary" @click.native="search" size="mini">搜索</el-button>
+								</el-form-item>
 							</div>
 						</el-form>
 						<ul class="statistics" v-if="statistics">
@@ -83,7 +77,7 @@
 								<p>交易额：{{ statistics.appealAmount }}{{filterForm.coinName}}</p>
 							</li>
 						</ul>
-						<el-table :data="listData.list" border  height="100%">
+						<el-table :data="listData.list" border height="100%" size="mini">
 								<el-table-column  label="类型" align="center" >
 									<div slot-scope="scope">
 										<span v-if="scope.row.tradeType==0">C2C</span>
@@ -134,7 +128,7 @@
 									</template>
 								</el-table-column>
 						</el-table>
-				</el-main>
+				</div>
             <el-footer>
                 <sac-pagination v-show="listData.list.length>0"
                     @handleChange="handleCurrentChange"
@@ -144,7 +138,6 @@
                 </sac-pagination>
             </el-footer>
         </el-container>
-
     </div>
 </template>
 <script>
@@ -302,11 +295,11 @@ export default {
      height:100%;
     .el-container{
         height:100%;
-        .el-main{
+        .main{
             height:100%;
-						width: 100%;
-						display: flex;
-						flex-direction: column;
+			width: 100%;
+			display: flex;
+			flex-direction: column;
         }
     } 
     .el-form--inline .el-form-item__label{
@@ -341,10 +334,6 @@ export default {
 			display: flex;
 			flex-direction: row;
 			flex-wrap: wrap;
-			/deep/.el-button{
-				height: 40px;
-				width: 100px;
-			}
 			/deep/.el-form-item__label{
 				font-size: 14px;
 				color: #000;
@@ -375,7 +364,6 @@ export default {
 		/deep/.el-radio__label{
 			color: #909399;
 			padding:0 10px;
-			// padding-left: 0;
 		}
 		/deep/.is-checked{
 			background: #409EFF;

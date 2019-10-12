@@ -2,6 +2,34 @@
 	<el-collapse>
 		<el-collapse-item title="查询条件" name="filter">
 			<el-form ref="form" :model="formData" label-width="80px" size="mini" inline>
+				<div>
+					<el-form-item label="账号：">
+						<el-input v-model="formData.name" placeholder="账号"></el-input>
+					</el-form-item>
+					<el-form-item label="地址：">
+						<el-input v-model="formData.addr" placeholder="搜索地址"></el-input>
+					</el-form-item>
+					<el-form-item label="订单号码：">
+						<el-input v-model="formData.orderId" placeholder="搜索订单号"></el-input>
+					</el-form-item>
+				</div>
+				<div>
+					<el-form-item label="TXID：">
+						<el-input v-model="formData.txId" placeholder="搜索TXID"></el-input>
+					</el-form-item>
+					<el-form-item label="币种：">
+						<el-select v-model="formData.coinName" placeholder="选择类型" clearable style="width: 185px">
+							<el-option :value="null" label="全部"></el-option>
+							<el-option v-for="(item, key) in coinTypes" :key="key" :value="item" :label="item"></el-option>
+						</el-select>
+					</el-form-item>
+					<el-form-item label="订单状态：">
+						<el-select v-model="formData.status" placeholder="选择订单状态" clearable style="width: 185px">
+							<el-option :value="null" label="全部"></el-option>
+							<el-option v-for="(item, key) in orderStatus" :key="key" :value="item.val" :label="item.name"></el-option>
+						</el-select>
+					</el-form-item>
+				</div>
 				<el-form-item label="时间：">
 					<el-date-picker
 						id="createtime"
@@ -17,30 +45,7 @@
 						:picker-options="pickerOptions">
 					</el-date-picker>
 				</el-form-item>
-				<el-form-item label="账号：">
-					<el-input v-model="formData.name" placeholder="账号"></el-input>
-				</el-form-item>
-				<el-form-item label="地址：">
-					<el-input v-model="formData.addr" placeholder="搜索地址"></el-input>
-				</el-form-item>
-				<el-form-item label="订单号码：">
-					<el-input v-model="formData.orderId" placeholder="搜索订单号"></el-input>
-				</el-form-item>
-				<el-form-item label="TXID：">
-					<el-input v-model="formData.txId" placeholder="搜索TXID"></el-input>
-				</el-form-item>
-				<el-form-item label="币种：">
-					<el-select v-model="formData.coinName" placeholder="选择类型" clearable style="width: 185px">
-						<el-option :value="null" label="全部"></el-option>
-						<el-option v-for="(item, key) in coinTypes" :key="key" :value="item" :label="item"></el-option>
-					</el-select>
-				</el-form-item>
-				<el-form-item label="订单状态：">
-					<el-select v-model="formData.status" placeholder="选择订单状态" clearable style="width: 185px">
-						<el-option :value="null" label="全部"></el-option>
-						<el-option v-for="(item, key) in orderStatus" :key="key" :value="item.val" :label="item.name"></el-option>
-					</el-select>
-				</el-form-item>
+				
 				<el-form-item>
 					<el-button type="primary" @click="queryData" style="margin-left: 60px">查询</el-button>
 					<el-button type="primary" @click="clear">清空</el-button>

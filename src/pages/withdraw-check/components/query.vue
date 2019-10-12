@@ -1,5 +1,5 @@
 <template>
-    <el-form ref="form" :model="filter" label-width="100px" size="mini" inline>
+    <el-form ref="form" :model="filter" label-width="80px" size="mini" inline>
         <el-form-item label="创建时间：" class="dataSelect">
             <el-date-picker
                 id="createtime"
@@ -27,25 +27,13 @@
             </el-select>
         </el-form-item>
         <el-form-item label="地址：">
-            <el-input v-model="filter.address" placeholder="搜索地址"></el-input>
+            <el-input v-model="filter.addr" placeholder="搜索地址"></el-input>
         </el-form-item>
         <el-form-item label="订单号：">
             <el-input v-model="filter.orderId" placeholder="搜索订单号"></el-input>
         </el-form-item>
-        <el-form-item label="TXID：">
-            <el-input v-model="filter.txId" placeholder="搜索TXID"></el-input>
-        </el-form-item>
-        <el-form-item label="ID：">
-            <el-input v-model="filter.id" placeholder="ID"></el-input>
-        </el-form-item>
         <el-form-item label="账号：">
-            <el-input v-model="filter.account" placeholder="搜索账号"></el-input>
-        </el-form-item>
-        <el-form-item label="类型：">
-            <el-select v-model="filter.transType" placeholder="选择类型" clearable style="width: 185px">
-                <el-option value="" label="全部"></el-option>
-                <el-option v-for="(item, key) in fundTypes" :key="key" :value="key" :label="item"></el-option>
-            </el-select>
+            <el-input v-model="filter.name" placeholder="搜索账号"></el-input>
         </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="queryData" style="margin-left: 60px">查询</el-button>
@@ -150,5 +138,8 @@ export default {
 <style lang="less" scoped>
 /deep/.dataSelect  .el-form-item__content{
     width: 350px;
+}
+/deep/.el-form-item__label {
+	padding: 0;
 }
 </style>

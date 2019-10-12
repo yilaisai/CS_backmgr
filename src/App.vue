@@ -35,4 +35,9 @@ export default {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+  .el-table {
+	  .cell {
+		  white-space: nowrap;
+	  }
+  }
 </style>

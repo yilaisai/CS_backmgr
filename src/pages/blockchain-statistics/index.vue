@@ -40,7 +40,9 @@
         </div>
 
         <el-table :data="tableData" border style="width: 100%" size="mini">
-            <el-table-column prop="txTime" label="时间" width="140" align="center"></el-table-column>
+            <el-table-column prop="txTime" label="时间" width="140" align="center">
+				<!-- <span slot-scope="scope">{{ $fmtDate(scope.row.txTime,'full') }}</span> -->
+			</el-table-column>
             <el-table-column prop="transTypeStr" label="转账类型" width="100" align="center">
                 <template slot-scope="scope">
                     <span>{{scope.row.transTypeStr}}</span>
@@ -373,7 +375,7 @@ export default {
         align-items: center;
         margin-top: 20px;                        
         .title {
-            font-size: 18x;
+            font-size: 14px;
             font-weight: 600;
             color: #515a6e;
             text-indent: 0.3em;

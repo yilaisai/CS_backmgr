@@ -3,10 +3,20 @@
 		title="手动录单"
 		:visible.sync="dialogVisible"
 		width="30%">
-		<el-form ref="form" :model="form" label-width="80px" size="mini">
+		<el-form ref="form" :model="form" label-width="80px" size="mini" label-position="left">
+			<el-form-item label="类型">
+				<el-radio v-model="form.type" label="1">平台账户</el-radio>
+  				<el-radio v-model="form.type" label="2">非平台账户</el-radio>
+			</el-form-item>
+			<el-form-item label="账户" v-show="form.type == 1">
+				<el-input v-model.trim="form.name"></el-input>
+			</el-form-item>
 			<el-form-item label="币种">
 				<el-select v-model="form.coinName" placeholder="请选择币种">
 					<el-option label="USDT" value="USDT"></el-option>
+					<el-option label="ETH" value="ETH"></el-option>
+					<el-option label="BTC" value="BTC"></el-option>
+					<el-option label="EOS" value="EOS"></el-option>
 				</el-select>
 			</el-form-item>
 			<el-form-item label="TXID">
@@ -19,15 +29,15 @@
 				<el-input v-model.trim="form.toAddr"></el-input>
 			</el-form-item>
 			<el-form-item label="数量">
-				<el-input v-model.trim="form.blockAmount">
+				<el-input v-model.trim="form.amount">
 					<template slot="append">USDT</template>
 				</el-input>
 			</el-form-item>
-			<!-- <el-form-item label="手续费">
-				<el-input v-model.trim="form.blockFee">
+			<el-form-item label="手续费">
+				<el-input v-model.trim="form.fee">
 					<template slot="append">USDT</template>
 				</el-input>
-			</el-form-item> -->
+			</el-form-item>
 		</el-form>
 		<span slot="footer" class="dialog-footer">
 			<el-button @click="dialogVisible = false" size="mini">取 消</el-button>
@@ -47,20 +57,22 @@ export default {
 	data() {
 		return {
 			form: {
-				sysUserId: "123456",
+				type: "1",
+				name: '',  //账号手机号码
 				txId: "",
 				coinName: "USDT",
 				toAddr: "",
 				fromAddr: "",
-				blockFee: "0",  //上链手续费 取链上的数值
-				blockAmount: "" //实际到账金额
+				amount: "", //实际到账金额
+				fee: '', //手续费
 			}
 		}
 	},
 	methods: {
 		manualDo() {
 			for(let i in this.form) {
-				if(this.form[i] === '') {
+				if(this.form[i] === '' && i != 'name') {
+					console.log(i)
 					this.$notify.error({
 						title: '提示',
 						message: "数据填写不完整"
@@ -68,7 +80,7 @@ export default {
 					return
 				}
 			}
-			this.$http.get('/backmgr/manual', this.form).then(res => {
+			this.$http.post('/wallet/backmgr/trade/createWithdrawSuccess', this.form).then(res => {
 				if(res.code == 200) {
 					this.$notify.success({
 						title: '提示',

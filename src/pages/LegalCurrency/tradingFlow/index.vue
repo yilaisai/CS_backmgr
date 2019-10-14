@@ -106,55 +106,55 @@ import { dateFormat } from "@/common/util";
 export default {
     name:'transaction-details',
     data(){
-        return{
-            selectedDate: [], //已选日期
-            currentPage:1,
-            filterForm:{
-								pageNum:1,
-								pageSize: 20,
-								startDate:'',
-								endDate:'',
-								coinName:'',
-								tradeStatus:'',
-								tradeType:'0',
-								trans:'',
-								dateType:'1'
-						},
-						tradeTypeList:[
-							{value:'全部',label:""},
-							{value:'C2C',label:"0"},
-							{value:'派单',label:"1"},
-							{value:'抢单',label:"2"}
-						],
-						statusList:[
-							{value:'全部',label:""},
-							{value:'未付款',label:"1"},
-							{value:'已付款(待放行)',label:"2"},
-							{value:'已完成',label:"3"},
-							{value:'已取消',label:"4"},
-							{value:'申述中',label:"5"},
-						],
-						coinList:[
-							{value:'所有',label:""},
-							{value:'USDT',label:"USDT"},
-							{value:'BTC',label:"BTC"},
-						],
-						transList:[
-							{value:'所有',label:""},
-							{value:'购买',label:"1"},
-							{value:'出售',label:"0"},
-						],
-						dateList:[
-							{value:'今天',label:"1"},
-							{value:'一周',label:"2"},
-							{value:'一个月',label:"3"},
-							{value:'三个月',label:"4"},
-						],
-            listData: {
-                total: null,
-                list: [],
-            },
-        }
+			return{
+				selectedDate: [], //已选日期
+				currentPage:1,
+				filterForm:{
+					pageNum:1,
+					pageSize: 20,
+					startDate:'',
+					endDate:'',
+					coinName:'',
+					tradeStatus:'',
+					tradeType:'0',
+					trans:'',
+					dateType:'1'
+				},
+				tradeTypeList:[
+					{value:'全部',label:""},
+					{value:'C2C',label:"0"},
+					{value:'派单',label:"1"},
+					{value:'抢单',label:"2"}
+				],
+				statusList:[
+					{value:'全部',label:""},
+					{value:'未付款',label:"1"},
+					{value:'已付款(待放行)',label:"2"},
+					{value:'已完成',label:"3"},
+					{value:'已取消',label:"4"},
+					{value:'申述中',label:"5"},
+				],
+				coinList:[
+					{value:'所有',label:""},
+					{value:'USDT',label:"USDT"},
+					{value:'BTC',label:"BTC"},
+				],
+				transList:[
+					{value:'所有',label:""},
+					{value:'购买',label:"1"},
+					{value:'出售',label:"0"},
+				],
+				dateList:[
+					{value:'今天',label:"1"},
+					{value:'一周',label:"2"},
+					{value:'一个月',label:"3"},
+					{value:'三个月',label:"4"},
+				],
+				listData: {
+					total: null,
+					list: [],
+				},
+			}
         
     },
     methods:{

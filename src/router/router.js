@@ -120,6 +120,14 @@ export const appRouter = [
         component:() => import('@/pages/LegalCurrency/verify/accountsReceivable.vue'),
       },
       {
+        path: 'LegalCurrencySetting',
+        name:'LegalCurrencySetting',
+        meta: {
+          title: '法币设置',
+        },
+        component:() => import('@/pages/LegalCurrency/LegalCurrencySetting.vue'),
+      },
+      {
         path: 'userQuery',
         name:'userQuery',
         meta: {
@@ -300,6 +308,15 @@ export const appRouter = [
 			  },
 			  component: () => import('@/pages/merchant/merchantDetaile.vue')
       },{
+			  path: 'cashOutVerify',
+			  name: 'cashOutVerify',
+			  meta: {
+				  title: '兑出单审核列表'
+			  },
+			  component: () => import('@/pages/merchant/cashOutVerify.vue')
+      },
+      
+      {
 			  path: 'merchantTradingFlow',
 			  name: 'merchantTradingFlow',
 			  meta: {
@@ -334,6 +351,15 @@ export const appRouter = [
         },
         component: () => import('@/pages/money/transfer-approval.vue'),
       },
+      {
+        path: 'capitalFlow',
+        name: 'capitalFlow',
+        meta: {
+          title: '资金流水',
+        },
+        component: () => import('@/pages/money/capitalFlow.vue'),
+      },
+      
       {
         path: 'transfer-query',
         name: 'transferQuery',

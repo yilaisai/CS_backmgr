@@ -13,7 +13,7 @@
         </el-form-item>
         
         <el-button  class="btn" type="primary"  size="mini"
-          @click.native="getList">查询
+          @click.native="getInviteData">查询
         </el-button>
       </el-form>
     </div>

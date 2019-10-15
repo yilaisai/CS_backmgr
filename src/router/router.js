@@ -308,6 +308,15 @@ export const appRouter = [
 			  },
 			  component: () => import('@/pages/merchant/merchantDetaile.vue')
       },{
+			  path: 'cashOutVerify',
+			  name: 'cashOutVerify',
+			  meta: {
+				  title: '兑出单审核列表'
+			  },
+			  component: () => import('@/pages/merchant/cashOutVerify.vue')
+      },
+      
+      {
 			  path: 'merchantTradingFlow',
 			  name: 'merchantTradingFlow',
 			  meta: {

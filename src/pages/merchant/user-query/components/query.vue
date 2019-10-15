@@ -3,7 +3,7 @@
 		<el-collapse-item title="查询条件" name="filter">
 			<el-form ref="form" :model="formData" label-width="80px" size="mini" inline>
 				<el-form-item label="搜索：">
-					<el-input v-model="formData.name" placeholder="请输入appid/账户/昵称"></el-input>
+					<el-input v-model="formData.appId" placeholder="请输入appid/账户/昵称"></el-input>
 				</el-form-item>
 				<el-form-item label="币种：">
 					<el-select v-model="formData.coinName" placeholder="选择类型" clearable style="width: 185px">
@@ -96,7 +96,7 @@ export default {
 				coinName: null, //币种名称
 				startDate: '', //起始时间
 				endDate: '', //结束时间
-				name: '', //账号
+				appId: '', //账号
 				orderId: '', //订单号
 				pageNum: '', //页码
 				pageSize: '', //页数

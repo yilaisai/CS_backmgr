@@ -12,19 +12,17 @@
 			border
 			size="mini"
 			style="min-width: 100%">
-			<el-table-column prop="create_time" label="appid" width="140"></el-table-column>
-			<el-table-column prop="nickName" label="账号|昵称" width="140">
-				<template slot-scope="scope">
-					<span>{{scope.row.phone + ' | ' + scope.row.nickName}}</span>
-				</template>
+			<el-table-column prop="appId" label="appid" width="140"></el-table-column>
+			<el-table-column prop="name" label="账号|昵称" width="140">
+				<span slot-scope="scope">{{scope.row.name + ' | ' + scope.row.phone}}</span>
 			</el-table-column>
-			<el-table-column prop="fee" label="手续费"></el-table-column>
-			<el-table-column prop="coin_name" label="直推人账户/费率" align="center"></el-table-column>
-			<el-table-column prop="amount" label="间推人账户"></el-table-column>
-			<el-table-column prop="from_addr" label="商户余额"></el-table-column>
+			<el-table-column prop="feeRate" label="手续费"></el-table-column>
+			<el-table-column prop="firstRateIn" label="直推人账户/费率" align="center"></el-table-column>
+			<el-table-column prop="secRateIn" label="间推人账户"></el-table-column>
+			<el-table-column prop="amount" label="商户余额"></el-table-column>
 			<el-table-column prop="to_addr" label="累计充值额（CNY）"></el-table-column>
 			<el-table-column prop="id" label="累计提现额（CNY）"></el-table-column>
-			<el-table-column prop="sys_remark" label="创建时间"></el-table-column>
+			<el-table-column prop="createDate" label="创建时间"></el-table-column>
 			<el-table-column prop="date" label="操作" fixed="right" width="100">
 				<template slot-scope="scope">
 					<el-button
@@ -80,7 +78,7 @@ export default {
 	},
 	methods: {
 		handleEdit(idx, row) {
-			this.$router.push('/merchant/user-details?id=' + row.id)
+			this.$router.push('/merchant/user-details?id=' + row.userId)
 		},
 		hideDialogMT(b) {
 			this.showDialogMT = b

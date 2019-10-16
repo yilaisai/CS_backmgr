@@ -21,6 +21,18 @@ const merchant = [
 				name: 'merUserDetails',
 				meta: { title: '商户详情' },
 				component: () => import('@/pages/merchant/user-query/details.vue')
+			},
+			{
+				path: 'recharge-record',
+				name: 'merRechargeRecord',
+				meta: { title: '充提记录' },
+				component: () => import('@/pages/merchant/mer-recharge-record/index.vue')
+			},
+			{
+				path: 'fund-record',
+				name: 'merFundRecord',
+				meta: { title: '资金流水' },
+				component: () => import('@/pages/merchant/mer-fund-record/index.vue')
 			}
 		]
 	}

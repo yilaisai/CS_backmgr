@@ -1,61 +1,38 @@
-/*
- * @Author: shanks 
- * @Date: 2019-08-19 11:47:47
- * @Last Modified by: shanks
- * @Content: 商家申请审核
- * @Last Modified time: 2019-08-19 11:47:47
- */
- 
 <template>
     <el-container>
-        <el-header>
-            <div class="left">
-                <el-input placeholder="请输入内容" v-model="keyWord" class="input-with-select">
-                    <el-select v-model="option.auditStatus" slot="prepend" style="width:130px" @change="selChange" placeholder="请选择">
-                        <el-option label="待审核" value="0"></el-option>
-                        <el-option label="审核成功" value="1"></el-option>
-                        <el-option label="审核未通过" value="2"></el-option>
-                    </el-select>
-                    <el-button slot="append" icon="el-icon-search" @click="search" type="success">搜索</el-button>
-                </el-input>
-            </div>
-            <!-- <div class="right">
-                <el-button @click="allAudit">{{option.auditStatus == '' ? '查看全部待审核' :'查看全部'}}</el-button>
-            </div> -->
-        </el-header>
-        <el-main>
-            <el-table
-                :data="tableData"
-                border
-                style="width: 100%"
-                height="100%"
-                >
-                <el-table-column fixed prop="userId" label="用户ID" width="120"></el-table-column>
-                <!-- <el-table-column prop="realName" label="用户名称"></el-table-column>
-                <el-table-column prop="phone" label="电话号码"></el-table-column> -->
-                <el-table-column prop="auditUserName" label="审批人"></el-table-column>
-                <el-table-column prop="createTime" label="创建时间">
-					<template slot-scope="scope">
-						<span>{{$fmtDate(scope.row.createTime)}}</span>
-					</template>
-				</el-table-column>
-                <el-table-column prop="auditComment" label="备注" width="130px"></el-table-column>
-                <el-table-column fixed="right" label="操作" width="100">
-					<template slot-scope="scope">
-						<el-button @click="handleClick(scope.row)" type="primary" :disabled="scope.row.auditStatus != 0" size="small">审核</el-button>
-					</template>
-                </el-table-column>
-            </el-table>
-        </el-main>
-        <el-footer>
-            <sac-pagination v-show="tableData.length>0"
-                @handleChange="handleCurrentChange"
-                :total="+total"
-                :page-size="option.pageSize"
-                :current-page="option.pageNum">
-            </sac-pagination>
-        </el-footer>
-
+        <div class="left">
+			<el-input placeholder="请输入内容" v-model="keyWord" class="input-with-select">
+				<el-select v-model="option.auditStatus" slot="prepend" style="width:130px" @change="selChange" placeholder="请选择">
+					<el-option label="待审核" value="0"></el-option>
+					<el-option label="审核成功" value="1"></el-option>
+					<el-option label="审核未通过" value="2"></el-option>
+				</el-select>
+				<el-button slot="append" icon="el-icon-search" @click="search" type="success">搜索</el-button>
+			</el-input>
+		</div>
+        <el-table :data="tableData" border style="width: 100%" height="100%" size="mini">
+			<el-table-column fixed prop="userId" label="用户ID" width="120"></el-table-column>
+			<!-- <el-table-column prop="realName" label="用户名称"></el-table-column>
+			<el-table-column prop="phone" label="电话号码"></el-table-column> -->
+			<el-table-column prop="auditUserName" label="审批人"></el-table-column>
+			<el-table-column prop="createTime" label="创建时间">
+				<template slot-scope="scope">
+					<span>{{$fmtDate(scope.row.createTime)}}</span>
+				</template>
+			</el-table-column>
+			<el-table-column prop="auditComment" label="备注" width="130px"></el-table-column>
+			<el-table-column fixed="right" label="操作" width="100">
+				<template slot-scope="scope">
+					<el-button @click="handleClick(scope.row)" type="primary" :disabled="scope.row.auditStatus != 0" size="small">审核</el-button>
+				</template>
+			</el-table-column>
+		</el-table>
+        <sac-pagination v-show="tableData.length>0"
+			@handleChange="handleCurrentChange"
+			:total="+total"
+			:page-size="option.pageSize"
+			:current-page="option.pageNum">
+		</sac-pagination>
 		<el-dialog
 			title="审核"
 			:visible.sync="dialogVisible"
@@ -119,10 +96,6 @@ export default {
             this.option.pageNum=currentPage
             this.getList(this.option)
         },
-        /* handleCurrentChange(val) {
-            this.option.pageNum = val;
-            this.getList(this.option)
-        }, */
         getList(option){
             this.$http.post('/wallet/app/otc/backmgr/getAuditList',option).then((res)=>{
 				

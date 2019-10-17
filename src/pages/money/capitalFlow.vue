@@ -1,45 +1,41 @@
 <template>
 	<div class="capitalFlow-page">
 		<div>
+			<el-form :inline="true"  ref="filterForm" label-width="80px" :model="filterForm" size="mini">
+				<el-form-item label="订单号:">
+					<el-input placeholder="请输入单号" v-model="filterForm.userId" class="input-with-select"></el-input>
+				</el-form-item>
+				<el-form-item label="账号:">
+					<el-input placeholder="请输入用户账号" v-model="filterForm.userId" class="input-with-select"></el-input>
+				</el-form-item>
+				<el-form-item label="状态:">
+					<el-select v-model="filterForm.tradeStatus" >
+						<el-option v-for="(item, key) in statusList" :key="key" :value="item.label" :label="item.value"></el-option>
+					</el-select>
+				</el-form-item>
+				<el-form-item label="币种:">
+						<el-select v-model="filterForm.coinName" >
+						<el-option v-for="(item, key) in coinList" :key="key" :value="item.label" :label="item.value"></el-option>
+					</el-select>
+				</el-form-item>
+				<el-form-item label="广告类型:">
+					<el-select v-model="filterForm.trans" >
+						<el-option v-for="(item, key) in transList" :key="key" :value="item.label" :label="item.value"></el-option>
+					</el-select>
+				</el-form-item>
+				<el-form-item class='dateItem' label="时间:">
+					<el-date-picker
+						v-model="selectedDate"
+						type="daterange"
+						range-separator="至"
+						start-placeholder="开始日期"
+						end-placeholder="结束日期" @change='filterForm.dateType=""'>
+					</el-date-picker>
+				</el-form-item>
+				<el-form-item><el-button type="primary" @click.native="search">搜索</el-button></el-form-item>
+			</el-form>
 			<div>
-				<el-form :inline="true"  ref="filterForm" label-width="80px" :model="filterForm">
-					<el-form-item label="订单号:">
-						<el-input placeholder="请输入单号" v-model="filterForm.userId" class="input-with-select"></el-input>
-					</el-form-item>
-					<el-form-item label="账号:">
-						<el-input placeholder="请输入用户账号" v-model="filterForm.userId" class="input-with-select"></el-input>
-					</el-form-item>
-					<el-form-item label="状态:">
-						<el-select v-model="filterForm.tradeStatus" >
-							<el-option v-for="(item, key) in statusList" :key="key" :value="item.label" :label="item.value"></el-option>
-						</el-select>
-					</el-form-item>
-					<el-form-item label="币种:">
-							<el-select v-model="filterForm.coinName" >
-							<el-option v-for="(item, key) in coinList" :key="key" :value="item.label" :label="item.value"></el-option>
-						</el-select>
-					</el-form-item>
-					<el-form-item label="广告类型:">
-						<el-select v-model="filterForm.trans" >
-							<el-option v-for="(item, key) in transList" :key="key" :value="item.label" :label="item.value"></el-option>
-						</el-select>
-					</el-form-item>
-					<el-form-item class='dateItem' label="时间:">
-						<el-date-picker
-							v-model="selectedDate"
-							type="daterange"
-							range-separator="至"
-							start-placeholder="开始日期"
-							end-placeholder="结束日期" @change='filterForm.dateType=""'>
-						</el-date-picker>
-					</el-form-item>
-					<el-button  type="primary"  size="small" class="btn"
-						@click.native="search">搜索
-					</el-button>
-				</el-form>
-			</div>
-			<div>
-				<el-table :data="listData.list" border height="100%">
+				<el-table :data="listData.list" border height="100%" size="mini">
 					<el-table-column  label="单号/下单时间" width="180"  align="center">
 						<div slot-scope="scope">
 							<p>{{scope.row.recdId}}</p>
@@ -77,16 +73,15 @@
 					</el-table-column>
 					<el-table-column prop="coinName" label="币种" align="center" ></el-table-column>
 					<el-table-column prop="fee" label="手续费" align="center" ></el-table-column>
-					
 				</el-table>
 			</div>
 			<div>
-				 <sac-pagination v-show="listData.list.length>0"
-							@handleChange="handleCurrentChange"
-							:total="+listData.total"
-							:page-size="filterForm.pageSize"
-							:current-page="filterForm.pageNum">
-					</sac-pagination>
+				<sac-pagination v-show="listData.list.length>0"
+					@handleChange="handleCurrentChange"
+					:total="+listData.total"
+					:page-size="filterForm.pageSize"
+					:current-page="filterForm.pageNum">
+				</sac-pagination>
 			</div>
 		</div>
 					

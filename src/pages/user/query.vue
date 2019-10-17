@@ -5,13 +5,7 @@
 */
 <template>
   <div class='query'>
-    <!-- <el-col :span="22" style="text-align:right; margin-bottom: 30px;">
-      <el-button size="small" type="primary" @click="addUser">创建用户</el-button>
-    </el-col> -->
-    <el-form :inline="true"
-             label-width="86px"
-             ref="filterForm"
-             :model="filterForm">
+    <el-form :inline="true" label-width="86px" ref="filterForm" :model="filterForm" size="mini">
       <el-form-item class='dateItem' label="时间:">
         <el-date-picker
           v-model="selectedDate"
@@ -41,7 +35,7 @@
             <el-option v-for="(item, key) in companyType" :key="key" :value="item.label" :label="item.value"></el-option>
           </el-select>
       </el-form-item>
-      <el-button class="search" size="small"  type="primary" @click="submitForm(1)">搜索</el-button>
+	  <el-form-item><el-button class="search" size="mini" type="primary" @click="submitForm(1)">搜索</el-button></el-form-item>
     </el-form>
     <sac-table :data="listData.list">
       <el-table-column align="center" label="序号" type="index" :index="indexMethod" width="50">
@@ -387,9 +381,6 @@
 <style lang="less" scoped>
 .dateItem{
   width: 442px;
-}
-.search{
-  height: 39px;
 }
   .opt-dialog-wrap {
     .el-dialog {

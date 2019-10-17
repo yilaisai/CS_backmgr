@@ -8,38 +8,15 @@
                         <el-select v-model="filterForm.appealStatus"  slot="prepend" style="width:130px">
                             <el-option :label="item.label" :value="item.value" v-for="(item,index) in stateData" :key="index"></el-option>
                         </el-select>
-                        
                         <el-button slot="append" icon="el-icon-search" @click="search">搜索</el-button>
                     </el-input>
                 </div>
                 <div class="right">
                     <el-button @click="checkLog" >查看客服操作日志</el-button>
                 </div>
-                <!-- <el-form :inline="true" label-width="120px" ref="filterForm" :model="filterForm">
-                    <div class="title">
-                        <el-form-item label="类型:">
-                            <el-select v-model="filterForm.appealStatus"  >
-                                <el-option :label="item.label" :value="item.value" v-for="item in stateData"></el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="订单号:">
-                            <el-input v-model="filterForm.tradeId" placeholder=请输入订单号></el-input>
-                        </el-form-item>
-                        <div class="el-form-item__content" style="width:100px">
-                            <el-button  type="primary"  
-                                @click.native="search">搜索
-                            </el-button>
-                        </div>
-                        <div class="el-form-item__content" style="width:100px">
-                            <el-button  type="primary"  
-                                @click.native="search">查看客服操作日志
-                            </el-button>
-                        </div>
-                    </div>
-                </el-form> -->
             </el-header>
             <el-main>
-                <el-table :data="listData.list" border style="width: 100%" height="100%">
+                <el-table :data="listData.list" border style="width: 100%" height="100%" size="mini">
                     <el-table-column prop="tradeId" label="订单号" ></el-table-column>
                     <el-table-column prop="userId" label="用户id" width="50" ></el-table-column>
                     <el-table-column prop="appealType" label="投诉类型" >

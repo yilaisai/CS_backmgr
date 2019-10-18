@@ -3,8 +3,7 @@
     <div class="merchant-page">
         <el-container>
 					<el-main>
-						<el-form :inline="true"  ref="filterForm" :model="filterForm">
-							
+						<el-form :inline="true"  ref="filterForm" :model="filterForm" size="mini">
 							<div class="form-group">
 								<el-form-item class='dateItem' label="时间:">
 									<el-date-picker
@@ -15,10 +14,9 @@
 										end-placeholder="结束日期" @change='filterForm.dateType=""'>
 									</el-date-picker>
 								</el-form-item>
-								
-								<el-button  type="primary"  size="mini"
-									@click.native="search">搜索
-								</el-button>
+								<el-form-item>
+									<el-button  type="primary" size="mini" @click.native="search">搜索</el-button>
+								</el-form-item>
 							</div>
 							<div class="form-group">
 								<div class="radioBox">
@@ -30,7 +28,7 @@
 								</div>
 							</div>
 						</el-form>
-						<el-table :data="listData.list" border >
+						<el-table :data="listData.list" border size="mini">
 							<el-table-column label="商户名称" prop="name" ></el-table-column>
 							<el-table-column label="手机号" prop="phone" ></el-table-column>
 							<el-table-column label="邮箱" prop="email" ></el-table-column>
@@ -150,10 +148,6 @@ export default {
 			display: flex;
 			flex-direction: row;
 			flex-wrap: wrap;
-			/deep/.el-button{
-				height: 40px;
-				width: 100px;
-			}
 			/deep/.el-form-item__label{
 				font-size: 14px;
 				color: #000;

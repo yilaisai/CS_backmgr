@@ -19,7 +19,6 @@
                 :total="pageData.total*1">
             </el-pagination>
         </div>
-		
 	</div>
 </template>
 
@@ -54,9 +53,9 @@ export default {
 			formData = formData || {}
 			formData.pageNum = this.pageNum
 			formData.pageSize = this.pageSize
-			this.$http.post('/wallet/backmgr/trade/queryRechargeWithdrawPage', formData).then(res => {
+			this.$http.post('/wallet/backmgr/merchant/list', formData).then(res => {
 				if(res.code == 200) {
-					this.pageData = res.result.pageInfo
+					this.pageData = res.result.page
 				}
 			})
 		},

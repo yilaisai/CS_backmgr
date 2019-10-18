@@ -1,109 +1,95 @@
 <template>
     <div class='exchangeSAC'>
-      <el-form :inline="true"
-               label-width="90px"
-               ref="filterForm"
-               :model="filterForm">
-        <sac-input
-          ref="phone"
-          label="账号"
-          v-model.trim="filterForm.phoneOrEmail"></sac-input>
-				<el-form-item label="状态">
-					<el-select class="select" v-model="filterForm.status" >
-							<el-option v-for="(item, key) in stateList" :key="key" :value="item.value" :label="item.name"></el-option>
+		<el-form :inline="true" label-width="90px" ref="filterForm" :model="filterForm" size="mini">
+			<sac-input ref="phone" label="账号" v-model.trim="filterForm.phoneOrEmail"></sac-input>
+			<el-form-item label="状态">
+				<el-select class="select" v-model="filterForm.status" >
+						<el-option v-for="(item, key) in stateList" :key="key" :value="item.value" :label="item.name"></el-option>
+				</el-select>
+			</el-form-item>
+			<sac-submit-form :isReset='false' @submitForm="getUserRaking()"></sac-submit-form>
+		</el-form>
+		<el-table stripe border height="100%" :default-sort = "{prop: 'usdtAmount', order: 'descending'}" :data="listData.list" @sort-change='sortChange' size="mini">
+			<el-table-column prop="phone" label="账号"></el-table-column>
+			<el-table-column prop="nickName" label="昵称"></el-table-column>
+			<el-table-column prop="userLevel" label="用户类型">
+				<template slot-scope="scope">
+					{{scope.row.userLevel ==1?'广告商':'普通用户' }}
+				</template>
+			</el-table-column>
+			<el-table-column  label="支付宝">
+				<template slot-scope="scope">
+					<span v-if="scope.row.alipay" style="color:#409EFF">{{scope.row.alipay}}</span>
+					<span v-else> 当前未使用 </span>
+				</template>
+			</el-table-column>
+			<el-table-column  label="微信支付">
+				<template slot-scope="scope">
+					<span v-if="scope.row.wechat" style="color:#409EFF">{{scope.row.wechat}}</span>
+					<span v-else> 当前未使用 </span>
+				</template>
+			</el-table-column>
+			<el-table-column  label="银行卡">
+				<template slot-scope="scope">
+					<span v-if="scope.row.bank" style="color:#409EFF">{{scope.row.bank}}</span>
+					<span v-else> 当前未使用 </span>
+				</template>
+			</el-table-column>
+			<el-table-column  label="状态">
+				<template slot-scope="scope">
+					{{ scope.row.status ==1?'已审核':'待审核' }}
+				</template>
+			</el-table-column>
+			<el-table-column fixed="right" label="操作" width="200">
+				<template slot-scope="scope">
+					<el-button @click="goDetaile(scope)" type="text" size="mini">查看审核</el-button>
+					<el-button @click="showQRcode(scope)" type="text" size="mini">收款测试</el-button>
+					<el-button @click="showStopWindow(scope)" type="text" size="mini">停止使用</el-button>
+				</template>
+			</el-table-column>
+		</el-table>
+		<sac-pagination v-show="listData.list.length>0"
+			@handleChange="getPaginationChange"
+			:total="+listData.total"
+			:page-size="filterForm.pageSize"
+			:current-page="filterForm.pageNum">
+		</sac-pagination>
+		<el-dialog
+			title="停止使用"
+			:visible.sync="stopWindon"
+			width="30%">
+			<p>点击后，用户该收款方式将下架，确认操作？</p>
+			<el-form ref="form"   >
+				<!-- <el-form-item label="审核备注">
+					<el-input type="textarea" v-model.trim="stopType"></el-input>
+				</el-form-item> -->
+				<el-form-item label="停止类型" >
+					<el-select class="select" v-model="stopType">
+							<el-option v-for="(item, key) in payList" :key="key" :value="item.value" :label="item.name"></el-option>
 					</el-select>
 				</el-form-item>
-        
-        <sac-submit-form
-          :isReset='false'
-          @submitForm="getUserRaking()"></sac-submit-form>
-      </el-form>
-			
-      <el-table stripe border height="100%" :default-sort = "{prop: 'usdtAmount', order: 'descending'}" :data="listData.list" @sort-change='sortChange'>
-				
-        <el-table-column prop="phone" label="账号"></el-table-column>
-        <el-table-column prop="nickName" label="昵称"></el-table-column>
-				<el-table-column prop="userLevel" label="用户类型">
-          <template slot-scope="scope">
-            {{  scope.row.userLevel ==1?'广告商':'普通用户' }}
-          </template>
-        </el-table-column>
-				<el-table-column  label="支付宝">
-          <template slot-scope="scope">
-							<p v-if="scope.row.alipay" style="color:#409EFF">{{scope.row.alipay}}</p>
-							<p v-else> 当前未使用 </p>
-          </template>
-        </el-table-column>
-				<el-table-column  label="微信支付">
-          <template slot-scope="scope">
-							<p v-if="scope.row.wechat" style="color:#409EFF">{{scope.row.wechat}}</p>
-							<p v-else> 当前未使用 </p>
-          </template>
-        </el-table-column>
-				<el-table-column  label="银行卡">
-          <template slot-scope="scope">
-							<p v-if="scope.row.bank" style="color:#409EFF">{{scope.row.bank}}</p>
-							<p v-else> 当前未使用 </p>
-          </template>
-        </el-table-column>
-				<el-table-column  label="状态">
-          <template slot-scope="scope">
-            {{  scope.row.status ==1?'已审核':'待审核' }}
-          </template>
-        </el-table-column>
-				<el-table-column fixed="right" label="操作" width="200">
-					<template slot-scope="scope">
-						<el-button @click="goDetaile(scope)" type="text" size="mini">查看审核</el-button>
-						<el-button @click="showQRcode(scope)" type="text" size="mini">收款测试</el-button>
-						<el-button @click="showStopWindow(scope)" type="text" size="mini">停止使用</el-button>
-					</template>
-				</el-table-column>
-        
-      </el-table>
-      <sac-pagination v-show="listData.list.length>0"
-                      @handleChange="getPaginationChange"
-                      :total="+listData.total"
-                      :page-size="filterForm.pageSize"
-                      :current-page="filterForm.pageNum">
-      </sac-pagination>
-			<el-dialog
-				title="停止使用"
-				:visible.sync="stopWindon"
-				width="30%">
-				<p>点击后，用户该收款方式将下架，确认操作？</p>
-				<el-form ref="form"   >
-					<!-- <el-form-item label="审核备注">
-						<el-input type="textarea" v-model.trim="stopType"></el-input>
-					</el-form-item> -->
-					<el-form-item label="停止类型" >
-						<el-select class="select" v-model="stopType">
-								<el-option v-for="(item, key) in payList" :key="key" :value="item.value" :label="item.name"></el-option>
-						</el-select>
-					</el-form-item>
-				</el-form>
-				<span slot="footer" class="dialog-footer">
-					<el-button @click="stopWindon = false">取 消</el-button>
-					<el-button type="success" @click="stop">停 止</el-button>
-				</span>
-			</el-dialog>
-			<el-dialog
-				title="当前使用"
-				:visible.sync="QRcodeWindow"
-				width="400">
-				<div v-if=" obj.alipayQrcode||obj.wechatQrcode " class="qr-box">
-					<div v-show="obj.alipayQrcode">
-						<img :src="obj.alipayQrcode" alt="">
-						<p>支付宝收款码</p>
-					</div>
-					<div v-show="obj.wechatQrcode">
-						<img :src="obj.wechatQrcode" alt="">
-						<p>微信收款码</p>
-					</div>
+			</el-form>
+			<span slot="footer" class="dialog-footer">
+				<el-button @click="stopWindon = false">取 消</el-button>
+				<el-button type="success" @click="stop">停 止</el-button>
+			</span>
+		</el-dialog>
+		<el-dialog
+			title="当前使用"
+			:visible.sync="QRcodeWindow"
+			width="400">
+			<div v-if=" obj.alipayQrcode||obj.wechatQrcode " class="qr-box">
+				<div v-show="obj.alipayQrcode">
+					<img :src="obj.alipayQrcode" alt="">
+					<p>支付宝收款码</p>
 				</div>
-				<p style="text-align: center" v-else>暂未使用二维码收款码</p>
-			
-			</el-dialog>
-			
+				<div v-show="obj.wechatQrcode">
+					<img :src="obj.wechatQrcode" alt="">
+					<p>微信收款码</p>
+				</div>
+			</div>
+			<p style="text-align: center" v-else>暂未使用二维码收款码</p>
+		</el-dialog>
     </div>
 </template>
 <script>

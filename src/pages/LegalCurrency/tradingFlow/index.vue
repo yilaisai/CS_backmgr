@@ -2,93 +2,51 @@
 <template>
     <div class="transaction-details">
         <el-container>
-					<el-main>
-						<el-form :inline="true"  ref="filterForm" :model="filterForm">
-							<div class="form-group">
-								<el-form-item label="订单号:">
-									<el-input placeholder="请输入单号" v-model="filterForm.userId" class="input-with-select"></el-input>
-								</el-form-item>
-									<el-form-item label="账号:">
-									<el-input placeholder="请输入用户账号" v-model="filterForm.userId" class="input-with-select"></el-input>
-								</el-form-item>
-								<br>
-							</div><div class="form-group">
-								<div class="radioBox">
-									<label >状态:</label>
-									<el-select v-model="filterForm.tradeStatus" >
-										<el-option v-for="(item, key) in statusList" :key="key" :value="item.label" :label="item.value"></el-option>
-									</el-select>
-								</div>
-								<div class="radioBox">
-									<label >币种:</label>
-									<el-select v-model="filterForm.coinName" >
-										<el-option v-for="(item, key) in coinList" :key="key" :value="item.label" :label="item.value"></el-option>
-									</el-select>
-									
-								</div>
-								<div class="radioBox">
-									<label >广告类型:</label>
-									<el-select v-model="filterForm.trans" >
-										<el-option v-for="(item, key) in transList" :key="key" :value="item.label" :label="item.value"></el-option>
-									</el-select>
-								</div>
-							</div>
-							<div class="form-group">
-								<el-form-item class='dateItem' label="时间:">
-									<el-date-picker
-										v-model="selectedDate"
-										type="daterange"
-										range-separator="至"
-										start-placeholder="开始日期"
-										end-placeholder="结束日期" @change='filterForm.dateType=""'>
-									</el-date-picker>
-								</el-form-item>
-								<el-button  type="primary"  size="mini"
-									@click.native="search">搜索
-								</el-button>
-							</div>
-						</el-form>
-						<el-table :data="listData.list" border height="100%">
-								<el-table-column  label="单号/下单时间" width="180"  align="center">
-									<div slot-scope="scope">
-										<p>{{scope.row.recdId}}</p>
-										<p>{{ $fmtDate(scope.row.createStamp,'full') }}</p>
-									</div>
-								</el-table-column>
-								<el-table-column label="taker昵称/账户" width="150"  align="center">
-									<div slot-scope="scope">
-										<p>{{scope.row.takerName}}</p>
-										<p>{{scope.row.takerPhone}}</p>
-									</div>
-								</el-table-column>
-								<el-table-column label="maker昵称/账户" width="150"  align="center">
-								<div slot-scope="scope">
-										<p>{{scope.row.makerName}}</p>
-										<p>{{scope.row.makerPhone}}</p>
-									</div></el-table-column>
-								<el-table-column prop="tradeTime" label="状态" align="center" >
-									<div slot-scope="scope">
-										<span >{{ scope.row.tradeStatus==1?'未付款':scope.row.tradeStatus==2?'待放行':scope.row.tradeStatus==3?'已完成':scope.row.tradeStatus==4?'已取消':scope.row.tradeStatus==5?'申述':'' }}</span>
-									</div>
-								</el-table-column>
-								<el-table-column prop="tradeType" label="广告类型" width="80" align="center">
-										<template slot-scope="scope">
-												<span v-if="scope.row.trans==1">购买</span>
-												<span v-else>出售</span>
-										</template>
-								</el-table-column>
-								<el-table-column label="价格/数量/金额" width="120" align="center">
-									<div slot-scope="scope">
-										<p>{{scope.row.price}}</p>
-										<p>{{scope.row.amount}}</p>
-										<p>{{scope.row.money}}</p>
-									</div>
-								</el-table-column>
-								<el-table-column prop="coinName" label="币种" align="center" ></el-table-column>
-								<el-table-column prop="fee" label="手续费" align="center" ></el-table-column>
-							
-						</el-table>
-				</el-main>
+			<el-main>
+				<el-form :inline="true"  ref="filterForm" :model="filterForm" size="mini">
+					<div class="form-group">
+						<el-form-item label="订单号:">
+							<el-input placeholder="请输入单号" v-model="filterForm.userId" class="input-with-select"></el-input>
+						</el-form-item>
+						<el-form-item label="账号:">
+							<el-input placeholder="请输入用户账号" v-model="filterForm.userId" class="input-with-select"></el-input>
+						</el-form-item>
+						<el-form-item label="状态:">
+							<el-select v-model="filterForm.tradeStatus" >
+								<el-option v-for="(item, key) in statusList" :key="key" :value="item.label" :label="item.value"></el-option>
+							</el-select>
+						</el-form-item>
+					</div>
+					<div class="form-group">
+						<el-form-item label="币种:">
+							<el-select v-model="filterForm.coinName" >
+								<el-option v-for="(item, key) in coinList" :key="key" :value="item.label" :label="item.value"></el-option>
+							</el-select>
+						</el-form-item>
+						<el-form-item label="广告类型:">
+							<el-select v-model="filterForm.trans" >
+								<el-option v-for="(item, key) in transList" :key="key" :value="item.label" :label="item.value"></el-option>
+							</el-select>
+						</el-form-item>
+					</div>
+					<div class="form-group">
+						<el-form-item class='dateItem' label="时间:">
+							<el-date-picker
+								v-model="selectedDate"
+								type="daterange"
+								range-separator="至"
+								start-placeholder="开始日期"
+								end-placeholder="结束日期" @change='filterForm.dateType=""'>
+							</el-date-picker>
+						</el-form-item>
+						<el-form-item class='dateItem'>
+							<el-button type="primary" size="mini" @click.native="search">搜索</el-button>
+						</el-form-item>
+					</div>
+				</el-form>
+				<!-- 表格 -->
+				<Table :listData="listData.list"></Table>
+			</el-main>
             <el-footer>
                 <sac-pagination v-show="listData.list.length>0"
                     @handleChange="handleCurrentChange"
@@ -98,11 +56,11 @@
                 </sac-pagination>
             </el-footer>
         </el-container>
-
     </div>
 </template>
 <script>
 import { dateFormat } from "@/common/util";
+import Table from './components/table'
 export default {
     name:'transaction-details',
     data(){
@@ -159,50 +117,49 @@ export default {
     },
     methods:{
         getList(){
-					console.log(this.selectedDate)
-					if(this.selectedDate.length==2){
-						this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
-						this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
-					}	
-					this.$http.post('/wallet/app/otc/backmgr/getTradeMainList',this.filterForm).then(res=>{
-						const { list ,total} = res.result;
-						this.listData.list = list;
-						this.listData.total = total;
-					})
-				},
-				setDateType(){
-					//获取系统当前时间
-					let nowdate = new Date();
-					let y = nowdate.getFullYear();
-					let m = nowdate.getMonth()+1;
-					let d = nowdate.getDate();
-					let formatnowdate = y+'-'+m+'-'+d;
-					if(this.filterForm.dateType==1){
-						this.selectedDate=[formatnowdate,formatnowdate]
-						console.log(this.selectedDate)
-					}else if(this.filterForm.dateType==2){
-						let oneweekdate = new Date(nowdate-7*24*3600*1000);
-						let y = oneweekdate.getFullYear();
-						let m = oneweekdate.getMonth()+1;
-						let d = oneweekdate.getDate();
-						let formatwdate = y+'-'+m+'-'+d;
-						this.selectedDate=[formatwdate,formatnowdate]
-					}else if(this.filterForm.dateType==3){
-						nowdate.setMonth(nowdate.getMonth()-1);
-						let y = nowdate.getFullYear();
-						let m = nowdate.getMonth()+1;
-						let d = nowdate.getDate();
-						let formatwdate = y+'-'+m+'-'+d;
-						this.selectedDate=[formatwdate,formatnowdate]
-					}else if(this.filterForm.dateType==4){
-						nowdate.setMonth(nowdate.getMonth()-3);
-						let y = nowdate.getFullYear();
-						let m = nowdate.getMonth()+1;
-						let d = nowdate.getDate();
-						let formatwdate = y+'-'+m+'-'+d;
-						this.selectedDate=[formatwdate,formatnowdate]
-					}
-				},
+			if(this.selectedDate.length==2){
+				this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
+				this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
+			}	
+			this.$http.post('/wallet/app/otc/backmgr/getTradeMainList',this.filterForm).then(res=>{
+				const { list ,total} = res.result;
+				this.listData.list = list;
+				this.listData.total = total;
+			})
+		},
+		setDateType(){
+			//获取系统当前时间
+			let nowdate = new Date();
+			let y = nowdate.getFullYear();
+			let m = nowdate.getMonth()+1;
+			let d = nowdate.getDate();
+			let formatnowdate = y+'-'+m+'-'+d;
+			if(this.filterForm.dateType==1){
+				this.selectedDate=[formatnowdate,formatnowdate]
+				console.log(this.selectedDate)
+			}else if(this.filterForm.dateType==2){
+				let oneweekdate = new Date(nowdate-7*24*3600*1000);
+				let y = oneweekdate.getFullYear();
+				let m = oneweekdate.getMonth()+1;
+				let d = oneweekdate.getDate();
+				let formatwdate = y+'-'+m+'-'+d;
+				this.selectedDate=[formatwdate,formatnowdate]
+			}else if(this.filterForm.dateType==3){
+				nowdate.setMonth(nowdate.getMonth()-1);
+				let y = nowdate.getFullYear();
+				let m = nowdate.getMonth()+1;
+				let d = nowdate.getDate();
+				let formatwdate = y+'-'+m+'-'+d;
+				this.selectedDate=[formatwdate,formatnowdate]
+			}else if(this.filterForm.dateType==4){
+				nowdate.setMonth(nowdate.getMonth()-3);
+				let y = nowdate.getFullYear();
+				let m = nowdate.getMonth()+1;
+				let d = nowdate.getDate();
+				let formatwdate = y+'-'+m+'-'+d;
+				this.selectedDate=[formatwdate,formatnowdate]
+			}
+		},
         search(){
             this.getList()
         },
@@ -221,19 +178,17 @@ export default {
             this.filterForm.pageNum=currentPage
             this.getList()
         },
-        /* handleCurrentChange(val) {
-            this.filterForm.pageNum=val
-            this.getList()
-        }, */
         download(){
-
             location.href =`${ SERVER_PATH}/wallet/app/otc/backmgr/exportExcel?startDate=${this.filterForm.startDate}&endDate=${this.filterForm.endDate}&userId=${this.filterForm.userId}&token=${localStorage.getItem('cus_token')}`;
         }
     },
     activated(){
         // this.setDateType()
         this.getList()
-    }
+	},
+	components: {
+		Table
+	}
 }
 </script>
 
@@ -243,10 +198,10 @@ export default {
     .el-container{
         height:100%;
         .el-main{
-					height:100%;
-					width: 100%;
-					display: flex;
-					flex-direction: column;
+			height:100%;
+			width: 100%;
+			display: flex;
+			flex-direction: column;
         }
     } 
     .el-form--inline .el-form-item__label{
@@ -256,10 +211,6 @@ export default {
 			display: flex;
 			flex-direction: row;
 			flex-wrap: wrap;
-			/deep/.el-button{
-				height: 40px;
-				width: 100px;
-			}
 			/deep/.el-form-item__label{
 				font-size: 14px;
 				color: #000;

@@ -4,6 +4,7 @@
 			<el-form :inline="true"
              label-width="86px"
              ref="filterForm"
+			 size="mini"
              :model="filterForm">
 				<el-form-item class='dateItem' label="时间:">
 					<el-date-picker
@@ -31,52 +32,51 @@
 					<el-select v-model="filterForm.coinName" >
 							<el-option value="" label='所有'></el-option>
 							<el-option v-for="(item, key) in coinList" :key="key" :value="item" :label="item"></el-option>
-						</el-select>
+					</el-select>
 				</el-form-item>
-				<el-button class="btn" size="small"  type="primary" @click="search()">搜索</el-button>
+				<el-form-item><el-button class="btn" type="primary" @click="search()">搜索</el-button></el-form-item>
 			</el-form>
 		</div>
-		<div class="table">
-			<el-table height="100%" size="mini" border :data="listData.list">
-				<el-table-column align="center"  label="类型" width="80">
-					<div slot-scope="scope"> {{scope.row.type==1?'匹配兑出':scope.row.type==2?'抢单兑出':''}} </div>
-				</el-table-column>
-				<el-table-column align="center"  label="商户订单号/发起时间" width="160">
-					<div slot-scope="scope">
-						<p>{{scope.row.apiOrderId}}</p>
-						<p>{{$fmtDate(scope.row.createTime, 'full')}}</p>
-					</div>
-				</el-table-column>
-				<el-table-column align="center"  label="商户昵称/账户" width="130">
-					<div slot-scope="scope">
-						<p>{{scope.row.nickName}}</p>
-						<p>{{scope.row.phoneOrEmail}}</p>
-					</div>
-				</el-table-column>
-				<el-table-column align="center"  label="状态" width="130">
-					<div slot-scope="scope">
-						<p>{{scope.row.auditStatus==0?'待审核':scope.row.auditStatus==1?'通过审核':scope.row.auditStatus==2?'审核不通过':''}}</p>
-					</div>
-				</el-table-column>
-				<el-table-column align="center"  label="价格/数量/金额" width="130">
-					<div slot-scope="scope">
-						<p>{{scope.row.apiPrice}}</p>
-						<p>{{scope.row.apiStock }}</p>
-						<p>{{scope.row.apiAmount}}</p>
-					</div>
-				</el-table-column>
-				<el-table-column align="center" prop="coinName" label="币种"></el-table-column>
-				<el-table-column align="center" prop="fee" label="手续费"></el-table-column>
-				<el-table-column align="center" label="操作" fixed="right" >
-					<template slot-scope="scope">
-						<el-button v-show="scope.row.auditStatus==0" size="mini"  type="text"
-											@click="open(scope.row)">审核
-						</el-button>
-					</template>
-				</el-table-column>
-			</el-table>
-		</div>
-		<div>
+		<el-table height="auto" size="mini" border :data="listData.list">
+			<el-table-column align="center"  label="类型" width="80">
+				<div slot-scope="scope"> {{scope.row.type==1?'匹配兑出':scope.row.type==2?'抢单兑出':''}} </div>
+			</el-table-column>
+			<el-table-column align="center"  label="商户订单号/发起时间" width="160">
+				<div slot-scope="scope">
+					<p>{{scope.row.apiOrderId}}</p>
+					<p>{{$fmtDate(scope.row.createTime, 'full')}}</p>
+				</div>
+			</el-table-column>
+			<el-table-column align="center"  label="商户昵称/账户" width="130">
+				<div slot-scope="scope">
+					<p>{{scope.row.nickName}}</p>
+					<p>{{scope.row.phoneOrEmail}}</p>
+				</div>
+			</el-table-column>
+			<el-table-column align="center"  label="状态" width="130">
+				<div slot-scope="scope">
+					<p>{{scope.row.auditStatus==0?'待审核':scope.row.auditStatus==1?'通过审核':scope.row.auditStatus==2?'审核不通过':''}}</p>
+				</div>
+			</el-table-column>
+			<el-table-column align="center"  label="价格/数量/金额" width="130">
+				<div slot-scope="scope">
+					<p>{{scope.row.apiPrice}}</p>
+					<p>{{scope.row.apiStock }}</p>
+					<p>{{scope.row.apiAmount}}</p>
+				</div>
+			</el-table-column>
+			<el-table-column align="center" prop="coinName" label="币种"></el-table-column>
+			<el-table-column align="center" prop="fee" label="手续费"></el-table-column>
+			<el-table-column align="center" label="操作" fixed="right" >
+				<template slot-scope="scope">
+					<el-button v-show="scope.row.auditStatus==0" size="mini"  type="text"
+										@click="open(scope.row)">审核
+					</el-button>
+				</template>
+			</el-table-column>
+		</el-table>
+		<div class="load-more">
+			<div></div>
 			<sac-pagination v-show="listData.list.length>0"
 				@handleChange="getPaginationChange"
 				:total="+listData.total"
@@ -175,20 +175,28 @@ export default {
 </script>
 <style lang="less" scoped>
 .cashOutVerify-page{
-	width: 100%;
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	// overflow: hidden;
-		&>.table{
-			width: 100%;
-			height: 100%;
-		}
-		.btn{
-			height: 39px;
-		}
-		.dateItem{
-			width: 436px;
-		}
+	overflow: hidden;
+	.el-table{
+		flex: 1;
+	}
+	.dateItem{
+		width: 436px;
+	}
+	.load-more {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .count {
+            font-size: 14px;
+            span {
+                margin-right: 20px;
+                i {
+                    font-style: normal;
+                    color: #436bff;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
 }
 </style>

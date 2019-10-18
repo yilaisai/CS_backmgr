@@ -28,8 +28,8 @@
         :load="load"
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
         <el-table-column prop="userId" label="ID" > </el-table-column>
-        <el-table-column align="center" prop="nickName" label="姓名"  width="180"> </el-table-column>
         <el-table-column align="center" prop="account" label="账号"  width="180"> </el-table-column>
+        <el-table-column align="center" prop="nickName" label="姓名"  width="180"> </el-table-column>
         <el-table-column align="center"  prop="inviteCode" label="邀请码" width="80">
         </el-table-column>
         <el-table-column align="center" label="操作" width="80">

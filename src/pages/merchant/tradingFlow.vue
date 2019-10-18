@@ -156,7 +156,7 @@ export default {
 								coinName:'',
 								tradeStatus:'',
 								tradeType:'3',
-								trans:'',
+								trans:'3',
 								dateType:'1'
 						},
 						tradeTypeList:[
@@ -178,7 +178,7 @@ export default {
 							{value:'BTC',label:"BTC"},
 						],
 						transList:[
-							{value:'所有',label:""},
+							{value:'所有',label:"3"},
 							{value:'购买',label:"1"},
 							{value:'出售',label:"0"},
 						],

@@ -267,11 +267,12 @@
       },
       onSubmit() {
         this.$refs.ruleForm.validate((valid) => {
+          console.log(valid)
           if (valid) {
             const ruleForm = JSON.parse(JSON.stringify(this.ruleForm))
             ruleForm.tranInFee = (this.ruleForm.tranInFee + this.tranInFeeUnit).trim();
             ruleForm.tranOutFee = (this.ruleForm.tranOutFee + this.tranOutFeeUnit).trim();
-            if (ruleForm.coinId) {
+            if (ruleForm.coinId!=='') {
               ruleForm.contractadres = ruleForm.contractadres || 'empty';
               this.$http.post("wallet/backmgr/coin/updateCoinInfo", ruleForm).then((res) => {
                 this.$notify({
@@ -316,7 +317,7 @@
     activated() {
       this.resetForm();
       this.server_path = SERVER_PATH;
-      if (this.$route.params.coinId) {
+      if (this.$route.params.coinName) {
         this.ruleForm = JSON.parse(JSON.stringify(this.$route.params));
         const tranInFee = this.ruleForm.tranInFee.split('%');
         const tranOutFee = this.ruleForm.tranOutFee.split('%');

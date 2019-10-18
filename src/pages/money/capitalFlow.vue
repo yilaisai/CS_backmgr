@@ -122,6 +122,7 @@ export default {
 					{value:'所有',label:""},
 					{value:'USDT',label:"USDT"},
 					{value:'BTC',label:"BTC"},
+					{value:'ETH',label:"ETH"},
 				],
 				transList:[
 					{value:'所有',label:""},

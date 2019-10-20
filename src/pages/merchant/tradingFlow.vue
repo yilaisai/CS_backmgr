@@ -28,7 +28,7 @@
 										<el-option v-for="(item, key) in coinList" :key="key" :value="item.label" :label="item.value"></el-option>
 									</el-select>
 								</el-form-item>
-								<el-form-item label="广告类型:">
+								<el-form-item label="交易类型:">
 									<el-select v-model="filterForm.trans" >
 										<el-option v-for="(item, key) in transList" :key="key" :value="item.label" :label="item.value"></el-option>
 									</el-select>
@@ -78,33 +78,29 @@
 							</li>
 						</ul>
 						<el-table :data="listData.list" border height="100%" size="mini">
-								<el-table-column  label="类型" align="center" >
-									<div slot-scope="scope">
-										<span v-if="scope.row.tradeType==0">C2C</span>
-										<span v-if="scope.row.tradeType==1">派单</span>
-										<span v-if="scope.row.tradeType==2">抢单</span>
-									</div>
+								<el-table-column  label="类型" align="center">
+									<template slot-scope="scope">{{advTypeMap[scope.row.adv_type]}}</template>
 								</el-table-column>
 								<el-table-column  label="单号/下单时间" width="180" align="center" >
 									<div slot-scope="scope">
-										<p>{{scope.row.recdId}}</p>
-										<p>{{ $fmtDate(scope.row.createStamp,'full') }}</p>
+										<p>{{scope.row.trade_id}}</p>
+										<p>{{ $fmtDate(scope.row.create_time,'full') }}</p>
 									</div>
 								</el-table-column>
 								<el-table-column label="商户昵称/账户" width="150" align="center" >
 									<div slot-scope="scope">
-										<p>{{scope.row.takerName}}</p>
-										<p>{{scope.row.takerPhone}}</p>
+										<p>{{scope.row.taker_nick_name}}</p>
+										<p>{{scope.row.taker_phone}}</p>
 									</div>
 								</el-table-column>
 								<el-table-column label="承兑商昵称/账户" width="150" align="center">
 								<div slot-scope="scope">
-										<p>{{scope.row.makerName}}</p>
-										<p>{{scope.row.makerPhone}}</p>
+										<p>{{scope.row.nick_name}}</p>
+										<p>{{scope.row.phone}}</p>
 									</div></el-table-column>
 								<el-table-column prop="tradeTime" label="状态" align="center" >
 									<div slot-scope="scope">
-										<span >{{ scope.row.tradeStatus==1?'未付款':scope.row.tradeStatus==2?'待放行':scope.row.tradeStatus==3?'已完成':scope.row.tradeStatus==4?'已取消':scope.row.tradeStatus==5?'申述中':'' }}</span>
+										<span >{{ scope.row.trade_status==1?'未付款':scope.row.trade_status==2?'待放行':scope.row.trade_status==3?'已完成':scope.row.trade_status==4?'已取消':scope.row.trade_status==5?'申述中':'' }}</span>
 									</div>
 								</el-table-column>
 								<el-table-column prop="tradeType" label="广告类型" width="80" align="center">
@@ -120,11 +116,11 @@
 										<p>{{scope.row.money}}</p>
 									</div>
 								</el-table-column>
-								<el-table-column prop="coinName" label="币种" align="center"></el-table-column>
+								<el-table-column prop="coin_name" label="币种" align="center"></el-table-column>
 								<el-table-column prop="fee" label="手续费" align="center"></el-table-column>
 								<el-table-column prop="price" label="操作" fixed="right" align="center">
 									<template slot-scope="scope">
-										<el-button type="text" @click.native="$router.push({path:'/merchant/merchantTradingFlowDetaile',query:{recdId:scope.row.recdId}})">查看详情</el-button>
+										<el-button type="text" @click.native="$router.push({path:'/merchant/merchantTradingFlowDetaile',query:{tradeId:scope.row.trade_id}})">查看详情</el-button>
 									</template>
 								</el-table-column>
 						</el-table>
@@ -149,113 +145,120 @@ export default {
             selectedDate: [], //已选日期
             currentPage:1,
             filterForm:{
-								pageNum:1,
-								pageSize: 10,
-								startDate:'',
-								endDate:'',
-								coinName:'',
-								tradeStatus:'',
-								tradeType:'3',
-								trans:'',
-								dateType:'1'
-						},
-						tradeTypeList:[
-							{value:'全部',label:"3"},
-							{value:'派单',label:"1"},
-							{value:'抢单',label:"2"}
-						],
-						statusList:[
-							{value:'全部',label:""},
-							{value:'未付款',label:"1"},
-							{value:'已付款(待放行)',label:"2"},
-							{value:'已完成',label:"3"},
-							{value:'已取消',label:"4"},
-							{value:'申述中',label:"5"},
-						],
-						coinList:[
-							{value:'所有',label:""},
-							{value:'USDT',label:"USDT"},
-							{value:'BTC',label:"BTC"},
-						],
-						transList:[
-							{value:'所有',label:""},
-							{value:'购买',label:"1"},
-							{value:'出售',label:"0"},
-						],
-						dateList:[
-							{value:'今天',label:"1"},
-							{value:'一周',label:"2"},
-							{value:'一个月',label:"3"},
-							{value:'三个月',label:"4"},
-						],
+				pageNum:1,
+				pageSize: 10,
+				startDate:'',
+				endDate:'',
+				coinName:'',
+				trade_status:'',
+				tradeType:'3',
+				trans:'',
+				dateType:'1'
+			},
+			advTypeMap: {
+				1: '在线出售',
+				2: '在线求购',
+				3: '抢单在线出售',
+				4: '抢单在线购买',
+				5: '匹配在线出售',
+				6: '匹配在线购买'
+			},
+			tradeTypeList:[
+				{value:'全部',label:"3"},
+				{value:'派单',label:"1"},
+				{value:'抢单',label:"2"}
+			],
+			statusList:[
+				{value:'全部',label:""},
+				{value:'未付款',label:"1"},
+				{value:'已付款(待放行)',label:"2"},
+				{value:'已完成',label:"3"},
+				{value:'已取消',label:"4"},
+				{value:'申述中',label:"5"},
+			],
+			coinList:[
+				{value:'所有',label:""},
+				{value:'USDT',label:"USDT"},
+				{value:'BTC',label:"BTC"},
+			],
+			transList:[
+				{value:'所有',label:""},
+				{value:'兑入',label:"1"},
+				{value:'兑出',label:"0"},
+			],
+			dateList:[
+				{value:'今天',label:"1"},
+				{value:'一周',label:"2"},
+				{value:'一个月',label:"3"},
+				{value:'三个月',label:"4"},
+			],
             listData: {
                 total: null,
                 list: [],
-						},
-						statistics:{},
+			},
+			statistics:{},
         }
         
     },
     methods:{
         getList(){
-					// console.log(this.selectedDate)
-					if(this.selectedDate.length==2){
-						this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
-						this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
-					}	
-					this.$http.post('/wallet/app/otc/backmgr/getTradeMainList',this.filterForm).then(res=>{
-						this.SumTradeRecd()
-						const { list ,total} = res.result;
-						this.listData.list = list;
-						console.log(this.listData.list)
-						this.listData.total = total;
-					})
-				},
-				SumTradeRecd(){
-					if(this.selectedDate.length==2){
-						this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
-						this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
-					}	
-					this.$http.post('/wallet/app/otc/backmgr/SumTradeRecd',this.filterForm).then(res=>{
-						if(res.code==200){
-							this.statistics = res.result
-						}
-					})
-				},
-				
-				setDateType(){
-					//获取系统当前时间
-					let nowdate = new Date();
-					let y = nowdate.getFullYear();
-					let m = nowdate.getMonth()+1;
-					let d = nowdate.getDate();
-					let formatnowdate = y+'-'+m+'-'+d;
-					if(this.filterForm.dateType==1){
-						this.selectedDate=[formatnowdate,formatnowdate]
-						console.log(this.selectedDate)
-					}else if(this.filterForm.dateType==2){
-						let oneweekdate = new Date(nowdate-7*24*3600*1000);
-						let y = oneweekdate.getFullYear();
-						let m = oneweekdate.getMonth()+1;
-						let d = oneweekdate.getDate();
-						let formatwdate = y+'-'+m+'-'+d;
-						this.selectedDate=[formatwdate,formatnowdate]
-					}else if(this.filterForm.dateType==3){
-						nowdate.setMonth(nowdate.getMonth()-1);
-						let y = nowdate.getFullYear();
-						let m = nowdate.getMonth()+1;
-						let d = nowdate.getDate();
-						let formatwdate = y+'-'+m+'-'+d;
-						this.selectedDate=[formatwdate,formatnowdate]
-					}else if(this.filterForm.dateType==4){
-						nowdate.setMonth(nowdate.getMonth()-3);
-						let y = nowdate.getFullYear();
-						let m = nowdate.getMonth()+1;
-						let d = nowdate.getDate();
-						let formatwdate = y+'-'+m+'-'+d;
-						this.selectedDate=[formatwdate,formatnowdate]
-					}
-				},
+			if(this.selectedDate.length==2){
+				this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
+				this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
+			}	
+			this.$http.post('/wallet/backmgr/merchant/trade/list',this.filterForm).then(res=>{
+				this.SumTradeRecd()
+				const { list ,total} = res.result.pageData;
+				this.listData.list = list;
+				console.log(this.listData.list)
+				this.listData.total = total;
+			})
+		},
+		SumTradeRecd(){
+			if(this.selectedDate.length==2){
+				this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
+				this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
+			}	
+			this.$http.post('/wallet/app/otc/backmgr/SumTradeRecd',this.filterForm).then(res=>{
+				if(res.code==200){
+					this.statistics = res.result
+				}
+			})
+		},
+		
+		setDateType(){
+			//获取系统当前时间
+			let nowdate = new Date();
+			let y = nowdate.getFullYear();
+			let m = nowdate.getMonth()+1;
+			let d = nowdate.getDate();
+			let formatnowdate = y+'-'+m+'-'+d;
+			if(this.filterForm.dateType==1){
+				this.selectedDate=[formatnowdate,formatnowdate]
+				console.log(this.selectedDate)
+			}else if(this.filterForm.dateType==2){
+				let oneweekdate = new Date(nowdate-7*24*3600*1000);
+				let y = oneweekdate.getFullYear();
+				let m = oneweekdate.getMonth()+1;
+				let d = oneweekdate.getDate();
+				let formatwdate = y+'-'+m+'-'+d;
+				this.selectedDate=[formatwdate,formatnowdate]
+			}else if(this.filterForm.dateType==3){
+				nowdate.setMonth(nowdate.getMonth()-1);
+				let y = nowdate.getFullYear();
+				let m = nowdate.getMonth()+1;
+				let d = nowdate.getDate();
+				let formatwdate = y+'-'+m+'-'+d;
+				this.selectedDate=[formatwdate,formatnowdate]
+			}else if(this.filterForm.dateType==4){
+				nowdate.setMonth(nowdate.getMonth()-3);
+				let y = nowdate.getFullYear();
+				let m = nowdate.getMonth()+1;
+				let d = nowdate.getDate();
+				let formatwdate = y+'-'+m+'-'+d;
+				this.selectedDate=[formatwdate,formatnowdate]
+			}
+		},
         search(){
             this.getList()
         },

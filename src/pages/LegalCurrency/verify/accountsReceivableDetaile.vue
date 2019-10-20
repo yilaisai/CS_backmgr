@@ -32,7 +32,7 @@
 						<p v-if="scope.row.payType==1">无</p>
 						<div v-else class="qrcode">
 							<img :src="scope.row.qrcode" alt="">
-							<el-button @click="" type="text" size="mini">查看大图</el-button>
+							<el-button @click="imgClick(scope.row.qrcode)" type="text" size="mini">查看大图</el-button>
 						</div>
 				</template>
 			</el-table-column>
@@ -56,7 +56,7 @@
 				<span >{{userLevel ==1?'广告商':'普通用户'}}</span>
 			</el-table-column>
       <el-table-column prop="coinName" label="支付方式" >
-				<span slot-scope="scope" >{{scope.row.payType==1?'银行卡':scope.row.payType==1?'支付宝':'微信支付'}}</span>
+				<span slot-scope="scope" >{{scope.row.payType==1?'银行卡':scope.row.payType==2?'支付宝':'微信支付'}}</span>
 			</el-table-column>
 			<el-table-column prop="userName" label="姓名" ></el-table-column>
 			<el-table-column  label="账户/银行卡信息" >
@@ -70,7 +70,7 @@
 						<p v-if="scope.row.payType==1">无</p>
 						<div v-else class="qrcode">
 							<img :src="scope.row.qrcode" alt="">
-							<el-button @click="" type="text" size="mini">查看大图</el-button>
+							<el-button @click="imgClick(scope.row.qrcode)" type="text" size="mini">查看大图</el-button>
 						</div>
 				</template>
 			</el-table-column>
@@ -86,19 +86,23 @@
 			</el-table-column>
     </sac-table>
 		<el-dialog
-				title="操作理由"
-				:visible.sync="showRemark"
-				width="400">
-				<el-form ref="form"   >
-					<el-form-item label="拒绝理由">
-						<el-input type="textarea" v-model.trim="remark"></el-input>
-					</el-form-item>
-				</el-form>
-				<span slot="footer" class="dialog-footer">
-					<el-button @click="showRemark = false">取 消</el-button>
-					<el-button type="success" @click="updateAuditPayStatus(obj,2)">确认</el-button>
-				</span>
-			</el-dialog>
+			title="操作理由"
+			:visible.sync="showRemark"
+			width="400">
+			<el-form ref="form"   >
+				<el-form-item label="拒绝理由">
+					<el-input type="textarea" v-model.trim="remark"></el-input>
+				</el-form-item>
+			</el-form>
+			<span slot="footer" class="dialog-footer">
+				<el-button @click="showRemark = false">取 消</el-button>
+				<el-button type="success" @click="updateAuditPayStatus(obj,2)">确认</el-button>
+			</span>
+		</el-dialog>
+		<el-dialog title="收款码" :visible.sync="imgShow" width="500px">
+				<div style="padding-left:20px"><img style="width:100%;vertical-align: text-top;" :src="imgurl" alt="">
+				</div>
+		</el-dialog>
   </div>
 </template>
 <script>
@@ -106,6 +110,8 @@
     name: 'accountsReceivableDetaile',
     data() {
       return {
+				imgurl:'',
+				imgShow:false,
         detais: {},
 				tableData: [],
 				otcBindInfoList:[],
@@ -119,6 +125,10 @@
       };
     },
     methods: {
+			imgClick(imgurl){
+				this.imgurl = imgurl
+				this.imgShow = true
+			},
 			refuse(data){
 				this.obj = data
 				this.showRemark=true

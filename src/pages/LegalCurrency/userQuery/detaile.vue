@@ -64,6 +64,57 @@
 					</el-form-item>
 				</el-form>
 			</div>
+			
+			<div>
+				<h3>抢派单参数</h3>
+				<el-form :inline="true" label-width="180px" :model="MatchConfig" class="panicBuying">
+					<el-form-item label="派单兑入开关(USDT)：">
+						<el-switch
+							v-model="sysMatchSwitch"
+							@change='onSysMatchSwitch'
+							active-color="#13ce66"
+							inactive-color="#ff4949">
+						</el-switch>
+					</el-form-item>
+					<el-form-item label=" 派单兑出开关(USDT)：">
+						<el-switch
+						 
+							v-model="sysCashoutSwitch"
+							active-color="#13ce66"
+							inactive-color="#ff4949"
+							@change='onSysCashoutSwitch'>
+						</el-switch>
+					</el-form-item>
+					<el-form-item label="抢单兑入开关(USDT)：">
+						<el-switch
+							v-model="sysRushMatchSwitch"
+							@change='onSysRushMatchSwitch'
+							active-color="#13ce66"
+							inactive-color="#ff4949">
+						</el-switch>
+					</el-form-item>
+					<el-form-item label="抢单兑出开关(USDT)：">
+						<el-switch
+							v-model="sysRushCashoutSwitch"
+							@change='onSysRushCashoutSwitch'
+							active-color="#13ce66"
+							inactive-color="#ff4949">
+						</el-switch>
+					</el-form-item>
+					<el-form-item label="派单兑入最小额度(USDT):">
+						<el-input v-model=" MatchConfig.matchMin" disabled ></el-input>
+					</el-form-item>
+					<el-form-item label="派单兑入最大额度(USDT):" >
+						<el-input v-model=" MatchConfig.matchMax" disabled></el-input>
+					</el-form-item>
+						<el-form-item label="派单兑出最小额度(USDT):">
+						<el-input v-model=" MatchConfig.cashoutMin" disabled></el-input>
+					</el-form-item>
+					<el-form-item label="派单兑出最大额度(USDT):">
+						<el-input v-model=" MatchConfig.cashoutMax" disabled></el-input>
+					</el-form-item>
+				</el-form>
+			</div>
 			<div>
 				<h3>邀请关系</h3>
 				<el-table
@@ -147,6 +198,10 @@ export default {
 				coinName:'USDT',
 				userId:'',
 			},
+			sysRushMatchSwitch:false,
+			sysRushCashoutSwitch:false,
+			sysMatchSwitch:false,
+			sysCashoutSwitch:false,
 			listData:{
 				pageSize:10,
 				pageNum:1,
@@ -158,12 +213,14 @@ export default {
 			currItem:{},
 			inviteList:[],
 			detaileData:{
-			}
+			},
+			MatchConfig:{}
 		}
 	},
 	activated(){
 		this.filterForm.userId = this.$route.query.userId
 		this.getData()
+		this.queryUserMatchConfig()
 		this.findInviteTree()
 	},
 	mounted(){
@@ -171,7 +228,6 @@ export default {
 	},
 	methods:{
 		selectCoin(){
-			console.log(1)
 			this.getData()
 		},
 		handleCurrentChange(val,currentPage) {
@@ -244,7 +300,7 @@ export default {
 				if(res.code==200){
 					this.listData.list = res.result.list
 					this.listData.total = res.result.total
-					// this.findInviteTree()
+					this.findInviteTree()
 				}
 			})
 		},
@@ -256,6 +312,44 @@ export default {
 				}
 			})
 		},
+		queryUserMatchConfig(){
+			this.$http.post('/wallet/app/otc/backmgr/queryUserMatchConfig',this.filterForm).then(res=>{
+				if(res.code==200){
+					this.MatchConfig = res.result;
+					this.sysRushMatchSwitch = res.result.sysRushMatchSwitch==1?true:false
+					this.sysRushCashoutSwitch = res.result.sysRushCashoutSwitch==1?true:false
+					this.sysMatchSwitch = res.result.sysMatchSwitch==1?true:false
+					this.sysCashoutSwitch = res.result.sysCashoutSwitch==1?true:false
+				}
+			})
+		},
+		onSysCashoutSwitch(val){
+			this.updateSysSwitch('sysCashoutSwitch',val?'1':'0')
+		},
+		onSysRushMatchSwitch(val){
+			this.updateSysSwitch('sysRushMatchSwitch',val?'1':'0')
+		},
+		onSysRushCashoutSwitch(val){
+			this.updateSysSwitch('sysRushCashoutSwitch',val?'1':'0')
+		},
+		onSysMatchSwitch(val){
+			this.updateSysSwitch('sysMatchSwitch',val?'1':'0')
+		},
+		updateSysSwitch(key,val){
+			let queruData={
+				coinName:'USDT',
+				userId:this.filterForm.userId
+			}
+			queruData[key]=val
+			this.$http.post('/wallet/app/otc/backmgr/updateSysSwitch',queruData).then(res=>{
+				if( res.code == 200 ){
+					this.$message.success(res.msg)
+				}else{
+					this.$message.error(res.msg)
+				}
+				this.queryUserMatchConfig()
+			})
+		}
 	},
 	watch:{
 
@@ -318,6 +412,11 @@ export default {
 				}
 				
 			}
+			.panicBuying{
+				/deep/.el-form-item{
+					width: 380px;
+				}
+			}
 		}
 		/deep/.el-tree{
 			min-width: 840px;
@@ -367,5 +466,6 @@ export default {
 				width: 110px;
 			}
 		}
+		
 }
 </style>

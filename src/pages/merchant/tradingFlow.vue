@@ -6,10 +6,10 @@
 						<el-form :inline="true"  ref="filterForm" :model="filterForm" size="mini" label-width="80px">
 							<div class="form-group">
 								<el-form-item label="订单号:">
-									<el-input placeholder="请输入单号" v-model="filterForm.userId" class="input-with-select"></el-input>
+									<el-input placeholder="请输入单号" v-model="filterForm.recdId" class="input-with-select"></el-input>
 								</el-form-item>
 								<el-form-item label="账号:">
-									<el-input placeholder="请输入用户账号" v-model="filterForm.userId" class="input-with-select"></el-input>
+									<el-input placeholder="请输入用户账号" v-model="filterForm.phone" class="input-with-select"></el-input>
 								</el-form-item>
 								<el-form-item label="类型:">
 									<el-select v-model="filterForm.tradeType" >

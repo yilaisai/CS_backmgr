@@ -119,14 +119,11 @@ export default {
     getInviteData(saerch){
       this.$http.post('/wallet/invite/backmgr/findInviteChild',this.filterForm).then(res=>{
         let list=[]
-        console.log(res.result)
-        
-        if(saerch=='saerch'){
-          list = [res.result]
-          if(res.result.list&&res.result.list.length>0){
-            list[0].hasChildren = true
-          }
-          console.log(list)
+        if(saerch=='saerch'&&res.result.userId){
+            list = [res.result]
+            if(res.result.list&&res.result.list.length>0){
+              list[0].hasChildren = true
+            }
         }else{
           list =res.result.list
           list.forEach(element => {
@@ -138,8 +135,10 @@ export default {
             
           })
         }
-        
-        this.inviteData = list;
+        this.inviteData =[] 
+        setTimeout(()=>{
+          this.inviteData =list
+        },100)
       })
     },
     getList(){
@@ -169,7 +168,9 @@ export default {
 						inviteeId:this.currItem.userId
 					}).then(res=>{
 						if(res.code==200){
-							this.showDialog2 = false
+              this.showDialog2 = false
+              this.filterForm={account:'',inviteCode:'',nickName:''},
+              this.showDialog = false
 							this.getInviteData()
 							this.$message.success('迁移成功')
 						}

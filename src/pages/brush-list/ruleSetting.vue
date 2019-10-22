@@ -9,7 +9,7 @@
       <el-button size="small" type="primary" @click="addSend">创建规则</el-button>
     </el-col>
     <sac-table :data="registList">
-      <el-table-column prop="coinId" label="返佣币种">
+      <el-table-column prop="coinId" label="折扣币种">
       </el-table-column>
       <el-table-column prop="lower" label="初级代理提成">
         <template slot-scope="scope">
@@ -57,8 +57,8 @@
     </sac-table>
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" class="register_dialog">
       <el-form :model="ruleForm" ref="ruleForm" :rules="rules" label-width="135px">
-        <el-form-item label="返佣币种：" prop="coinId" size="small" class="from_box_item">
-          <el-select v-model="ruleForm.coinId" placeholder="请选择返佣币种" :disabled="isFix">
+        <el-form-item label="折扣币种：" prop="coinId" size="small" class="from_box_item">
+          <el-select v-model="ruleForm.coinId" placeholder="请选择折扣币种" :disabled="isFix">
             <el-option
               v-for="item in coinList"
               :key="item.coinId"
@@ -176,13 +176,13 @@
         })
       },
       addSend() {
-        this.dialogTitle = '新建返佣规则';
+        this.dialogTitle = '新建折扣规则';
         this.dialogFormVisible = true;
         this.isFix = false;
         this.$refs.ruleForm && this.$refs.ruleForm.resetFields();
       },
       modification(itemData) {
-        this.dialogTitle = '修改返佣规则';
+        this.dialogTitle = '修改折扣规则';
         this.dialogFormVisible = true;
         this.isFix = true;
         this.$refs.ruleForm && this.$refs.ruleForm.resetFields();

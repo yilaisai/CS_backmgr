@@ -44,7 +44,7 @@
 			</el-form>
 			<span slot="footer" class="dialog-footer">
 				<el-button @click="dialogVisible = false">取 消</el-button>
-				<el-button type="danger" @click="updateAuditStatus(0)">不通过</el-button>
+				<el-button type="danger" @click="updateAuditStatus(2)">不通过</el-button>
 				<el-button type="success" @click="updateAuditStatus(1)">通 过</el-button>
 			</span>
 		</el-dialog>

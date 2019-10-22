@@ -13,7 +13,7 @@
         </el-form-item>
         
         <el-button  class="btn" type="primary"  size="mini"
-          @click.native="getInviteData">查询
+          @click.native="getInviteData('saerch')">查询
         </el-button>
       </el-form>
     </div>
@@ -116,17 +116,29 @@ export default {
 			this.listData.pageNum=1
 			this.getList()
 		},
-    getInviteData(){
+    getInviteData(saerch){
       this.$http.post('/wallet/invite/backmgr/findInviteChild',this.filterForm).then(res=>{
-        const { list } = res.result;
-        list.forEach(element => {
-          if(element.childNum>0){
-            element.hasChildren = true
-          }else{
-            element.hasChildren = false
+        let list=[]
+        console.log(res.result)
+        
+        if(saerch=='saerch'){
+          list = [res.result]
+          if(res.result.list&&res.result.list.length>0){
+            list[0].hasChildren = true
           }
-          
-        })
+          console.log(list)
+        }else{
+          list =res.result.list
+          list.forEach(element => {
+            if(element.childNum>0){
+              element.hasChildren = true
+            }else{
+              element.hasChildren = false
+            }
+            
+          })
+        }
+        
         this.inviteData = list;
       })
     },
@@ -168,7 +180,7 @@ export default {
     load(tree, treeNode, resolve) {
       let inviteCode = tree.inviteCode
       this.$http.post('/wallet/invite/backmgr/findInviteChild',{inviteCode:inviteCode}).then(res=>{
-        const { list } = res.result;
+        let { list } = res.result;
         list.forEach(element => {
           if(element.childNum>0){
             element.hasChildren = true

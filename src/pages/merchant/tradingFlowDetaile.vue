@@ -9,10 +9,10 @@
 				<h3>订单信息</h3>
 				<el-form :inline="true" :model="detaileData" class="demo-form-inline">
 					<el-form-item label="单号:">
-						<el-input v-model="detaileData.recdId"  disabled></el-input>
+						<el-input v-model="detaileData.tradeId"  disabled></el-input>
 					</el-form-item>
 					<el-form-item label="下单时间">
-						<el-input :value=" $fmtDate(detaileData.createStamp,'full') " disabled></el-input>
+						<el-input :value=" $fmtDate(detaileData.createTime,'full') " disabled></el-input>
 					</el-form-item>
 					<el-form-item label="类型:">
 						<el-input :value=" detaileData.tradeType==0?'C2C':detaileData.tradeType==1?'派单':detaileData.tradeType==2?'抢单':''" disabled></el-input>
@@ -40,26 +40,25 @@
 						<el-input v-model="detaileData.takerPhone"  disabled></el-input>
 					</el-form-item>
 					<el-form-item label="交易类型:">
-						<el-input :value=" detaileData.trans==0?'兑入':detaileData.trans==1?'兑出 ':''" disabled></el-input>
+						<el-input :value="detaileData.tradeTy" disabled></el-input>
 					</el-form-item>
-
 					<el-form-item label="承兑商昵称:">
-						<el-input v-model="detaileData.makerName"  disabled></el-input>
+						<el-input v-model="detaileData.makerName" disabled></el-input>
 					</el-form-item>
 					<el-form-item label="承兑商账户:">
-						<el-input v-model="detaileData.makerPhone"  disabled></el-input>
+						<el-input v-model="detaileData.makerPhone" disabled></el-input>
 					</el-form-item>
 				</el-form>
 				<h3>交易价格/数量</h3>
 				<el-form :inline="true" :model="detaileData" class="demo-form-inline">
 					<el-form-item label="价格:">
-						<el-input v-model="detaileData.price" disabled></el-input>
+						<el-input v-model="detaileData.takerPrice" disabled></el-input>
 					</el-form-item>
 					<el-form-item label="数量:">
 						<el-input v-model="detaileData.amount" disabled></el-input>
 					</el-form-item>
 					<el-form-item label="金额:">
-						<el-input v-model="detaileData.money" disabled></el-input>
+						<el-input v-model="detaileData.amount" disabled></el-input>
 					</el-form-item>
 					<el-form-item label="手续费:">
 						<el-input v-model="detaileData.fee" disabled></el-input>
@@ -133,18 +132,18 @@ export default {
 		}
 	},
 	activated(){
-		this.getData(this.$route.query.recdId)
+		this.getData(this.$route.query.tradeId)
 	},
 	mounted(){
 		
 	},
 	methods:{
-		getData(recdId){
-			this.$http.post('/wallet/app/otc/backmgr/getTradeRecdDetail',{
-				recdId:recdId
+		getData(tradeId){
+			this.$http.post('/wallet/backmgr/merchant/queryMerchantTradeInfo',{
+				tradeId: tradeId
 			}).then(res=>{
 				if(res.code==200){
-					this.detaileData = res.result;
+					this.detaileData = res.result.otcApiTradeInfoEx;
 				}
 			})
 		},

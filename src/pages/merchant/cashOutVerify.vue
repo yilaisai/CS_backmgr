@@ -59,9 +59,7 @@
 			<el-table-column align="center" prop="fee" label="手续费"></el-table-column>
 			<el-table-column align="center" label="操作" fixed="right" >
 				<template slot-scope="scope">
-					<el-button v-show="scope.row.auditStatus==0" size="mini"  type="text"
-										@click="open(scope.row)">审核
-					</el-button>
+					<el-button v-show="scope.row.auditStatus==0" size="mini" type="text" @click="open(scope.row)">审核</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -74,6 +72,14 @@
 				:current-page="filterForm.pageNum">
 			</sac-pagination>
 		</div>
+
+		<el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
+			<el-input type="textarea" :rows="2" placeholder="请输入不通过理由" v-model="reason"></el-input>
+			<span slot="footer" class="dialog-footer">
+				<el-button type="danger" @click="verify(2)">不通过</el-button>
+				<el-button type="primary" @click="verify(1)">通 过</el-button>
+			</span>
+		</el-dialog>
 	</div>
 </template>
 <script>
@@ -103,6 +109,9 @@ export default {
 				total: null,
 				list: [],
 			},
+			dialogVisible: false,
+			currentItem: {},
+			reason: "",  //审核理由
 		}
 	},
 	mounted(){
@@ -130,20 +139,13 @@ export default {
 			this.getCashoutAuditList()
 		},
 		open(data) {
-			this.$prompt('不通过原因', '审核', {
-				confirmButtonText: '通过',
-				cancelButtonText: '不通过',
-			}).then(({ value }) => {
-				console.log(value)
-				this.verify(1,data.recdId,value)
-			}).catch(({ value }) => {    
-				this.verify(2,data.recdId,value) 
-			});
+			this.currentItem = data
+			this.dialogVisible = true
 		},
-		verify(status,recdId,remark){
+		verify(status){
 			this.$http.post('/wallet/backmgr/merchant/updateCashoutAuditStatus', {
-				recdId:recdId,
-				remark:remark||'',
+				recdId: this.currentItem.recdId,
+				remark: this.reason,
 				status:status
 			}).then((res) => {
 				this.getCashoutAuditList()

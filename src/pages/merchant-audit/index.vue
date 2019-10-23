@@ -11,19 +11,36 @@
 			</el-input>
 		</div>
         <el-table :data="tableData" border style="width: 100%" height="100%" size="mini">
-			<el-table-column fixed prop="userId" label="用户ID" width="120"></el-table-column>
-			<!-- <el-table-column prop="realName" label="用户名称"></el-table-column>
-			<el-table-column prop="phone" label="电话号码"></el-table-column> -->
-			<el-table-column prop="auditUserName" label="审批人"></el-table-column>
-			<el-table-column prop="createTime" label="创建时间">
+			<el-table-column fixed  label="账户/昵称" width="120">
+                <template slot-scope="scope">
+                    <p>{{$fmtDate(scope.row.phone)}}</p>
+					<span>{{scope.row.nickName}}</span>
+				</template>
+            </el-table-column>
+			<el-table-column  label="保证金">
+                <template slot-scope="scope">
+					<span>{{scope.row.amount +" "+ scope.row.coinName}}</span>
+				</template>
+            </el-table-column>
+			<el-table-column  label="状态">
+                <template slot-scope="scope">
+					<span>{{scope.row.auditStatus==0?'待审核':scope.row.auditStatus==1?'审核成功':'审核失败'}}</span>
+				</template>
+            </el-table-column>
+            <el-table-column  label="申请操作">
+                <template slot-scope="scope">
+					<span>{{scope.row.auditType==1?'取消广告商':scope.row.auditType==2?'成为广告商':''}}</span>
+				</template>
+            </el-table-column>
+			<el-table-column prop="createTime" label="申请时间">
 				<template slot-scope="scope">
-					<span>{{$fmtDate(scope.row.createTime)}}</span>
+					<span>{{$fmtDate(scope.row.createTime,'full')}}</span>
 				</template>
 			</el-table-column>
 			<el-table-column prop="auditComment" label="备注" width="130px"></el-table-column>
 			<el-table-column fixed="right" label="操作" width="100">
 				<template slot-scope="scope">
-					<el-button @click="handleClick(scope.row)" type="primary" :disabled="scope.row.auditStatus != 0" size="small">审核</el-button>
+					<el-button @click="handleClick(scope.row)" type="primary" v-if="scope.row.auditStatus == 0" size="small">审核</el-button>
 				</template>
 			</el-table-column>
 		</el-table>

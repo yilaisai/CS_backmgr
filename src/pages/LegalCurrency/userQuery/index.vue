@@ -41,8 +41,7 @@
 				<el-table :data="listData.list" border size="mini">
 					<el-table-column label="账户/昵称" width="150">
 						<template slot-scope="scope">
-							<p>{{scope.row.account}}</p>
-							<p>{{scope.row.nickName}}</p>
+							<span>{{scope.row.account}}<br />{{scope.row.nickName}}</span>
 						</template>
 					</el-table-column>
 					<el-table-column  label="企业类型" >
@@ -55,11 +54,8 @@
 						<p slot-scope="scope">{{ Math.floor(scope.row.firstRate*10000)/100 }}%</p>
 					</el-table-column>
 					<el-table-column prop="price" label="授权商户" width="150"></el-table-column>
-					<el-table-column prop="price" label="兑入额度" width="150"></el-table-column>
-					<el-table-column prop="price" label="兑出额度" width="150"></el-table-column>
-					<el-table-column prop="price" label="币种" width="150"></el-table-column>
 					<el-table-column prop="price" label="注册时间" width="150"></el-table-column>
-					<el-table-column prop="price" label="操作" fixed="right">
+					<el-table-column prop="price" label="操作" fixed="right" width="150">
 						<template slot-scope="scope">
 							<el-button type="text" @click.native="$router.push({path:'/LegalCurrency/userQueryDetaile',query:{userId:scope.row.userId}})">查看详情</el-button>
 							<el-button type="text" @click.native=" editType(scope.row) ">修改类型</el-button>
@@ -78,11 +74,11 @@
         </el-container>
 		<el-dialog title="修改用户类型" :visible.sync="dialogFormVisible">
 			<el-form :model="userTypeForm">
-				<el-form-item label="广告商类型调整：" label-width="140px">
+				<!-- <el-form-item label="广告商类型调整：" label-width="140px">
 					<el-select v-model="userTypeForm.userLevel" placeholder="请选择广告商类型" >
 						<el-option v-for="(item,index) in advList" :key = 'index' :label="item.value" :value="item.label"></el-option>
 					</el-select>
-				</el-form-item>
+				</el-form-item> -->
 				<el-form-item label="企业类型调整：" label-width="140px" >
 					<el-select v-model="userTypeForm.userEnterprise" placeholder="请选择企业类型">
 						<el-option v-for="(item,index) in companyType" :key = 'index' :label="item.value" :value="item.label "></el-option>

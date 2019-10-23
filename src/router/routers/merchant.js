@@ -33,6 +33,12 @@ const merchant = [
 				name: 'merFundRecord',
 				meta: { title: '资金流水' },
 				component: () => import('@/pages/merchant/mer-fund-record/index.vue')
+			},
+			{
+				path: 'init-settings',
+				name: 'merInitSettings',
+				meta: { title: '商户设置' },
+				component: () => import('@/pages/merchant/init-settings/index.vue')
 			}
 		]
 	}

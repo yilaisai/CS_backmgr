@@ -156,13 +156,13 @@ export default {
 						return '钱包转账到法币'
 					break;
 					case 21:
-						return '一级返佣'
+						return '一级折扣'
 					break;
 					case 22:
-						return '二级返佣'
+						return '二级折扣'
 					break;
 					case 23:
-						return '三级返佣'
+						return '三级折扣'
 					break;
 					case 24:
 						return '鼓励金'

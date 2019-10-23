@@ -29,7 +29,7 @@
 						<el-input :value=" detaileData.userLevel==0?'普通用户':detaileData.userLevel==1?'普通广告商':detaileData.userLevel==2?'高级广告商':detaileData.userLevel==3?'企业广告商':''" disabled></el-input>
 					</el-form-item>
 					<el-form-item label="企业类型:">
-						<el-input :value=" detaileData.userRole==0?'非企业号':detaileData.userRole==1?'企业号':''" disabled></el-input>
+						<el-input :value=" detaileData.userEnterprise==0?'非企业号':detaileData.userEnterprise==1?'企业号':''" disabled></el-input>
 					</el-form-item>
 					<el-form-item label="购买交易额:">
 						<el-input :value=" detaileData.buyAmount + filterForm.coinName" disabled></el-input>
@@ -43,25 +43,26 @@
 					<el-form-item label="出售成交数:">
 						<el-input :value=" detaileData.saleNum" disabled></el-input>
 					</el-form-item>
-
-					<el-form-item label="申请商家时间:">
-						<el-input :value=" $fmtDate(detaileData.certificationTimeStamp,'full') " disabled></el-input>
-					</el-form-item>
-					<el-form-item label="保证金:">
-						<el-input :value=" detaileData.frozen+ filterForm.coinName" disabled></el-input>
-					</el-form-item>
-					<el-form-item label="放币时效:">
-						<el-input :value=" detaileData.paymentAveTime+'s'" disabled></el-input>
-					</el-form-item>
-					<el-form-item label="成交率:">
-						<el-input :value=" Math.floor(detaileData.succRate*10000)/100 + '%'" disabled></el-input>
-					</el-form-item>
-					<el-form-item label="确认时效:">
-						<el-input :value=" detaileData.letgoAveTime+'s'" disabled></el-input>
-					</el-form-item>
-					<el-form-item label="广告商状态:">
-						<el-input :value=" detaileData.sysStatus==0?'失效':'有效'" disabled></el-input>
-					</el-form-item>
+					<div v-if="detaileData.userLevel!=0">
+						<el-form-item label="申请商家时间:">
+							<el-input :value=" $fmtDate(detaileData.certificationTimeStamp,'full') " disabled></el-input>
+						</el-form-item>
+						<el-form-item label="保证金:">
+							<el-input :value=" detaileData.frozen+ filterForm.coinName" disabled></el-input>
+						</el-form-item>
+						<el-form-item label="放币时效:">
+							<el-input :value=" detaileData.paymentAveTime+'s'" disabled></el-input>
+						</el-form-item>
+						<el-form-item label="成交率:">
+							<el-input :value=" Math.floor(detaileData.succRate*10000)/100 + '%'" disabled></el-input>
+						</el-form-item>
+						<el-form-item label="确认时效:">
+							<el-input :value=" detaileData.letgoAveTime+'s'" disabled></el-input>
+						</el-form-item>
+						<el-form-item label="广告商状态:">
+							<el-input :value=" detaileData.sysStatus==0?'失效':'有效'" disabled></el-input>
+						</el-form-item>
+					</div>
 				</el-form>
 			</div>
 			
@@ -132,7 +133,7 @@
 						prop="reward"
 						label="佣金">
 						<div slot-scope="scope">
-							{{ Math.floor(scope.row.reward*100)/100 }}%
+							{{ Math.floor(scope.row.rate*1000) }}‰
 						</div>
 					</el-table-column>
 					<el-table-column label="操作" width="120">
@@ -242,7 +243,7 @@ export default {
 		findInviteTree(){
 			this.$http.post('/wallet/invite/backmgr/findInviteTree',{
 				// inviteeId:this.filterForm.userId
-				inviteeId:32
+				inviteeId:this.filterForm.userId
 			}).then(res=>{
 				if(res.code==200){
 					this.inviteList = [res.result]

@@ -18,11 +18,6 @@
       </el-form>
       
        <el-table stripe border class="ExList" size="mini"    :data="ExList">
-        <el-table-column
-          type="index"
-          label="序号"
-          :index="index">
-        </el-table-column>
         <el-table-column prop="phone" label="手机号"></el-table-column>
         <el-table-column prop="nickName" label="昵称"></el-table-column>
         <el-table-column prop="usdtAmount"  label="USDT"></el-table-column>

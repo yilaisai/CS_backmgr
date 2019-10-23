@@ -41,22 +41,49 @@
 						</el-form-item>
 						<el-form-item class='dateItem'>
 							<el-button type="primary" size="mini" @click.native="search">搜索</el-button>
+							<el-button type="primary" size="mini" @click.native="showSumMap=true">统计查询报表</el-button>
 						</el-form-item>
 					</div>
 				</el-form>
 				<!-- 表格 -->
 				<Table :listData="listData.list"></Table>
-			</el-main>
-            <el-footer>
-                <sac-pagination v-show="listData.list.length>0"
-                    @handleChange="handleCurrentChange"
-                    :total="+listData.total"
-                    :page-size="filterForm.pageSize"
-                    :current-page="filterForm.pageNum">
-                </sac-pagination>
-            </el-footer>
-        </el-container>
-    </div>
+	</el-main>
+		<el-footer>
+			<sac-pagination v-show="listData.list.length>0"
+				@handleChange="handleCurrentChange"
+				:total="+listData.total"
+				:page-size="filterForm.pageSize"
+				:current-page="filterForm.pageNum">
+			</sac-pagination>
+		</el-footer>
+		</el-container>
+		<el-dialog class="SumMap"  :visible.sync="showSumMap">
+			<div>
+				<ul>
+					<li>
+						<p>待付款</p>
+						<p>交易数：{{ sumMap.waitPayCount }}</p>
+						<p>交易额：{{ sumMap.waitPayMount }}</p>
+					</li>
+					<li>
+						<p>待放行</p>
+						<p>交易数：{{ sumMap.payedCount }}</p>
+						<p>交易额：{{sumMap.payedMount}}</p>
+					</li>
+					<li>
+						<p>已完成</p>
+						<p>交易数：{{sumMap.finishCount}}</p>
+						<p>交易额：{{sumMap.finishMount}}</p>
+					</li>
+					<li>
+						<p>申诉中</p>
+						<p>交易数：{{sumMap.applealCount}}</p>
+						<p>交易额：{{ sumMap.applealMount }}</p>
+					</li>
+				</ul>
+			</div>
+		</el-dialog>
+	</div>
 </template>
 <script>
 import { dateFormat } from "@/common/util";
@@ -65,6 +92,7 @@ export default {
     name:'transaction-details',
     data(){
 			return{
+				showSumMap:false,
 				selectedDate: [], //已选日期
 				currentPage:1,
 				filterForm:{
@@ -74,9 +102,7 @@ export default {
 					endDate:'',
 					coinName:'',
 					tradeStatus:'',
-					tradeType:'0',
 					trans:'',
-					dateType:'1'
 				},
 				tradeTypeList:[
 					{value:'全部',label:""},
@@ -112,6 +138,16 @@ export default {
 					total: null,
 					list: [],
 				},
+				sumMap:{
+					applealCount: 0,
+					applealMount:0,
+					finishCount: 0,
+					finishMount: 0,
+					payedCount: 0,
+					payedMount: 0,
+					waitPayCount: 0,
+					waitPayMount: 0,
+				}
 			}
         
     },
@@ -122,7 +158,8 @@ export default {
 				this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
 			}	
 			this.$http.post('/wallet/app/otc/backmgr/getTradeMainList',this.filterForm).then(res=>{
-				const { list ,total} = res.result;
+				const { list ,total} = res.result.pageInfo
+				this.sumMap = res.result.sumMap
 				this.listData.list = list;
 				this.listData.total = total;
 			})
@@ -254,6 +291,27 @@ export default {
 			}
 			
 		}
+	.SumMap{
+		
+		/deep/.el-dialog{
+			margin-top: 50px !important;
+			width: 800px;
+			ul{
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+				li{
+					list-style: none;
+					p{
+						margin: 0;
+						&:first-of-type{
+							font-weight: 600;
+						}
+					}
+				}
+			}
+		}
+	}
 }
   
 </style>

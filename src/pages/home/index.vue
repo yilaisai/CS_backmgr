@@ -226,7 +226,15 @@
     color: #fff;
     line-height: 50px;
     height: 50px !important;
-    width: calc(100vw - 200px);
+    // width: calc(100vw - 200px);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    .nav{
+      font-size: 14px;
+      font-weight: 500;
+    }
   }
 
   .el-icon-caret-bottom {

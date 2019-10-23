@@ -41,14 +41,19 @@
       <el-table-column align="center" label="序号" type="index" :index="indexMethod" width="50">
       </el-table-column>
       <!-- <el-table-column align="center" prop="userId" label="序号" width="100"></el-table-column> -->
-      <el-table-column align="center" prop="phone" label="手机号码" width="130"></el-table-column>
+      <el-table-column align="center" prop="phone" label=账号 width="130"></el-table-column>
       <el-table-column align="center" prop="nickName" label="昵称"></el-table-column>
       <el-table-column align="center" prop="realName" label="真实姓名"></el-table-column>
-      <el-table-column align="center" prop="cardNo" label="身份证号"></el-table-column>
+      <el-table-column align="center" prop="cardNo" label="身份证号" width="160px"></el-table-column>
+      <el-table-column align="center" prop="nickStatus" label="状态">
+        <template slot-scope="scope">
+          <span >{{scope.row.optStatus== 0?'正常':scope.row.optStatus== 1?'已锁定':'被冻结'}}</span>
+        </template>
+      </el-table-column>
       <el-table-column align="center" prop="registTime" label="注册时间" width="138">
         <div slot-scope="scope"> {{ $fmtDate(scope.row.registTime, 'full') }} </div>
       </el-table-column>
-      <el-table-column align="center" label="操作" fixed="right" >
+      <el-table-column align="center" label="操作" fixed="right" width="220px" >
         <template slot-scope="scope">
           <!-- <el-button size="small"  type="success"
                      @click="modify(scope.row)">修改
@@ -65,7 +70,7 @@
           <el-button size="mini" v-show="scope.row.optStatus== 0" type="text"
                      @click="optStatusHandle(1,'锁定账号',scope.row)">锁定账号
           </el-button>
-          <el-button type="text" size="mini" @click.native="goDetail(scope.row.phone)">查看详情</el-button>
+          <el-button type="text" size="mini" @click.native="goDetail(scope.row.userId)">查看详情1</el-button>
         </template>
       </el-table-column>
     </sac-table>
@@ -285,8 +290,8 @@
         this.filterForm.pageNum = currentPage;
         this.getUserInfoList()
       },
-      goDetail(phone) {
-        this.$router.push({ name: 'queryDetails', query: { phone } });
+      goDetail(userId) {
+        this.$router.push({ name: 'queryDetails', query: { userId:userId } });
       },
       /**
        * 冻结/解冻 锁定/解锁 用户   optStatus  用户状态：2表示冻结，1表示锁定，0表示解冻

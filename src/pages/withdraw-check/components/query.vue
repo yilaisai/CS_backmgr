@@ -1,45 +1,49 @@
 <template>
-    <el-form ref="form" :model="filter" label-width="80px" size="mini" inline>
-        <el-form-item label="创建时间：" class="dataSelect">
-            <el-date-picker
-                id="createtime"
-                v-model="filter.create_time"
-                type="daterange"
-                align="right"
-				value-format="yyyy-MM-dd"
-                unlink-panels
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                :picker-options="pickerOptions">
-            </el-date-picker>
-        </el-form-item>
-        <el-form-item label="币种：">
-            <el-select v-model="filter.coinName" clearable style="width: 185px">
-                <el-option :value="null" label="全部"></el-option>
-                <el-option v-for="(item, key) in coins" :key="key" :value="item.coinName" :label="item.coinName"></el-option>
-            </el-select>
-        </el-form-item>
-        <el-form-item label="订单状态：">
-            <el-select v-model="filter.recdStatus" placeholder="选择订单状态" clearable style="width: 185px">
-                <el-option :value="null" label="全部"></el-option>
-                <el-option v-for="(item, key) in recdStatus" :key="key" :value="key" :label="item"></el-option>
-            </el-select>
-        </el-form-item>
-        <el-form-item label="地址：">
-            <el-input v-model="filter.addr" placeholder="搜索地址"></el-input>
-        </el-form-item>
-        <el-form-item label="订单号：">
-            <el-input v-model="filter.orderId" placeholder="搜索订单号"></el-input>
-        </el-form-item>
-        <el-form-item label="账号：">
-            <el-input v-model="filter.name" placeholder="搜索账号"></el-input>
-        </el-form-item>
-        <el-form-item>
-            <el-button type="primary" @click="queryData" style="margin-left: 60px">查询</el-button>
-            <el-button type="primary" @click="clear">清空</el-button>
-        </el-form-item>
-    </el-form>
+    <el-collapse>
+        <el-collapse-item title="查询条件" name="filter">
+            <el-form ref="form" :model="filter" label-width="80px" size="mini" inline>
+                <el-form-item label="创建时间：" class="dataSelect">
+                    <el-date-picker
+                        id="createtime"
+                        v-model="filter.create_time"
+                        type="daterange"
+                        align="right"
+                        value-format="yyyy-MM-dd"
+                        unlink-panels
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期"
+                        :picker-options="pickerOptions">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item label="币种：">
+                    <el-select v-model="filter.coinName" clearable style="width: 185px">
+                        <el-option :value="null" label="全部"></el-option>
+                        <el-option v-for="(item, key) in coins" :key="key" :value="item.coinName" :label="item.coinName"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="订单状态：">
+                    <el-select v-model="filter.recdStatus" placeholder="选择订单状态" clearable style="width: 185px">
+                        <el-option :value="null" label="全部"></el-option>
+                        <el-option v-for="(item, key) in recdStatus" :key="key" :value="key" :label="item"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="地址：">
+                    <el-input v-model="filter.addr" placeholder="搜索地址"></el-input>
+                </el-form-item>
+                <el-form-item label="订单号：">
+                    <el-input v-model="filter.orderId" placeholder="搜索订单号"></el-input>
+                </el-form-item>
+                <el-form-item label="账号：">
+                    <el-input v-model="filter.name" placeholder="搜索账号"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="queryData" style="margin-left: 60px">查询</el-button>
+                    <el-button type="primary" @click="clear">清空</el-button>
+                </el-form-item>
+            </el-form>
+        </el-collapse-item>
+    </el-collapse>
 </template>
 <script>
 export default {

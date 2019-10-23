@@ -352,20 +352,20 @@ export const appRouter = [
         component: () => import('@/pages/money/capitalFlow.vue'),
       },
       {
+        path: 'capitalFlow2',
+        name: 'capitalFlow2',
+        meta: {
+          title: '资金流水',
+        },
+        component: () => import('@/pages/money/capitalFlow2.vue'),
+      },
+      {
         path: 'ranking',
         name: 'ranking',
         meta: {
           title: '资产排行',
         },
         component: () => import('@/pages/money/ranking.vue'),
-      },
-      {
-        path: 'rankingDetaile',
-        name: 'rankingDetaile',
-        meta: {
-          title: '资产排行-详情',
-        },
-        component: () => import('@/pages/money/rankingDetaile.vue'),
       },
       {
         path: 'transfer-query',

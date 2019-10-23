@@ -1,11 +1,12 @@
 <template>
 	<div class="personalAssets-page">
 		<el-header>
+			<div class="nav">资产排名>查看个人详情>查看{{ type==1?'资产':'法币' }}账户币种流水<span v-show="titleTable.length>0">-{{titleTable[0].nickName}}</span></div>
 			<el-button type="primary" @click="$router.go(-1)">返回</el-button>
 		</el-header>
 		<div class="main">
 			<div class="title">
-				<h3>{{ type==1?'钱包账户币种流水':'法币账户币种流水' }}</h3>
+				<h3>{{ type==1?'资产账户币种流水':'法币账户币种流水' }}</h3>
 				切换币种：
 				<el-select class="select" v-model="coinName" @change="selectChange">
 					<el-option v-for="(item, key) in list" :key="key" :value="item.coinName" :label="item.coinName"></el-option>
@@ -167,6 +168,15 @@ export default {
 					case 24:
 						return '鼓励金'
 					break;
+					case 25:
+						return 'otc发起充币'
+					break;
+					case 26:
+						return 'otc发起提币'
+					break;
+					case 27:
+						return 'otc提币失败'
+					break;
 					default:
 						return 'null'
 				} 
@@ -227,7 +237,7 @@ export default {
 	},
 	computed:{
 
-	}
+	},
 	}
 </script>
 <style lang="less" scoped>

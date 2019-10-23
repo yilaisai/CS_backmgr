@@ -12,14 +12,14 @@
 									<el-input placeholder="请输入用户账号" v-model="filterForm.phone" class="input-with-select"></el-input>
 								</el-form-item>
 								<el-form-item label="类型:">
-									<el-select v-model="filterForm.tradeType" >
+									<el-select v-model="filterForm.type" >
 										<el-option v-for="(item, key) in tradeTypeList" :key="key" :value="item.label" :label="item.value"></el-option>
 									</el-select>
 								</el-form-item>
 							</div>
 							<div class="form-group">
 								<el-form-item label="状态:">
-									<el-select v-model="filterForm.tradeStatus" >
+									<el-select v-model="filterForm.status" >
 										<el-option v-for="(item, key) in statusList" :key="key" :value="item.label" :label="item.value"></el-option>
 									</el-select>
 								</el-form-item>
@@ -82,38 +82,24 @@
 									<template slot-scope="scope">{{advTypeMap[scope.row.adv_type]}}</template>
 								</el-table-column>
 								<el-table-column  label="单号/下单时间" width="180" align="center" >
-									<div slot-scope="scope">
-										<p>{{scope.row.trade_id}}</p>
-										<p>{{ $fmtDate(scope.row.create_time,'full') }}</p>
-									</div>
+									<span slot-scope="scope">{{scope.row.trade_id}}<br />{{ $fmtDate(scope.row.create_time,'full') }}</span>
 								</el-table-column>
 								<el-table-column label="商户昵称/账户" width="150" align="center" >
-									<div slot-scope="scope">
-										<p>{{scope.row.taker_nick_name}}</p>
-										<p>{{scope.row.taker_phone}}</p>
-									</div>
+									<span slot-scope="scope">{{scope.row.taker_nick_name}}<br />{{scope.row.taker_phone}}</span>
 								</el-table-column>
 								<el-table-column label="承兑商昵称/账户" width="150" align="center">
-								<div slot-scope="scope">
-										<p>{{scope.row.nick_name}}</p>
-										<p>{{scope.row.phone}}</p>
-									</div></el-table-column>
+									<span slot-scope="scope">{{scope.row.nick_name}}<br />{{scope.row.phone}}</span>
+								</el-table-column>
 								<el-table-column prop="tradeTime" label="状态" align="center" >
 									<div slot-scope="scope">
 										<span >{{ scope.row.trade_status==1?'未付款':scope.row.trade_status==2?'待放行':scope.row.trade_status==3?'已完成':scope.row.trade_status==4?'已取消':scope.row.trade_status==5?'申述中':'' }}</span>
 									</div>
 								</el-table-column>
-								<el-table-column prop="tradeType" label="广告类型" width="80" align="center">
-										<template slot-scope="scope">
-												<span v-if="scope.row.trans==1"> 兑出 </span>
-												<span v-else>兑入</span>
-										</template>
-								</el-table-column>
 								<el-table-column label="价格/数量/金额" width="120" align="center">
 									<div slot-scope="scope">
-										<p>{{scope.row.price}}</p>
-										<p>{{scope.row.amount}}</p>
-										<p>{{scope.row.money}}</p>
+										<span>{{scope.row.taker_price}}</span><br />
+										<span>{{scope.row.taker_amount}}</span><br />
+										<span>{{scope.row.amount}}</span>
 									</div>
 								</el-table-column>
 								<el-table-column prop="coin_name" label="币种" align="center"></el-table-column>
@@ -158,15 +144,15 @@ export default {
 			advTypeMap: {
 				1: '在线出售',
 				2: '在线求购',
-				3: '抢单在线出售',
-				4: '抢单在线购买',
-				5: '匹配在线出售',
-				6: '匹配在线购买'
+				3: '抢单兑出',
+				4: '抢单兑入',
+				5: '派单兑入',
+				6: '抢单兑出'
 			},
 			tradeTypeList:[
-				{value:'全部',label:"3"},
-				{value:'派单',label:"1"},
-				{value:'抢单',label:"2"}
+				{value:'全部',label:""},
+				{value:'派单',label:"0"},
+				{value:'抢单',label:"1"}
 			],
 			statusList:[
 				{value:'全部',label:""},

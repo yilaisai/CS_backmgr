@@ -62,7 +62,7 @@ export default {
                     return '成功'
                     break
                 case 2:
-                    return '等待'
+                    return '待审核'
                     break
                 case 3:
                     return '审核中'

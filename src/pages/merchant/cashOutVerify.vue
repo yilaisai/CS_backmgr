@@ -1,57 +1,49 @@
 <template>
 	<div class="cashOutVerify-page">
-		<div>
-			<el-form :inline="true"
-             label-width="86px"
-             ref="filterForm"
-			 size="mini"
-             :model="filterForm">
-				<el-form-item class='dateItem' label="时间:">
-					<el-date-picker
-						v-model="selectedDate"
-						type="daterange"
-						range-separator="至"
-						start-placeholder="开始日期"
-						format="yyyy-MM-dd "
-						end-placeholder="结束日期" >
-					</el-date-picker>
-				</el-form-item>
-				<el-form-item label="账号:" >
-					<el-input placeholder="请输入用户账号" v-model="filterForm.phoneOrEmail" ></el-input>
-				</el-form-item>
-				<el-form-item label="商户订单号:" >
-					<el-input placeholder="请输入商户订单号" v-model="filterForm.apiOrderId" ></el-input>
-				</el-form-item>
-				<el-form-item label="类型:" >
-					<el-select v-model="filterForm.tradeType" >
+		<el-form :inline="true" label-width="86px" ref="filterForm" size="mini" :model="filterForm">
+			<el-form-item class='dateItem' label="时间:">
+				<el-date-picker
+					v-model="selectedDate"
+					type="daterange"
+					range-separator="至"
+					start-placeholder="开始日期"
+					format="yyyy-MM-dd "
+					end-placeholder="结束日期" >
+				</el-date-picker>
+			</el-form-item>
+			<el-form-item label="账号:" >
+				<el-input placeholder="请输入用户账号" v-model="filterForm.phoneOrEmail" ></el-input>
+			</el-form-item>
+			<el-form-item label="商户订单号:" >
+				<el-input placeholder="请输入商户订单号" v-model="filterForm.apiOrderId" ></el-input>
+			</el-form-item>
+			<el-form-item label="类型:" >
+				<el-select v-model="filterForm.tradeType" >
+					<el-option value="" label='所有'></el-option>
+					<el-option v-for="(item, key) in typeList" :key="key" :value="item.value" :label="item.label "></el-option>
+				</el-select>
+			</el-form-item>
+			<el-form-item  label="币种:" >
+				<el-select v-model="filterForm.coinName" >
 						<el-option value="" label='所有'></el-option>
-						<el-option v-for="(item, key) in typeList" :key="key" :value="item.value" :label="item.label "></el-option>
-					</el-select>
-				</el-form-item>
-				<el-form-item  label="币种:" >
-					<el-select v-model="filterForm.coinName" >
-							<el-option value="" label='所有'></el-option>
-							<el-option v-for="(item, key) in coinList" :key="key" :value="item" :label="item"></el-option>
-					</el-select>
-				</el-form-item>
-				<el-form-item><el-button class="btn" type="primary" @click="search()">搜索</el-button></el-form-item>
-			</el-form>
-		</div>
+						<el-option v-for="(item, key) in coinList" :key="key" :value="item" :label="item"></el-option>
+				</el-select>
+			</el-form-item>
+			<el-form-item><el-button class="btn" type="primary" @click="search()">搜索</el-button></el-form-item>
+		</el-form>
 		<el-table height="auto" size="mini" border :data="listData.list">
 			<el-table-column align="center"  label="类型" width="80">
 				<div slot-scope="scope"> {{scope.row.type==1?'匹配兑出':scope.row.type==2?'抢单兑出':''}} </div>
 			</el-table-column>
 			<el-table-column align="center"  label="商户订单号/发起时间" width="160">
-				<div slot-scope="scope">
-					<p>{{scope.row.apiOrderId}}</p>
-					<p>{{$fmtDate(scope.row.createTime, 'full')}}</p>
-				</div>
+				<template slot-scope="scope">
+					<span>{{scope.row.apiOrderId}}<br />{{$fmtDate(scope.row.createTime, 'full')}}</span>
+				</template>
 			</el-table-column>
 			<el-table-column align="center"  label="商户昵称/账户" width="130">
-				<div slot-scope="scope">
-					<p>{{scope.row.nickName}}</p>
-					<p>{{scope.row.phoneOrEmail}}</p>
-				</div>
+				<template slot-scope="scope">
+					<span>{{scope.row.nickName}}<br />{{scope.row.phoneOrEmail}}</span>
+				</template>
 			</el-table-column>
 			<el-table-column align="center"  label="状态" width="130">
 				<div slot-scope="scope">
@@ -59,11 +51,9 @@
 				</div>
 			</el-table-column>
 			<el-table-column align="center"  label="价格/数量/金额" width="130">
-				<div slot-scope="scope">
-					<p>{{scope.row.apiPrice}}</p>
-					<p>{{scope.row.apiStock }}</p>
-					<p>{{scope.row.apiAmount}}</p>
-				</div>
+				<template slot-scope="scope">
+					<span>{{scope.row.apiPrice}}<br />{{scope.row.apiStock}}<br />{{scope.row.apiAmount}}</span>
+				</template>
 			</el-table-column>
 			<el-table-column align="center" prop="coinName" label="币种"></el-table-column>
 			<el-table-column align="center" prop="fee" label="手续费"></el-table-column>

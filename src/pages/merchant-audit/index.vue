@@ -11,34 +11,30 @@
 			</el-input>
 		</div>
         <el-table :data="tableData" border style="width: 100%" height="100%" size="mini">
-			<el-table-column fixed  label="账户/昵称" width="120">
-                <template slot-scope="scope">
-                    <p>{{$fmtDate(scope.row.phone)}}</p>
-					<span>{{scope.row.nickName}}</span>
-				</template>
-            </el-table-column>
-			<el-table-column  label="保证金">
+            <el-table-column align="center" prop="phone" label="账户" width="130px"></el-table-column>
+            <el-table-column align="center" prop="nickName" label="昵称" width="130px"></el-table-column>
+			<el-table-column align="center"  label="保证金">
                 <template slot-scope="scope">
 					<span>{{scope.row.amount +" "+ scope.row.coinName}}</span>
 				</template>
             </el-table-column>
-			<el-table-column  label="状态">
+			<el-table-column align="center"  label="状态">
                 <template slot-scope="scope">
 					<span>{{scope.row.auditStatus==0?'待审核':scope.row.auditStatus==1?'审核成功':'审核失败'}}</span>
 				</template>
             </el-table-column>
-            <el-table-column  label="申请操作">
+            <el-table-column align="center"  label="申请操作">
                 <template slot-scope="scope">
 					<span>{{scope.row.auditType==1?'取消广告商':scope.row.auditType==2?'成为广告商':''}}</span>
 				</template>
             </el-table-column>
-			<el-table-column prop="createTime" label="申请时间">
+			<el-table-column align="center" prop="createTime" label="申请时间">
 				<template slot-scope="scope">
 					<span>{{$fmtDate(scope.row.createTime,'full')}}</span>
 				</template>
 			</el-table-column>
-			<el-table-column prop="auditComment" label="备注" width="130px"></el-table-column>
-			<el-table-column fixed="right" label="操作" width="100">
+			<el-table-column align="center" prop="auditComment" label="备注" width="130px"></el-table-column>
+			<el-table-column align="center" fixed="right" label="操作" width="100">
 				<template slot-scope="scope">
 					<el-button @click="handleClick(scope.row)" type="primary" v-if="scope.row.auditStatus == 0" size="small">审核</el-button>
 				</template>

@@ -30,7 +30,7 @@
         </el-col>
         <el-col :span="12">
           <label>广告商类型:</label>
-          <span></span>
+          <span>{{ detais.isMerchant==1?' 广告商用户 ':'普通用户' }}</span>
         </el-col>
         <el-col :span="12">
           <label>注册时间：</label>
@@ -57,11 +57,11 @@
       <el-row class="sac-row" :gutter="10">
         <el-col :span="12">
           <label>资产总折合(CNY):</label>
-          <span>{{totalToRMB}}</span>
+          <span>{{Math.floor(totalToRMB*100)/100}}</span>
         </el-col>
         <el-col :span="12">
           <label>冻结资产折合（CNY）:</label>
-          <span>{{totalFrozenToRMB}}</span>
+          <span>{{Math.floor(totalFrozenToRMB*100)/100}}</span>
         </el-col>
         <el-col :span="12">
           <label>累计充币：</label>

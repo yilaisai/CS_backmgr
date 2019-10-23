@@ -58,14 +58,6 @@ export const appRouter = [
           title: '用户查询详情',
         },
         component: () => import('@/pages/user/query-details.vue'),
-      },
-      {
-        path: 'ranking',
-        name: 'ranking',
-        meta: {
-          title: '用户排行',
-        },
-        component: () => import('@/pages/user/ranking.vue'),
       }
     ],
   },
@@ -359,7 +351,22 @@ export const appRouter = [
         },
         component: () => import('@/pages/money/capitalFlow.vue'),
       },
-      
+      {
+        path: 'ranking',
+        name: 'ranking',
+        meta: {
+          title: '资产排行',
+        },
+        component: () => import('@/pages/money/ranking.vue'),
+      },
+      {
+        path: 'rankingDetaile',
+        name: 'rankingDetaile',
+        meta: {
+          title: '资产排行-详情',
+        },
+        component: () => import('@/pages/money/rankingDetaile.vue'),
+      },
       {
         path: 'transfer-query',
         name: 'transferQuery',

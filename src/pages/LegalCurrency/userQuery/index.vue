@@ -1,7 +1,7 @@
 
 <template>
-    <div class="userQuery-page">
-        <el-container>
+	<div class="userQuery-page">
+		<el-container>
 			<el-main>
 				<el-form :inline="true"  ref="filterForm" :model="filterForm" label-width="86px" size="mini">
 					<div class="form-group">
@@ -11,12 +11,12 @@
 							<el-form-item label="昵称:" >
 							<el-input placeholder="请输入用户昵称" v-model="filterForm.nickName" class="input-with-select"></el-input>
 						</el-form-item>
-						<el-form-item  label="广告商类型:" >
+						<!-- <el-form-item  label="广告商类型:" >
 							<el-select v-model="filterForm.userLevel" >
 								<el-option value="" label='所有'></el-option>
 								<el-option v-for="(item, key) in advList" :key="key" :value="item.label" :label="item.value"></el-option>
 							</el-select>
-						</el-form-item>
+						</el-form-item> -->
 						<el-form-item  label="企业类型:" >
 							<el-select v-model="filterForm.company" >
 								<el-option value="" label='所有'></el-option>
@@ -38,51 +38,52 @@
 						<el-form-item><el-button  type="primary" size="mini" @click.native="search">搜索</el-button></el-form-item>
 					</div>
 				</el-form>
-				<el-table :data="listData.list" border size="mini">
-					<el-table-column label="账户/昵称" width="150">
-						<template slot-scope="scope">
+				<el-table :data="listData.list" border size="mini" height="100%" >
+					<el-table-column label="账户/昵称" width="150" >
+						<div class="scope" slot-scope="scope">
 							<p>{{scope.row.account}}</p>
 							<p>{{scope.row.nickName}}</p>
-						</template>
+						</div>
 					</el-table-column>
-					<el-table-column  label="企业类型" >
-						<template slot-scope="scope">
+					<el-table-column  label="企业类型" align="center">
+						<div class="scope" slot-scope="scope">
 							<span v-if="scope.row.userEnterprise==0">非企业号</span>
 							<span v-if="scope.row.userEnterprise==1">企业号</span>
-						</template>
+						</div>
 					</el-table-column>
-					<el-table-column label="佣金费率" width="150" >
+					<el-table-column label="佣金费率" align="center" >
 						<p slot-scope="scope">{{ Math.floor(scope.row.firstRate*10000)/100 }}%</p>
 					</el-table-column>
 					<el-table-column prop="price" label="授权商户" width="150"></el-table-column>
-					<el-table-column prop="price" label="兑入额度" width="150"></el-table-column>
-					<el-table-column prop="price" label="兑出额度" width="150"></el-table-column>
-					<el-table-column prop="price" label="币种" width="150"></el-table-column>
-					<el-table-column prop="price" label="注册时间" width="150"></el-table-column>
-					<el-table-column prop="price" label="操作" fixed="right">
-						<template slot-scope="scope">
+					<el-table-column prop="price" label="注册时间" width="150">
+						<div slot-scope="scope">
+							{{ $fmtDate(scope.row.registTimeStamp,'full') }}
+						</div>
+					</el-table-column>
+					<el-table-column prop="price" label="操作" fixed="right" width="150">
+						<div class="scope" slot-scope="scope">
 							<el-button type="text" @click.native="$router.push({path:'/LegalCurrency/userQueryDetaile',query:{userId:scope.row.userId}})">查看详情</el-button>
 							<el-button type="text" @click.native=" editType(scope.row) ">修改类型</el-button>
-						</template>
+						</div>
 					</el-table-column>
 				</el-table>
 			</el-main>
-            <el-footer>
-                <sac-pagination v-show="listData.list.length>0"
-                    @handleChange="handleCurrentChange"
-                    :total="+listData.total"
-                    :page-size="filterForm.pageSize"
-                    :current-page="filterForm.pageNum">
-                </sac-pagination>
-            </el-footer>
-        </el-container>
+			<el-footer>
+				<sac-pagination v-show="listData.list.length>0"
+					@handleChange="handleCurrentChange"
+					:total="+listData.total"
+					:page-size="filterForm.pageSize"
+					:current-page="filterForm.pageNum">
+				</sac-pagination>
+			</el-footer>
+		</el-container>
 		<el-dialog title="修改用户类型" :visible.sync="dialogFormVisible">
 			<el-form :model="userTypeForm">
-				<el-form-item label="广告商类型调整：" label-width="140px">
+				<!-- <el-form-item label="广告商类型调整：" label-width="140px">
 					<el-select v-model="userTypeForm.userLevel" placeholder="请选择广告商类型" >
 						<el-option v-for="(item,index) in advList" :key = 'index' :label="item.value" :value="item.label"></el-option>
 					</el-select>
-				</el-form-item>
+				</el-form-item> -->
 				<el-form-item label="企业类型调整：" label-width="140px" >
 					<el-select v-model="userTypeForm.userEnterprise" placeholder="请选择企业类型">
 						<el-option v-for="(item,index) in companyType" :key = 'index' :label="item.value" :value="item.label "></el-option>
@@ -94,7 +95,7 @@
 				<el-button type="primary" @click="updateOtcUserLevel">确 定</el-button>
 			</div>
 		</el-dialog>
-    </div>
+	</div>
 </template>
 <script>
 import { dateFormat } from "@/common/util";
@@ -212,64 +213,78 @@ export default {
 
 <style scoped lang="less">
 .userQuery-page{
-     height:100%;
-    .el-container{
-        height:100%;
-        .el-main{
-            height:100%;
-            width: 100%;
-        }
-    } 
-    .el-form--inline .el-form-item__label{
-        width:80px !important;
-    }
-		.form-group{
+		height:100%;
+	.el-container{
+			height:100%;
+			.el-main{
+				height:100%;
+				width: 100%;
+				flex: 1;
+				display: flex;
+				padding: 0;
+				flex-direction: column;
+				.el-table{
+					flex: 1;
+					width: 100%;
+					height: 100%;
+				}
+			}
+	} 
+	.el-form--inline .el-form-item__label{
+			width:80px !important;
+	}
+	.form-group{
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		/deep/.el-form-item__label{
+			font-size: 14px;
+			color: #000;
+			// font-weight: 500;
+		}
+		&>.radioBox{
 			display: flex;
 			flex-direction: row;
-			flex-wrap: wrap;
-			/deep/.el-form-item__label{
+			align-items: center;
+			height: 40px;
+			margin-right: 15px;
+			margin-bottom: 15px;
+			&>label{
 				font-size: 14px;
 				color: #000;
+				margin-right: 10px;
 				// font-weight: 500;
 			}
-			&>.radioBox{
-				display: flex;
-				flex-direction: row;
-				align-items: center;
-				height: 40px;
-				margin-right: 15px;
-				margin-bottom: 15px;
-				&>label{
-					font-size: 14px;
-					color: #000;
-					margin-right: 10px;
-					// font-weight: 500;
-				}
-				/deep/ .el-radio{margin-right: 0;}
-				/deep/.el-radio__input{
-					display: none;
-				}
+			/deep/ .el-radio{margin-right: 0;}
+			/deep/.el-radio__input{
+				display: none;
 			}
 		}
-   /deep/ .dateItem  .el-form-item__content{
-        width: 352px;
+	}
+	/deep/ .dateItem  .el-form-item__content{
+			width: 352px;
+	}
+	/deep/.el-radio__label{
+		color: #909399;
+		padding:0 10px;
+		// padding-left: 0;
+	}
+	/deep/.is-checked{
+		background: #409EFF;
+		border-radius: 5px;
+		padding: 3px 10px;
+		margin-right: 10px;
+		.el-radio__label{
+			color: #fff;
+			padding: 0;
 		}
-		/deep/.el-radio__label{
-			color: #909399;
-			padding:0 10px;
-			// padding-left: 0;
+		
+	}
+	/deep/ .scope{
+		p{
+			margin: 0;
 		}
-		/deep/.is-checked{
-			background: #409EFF;
-			border-radius: 5px;
-			padding: 3px 10px;
-			margin-right: 10px;
-			.el-radio__label{
-				color: #fff;
-				padding: 0;
-			}
-			
-		}
+	}
 }
   
 </style>

@@ -70,7 +70,7 @@
           <el-button size="mini" v-show="scope.row.optStatus== 0" type="text"
                      @click="optStatusHandle(1,'锁定账号',scope.row)">锁定账号
           </el-button>
-          <el-button type="text" size="mini" @click.native="goDetail(scope.row.userId)">查看详情1</el-button>
+          <el-button type="text" size="mini" @click.native="goDetail(scope.row.userId)">查看详情</el-button>
         </template>
       </el-table-column>
     </sac-table>

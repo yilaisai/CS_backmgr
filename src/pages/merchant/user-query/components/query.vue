@@ -1,38 +1,34 @@
 <template>
-	<el-collapse>
-		<el-collapse-item title="查询条件" name="filter">
-			<el-form ref="form" :model="formData" label-width="80px" size="mini" inline>
-				<el-form-item label="搜索：">
-					<el-input v-model="formData.appId" placeholder="请输入appid/账户/昵称"></el-input>
-				</el-form-item>
-				<el-form-item label="币种：">
-					<el-select v-model="formData.coinName" placeholder="选择类型" clearable style="width: 185px">
-						<el-option :value="null" label="全部"></el-option>
-						<el-option v-for="(item, key) in coinTypes" :key="key" :value="item" :label="item"></el-option>
-					</el-select>
-				</el-form-item>
-				<el-form-item label="时间：">
-					<el-date-picker
-						id="createtime"
-						v-model="formData.create_time"
-						type="daterange"
-						align="right"
-						width="auto"
-						value-format="yyyy-MM-dd"
-						unlink-panels
-						range-separator="至"
-						start-placeholder="开始日期"
-						end-placeholder="结束日期"
-						:picker-options="pickerOptions">
-					</el-date-picker>
-				</el-form-item>
-				<el-form-item>
-					<el-button type="primary" @click="queryData" style="margin-left: 60px">查询</el-button>
-					<el-button type="primary" @click="clear">清空</el-button>
-				</el-form-item>
-			</el-form>
-		</el-collapse-item>
-    </el-collapse>
+	<el-form ref="form" :model="formData" label-width="60px" size="mini" inline>
+		<el-form-item label="搜索：">
+			<el-input v-model="formData.appId" placeholder="请输入appid/账户/昵称"></el-input>
+		</el-form-item>
+		<el-form-item label="币种：">
+			<el-select v-model="formData.coinName" placeholder="选择类型" clearable style="width: 185px">
+				<el-option :value="null" label="全部"></el-option>
+				<el-option v-for="(item, key) in coinTypes" :key="key" :value="item" :label="item"></el-option>
+			</el-select>
+		</el-form-item>
+		<el-form-item label="时间：">
+			<el-date-picker
+				id="createtime"
+				v-model="formData.create_time"
+				type="daterange"
+				align="right"
+				width="auto"
+				value-format="yyyy-MM-dd"
+				unlink-panels
+				range-separator="至"
+				start-placeholder="开始日期"
+				end-placeholder="结束日期"
+				:picker-options="pickerOptions">
+			</el-date-picker>
+		</el-form-item>
+		<el-form-item>
+			<el-button type="primary" @click="queryData" style="margin-left: 20px">查询</el-button>
+			<el-button type="primary" @click="clear">清空</el-button>
+		</el-form-item>
+	</el-form>
 </template>
 <script>
 export default {

@@ -1,10 +1,8 @@
 <template>
      <div class="withdraw-check-page">
-        <el-collapse>
-            <el-collapse-item title="查询条件" name="filter">
-                <Query ref="query" @queryData='getData' @resetFilter="resetFilter" :coins="coins"/>
-            </el-collapse-item>
-        </el-collapse>
+        <div>
+            <Query ref="query" @queryData='getData' @resetFilter="resetFilter" :coins="coins"/>
+        </div>
         <!-- 表格 -->
         <Table :tableData="data.list" :btnHandle="btnHandle" @hideDialogMR="hideDialogMR"></Table>
         <!-- 分页器 -->

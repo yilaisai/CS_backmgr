@@ -8,18 +8,19 @@
 		</div>
         <el-table :data="tableData" border size="mini" style="width: 100%" height="auto">
             <el-table-column prop="create_time" label="时间" width="140" align="center"></el-table-column>
-            <el-table-column prop="phone" label="账号" width="120" align="center"></el-table-column>
-            <el-table-column prop="coin_name" label="币种" width="80" align="center"></el-table-column>
-            <el-table-column prop="amount" label="数量" width="100" align="center"></el-table-column>
+            <el-table-column prop="phone" label="账号" width="100" align="center"></el-table-column>
+            <el-table-column prop="nickName" label="昵称" width="90" align="center"></el-table-column>
+            <el-table-column prop="coin_name" label="币种" width="60" align="center"></el-table-column>
+            <el-table-column prop="amount" label="数量"  align="center"></el-table-column>
             <el-table-column prop="fee" label="手续费(BTC)" width="100" align="center"></el-table-column>
-            <el-table-column prop="status" label="状态" width="100" align="center">
+            <el-table-column prop="status" label="状态"  align="center">
                 <template slot-scope="scope">
                     <span>{{scope.row.status | recdStatusMap}}</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="from_addr" label="From地址" width="200" align="center"></el-table-column>
-            <el-table-column prop="to_addr" label="To地址" width="200" align="center"></el-table-column>
-            <el-table-column prop="id" label="订单号" width="150" align="center"></el-table-column>
+            <el-table-column prop="from_addr" label="From地址" width="300" align="center"></el-table-column>
+            <el-table-column prop="to_addr" label="To地址" width="300" align="center"></el-table-column>
+            <el-table-column prop="id" label="订单号"  align="center"></el-table-column>
             <el-table-column prop="user_remark" label="上链备注" width="150" align="center"></el-table-column>
             <el-table-column fixed="right" label="操作" width="280" align="center">
                 <template slot-scope="scope">
@@ -87,7 +88,6 @@ export default {
 
 <style lang="less" scoped>
 .withdraw-check-table-cpt {
-	margin-top: 20px;
 	flex: 1;
 	display: flex;
 	flex-direction: column;

@@ -12,18 +12,26 @@
 			border
 			size="mini"
 			style="min-width: 100%">
-			<el-table-column prop="appId" label="appid" width="140"></el-table-column>
-			<el-table-column prop="name" label="账号|昵称" width="140">
-				<span slot-scope="scope">{{scope.row.name + ' | ' + scope.row.phone}}</span>
+			<el-table-column prop="appId" label="appid" align="center" width="90"></el-table-column>
+			<el-table-column prop="phone" label="账号/昵称" width="140" align="center">
+				<div class="scope" slot-scope="scope">
+					<p>{{ scope.row.phone }}</p>
+					<p>{{ scope.row.name }}</p>
+				</div>
 			</el-table-column>
-			<el-table-column prop="feeRate" label="手续费"></el-table-column>
-			<el-table-column prop="firstRateIn" label="直推人账户/费率" align="center"></el-table-column>
-			<el-table-column prop="secRateIn" label="间推人账户"></el-table-column>
-			<el-table-column prop="amount" label="商户余额"></el-table-column>
-			<el-table-column prop="to_addr" label="累计充值额（CNY）"></el-table-column>
-			<el-table-column prop="id" label="累计提现额（CNY）"></el-table-column>
-			<el-table-column prop="createDate" label="创建时间"></el-table-column>
-			<el-table-column prop="date" label="操作" fixed="right" width="100">
+			<el-table-column prop="feeRate" label="手续费" align="center"></el-table-column>
+			<el-table-column label="直推人账户/费率" align="center" width="110">
+				<div class="scope" slot-scope="scope">
+					<p>{{ scope.row.firstPhone }}</p>
+					<p>{{ scope.row.firstRateIn }}</p>
+				</div>
+			</el-table-column>
+			<el-table-column prop="secRateIn" label="间推人账户" width="110" align="center"></el-table-column>
+			<el-table-column prop="amount" label="商户余额" width="140" align="center"></el-table-column>
+			<el-table-column prop="to_addr" label="累计充值额（CNY）" width="140" align="center"></el-table-column>
+			<el-table-column prop="id" label="累计提现额（CNY）" width="140" align="center"></el-table-column>
+			<el-table-column prop="createDate" label="创建时间" width="140" align="center"></el-table-column>
+			<el-table-column prop="date" label="操作" fixed="right" width="110" align="center">
 				<template slot-scope="scope">
 					<el-button
 						size="mini"
@@ -109,5 +117,10 @@ export default {
 .el-table{
 	flex: 1;
 	margin-top: 10px;
+	/deep/.scope{
+		p{
+			margin: 0
+		}
+	}
 }
 </style>

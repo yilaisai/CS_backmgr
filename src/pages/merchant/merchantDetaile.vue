@@ -9,7 +9,7 @@
 				<div class="title">
 					<h3>用户信息</h3>
 				</div>
-				<el-form :inline="true" :model="detaileData" class="demo-form-inline">
+				<el-form :inline="true" :model="detaileData" class="demo-form-inline" size="small">
 					<el-form-item label="商户名:">
 						<el-input v-model="detaileData.name"  disabled></el-input>
 					</el-form-item>

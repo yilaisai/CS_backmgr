@@ -6,7 +6,7 @@
 				<div class="select-wrap">
 					<label>币种：</label>
 					<el-select v-model="coinName" placeholder="请选择" size="small">
-						<el-option label="USDT" value="USDT"></el-option>
+						<el-option label="RMT" value="RMT"></el-option>
 						<el-option label="BTC" value="BTC"></el-option>
 					</el-select>
 				</div>
@@ -17,12 +17,12 @@
 				<li v-else><label>{{coinName}}当前兑入价格:</label><span>{{form.MERCHANT_IN_PRICE}}</span></li>
 				<li v-if="form.MERCHANT_RATE_TYPE == 1"><label>{{coinName}}当前兑出价格:</label><span>{{Math.floor(form.MERCHANT_OUT_PRICE * form.MERCHANT_OUT_PRICE_FLOAT * 1000000) / 1000000}}</span></li>
 				<li v-else><label>{{coinName}}当前兑出价格:</label><span>{{form.MERCHANT_OUT_PRICE}}</span></li>
-				<!-- <li><label>商户最小兑入:</label><span>6.93 USDT</span></li>
-				<li><label>商户最大兑入:</label><span>6.93 USDT</span></li>
-				<li><label>商户最小兑出:</label><span>6.93 USDT</span></li>
-				<li><label>商户最大兑出:</label><span>6.93 USDT</span></li>
-				<li><label>商户提币手续费:</label><span>6.93 USDT</span></li>
-				<li><label>商户转账手续费:</label><span>6.93 USDT</span></li> -->
+				<!-- <li><label>商户最小兑入:</label><span>6.93 RMT</span></li>
+				<li><label>商户最大兑入:</label><span>6.93 RMT</span></li>
+				<li><label>商户最小兑出:</label><span>6.93 RMT</span></li>
+				<li><label>商户最大兑出:</label><span>6.93 RMT</span></li>
+				<li><label>商户提币手续费:</label><span>6.93 RMT</span></li>
+				<li><label>商户转账手续费:</label><span>6.93 RMT</span></li> -->
 			</ul>
 		</div>
 		<div class="content-wrap">
@@ -102,7 +102,7 @@ export default {
 	data() { 
 		return {
 			form: {},
-			coinName: "USDT"
+			coinName: "RMT"
 		}
 	},
 	mounted() {

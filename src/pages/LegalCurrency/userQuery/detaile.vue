@@ -267,6 +267,8 @@ export default {
 		},
 		EditRate(data){
 			this.currItem = data
+			this.buyRate = Math.floor(data.buyRate*1000) 
+			this.rate =  Math.floor(data.rate*1000)
 			this.showDialog=true
 		} ,
 		brokerage(data){

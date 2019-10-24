@@ -1,11 +1,6 @@
-/**
-*  Created by   阿紫
-*  On  2018/8/10
-*  Content 币种设置
-*/
 <template>
   <div class='currency'>
-    <el-col :span="22" style="text-align:right; margin-bottom:30px;">
+    <el-col style="text-align:right; margin-bottom:10px;">
       <el-button size="small" type="primary" @click="addCoin">创建币种</el-button>
     </el-col>
     <sac-table :data="listData.list">

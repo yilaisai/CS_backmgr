@@ -14,38 +14,40 @@
 										end-placeholder="结束日期" @change='filterForm.dateType=""'>
 									</el-date-picker>
 								</el-form-item>
+								<el-form-item label="状态:">
+									<el-select v-model="filterForm.status" placeholder="请选择">
+										<el-option value="" label="全部"></el-option>
+										<el-option
+										v-for="(item,index) in statusList"
+										:key="index"
+										:label="item.value"
+										:value="item.label">
+										</el-option>
+									</el-select>
+								</el-form-item>
 								<el-form-item>
 									<el-button  type="primary" size="mini" @click.native="search">搜索</el-button>
 								</el-form-item>
 							</div>
-							<div class="form-group">
-								<div class="radioBox">
-									<label >状态:</label>
-									<el-radio-group v-model="filterForm.status">
-										<el-radio  label="">全部</el-radio>
-										<el-radio v-for="(item,index) in statusList" :key="index" :label="item.label">{{item.value}}</el-radio>
-									</el-radio-group>
-								</div>
-							</div>
 						</el-form>
 						<el-table :data="listData.list" border size="mini">
-							<el-table-column label="商户名称" prop="name" ></el-table-column>
-							<el-table-column label="手机号" prop="phone" ></el-table-column>
-							<el-table-column label="邮箱" prop="email" ></el-table-column>
-							<el-table-column label="手机号" prop="phone"  ></el-table-column>
-								<el-table-column label="状态"  >
-								<div slot-scope="scope">
-										<p>{{ scope.row.status==1?'已审核':scope.row.status==2?'审核失败':'待审核' }}</p>
-									</div>
-							</el-table-column>
-							<el-table-column label="注册时间"  >
-								<div slot-scope="scope">
-										<p>{{ $fmtDate(scope.row.createTime,'full') }}</p>
-									</div>
-							</el-table-column>
-							<el-table-column prop="price" label="操作" fixed="right" width="120">
+							<el-table-column label="商户名称" prop="name" align="center"></el-table-column>
+							<el-table-column label="手机号" prop="phone" align="center"></el-table-column>
+							<el-table-column label="邮箱" prop="email" align="center"></el-table-column>
+							<el-table-column label="手机号" prop="phone" align="center"></el-table-column>
+							<el-table-column label="状态" align="center">
 								<template slot-scope="scope">
-									<el-button type="text" @click.native="$router.push({path:'/merchant/merchantDetaile',query:{data:scope.row}})">{{ scope.row.status==0?'审核':'查看详情' }}</el-button>
+									{{ scope.row.status==1?'已审核':scope.row.status==2?'审核失败':'待审核' }}
+								</template>
+							</el-table-column>
+							<el-table-column label="注册时间" align="center">
+								<template slot-scope="scope">
+									{{ $fmtDate(scope.row.createTime,'full') }}
+								</template>
+							</el-table-column>
+							<el-table-column prop="price" label="操作" fixed="right" width="120" align="center">
+								<template slot-scope="scope">
+									<el-button type="text" size="small" @click.native="$router.push({path:'/merchant/merchantDetaile',query:{data:scope.row}})">{{ scope.row.status==0?'审核':'查看详情' }}</el-button>
 								</template>
 							</el-table-column>
 						</el-table>

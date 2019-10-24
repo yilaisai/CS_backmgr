@@ -1,8 +1,3 @@
-/**
-*  Created by   阿紫
-*  On  2018/8/20
-*  Content
-*/
 <template>
   <div class='currency-set'>
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="190px">

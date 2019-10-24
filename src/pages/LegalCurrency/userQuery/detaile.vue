@@ -129,9 +129,16 @@
 						prop="inviteeName"
 						label="昵称">
 					</el-table-column>
-					<el-table-column
+					<el-table-column align="center"
 						prop="reward"
-						label="佣金">
+						label="买入佣金费率">
+						<div slot-scope="scope">
+							{{ Math.floor(scope.row.buyRate*1000) }}‰
+						</div>
+					</el-table-column>
+					<el-table-column align="center"
+						prop="reward"
+						label="卖出佣金费率">
 						<div slot-scope="scope">
 							{{ Math.floor(scope.row.rate*1000) }}‰
 						</div>
@@ -147,10 +154,17 @@
 		</div>
 		<el-dialog title="修改佣金" :visible.sync="showDialog">
 			<div class=" inputGroup ">
-				<span>佣金费率：</span>
+				<span>买入佣金费率：</span>
+				<el-input placeholder="请输入内容" v-model="buyRate" >
+					<template slot="append">‰</template>
+				</el-input>
+			
+			</div>
+			<div class=" inputGroup ">
+				<span>卖出佣金费率：</span>
 				<el-input placeholder="请输入内容" v-model="rate" >
-				<template slot="append">%</template>
-			</el-input>
+					<template slot="append">‰</template>
+				</el-input>
 			</div>
 			<div slot="footer" class="dialog-footer">
 				<el-button @click="showDialog = false">取 消</el-button>
@@ -193,6 +207,7 @@ export default {
 			//editBrokerage
 			account:'',
 			rate:'',
+			buyRate:'',
 			showDialog:false,
 			showDialog2:false,
 			filterForm:{
@@ -282,7 +297,8 @@ export default {
 		},
 		updateRewardRate(){
 			this.$http.post('/wallet/invite/backmgr/updateRewardRate',{
-				rate:this.rate,
+				buyRate:Math.floor(this.buyRate)/1000,
+				rate:Math.floor(this.rate)/1000,
 				inviteeId:this.currItem.inviteeId
 			}).then(res=>{
 				if(res.code==200){
@@ -460,11 +476,14 @@ export default {
 			flex-direction: row;
 			justify-content: space-between;
 			align-items: center;
+			&:first-of-type{
+				margin-bottom: 20px;
+			}
 			/deep/.el-input{
 				margin-right: 20px;
 			}
 			&>span{
-				width: 110px;
+				width: 140px;
 			}
 		}
 		

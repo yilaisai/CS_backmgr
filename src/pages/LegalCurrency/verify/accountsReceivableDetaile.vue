@@ -17,7 +17,7 @@
 				<span >{{userLevel ==1?'广告商':'普通用户'}}</span>
 			</el-table-column>
       <el-table-column prop="coinName" label="支付方式" >
-				<span slot-scope="scope" >{{scope.row.payType==1?'银行卡':scope.row.payType==1?'支付宝':'微信支付'}}</span>
+				<span slot-scope="scope" >{{scope.row.payType==1?'银行卡':scope.row.payType==2?'支付宝':'微信支付'}}</span>
 			</el-table-column>
 			<el-table-column prop="userName" label="姓名" >
 			</el-table-column>

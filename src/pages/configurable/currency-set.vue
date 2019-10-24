@@ -22,8 +22,7 @@
                   placeholder="请输入合约地址"></el-input>
       </el-form-item>
       <el-form-item label="未身份认证每日转账限额:" prop="tranLimitNRealNameAmount">
-        <el-input style="width:80%" v-model="ruleForm.tranLimitNRealNameAmount" size="small"
-                  placeholder="请输入数额" clearable></el-input>
+        <el-input style="width:80%" v-model="ruleForm.tranLimitNRealNameAmount" size="small" placeholder="请输入数额" clearable></el-input>
       </el-form-item>
       <el-form-item label="是否是ETH代币:" prop="isErc20">
         <el-radio-group v-model="ruleForm.isErc20">
@@ -136,8 +135,6 @@
         <el-input style="width:80%" type="textarea" :rows="2" size="small" placeholder="请输入币种介绍"
                   v-model="ruleForm.chineseDesc"></el-input>
       </el-form-item>
-
-         
       <el-form-item label="是否支持法币保证金:" prop="isOtcDeposit">
         <el-radio-group v-model="ruleForm.isOtcDeposit">
           <el-radio v-model="ruleForm.isOtcDeposit" :label="1">是</el-radio>
@@ -181,13 +178,14 @@
           tranOutMinAmount: "",
           tranInFee: "",
           tranOutFee: "",
-          tranLimitNRealNameAmount: '',
+		  tranLimitNRealNameAmount: '',
           auditInMinAmount: "",
           auditOutMinAmount: "",
           smsCkInMinAmount: "",
           smsCkOutMinAmount: "",
           smsInNoticeMinAmount: '',
-          smsOutNoticeMinAmount: '',
+		  smsOutNoticeMinAmount: '',
+		  tranLimitNrealName: ""
         },
         server_path: "",
         tranInFeeUnit: '',
@@ -311,20 +309,20 @@
       upload(response, file, fileList) {
         this.ruleForm.iconUrl = response.result.urls[0]
       },
-    },
+	},
     activated() {
       this.resetForm();
       this.server_path = SERVER_PATH;
       if (this.$route.params.coinName) {
-        this.ruleForm = JSON.parse(JSON.stringify(this.$route.params));
+        this.ruleForm = Object.assign(this.ruleForm, JSON.parse(JSON.stringify(this.$route.params)))
         const tranInFee = this.ruleForm.tranInFee.split('%');
         const tranOutFee = this.ruleForm.tranOutFee.split('%');
         this.ruleForm.tranInFee = tranInFee[0];
         this.tranInFeeUnit = tranInFee.length > 1 ? '%' : '';
         this.ruleForm.tranOutFee = tranOutFee[0];
         this.tranOutFeeUnit = tranOutFee.length > 1 ? '%' : '';
-        this.ruleForm.isErc20 = this.ruleForm.isErc20 == 0 ? 'NO' : 'YES';
-        this.ruleForm.tranLimitNRealNameAmount = this.ruleForm.tranLimitNrealName;
+		this.ruleForm.isErc20 = this.ruleForm.isErc20 == 0 ? 'NO' : 'YES';
+		this.ruleForm.tranLimitNRealNameAmount = this.ruleForm.tranLimitNrealName;
         this.buttonTitle = 2;
       } else {
         this.buttonTitle = 1;

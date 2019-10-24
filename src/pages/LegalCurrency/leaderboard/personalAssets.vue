@@ -1,6 +1,7 @@
 <template>
 	<div class="personalAssets-page">
 		<el-header>
+			<div class="nav">资产排名>查看个人详情<span v-show="customerInfo.length>0">-{{customerInfo[0].nickName}}</span></div>
 			<el-button type="primary" @click="$router.go(-1)">返回</el-button>
 		</el-header>
 		<div class="main">
@@ -20,7 +21,7 @@
 			</div>
 			<div class="tableBox">
 				<div>
-					<h3>钱包账户资产表</h3>
+					<h3>资产账户资产表</h3>
 					<p>
 						<span>资产总折合（USDT）</span>
 						<span>{{walletSumTotalToUsdt}}</span>

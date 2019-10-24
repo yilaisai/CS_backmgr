@@ -8,7 +8,7 @@
 		</div>
 		<el-table
 			:data="list"
-			height="auto"
+			height="calc(100% - 50px)"
 			border
 			size="mini"
 			style="min-width: 100%">
@@ -109,12 +109,11 @@ export default {
 
 <style lang="less" scoped>
 .table-wrap {
-	margin-top: 20px;
-	flex: 1;
-	display: flex;
-	flex-direction: column;
+	height: 100%;
+	box-sizing: border-box;
 	h4 {
-		padding: 0 10px;
+		height: 50px;
+		line-height: 50px;
 		margin: 0;
 		font-size: 14px;
 	}
@@ -126,6 +125,6 @@ export default {
 }
 .el-table{
 	flex: 1;
-	margin-top: 10px;
+	margin-top: 0px;
 }
 </style>

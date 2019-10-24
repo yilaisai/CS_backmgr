@@ -256,7 +256,7 @@
       background: #fff;
       .router-view {
         display: flex;
-        height: calc(100vh - 80px);
+        height: 100%;
         flex-direction: column;
       }
     }

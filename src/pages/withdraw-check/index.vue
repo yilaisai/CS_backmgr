@@ -167,6 +167,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .withdraw-check-page {
+    // overflow: hidden;
     /deep/ .el-collapse-item__header {
         font-size: 14px;
         font-weight: 600;

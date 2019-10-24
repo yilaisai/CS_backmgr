@@ -46,7 +46,7 @@
         </el-table-column>
          <el-table-column  label="操作" width="80px" fixed="right"  align="center">
           <template slot-scope="scope">
-            <el-button size="mini" @click="$router.push({path:'/LegalCurrency/personalAssets',query:{userId:scope.row.userId}})" >详情</el-button>
+            <el-button size="mini" @click="$router.push({path:'/LegalCurrency/personalAssets',query:{userId:scope.row.user_id}})" >详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -92,7 +92,7 @@
          <el-table-column  label="操作" width="80px" fixed="right"  align="center">
           <template class="scope" slot-scope="scope">
             <!-- <el-button size="mini" @click="modify(scope.row)" >修改状态</el-button> -->
-            <el-button size="mini" @click="$router.push({path:'/LegalCurrency/personalAssets',query:{userId:scope.row.userId}})" >详情</el-button>
+            <el-button size="mini" @click="$router.push({path:'/LegalCurrency/personalAssets',query:{userId:scope.row.user_id}})" >详情</el-button>
           </template>
         </el-table-column>
       </el-table>

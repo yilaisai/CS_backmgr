@@ -156,7 +156,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item size="small" style="text-align:center; width:80%; margin-top:60px;">
-        <el-button type="primary" style="width: 100px" @click="onSubmit">{{buttonTitle}}</el-button>
+        <el-button type="primary" style="width: 100px" @click="onSubmit">{{buttonTitle==1?'创建币种':'修改币种'}}</el-button>
         <el-button type="danger" style="width: 100px;" @click="$router.go(-1)">取消</el-button>
       </el-form-item>
     </el-form>
@@ -180,6 +180,8 @@
           iconUrl: "",
           contractadres: "",
           isErc20: "",
+          isEnableOtc:'',
+          isOtcDeposit:'',
           tranInMinAmount: "",
           tranOutMinAmount: "",
           tranInFee: "",
@@ -195,7 +197,7 @@
         server_path: "",
         tranInFeeUnit: '',
         tranOutFeeUnit: '',
-        buttonTitle: '创建币种',
+        buttonTitle: 1,
         rules: {
           coinName: [
             { required: true, message: '请输入币种', trigger: 'blur' },
@@ -266,13 +268,14 @@
         this.$refs.ruleForm.resetFields();
       },
       onSubmit() {
+        
         this.$refs.ruleForm.validate((valid) => {
-          console.log(valid)
+            
           if (valid) {
             const ruleForm = JSON.parse(JSON.stringify(this.ruleForm))
             ruleForm.tranInFee = (this.ruleForm.tranInFee + this.tranInFeeUnit).trim();
             ruleForm.tranOutFee = (this.ruleForm.tranOutFee + this.tranOutFeeUnit).trim();
-            if (ruleForm.coinId!=='') {
+            if (!(ruleForm.coinId == undefined)) {
               ruleForm.contractadres = ruleForm.contractadres || 'empty';
               this.$http.post("wallet/backmgr/coin/updateCoinInfo", ruleForm).then((res) => {
                 this.$notify({
@@ -327,9 +330,9 @@
         this.tranOutFeeUnit = tranOutFee.length > 1 ? '%' : '';
         this.ruleForm.isErc20 = this.ruleForm.isErc20 == 0 ? 'NO' : 'YES';
         this.ruleForm.tranLimitNRealNameAmount = this.ruleForm.tranLimitNrealName;
-        this.buttonTitle = '修改币种';
+        this.buttonTitle = 2;
       } else {
-        this.buttonTitle = '创建币种';
+        this.buttonTitle = 1;
       }
     }
   };

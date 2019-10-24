@@ -51,7 +51,7 @@
 							<span v-if="scope.row.userEnterprise==1">企业号</span>
 						</div>
 					</el-table-column>
-					<el-table-column label="佣金费率" align="center" >
+					<el-table-column label="卖出佣金费率" align="center" >
 						<p slot-scope="scope">{{ Math.floor(scope.row.firstRate*10000)/100 }}%</p>
 					</el-table-column>
 					<el-table-column prop="price" label="授权商户" width="150"></el-table-column>

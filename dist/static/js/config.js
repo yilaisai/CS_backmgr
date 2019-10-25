@@ -9,13 +9,3 @@ if(window.location.href.indexOf('http://devadmin.hongmo.io') >= 0) {
 	// SERVER_PATH = 'http://192.168.120.194:7036/'  //李海
 	SERVER_PATH = 'http://47.52.110.161:7036/'
 }
-
-
-
-
-
-
-
-
-
-

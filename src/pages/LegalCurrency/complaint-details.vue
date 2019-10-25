@@ -269,7 +269,6 @@ export default {
 				appealId: this.appealId
 			}).then(res=>{
 				res.result.forEach((val, idx) => {
-					console.log(val)
 					if(val.isBuyer == 1) {
 						this.BuyProofInfo = val
 					}else {
@@ -346,6 +345,8 @@ export default {
         }
     },
     activated(){
+        this.BuyProofInfo={}
+        this.SaleProofInfo= {}
         this.tradeId=this.$route.query.tradeId
         this.appealId=this.$route.query.appealId
 		this.getProofInfo()

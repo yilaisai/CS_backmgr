@@ -129,6 +129,7 @@
 						prop="inviteeName"
 						label="昵称">
 					</el-table-column>
+					
 					<el-table-column align="center"
 						prop="reward"
 						label="买入佣金费率">

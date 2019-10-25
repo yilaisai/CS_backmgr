@@ -20,7 +20,7 @@
        <el-table stripe border class="ExList" size="mini"    :data="ExList">
         <el-table-column prop="phone" label="手机号"  align="center"></el-table-column>
         <el-table-column prop="nickName" label="昵称"  align="center"></el-table-column>
-         <el-table-column prop="usdtAmount"  label="USDT">
+         <el-table-column prop="usdtAmount" :label="$variableCoin">
           <div class="scope" slot-scope="scope">
             <p>可用:{{ scope.row.usdtAmount }}</p>
             <p>冻结:{{ scope.row.usdtFrozenAmount }}</p>
@@ -59,7 +59,7 @@
         </el-table-column>
         <el-table-column prop="phone" label="手机号" align="center"></el-table-column>
         <el-table-column prop="nick_name" label="昵称"  align="center"></el-table-column>
-        <el-table-column prop="usdtAmount" sortable='custom' label="USDT">
+        <el-table-column prop="usdtAmount" sortable='custom' :label="$variableCoin">
           <div class="scope" slot-scope="scope">
             <p>可用:{{ scope.row.usdtAmount }}</p>
             <p>冻结:{{ scope.row.usdtFrozenAmount }}</p>

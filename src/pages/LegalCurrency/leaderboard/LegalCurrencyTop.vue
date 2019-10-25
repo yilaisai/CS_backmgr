@@ -20,7 +20,7 @@
        <el-table stripe border class="ExList" size="mini"    :data="ExList">
         <el-table-column prop="phone" label="手机号"></el-table-column>
         <el-table-column prop="nickName" label="昵称"></el-table-column>
-        <el-table-column prop="usdtAmount"  label="USDT"></el-table-column>
+        <el-table-column prop="usdtAmount" :label="$variableCoin"></el-table-column>
         <el-table-column prop="btcAmount"  label="BTC"></el-table-column>
         <el-table-column prop="registTime" label="时间">
           <template slot-scope="scope">
@@ -41,7 +41,7 @@
         </el-table-column>
         <el-table-column prop="phone" label="手机号"></el-table-column>
         <el-table-column prop="nickName" label="昵称"></el-table-column>
-        <el-table-column prop="usdtAmount" sortable='custom' label="USDT"></el-table-column>
+        <el-table-column prop="usdtAmount" sortable='custom' :label="$variableCoin"></el-table-column>
         <el-table-column prop="btcAmount" sortable ='custom' label="BTC"></el-table-column>
         <el-table-column prop="userStatusName"  label="状态"></el-table-column>
         <el-table-column prop="registTime" label="时间">
@@ -194,7 +194,8 @@
         }
       },
       activated() {
-        this.getUserRaking();      // 查询代理用户列表
+		this.getUserRaking();      // 查询代理用户列表
+		console.log(this.$variableCoin)
       }
     };
 </script>

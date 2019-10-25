@@ -8,16 +8,13 @@
 			<div>
 				<div class="title">
 					<h3>用户信息</h3>
-					<el-form :model="filterForm">
-						<el-form-item label="币种" >
-							<el-select v-model="filterForm.coinName" @change="selectCoin" placeholder="请选择币种" >
-								<el-option v-for="(item,index) in coinList" :key = 'index' :label="item" :value="item"></el-option>
-							</el-select>
-						</el-form-item>
-					</el-form>
+					<div class="select-wrap">
+						<label>币种：</label>
+						<el-select v-model="filterForm.coinName" @change="selectCoin" placeholder="请选择币种" >
+							<el-option v-for="(item,index) in coinInfo" :key = 'index' :label="item.coinName" :value="item.coinName"></el-option>
+						</el-select>
+					</div>
 				</div>
-				
-				
 				<el-form :inline="true" :model="detaileData" class="demo-form-inline">
 					<el-form-item label="账号:">
 						<el-input v-model="detaileData.account"  disabled></el-input>
@@ -65,11 +62,10 @@
 					</div>
 				</el-form>
 			</div>
-			
 			<div>
 				<h3>抢派单参数</h3>
 				<el-form :inline="true" label-width="180px" :model="MatchConfig" class="panicBuying">
-					<el-form-item label="派单兑入开关(USDT)：">
+					<el-form-item :label="'派单兑入开关(' + filterForm.coinName + ')：'">
 						<el-switch
 							v-model="sysMatchSwitch"
 							@change='onSysMatchSwitch'
@@ -77,16 +73,15 @@
 							inactive-color="#ff4949">
 						</el-switch>
 					</el-form-item>
-					<el-form-item label=" 派单兑出开关(USDT)：">
+					<el-form-item :label="'派单兑出开关(' + filterForm.coinName + ')：'">
 						<el-switch
-						 
 							v-model="sysCashoutSwitch"
 							active-color="#13ce66"
 							inactive-color="#ff4949"
 							@change='onSysCashoutSwitch'>
 						</el-switch>
 					</el-form-item>
-					<el-form-item label="抢单兑入开关(USDT)：">
+					<el-form-item :label="'抢单兑入开关(' + filterForm.coinName + ')：'">
 						<el-switch
 							v-model="sysRushMatchSwitch"
 							@change='onSysRushMatchSwitch'
@@ -94,7 +89,7 @@
 							inactive-color="#ff4949">
 						</el-switch>
 					</el-form-item>
-					<el-form-item label="抢单兑出开关(USDT)：">
+					<el-form-item :label="'抢单兑出开关(' + filterForm.coinName + ')：'">
 						<el-switch
 							v-model="sysRushCashoutSwitch"
 							@change='onSysRushCashoutSwitch'
@@ -102,16 +97,16 @@
 							inactive-color="#ff4949">
 						</el-switch>
 					</el-form-item>
-					<el-form-item label="派单兑入最小额度(USDT):">
+					<el-form-item :label="'派单兑入最小额度(' + filterForm.coinName + ')：'">
 						<el-input v-model=" MatchConfig.matchMin" disabled ></el-input>
 					</el-form-item>
-					<el-form-item label="派单兑入最大额度(USDT):" >
+					<el-form-item :label="'派单兑入最大额度(' + filterForm.coinName + ')：'" >
 						<el-input v-model=" MatchConfig.matchMax" disabled></el-input>
 					</el-form-item>
-						<el-form-item label="派单兑出最小额度(USDT):">
+						<el-form-item :label="'派单兑出最小额度(' + filterForm.coinName + ')：'">
 						<el-input v-model=" MatchConfig.cashoutMin" disabled></el-input>
 					</el-form-item>
-					<el-form-item label="派单兑出最大额度(USDT):">
+					<el-form-item :label="'派单兑出最大额度(' + filterForm.coinName + ')：'">
 						<el-input v-model=" MatchConfig.cashoutMax" disabled></el-input>
 					</el-form-item>
 				</el-form>
@@ -158,7 +153,6 @@
 				<el-input placeholder="请输入内容" v-model="buyRate" >
 					<template slot="append">‰</template>
 				</el-input>
-			
 			</div>
 			<div class=" inputGroup ">
 				<span>卖出佣金费率：</span>
@@ -198,10 +192,8 @@
 	</div>
 </template>
 <script>
+import {mapState} from 'vuex'
 export default {
-	components:{
-
-	},
 	data(){
 		return {
 			//editBrokerage
@@ -224,7 +216,6 @@ export default {
 				total:'',
 				list:[]
 			},
-			coinList:['USDT','BTC'],
 			defaultProps: {},
 			currItem:{},
 			inviteList:[],
@@ -238,9 +229,6 @@ export default {
 		this.getData()
 		this.queryUserMatchConfig()
 		this.findInviteTree()
-	},
-	mounted(){
-		
 	},
 	methods:{
 		selectCoin(){
@@ -374,9 +362,9 @@ export default {
 
 	},
 	computed:{
-
+		...mapState(['coinInfo'])
 	}
-	}
+}
 </script>
 <style lang="less" scoped>
 .userQueryDetaile-page{

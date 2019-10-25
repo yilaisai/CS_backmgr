@@ -11,3 +11,7 @@ export const setCoinList = (state, payload) => {
 export const setQueryOrderType = (state, payload) => {
   state.teamTypeList = payload;
 };
+
+export const setCoinInfo = (state, payload) => {
+	state.coinInfo = payload
+}

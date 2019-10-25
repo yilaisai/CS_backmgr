@@ -70,7 +70,7 @@
 <script>
   import { transactionType, alarmConditionType, transferQueryStatus } from '@/common/constants';
   import { dateFormat } from '@/common/util';
-
+	import {mapState} from 'vuex'
   export default {
     name: 'transfer-query',
     data() {
@@ -167,7 +167,10 @@
             }, 1000);
           });
       },
-    },
+	},
+	computed: {
+		...mapState(['coinInfo'])
+	},
     activated() {
       // const end = dateFormat(new Date, 'YYYY-MM-DD HH:mm:ss');
       // const start = dateFormat(new Date().getTime() - 3600 * 1000 * 24 * 7, 'YYYY-MM-DD HH:mm:ss');

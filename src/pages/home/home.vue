@@ -1,13 +1,8 @@
-/**
-*  Created by   阿紫
-*  On  2018/8/8
-*  Content
-*/
 <template>
   <div class="sac-home">
     <div class="table-wrap">
-      <h2 class="t-title">用户信息</h2>
-      <el-table :data="user" border>
+      <h2 class="t-title">HOMO钱包运营数据</h2>
+      <el-table :data="user" border size="mini">
         <el-table-column prop="date" label="日期" align="center"></el-table-column>
         <el-table-column prop="total" label="用户总数" align="center"></el-table-column>
         <el-table-column prop="tdCount" label="今日新增" align="center"></el-table-column>
@@ -15,11 +10,14 @@
       </el-table>
     </div>
     <div class="table-wrap">
-      <h2 class="t-title">账户信息</h2>
-      <el-table :data="account" border>
+      <h2 class="t-title">钱包账户资产信息</h2>
+      <el-table :data="account" border size="mini">
         <el-table-column prop="name" label="币种" align="center"></el-table-column>
         <el-table-column prop="total" label="钱包账户总额" align="center"></el-table-column>
-        <el-table-column prop="increase" label="昨日新增" align="center"></el-table-column>
+		<el-table-column prop="total" label="昨日充值额" align="center"></el-table-column>
+		<el-table-column prop="total" label="昨日成功提现额" align="center"></el-table-column>
+		<el-table-column prop="total" label="提现中金额" align="center"></el-table-column>
+		<el-table-column prop="total" label="资金净流入" align="center"></el-table-column>
       </el-table>
     </div>
   </div>
@@ -58,10 +56,10 @@
 <style lang='less'>
   .sac-home {
     .table-wrap {
-      margin-top: 40px;
     }
     .t-title {
-      text-align: center;
+	  text-align: center;
+	  font-size: 16px;
     }
   }
 </style>

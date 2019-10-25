@@ -1,7 +1,7 @@
 <template>
      <div class="withdraw-check-page">
         <div>
-            <Query ref="query" @queryData='getData' @resetFilter="resetFilter" :coins="coins"/>
+            <Query ref="query" @queryData='getData' @resetFilter="resetFilter" :coins="coinInfo"/>
         </div>
         <!-- 表格 -->
         <Table :tableData="data.list" :btnHandle="btnHandle" @hideDialogMR="hideDialogMR"></Table>
@@ -33,6 +33,7 @@ import Query from './components/query.vue'
 import Columns from './components/columns'
 import ReleaseDialog from './components/release-dialog.vue'
 import ManualRecordDialog from './components/manual-record-dialog'
+import {mapState} from 'vuex'
 export default {
     name: 'examine',
     data () {
@@ -157,7 +158,10 @@ export default {
             })
             .catch(e => console.warn(e))
         }
-    },
+	},
+	computed: {
+		...mapState(['coinInfo'])
+	},
     created () {
         this.getCoins()
         this.getData(true)

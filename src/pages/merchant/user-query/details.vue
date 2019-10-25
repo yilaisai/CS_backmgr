@@ -4,8 +4,8 @@
 			<el-button type="primary" size="mini" @click="$router.go(-1)">返回</el-button>
 			<el-select v-model="coinName" placeholder="请选择" size="mini">
 				<el-option
-				label="USDT"
-				value="USDT">
+				:label="$variableCoin"
+				:value="$variableCoin">
 				</el-option>
 			</el-select>
 		</div>
@@ -93,22 +93,22 @@
 					<el-button type="primary" plain size="mini" @click="showDialog('secRate')">修改</el-button>
 				</li>
 				<li>
-					<label>最小兑入额度（USDT）:</label>
+					<label>最小兑入额度（{{$variableCoin}}）:</label>
 					<span>{{pageData.coinInfo.minIn}}</span>
 					<el-button type="primary" plain size="mini" @click="showDialog('duiRu')">修改</el-button>
 				</li>
 				<li>
-					<label>最小兑出额度（USDT）:</label>
+					<label>最小兑出额度（{{$variableCoin}}）:</label>
 					<span>{{pageData.coinInfo.minOut}}</span>
 					<el-button type="primary" plain size="mini" @click="showDialog('duiChu')">修改</el-button>
 				</li>
 				<li>
-					<label>最大兑入额度(USDT):</label>
+					<label>最大兑入额度({{$variableCoin}}):</label>
 					<span>{{pageData.coinInfo.maxIn}}</span>
 					<el-button type="primary" plain size="mini" @click="showDialog('duiRu')">修改</el-button>
 				</li>
 				<li>
-					<label>最大兑出额度(USDT):</label>
+					<label>最大兑出额度({{$variableCoin}}):</label>
 					<span>{{pageData.coinInfo.maxOut}}</span>
 					<el-button type="primary" plain size="mini" @click="showDialog('duiChu')">修改</el-button>
 				</li>
@@ -141,7 +141,7 @@ export default {
 	data() { 
 		return {
 			radio: '1',
-			coinName: 'USDT',
+			coinName: this.$variableCoin,
 			pageData: {
 				coinInfo: {},
 				info: {}

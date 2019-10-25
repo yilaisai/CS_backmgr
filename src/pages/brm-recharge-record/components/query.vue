@@ -20,7 +20,7 @@
 					<el-form-item label="币种：">
 						<el-select v-model="formData.coinName" placeholder="选择类型" clearable style="width: 185px">
 							<el-option :value="null" label="全部"></el-option>
-							<el-option v-for="(item, key) in coinTypes" :key="key" :value="item" :label="item"></el-option>
+							<el-option v-for="(item, key) in coinInfo" :key="key" :value="item.coinName" :label="item.coinName"></el-option>
 						</el-select>
 					</el-form-item>
 					<el-form-item label="订单状态：">
@@ -55,6 +55,7 @@
     </el-collapse>
 </template>
 <script>
+import {mapState} from 'vuex'
 export default {
 	props: {
 		orderStatus: {
@@ -63,7 +64,6 @@ export default {
 	},
     data () {
         return {
-			coinTypes: ['USDT', 'ETH', 'BTC', 'EOS'],
             pickerOptions: {
                 disabledDate(time) {
                     return time.getTime() > Date.now();
@@ -151,7 +151,10 @@ export default {
         fetchFilter () {
             return this.filter
         }
-    }
+	},
+	computed: {
+		...mapState(['coinInfo'])
+	}
 }
 </script>
 <style lang="less" scoped>

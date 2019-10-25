@@ -3,10 +3,10 @@
     <div class="transaction-details">
         <el-container>
 			<el-main>
-				<el-form :inline="true"  ref="filterForm" :model="filterForm" size="mini">
+				<el-form :inline="true"  ref="filterForm" :model="filterForm" size="mini" label-width="80px">
 					<div class="form-group">
 						<el-form-item label="订单号:">
-							<el-input placeholder="请输入单号" v-model="filterForm.userId" class="input-with-select"></el-input>
+							<el-input placeholder="请输入单号" v-model="filterForm.recdId" class="input-with-select"></el-input>
 						</el-form-item>
 						<el-form-item label="账号:">
 							<el-input placeholder="请输入用户账号" v-model="filterForm.userId" class="input-with-select"></el-input>
@@ -20,7 +20,8 @@
 					<div class="form-group">
 						<el-form-item label="币种:">
 							<el-select v-model="filterForm.coinName" >
-								<el-option v-for="(item, key) in coinList" :key="key" :value="item.label" :label="item.value"></el-option>
+								<el-option value="" label="全部"></el-option>
+								<el-option v-for="(item, key) in coinInfo" :key="key" :value="item.coinName" :label="item.coinName"></el-option>
 							</el-select>
 						</el-form-item>
 						<el-form-item label="广告类型:">
@@ -86,6 +87,7 @@
 	</div>
 </template>
 <script>
+import {mapState} from 'vuex'
 import { dateFormat } from "@/common/util";
 import Table from './components/table'
 export default {
@@ -117,11 +119,6 @@ export default {
 					{value:'已完成',label:"3"},
 					{value:'已取消',label:"4"},
 					{value:'申述中',label:"5"},
-				],
-				coinList:[
-					{value:'所有',label:""},
-					{value:'USDT',label:"USDT"},
-					{value:'BTC',label:"BTC"},
 				],
 				transList:[
 					{value:'所有',label:""},
@@ -218,7 +215,10 @@ export default {
         download(){
             location.href =`${ SERVER_PATH}/wallet/app/otc/backmgr/exportExcel?startDate=${this.filterForm.startDate}&endDate=${this.filterForm.endDate}&userId=${this.filterForm.userId}&token=${localStorage.getItem('cus_token')}`;
         }
-    },
+	},
+	computed: {
+		...mapState(['coinInfo'])
+	},
     activated(){
         // this.setDateType()
         this.getList()

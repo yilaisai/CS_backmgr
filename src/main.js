@@ -21,6 +21,8 @@ Vue.use(Viewer);
 Vue.use(utils);
 Vue.use(VueClipboard)
 
+Vue.prototype.$variableCoin = 'RMT'
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

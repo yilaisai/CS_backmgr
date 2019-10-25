@@ -25,7 +25,8 @@
 								</el-form-item>
 								<el-form-item label="币种:">
 									<el-select v-model="filterForm.coinName" >
-										<el-option v-for="(item, key) in coinList" :key="key" :value="item.label" :label="item.value"></el-option>
+										<el-option value="" label="全部"></el-option>
+										<el-option v-for="(item, key) in coinInfo" :key="key" :value="item.coinName" :label="item.coinName"></el-option>
 									</el-select>
 								</el-form-item>
 								<el-form-item label="交易类型:">
@@ -124,6 +125,7 @@
 </template>
 <script>
 import { dateFormat } from "@/common/util";
+import {mapState} from 'vuex'
 export default {
     name:'transaction-details',
     data(){
@@ -271,9 +273,11 @@ export default {
 
             location.href =`${ SERVER_PATH}/wallet/app/otc/backmgr/exportExcel?startDate=${this.filterForm.startDate}&endDate=${this.filterForm.endDate}&userId=${this.filterForm.userId}&token=${localStorage.getItem('cus_token')}`;
         }
-    },
+	},
+	computed:{
+		...mapState(['coinInfo'])
+	},
     activated(){
-        // this.setDateType()
         this.getList()
     }
 }

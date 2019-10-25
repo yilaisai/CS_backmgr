@@ -26,7 +26,7 @@
 			<el-form-item  label="币种:" >
 				<el-select v-model="filterForm.coinName" >
 						<el-option value="" label='所有'></el-option>
-						<el-option v-for="(item, key) in coinList" :key="key" :value="item" :label="item"></el-option>
+						<el-option v-for="(item, key) in coinInfo" :key="key" :value="item.coinName" :label="item.coinName"></el-option>
 				</el-select>
 			</el-form-item>
 			<el-form-item><el-button class="btn" type="primary" @click="search()">搜索</el-button></el-form-item>
@@ -83,10 +83,8 @@
 	</div>
 </template>
 <script>
+import {mapState} from 'vuex'
 export default {
-	components:{
-
-	},
 	data(){
 		return {
 			filterForm:{
@@ -161,9 +159,9 @@ export default {
 
 	},
 	computed:{
-
+		...mapState(['coinInfo'])
 	}
-	}
+}
 </script>
 <style lang="less" scoped>
 .cashOutVerify-page{

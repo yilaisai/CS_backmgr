@@ -7,7 +7,6 @@
 					<label>币种：</label>
 					<el-select v-model="coinName" placeholder="请选择" size="small">
 						<el-option label="RMT" value="RMT"></el-option>
-						<el-option label="BTC" value="BTC"></el-option>
 					</el-select>
 				</div>
 			</div>

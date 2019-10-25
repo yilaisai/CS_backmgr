@@ -15,7 +15,8 @@ const store = new Vuex.Store({
     isLoading: false, // loading
     currentPageTitle: '',
     coinList: [], // 币 种
-    teamTypeList: [], // 商户类型
+	teamTypeList: [], // 商户类型
+	coinInfo: [],  //币种信息  （新接口）
   },
   actions,
   mutations,

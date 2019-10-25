@@ -8,8 +8,9 @@
 					<el-input placeholder="请输入用户账号" v-model="filterForm.userId" class="input-with-select"></el-input>
 				</el-form-item>
 				<el-form-item label="币种:">
-						<el-select v-model="filterForm.coinName" >
-						<el-option v-for="(item, key) in coinList" :key="key" :value="item.label" :label="item.value"></el-option>
+					<el-select v-model="filterForm.coinName" >
+						<el-option value="" label="全部"></el-option>
+						<el-option v-for="(item, key) in coinInfo" :key="key" :value="item.coinName" :label="item.coinName"></el-option>
 					</el-select>
 				</el-form-item>
 				<el-form-item class='dateItem' label="时间:">
@@ -56,6 +57,7 @@
 	</div>
 </template>
 <script>
+import {mapState} from 'vuex'
 export default {
 	components:{
 
@@ -107,11 +109,8 @@ export default {
 			})
 		},
 	},
-	watch:{
-
-	},
 	computed:{
-
+		...mapState(['coinInfo'])
 	}
 	}
 </script>

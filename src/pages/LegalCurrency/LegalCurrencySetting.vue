@@ -7,7 +7,7 @@
              ref="filterForm">
 				<el-form-item label="币种:">
 				<el-select v-model="filterForm.coinName" @change="queryOtcCoinConfig" >
-					<el-option v-for="(item, key) in coinList" :key="key" :value="item.label" :label="item.value"></el-option>
+					<el-option v-for="(item, key) in coinInfo" :key="key" :value="item.coinName" :label="item.coinName"></el-option>
 				</el-select>
 				</el-form-item>
 				<el-form-item label="手续费:">
@@ -53,6 +53,7 @@
 	</div>
 </template>
 <script>
+import {mapState} from 'vuex'
 export default {
 	components:{
 
@@ -60,44 +61,34 @@ export default {
 	data(){
 		return {
 			filterForm:{
-				coinName:'USDT',
+				coinName:'',
 			},
-			coinList:[
-				{value:'USDT',label:"USDT"},
-				{value:'BTC',label:"BTC"},
-				{value:'ETH',label:"ETH"},
-			],
 			detaileData:{
 				otcFee:''
 			}
 		}
 	},
-	mounted(){
-		this.queryOtcCoinConfig()
+	activated() {
+		if(this.coinInfo[0]) {
+			this.filterForm.coinName = this.coinInfo[0].coinName
+			this.queryOtcCoinConfig()
+		}
 	},
 	methods:{
 		queryOtcCoinConfig(){
 			this.$http.post("/wallet/app/otc/backmgr/queryOtcCoinConfig", {coinName:this.filterForm.coinName}).then(res => {
-				// this.$notify({
-				// 		title: "成功",
-				// 		message: `修改成功`,
-				// 		type: "success"
-				// });
 				if(res.code == 200){
 					this.detaileData = res.result
 				}
-				
 			})
 		},
 		UpdateOtcCoinConfig(){
 			this.$http.post("/wallet/app/otc/backmgr/UpdateOtcCoinConfig", {coinId:this.detaileData.coinId,deposit:this.detaileData.deposit,otcFee:this.detaileData.otcFee}).then(res => {
-				// 
 				if(res.code == 200){
-					// this.detaileData = res.result
 					this.$notify({
-							title: "成功",
-							message: `修改成功`,
-							type: "success"
+						title: "成功",
+						message: `修改成功`,
+						type: "success"
 					});
 					this.queryOtcCoinConfig()
 				}else{
@@ -109,17 +100,17 @@ export default {
 				
 			})
 		}
-
-		
-		
 	},
-	watch:{
-
+	watch: {
+		coinInfo(newVal, oldVal) {
+			this.filterForm.coinName = this.coinInfo[0].coinName
+			this.queryOtcCoinConfig()
+		}
 	},
 	computed:{
-
+		...mapState(['coinInfo'])
 	}
-	}
+}
 </script>
 <style lang="less" scoped>
 .LegalCurrencySetting-page{

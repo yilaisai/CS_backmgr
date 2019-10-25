@@ -20,10 +20,10 @@
        <el-table stripe border class="ExList" size="mini"    :data="ExList">
         <el-table-column prop="phone" label="手机号"  align="center"></el-table-column>
         <el-table-column prop="nickName" label="昵称"  align="center"></el-table-column>
-         <el-table-column prop="usdtAmount" :label="$variableCoin">
+         <el-table-column prop="rmtAmount" :label="$variableCoin">
           <div class="scope" slot-scope="scope">
-            <p>可用:{{ scope.row.usdtAmount }}</p>
-            <p>冻结:{{ scope.row.usdtFrozenAmount }}</p>
+            <p>可用:{{ scope.row.rmtAmount }}</p>
+            <p>冻结:{{ scope.row.rmtFrozenAmount }}</p>
           </div>
         </el-table-column>
         <el-table-column prop="btcAmount"  label="BTC">
@@ -50,7 +50,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-table stripe border height="100%" size="mini"    :default-sort = "{prop: 'usdtAmount', order: 'descending'}" :data="listData.list" @sort-change='sortChange'>
+      <el-table stripe border height="100%" size="mini"    :default-sort = "{prop: 'rmtAmount', order: 'descending'}" :data="listData.list" @sort-change='sortChange'>
         <el-table-column
           align="center"
           type="index"
@@ -59,10 +59,10 @@
         </el-table-column>
         <el-table-column prop="phone" label="手机号" align="center"></el-table-column>
         <el-table-column prop="nick_name" label="昵称"  align="center"></el-table-column>
-        <el-table-column prop="usdtAmount" sortable='custom' :label="$variableCoin">
+        <el-table-column prop="rmtAmount" sortable='custom' :label="$variableCoin">
           <div class="scope" slot-scope="scope">
-            <p>可用:{{ scope.row.usdtAmount }}</p>
-            <p>冻结:{{ scope.row.usdtFrozenAmount }}</p>
+            <p>可用:{{ scope.row.rmtAmount }}</p>
+            <p>冻结:{{ scope.row.rmtFrozenAmount }}</p>
           </div>
         </el-table-column>
         <el-table-column prop="btcAmount" sortable ='custom' label="BTC">
@@ -147,11 +147,10 @@
               phoneOrEmail: '',
               pageNum: 1,
               pageSize: 20,
-              coinName:'USDT',//'BTC'
+              coinName:'RMT',//'BTC'
               order:'desc'//和asc
             },
             coinType:'BTC',
-            coinList:['BTC','USDT','ETH'],
             listData: {
               total: null,
               list: [],
@@ -172,7 +171,7 @@
           if(a.prop=="btcAmount"){
             this.filterForm.coinName = 'BTC'
           }else{
-            this.filterForm.coinName = 'USDT'
+            this.filterForm.coinName = 'RMT'
           }
           // this.filterForm.pageSize = 1;
           this.filterForm.pageNum = 1;

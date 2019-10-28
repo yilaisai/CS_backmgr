@@ -129,14 +129,14 @@
 						prop="reward"
 						label="买入佣金费率">
 						<div slot-scope="scope">
-							{{ Math.floor(scope.row.buyRate*1000) }}‰
+							{{ Math.floor(scope.row.buyRate*10000)/10 }}‰
 						</div>
 					</el-table-column>
 					<el-table-column align="center"
 						prop="reward"
 						label="卖出佣金费率">
 						<div slot-scope="scope">
-							{{ Math.floor(scope.row.rate*1000) }}‰
+							{{ Math.floor(scope.row.rate*10000)/10 }}‰
 						</div>
 					</el-table-column>
 					<el-table-column label="操作" width="120">
@@ -245,6 +245,7 @@ export default {
 			this.getList()
 		},
 		findInviteTree(){
+			this.inviteList = []
 			this.$http.post('/wallet/invite/backmgr/findInviteTree',{
 				// inviteeId:this.filterForm.userId
 				inviteeId:this.filterForm.userId
@@ -287,9 +288,11 @@ export default {
 		
 		},
 		updateRewardRate(){
+			// console.log(Math.floor(this.rate*10)/10000)
+			// return
 			this.$http.post('/wallet/invite/backmgr/updateRewardRate',{
-				buyRate:Math.floor(this.buyRate)/1000,
-				rate:Math.floor(this.rate)/1000,
+				buyRate:Math.floor(this.buyRate*10)/10000,
+				rate:Math.floor(this.rate*10)/10000,
 				inviteeId:this.currItem.inviteeId
 			}).then(res=>{
 				if(res.code==200){

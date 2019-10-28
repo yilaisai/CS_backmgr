@@ -60,7 +60,7 @@
 			<ul>
 				<li>
 					<label>商户兑入手续费:</label>
-					<span>{{pageData.info.feeRateIn}}</span>
+					<span>{{pageData.coinInfo.apiMatchFee}}</span>
 					<el-button type="primary" plain size="mini" @click="showDialog('feeRateIn')">修改</el-button>
 				</li>
 				<li>
@@ -72,7 +72,7 @@
 				</li>
 				<li>
 					<label>商户兑出手续费:</label>
-					<span>{{pageData.info.feeRateOut}}</span>
+					<span>{{pageData.coinInfo.apiCashoutFee}}</span>
 					<el-button type="primary" plain size="mini" @click="showDialog('feeRateIn')">修改</el-button>
 				</li>
 				<li>
@@ -119,12 +119,12 @@
 			<el-form ref="form" :model="formData" label-width="120px">
 				<el-form-item :label="label1">
 					<el-input v-model="formData.value1">
-						<template slot="append" v-if="dialogType == 'feeRateIn' || dialogType == 'firstRate' || dialogType == 'secRate'">%</template>
+						<template slot="append" v-if="dialogType == 'firstRate' || dialogType == 'secRate'">%</template>
 					</el-input>
 				</el-form-item>
 				<el-form-item :label="label2">
 					<el-input v-model="formData.value2">
-						<template slot="append" v-if="dialogType == 'feeRateIn' || dialogType == 'firstRate' || dialogType == 'secRate'">%</template>
+						<template slot="append" v-if="dialogType == 'firstRate' || dialogType == 'secRate'">%</template>
 					</el-input>
 				</el-form-item>
 			</el-form>
@@ -217,22 +217,32 @@ export default {
 				this.dialogTitle = '修改兑入费率'
 				this.label1 = '最小兑入额度：'
 				this.label2 = '最大兑入额度：'
+				this.formData.value1 = this.pageData.coinInfo.minIn
+				this.formData.value2 = this.pageData.coinInfo.maxIn
 			}else if(this.dialogType == 'duiChu') {
 				this.dialogTitle = '修改兑出费率'
 				this.label1 = '最小兑出额度：'
 				this.label2 = '最大兑出额度：'
+				this.formData.value1 = this.pageData.coinInfo.minOut
+				this.formData.value2 = this.pageData.coinInfo.maxOut
 			}else if(this.dialogType == 'feeRateIn') {
 				this.dialogTitle = '修改商户手续费'
 				this.label1 = '商户兑入手续费:'
 				this.label2 = '商户兑出手续费:'
+				this.formData.value1 = this.pageData.coinInfo.apiMatchFee
+				this.formData.value2 = this.pageData.coinInfo.apiCashoutFee
 			}else if(this.dialogType == 'firstRate') {
 				this.dialogTitle = '修改直推人费率'
 				this.label1 = '兑入佣金费率：'
 				this.label2 = '兑出佣金费率：'
+				this.formData.value1 = this.pageData.info.firstRateIn
+				this.formData.value2 = this.pageData.info.firstRateOut
 			}else if(this.dialogType == 'secRate') {
 				this.dialogTitle = '修改间推人费率'
 				this.label1 = '兑入佣金费率：'
 				this.label2 = '兑出佣金费率：'
+				this.formData.value1 = this.pageData.info.secRateIn
+				this.formData.value2 = this.pageData.info.secRateOut
 			}
 			this.dialogVisible = true
 		},
@@ -254,11 +264,29 @@ export default {
 				this.getDetails()
 			})
 		},
-		//1、修改商户手续费率；2、修改直推人手续费率；3、修改间推人手续费率；
+		//2、修改直推人手续费率；3、修改间推人手续费率；
 		updateMerchantInfo(type) {
 			this.$http.post('/wallet/backmgr/merchant/updateMerchantInfo', {
 				coinName: this.coinName,
-				type: type,   //1、修改商户手续费率；2、修改直推人手续费率；3、修改间推人手续费率；
+				type: type,   //2、修改直推人手续费率；3、修改间推人手续费率；
+				userId: this.$route.query.id,
+				value1: this.formData.value1,   //最小兑入额
+				value2: this.formData.value2   //最大兑入额
+			}).then(res => {
+				this.formData.value1 = ""
+				this.formData.value2 = ""
+				this.$notify.success({
+					title: '提示',
+					message: res.msg
+				})	
+				this.getDetails()
+			})
+		},
+		//1、修改商户手续费率；
+		updateMerchantFee(type) {
+			this.$http.post('/wallet/backmgr/merchant/updateMerchantFee', {
+				coinName: this.coinName,
+				type: type,   //1、兑入；2、兑出；
 				userId: this.$route.query.id,
 				value1: this.formData.value1,   //最小兑入额
 				value2: this.formData.value2   //最大兑入额
@@ -279,7 +307,7 @@ export default {
 			}else if(this.dialogType == 'duiChu') {
 				this.updateMerchantCoinConfig(2)
 			}else if(this.dialogType == 'feeRateIn') {
-				this.updateMerchantInfo(1)
+				this.updateMerchantFee(1)
 			}else if(this.dialogType == 'firstRate') {
 				this.updateMerchantInfo(2)
 			}else if(this.dialogType == 'secRate') {

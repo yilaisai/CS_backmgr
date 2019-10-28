@@ -7,8 +7,8 @@
 <template>
   <div class="login">
     <div class="content">
-      <img src="@/assets/login_logo.png" alt="">
-      <p class="title">HOMO后台管理系统</p>
+      <img class="logo" src="@/assets/logo_num22.png" alt="">
+      <p class="title">NO.22后台管理系统</p>
       <el-form :model="postObj" :rules="rules" ref="postObj"
                label-width="0px" class="demo-ruleForm">
         <div class="form">
@@ -164,8 +164,12 @@
       img {
         width: 160px;
         height: 36px;
-        display: inline-block;
-      }
+		display: inline-block;
+	  }
+	  .logo {
+		  height: auto;
+		  background:linear-gradient(45deg,rgba(23,142,228,1),rgba(23,228,111,1));
+	  }
       p {
         color: #B4B4B4;
         font-size: 18px;

@@ -57,6 +57,7 @@
 			</el-table-column>
 			<el-table-column align="center" prop="coinName" label="币种"></el-table-column>
 			<el-table-column align="center" prop="fee" label="手续费"></el-table-column>
+			<el-table-column align="center" prop="auditUserName" label="操作人"></el-table-column>
 			<el-table-column align="center" label="操作" fixed="right" >
 				<template slot-scope="scope">
 					<el-button v-show="scope.row.auditStatus==0" size="mini" type="text" @click="open(scope.row)">审核</el-button>

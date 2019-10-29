@@ -14,7 +14,7 @@
 					<el-form-item label="类型:">
 						<el-input :value=" detaileData.advType==3?'抢单兑出':detaileData.advType==4?'抢单兑入':detaileData.advType==5?' 派单兑入 ':'派单兑出'" disabled></el-input>
 					</el-form-item>
-					<el-form-item label="平台审核意见:">
+					<el-form-item label="平台审核意见:" v-if="detaileData.advType != 4 && detaileData.advType != 5">
 						<el-input disabled></el-input>
 					</el-form-item>
 					<el-form-item label="币种:">
@@ -59,7 +59,10 @@
 					<el-form-item label="金额:">
 						<el-input v-model="detaileData.amount"  disabled></el-input>
 					</el-form-item>
-					<el-form-item label="商户支付数量:">
+					<el-form-item label="商户到账数量:" v-if="detaileData.advType == 4 || detaileData.advType == 5">
+						<el-input :value="detaileData.takerAmount" disabled></el-input>
+					</el-form-item>
+					<el-form-item label="商户支付数量:" v-else>
 						<el-input :value="detaileData.takerAmount" disabled></el-input>
 					</el-form-item>
 					<el-form-item label="手续费:">

@@ -146,11 +146,15 @@ export default {
 				remark: this.reason,
 				status:status
 			}).then((res) => {
+				this.dialogVisible = false
 				this.getCashoutAuditList()
 				this.$message({
 					type: 'success',
 					message: res.msg
 				});
+			}).catch(err=>{
+				this.dialogVisible = false
+				console.log(err)
 			})
 			
 		}

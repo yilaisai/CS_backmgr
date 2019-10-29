@@ -96,6 +96,7 @@
           </template>
         </el-table-column>
       </el-table>
+      <p class="total"> <span>RMT：</span> 可用{{rmtAmount}}   冻结{{rmtFrozenAmount}}    <span>BTC：</span> 可用{{btcAmount}}    冻结{{btcFrozenAmount}}      <span>ETH：</span>可用{{ethAmount}}   冻结{{ethFrozenAmount}}    <span>EOS：</span>可用{{eosAmount}}   冻结{{eosFrozenAmount}} </p>
       <sac-pagination v-show="listData.list.length>0"
         @handleChange="getPaginationChange"
         :total="+listData.total"
@@ -155,7 +156,15 @@
               total: null,
               list: [],
             },
-            ExList:[]
+            ExList:[],
+            rmtAmount:0,
+            rmtFrozenAmount:0,
+            eosAmount:0,
+            eosFrozenAmount:0,
+            btcAmount:0,
+            btcFrozenAmount:0,
+            ethAmount:0,
+            ethFrozenAmount:0,
           };
         },
       methods: {
@@ -226,6 +235,14 @@
             this.listData.list = res.result.pageInfo.list;
             this.ExList = res.result.sysList
             this.listData.total = res.result.pageInfo.total;
+            this.rmtAmount=res.result.rmtAmount
+            this.rmtFrozenAmount=res.result.rmtFrozenAmount
+            this.eosAmount=res.result.eosAmount
+            this.eosFrozenAmount=res.result.eosFrozenAmount
+            this.btcAmount=res.result.btcAmount
+            this.btcFrozenAmount=res.result.btcFrozenAmount
+            this.ethAmount=res.result.ethAmount
+            this.ethFrozenAmount=res.result.ethFrozenAmount
           })
         },
         detail(data){
@@ -239,6 +256,18 @@
 </script>
 <style lang="less">
     .exchangeSAC {
+      .total{
+        margin:0;
+        height: 30px;
+        line-height: 30px;
+        font-size: 14px;
+        color: #606266;
+        span{
+          font-weight: 600;
+          margin-left: 15px;
+          color: #409EFF;
+        }
+      }
       /deep/.ExList{
         flex: none;
       }

@@ -27,7 +27,7 @@
 			<div style="height:100%">
 				<el-table :data="listData.list" border height="100%" size="mini">
 					<el-table-column  label="时间" width="180"  align="center">
-						<div slot-scope="scope">
+						<div class="scope" slot-scope="scope">
 							<p>{{ $fmtDate(scope.row.createTime,'full') }}</p>
 						</div>
 					</el-table-column>
@@ -120,6 +120,9 @@ export default {
 	height: 100%;
 	display: flex;
 	flex-direction: column;
+	/deep/.scope p{
+		margin: 0;
+	}
 		.dateItem{
 			width: 430px;
 		}

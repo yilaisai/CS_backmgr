@@ -10,37 +10,37 @@
 			<sac-submit-form :isReset='false' @submitForm="getUserRaking()"></sac-submit-form>
 		</el-form>
 		<el-table stripe border height="100%" :default-sort = "{prop: 'usdtAmount', order: 'descending'}" :data="listData.list" @sort-change='sortChange' size="mini">
-			<el-table-column prop="phone" label="账号"></el-table-column>
-			<el-table-column prop="nickName" label="昵称"></el-table-column>
-			<el-table-column prop="userLevel" label="用户类型">
+			<el-table-column align="center" prop="phone" label="账号"></el-table-column>
+			<el-table-column align="center" prop="nickName" label="昵称"></el-table-column>
+			<el-table-column align="center" prop="userLevel" label="用户类型">
 				<template slot-scope="scope">
 					{{scope.row.userLevel ==1?'广告商':'普通用户' }}
 				</template>
 			</el-table-column>
-			<el-table-column  label="支付宝">
+			<el-table-column align="center"  label="支付宝">
 				<template slot-scope="scope">
 					<span v-if="scope.row.alipay" style="color:#409EFF">{{scope.row.alipay}}</span>
 					<span v-else> 当前未使用 </span>
 				</template>
 			</el-table-column>
-			<el-table-column  label="微信支付">
+			<el-table-column align="center"  label="微信支付">
 				<template slot-scope="scope">
 					<span v-if="scope.row.wechat" style="color:#409EFF">{{scope.row.wechat}}</span>
 					<span v-else> 当前未使用 </span>
 				</template>
 			</el-table-column>
-			<el-table-column  label="银行卡">
+			<el-table-column align="center" width=" 200 "  label="银行卡">
 				<template slot-scope="scope">
 					<span v-if="scope.row.bank" style="color:#409EFF">{{scope.row.bank}}</span>
 					<span v-else> 当前未使用 </span>
 				</template>
 			</el-table-column>
-			<el-table-column  label="状态">
+			<el-table-column align="center"  label="状态">
 				<template slot-scope="scope">
 					{{ scope.row.status ==1?'已审核':'待审核' }}
 				</template>
 			</el-table-column>
-			<el-table-column fixed="right" label="操作" width="200">
+			<el-table-column align="center" fixed="right" label="操作" width="200">
 				<template slot-scope="scope">
 					<el-button @click="goDetaile(scope)" type="text" size="mini">查看审核</el-button>
 					<el-button @click="showQRcode(scope)" type="text" size="mini">收款测试</el-button>

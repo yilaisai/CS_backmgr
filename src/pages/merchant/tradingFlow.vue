@@ -11,13 +11,11 @@
 								<el-form-item label="账号:">
 									<el-input placeholder="请输入用户账号" v-model="filterForm.phone" class="input-with-select"></el-input>
 								</el-form-item>
-								<el-form-item label="类型:">
+								<!-- <el-form-item label="类型:">
 									<el-select v-model="filterForm.type" >
 										<el-option v-for="(item, key) in tradeTypeList" :key="key" :value="item.label" :label="item.value"></el-option>
 									</el-select>
-								</el-form-item>
-							</div>
-							<div class="form-group">
+								</el-form-item> -->
 								<el-form-item label="状态:">
 									<el-select v-model="filterForm.status" >
 										<el-option v-for="(item, key) in statusList" :key="key" :value="item.label" :label="item.value"></el-option>
@@ -30,12 +28,10 @@
 									</el-select>
 								</el-form-item>
 								<el-form-item label="交易类型:">
-									<el-select v-model="filterForm.trans" >
+									<el-select v-model="filterForm.advType" >
 										<el-option v-for="(item, key) in transList" :key="key" :value="item.label" :label="item.value"></el-option>
 									</el-select>
 								</el-form-item>
-							</div>
-							<div class="form-group">
 								<el-form-item class='dateItem' label="时间:">
 									<el-date-picker
 										v-model="selectedDate"
@@ -127,12 +123,12 @@
 import { dateFormat } from "@/common/util";
 import {mapState} from 'vuex'
 export default {
-    name:'transaction-details',
-    data(){
-        return{
-            selectedDate: [], //已选日期
-            currentPage:1,
-            filterForm:{
+	name:'transaction-details',
+	data(){
+		return{
+			selectedDate: [], //已选日期
+			currentPage:1,
+			filterForm:{
 				pageNum:1,
 				pageSize: 10,
 				startDate:'',
@@ -140,7 +136,7 @@ export default {
 				coinName:'',
 				trade_status:'',
 				tradeType:'3',
-				trans:'',
+				advType:'',
 				dateType:'1'
 			},
 			advTypeMap: {
@@ -149,7 +145,7 @@ export default {
 				3: '抢单兑出',
 				4: '抢单兑入',
 				5: '派单兑入',
-				6: '抢单兑出'
+				6: '派单兑出'
 			},
 			tradeTypeList:[
 				{value:'全部',label:""},
@@ -171,8 +167,10 @@ export default {
 			],
 			transList:[
 				{value:'所有',label:""},
-				{value:'兑入',label:"1"},
-				{value:'兑出',label:"0"},
+				{value:'抢单兑出',label:"3"},
+				{value:'抢单兑入',label:"4"},
+				{value:'派单兑入',label:"5"},
+				{value:'派单兑出',label:"6"},
 			],
 			dateList:[
 				{value:'今天',label:"1"},
@@ -189,19 +187,20 @@ export default {
         
     },
     methods:{
-        getList(){
-			if(this.selectedDate.length==2){
-				this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
-				this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
-			}	
-			this.$http.post('/wallet/backmgr/merchant/trade/list',this.filterForm).then(res=>{
-				this.SumTradeRecd()
-				const { list ,total} = res.result.pageData;
-				this.listData.list = list;
-				console.log(this.listData.list)
-				this.listData.total = total;
-			})
-		},
+			getList(){
+				if(this.selectedDate.length==2){
+					this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
+					this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
+				}	
+				console.log(this.filterForm)
+				this.$http.post('/wallet/backmgr/merchant/trade/list',this.filterForm).then(res=>{
+					this.SumTradeRecd()
+					const { list ,total} = res.result.pageData;
+					this.listData.list = list;
+					console.log(this.listData.list)
+					this.listData.total = total;
+				})
+			},
 		SumTradeRecd(){
 			if(this.selectedDate.length==2){
 				this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';

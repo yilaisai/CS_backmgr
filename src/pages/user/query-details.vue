@@ -44,9 +44,10 @@
           <label>锁定/冻结原因:</label>
           <span v-if="detais.optStatus!= 0">{{detais.optReason}}</span>
         </el-col>
-        <el-col :span="12">
+        <el-col  :span="12" >
           <label>谷歌密钥:</label>
-          <el-button size="small" type="danger" @click="$router.go(-1)">删除</el-button>
+          <el-button v-if="detais.googleVerifyStatus == 1" size="small" type="danger" @click="$router.go(-1)">删除</el-button>
+          <span v-else>无</span>
         </el-col>
         <el-col :span="12">
           <label>最后登录时间:</label>

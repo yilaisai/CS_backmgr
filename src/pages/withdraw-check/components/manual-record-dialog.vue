@@ -13,7 +13,7 @@
 			</el-form-item>
 			<el-form-item label="币种">
 				<el-select v-model="form.coinName" placeholder="请选择币种">
-					<el-option label="USDT" value="USDT"></el-option>
+					<el-option label="RMT" value="RMT"></el-option>
 					<el-option label="ETH" value="ETH"></el-option>
 					<el-option label="BTC" value="BTC"></el-option>
 					<el-option label="EOS" value="EOS"></el-option>
@@ -30,12 +30,12 @@
 			</el-form-item>
 			<el-form-item label="数量">
 				<el-input v-model.trim="form.amount">
-					<template slot="append">USDT</template>
+					<template slot="append">RMT</template>
 				</el-input>
 			</el-form-item>
 			<el-form-item label="手续费">
 				<el-input v-model.trim="form.fee">
-					<template slot="append">USDT</template>
+					<template slot="append">RMT</template>
 				</el-input>
 			</el-form-item>
 		</el-form>
@@ -60,7 +60,7 @@ export default {
 				type: "1",
 				name: '',  //账号手机号码
 				txId: "",
-				coinName: "USDT",
+				coinName: "RMT",
 				toAddr: "",
 				fromAddr: "",
 				amount: "", //实际到账金额

@@ -12,7 +12,7 @@
 						<el-input v-model="detaileData.tradeId"  disabled></el-input>
 					</el-form-item>
 					<el-form-item label="类型:">
-						<el-input :value=" detaileData.tradeType==0?'C2C':detaileData.tradeType==1?'派单':detaileData.tradeType==2?'抢单':''" disabled></el-input>
+						<el-input :value=" detaileData.advType==3?'抢单兑出':detaileData.advType==4?'抢单兑入':detaileData.advType==5?' 派单兑入 ':'派单兑出'" disabled></el-input>
 					</el-form-item>
 					<el-form-item label="平台审核意见:">
 						<el-input disabled></el-input>

@@ -114,7 +114,7 @@
       align-items: center;
       /*background: #1a2238;*/
       img {
-        width: 150px;
+        width: 80px;
       }
     }
     .el-menu-vertical-demo:not(.el-menu--collapse) {

@@ -3,10 +3,10 @@
 		<el-table-column  label="单号/下单时间" width="180"  align="center">
 			<span slot-scope="scope">{{scope.row.recdId}} <br />{{ $fmtDate(scope.row.createStamp,'full') }}</span>
 		</el-table-column>
-		<el-table-column label="taker昵称/账户" width="150"  align="center">
+		<el-table-column label="用户昵称/账户" width="150"  align="center">
 			<span slot-scope="scope">{{scope.row.takerName}} <br />{{scope.row.takerPhone}}</span>
 		</el-table-column>
-		<el-table-column label="maker昵称/账户" width="150"  align="center">
+		<el-table-column label="广告商昵称/账户" width="150"  align="center">
 			<span slot-scope="scope">{{scope.row.makerName}} <br />{{scope.row.makerPhone}}</span>
 		</el-table-column>
 		<el-table-column prop="tradeTime" label="状态" align="center" >

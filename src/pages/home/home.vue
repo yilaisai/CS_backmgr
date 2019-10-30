@@ -48,9 +48,9 @@
           })
       },
     },
-    mounted() {
-      this.getData();
-    },
+	activated() {
+		this.getData()
+	}
   };
 </script>
 <style lang='less'>

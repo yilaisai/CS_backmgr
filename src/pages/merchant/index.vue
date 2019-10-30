@@ -94,7 +94,10 @@ export default {
             },
         }
         
-    },
+	},
+	mounted() {
+		this.getList()
+	},
     methods:{
         getList(){
 					if(this.selectedDate.length==2){
@@ -126,8 +129,6 @@ export default {
         },
     },
     activated(){
-				// this.setDateType()
-				
         this.getList()
     }
 }

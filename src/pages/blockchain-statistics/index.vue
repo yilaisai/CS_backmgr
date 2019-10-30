@@ -248,16 +248,6 @@ export default {
             if (filter.transType) params.transType = filter.transType
             params.token = localStorage.getItem('token')
             window.open('/wallet/block/backmgr/opsExportBlockRecdList?' + qs.stringify(params))
-			// this.$http.get('/backmgr/exportBlockRecdList', params).then(res => {
-			// 	if(res.code == 200) {
-			// 		window.open(res.result)
-			// 	}else {
-			// 		this.$notify.error({
-			// 			title: '提示',
-			// 			message: res.msg
-			// 		})
-			// 	}
-			// })
 		},
         hideCount (refer) {
             this.rowHeight = refer ? '500px' : '30px'
@@ -350,11 +340,10 @@ export default {
         const startTime = `${currentTime.getFullYear()}-${m}-${d}`
         const endTime = `${currentTime.getFullYear()}-${m}-${d}`
         this.filter.create_time = [startTime, endTime]
-        this.allCoins()
     },
-    mounted () {
-        let handle = null
-
+    activated() {
+		let handle = null
+		this.allCoins()
     },
     components: { SummaryBar }
 }

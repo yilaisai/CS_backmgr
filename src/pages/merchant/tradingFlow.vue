@@ -11,11 +11,6 @@
 								<el-form-item label="账号:">
 									<el-input placeholder="请输入用户账号" v-model="filterForm.phone" class="input-with-select"></el-input>
 								</el-form-item>
-								<!-- <el-form-item label="类型:">
-									<el-select v-model="filterForm.type" >
-										<el-option v-for="(item, key) in tradeTypeList" :key="key" :value="item.label" :label="item.value"></el-option>
-									</el-select>
-								</el-form-item> -->
 								<el-form-item label="状态:">
 									<el-select v-model="filterForm.status" >
 										<el-option v-for="(item, key) in statusList" :key="key" :value="item.label" :label="item.value"></el-option>
@@ -40,6 +35,12 @@
 										start-placeholder="开始日期"
 										end-placeholder="结束日期" @change='filterForm.dateType=""'>
 									</el-date-picker>
+								</el-form-item>
+								<el-form-item label="超时筛选:">
+									<el-select v-model="filterForm.timeOut" >
+										<el-option value="" label="所有"></el-option>
+										<el-option value="1" label="已超时"></el-option>
+									</el-select>
 								</el-form-item>
 								<!-- <div class="radioBox">
 									<label >最近:</label>
@@ -137,7 +138,8 @@ export default {
 				trade_status:'',
 				tradeType:'3',
 				advType:'',
-				dateType:'1'
+				dateType:'1',
+				timeOut: ""
 			},
 			advTypeMap: {
 				1: '在线出售',
@@ -190,20 +192,19 @@ export default {
         
     },
     methods:{
-			getList(){
-				if(this.selectedDate.length==2){
-					this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
-					this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
-				}	
-				console.log(this.filterForm)
-				this.$http.post('/wallet/backmgr/merchant/trade/list',this.filterForm).then(res=>{
-					this.SumTradeRecd()
-					const { list ,total} = res.result.pageData;
-					this.listData.list = list;
-					console.log(this.listData.list)
-					this.listData.total = total;
-				})
-			},
+		getList(){
+			if(this.selectedDate.length==2){
+				this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
+				this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
+			}	
+			this.$http.post('/wallet/backmgr/merchant/trade/list',this.filterForm).then(res=>{
+				this.SumTradeRecd()
+				const { list ,total} = res.result.pageData;
+				this.listData.list = list;
+				console.log(this.listData.list)
+				this.listData.total = total;
+			})
+		},
 		SumTradeRecd(){
 			if(this.selectedDate.length==2){
 				this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';

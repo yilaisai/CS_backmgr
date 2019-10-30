@@ -33,7 +33,9 @@
 				<el-table-column prop="coin_name" label="币种" align="center" ></el-table-column>
 				<el-table-column prop="phone" label="账号" align="center" ></el-table-column>
 				<el-table-column prop="nick_name" label="昵称" align="center" ></el-table-column>
-				<el-table-column prop="type_name" label="类型" width="120" align="center"></el-table-column>
+				<el-table-column  label="类型" width="120" align="center">
+					<div slot-scope="scope">  {{ scope.row.opt_type | optType }}</div>
+				</el-table-column>
 				<el-table-column prop="balance_change" label="可用资金变化" width="120" align="center"></el-table-column>
 				<el-table-column prop="balance" label="可用资金余额" width="120" align="center"></el-table-column>
 				<el-table-column label="冻结资金变化" prop="frozen_amount_change" width="120" align="center"></el-table-column>

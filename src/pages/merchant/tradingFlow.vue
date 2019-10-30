@@ -188,10 +188,10 @@ export default {
                 list: [],
 			},
 			statistics:{},
-        }
+		}
         
-    },
-    methods:{
+	},
+	methods:{
 		getList(){
 			if(this.selectedDate.length==2){
 				this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
@@ -280,9 +280,9 @@ export default {
 	computed:{
 		...mapState(['coinInfo'])
 	},
-    activated(){
-        this.getList()
-    }
+	activated(){
+			this.getList()
+	}
 }
 </script>
 

@@ -113,7 +113,7 @@ export default {
 			reason: "",  //审核理由
 		}
 	},
-	mounted(){
+	activated(){
 		this.getCashoutAuditList()
 	},
 	methods:{

@@ -104,7 +104,7 @@ export default {
 			coinName: "RMT"
 		}
 	},
-	mounted() {
+	activated() {
 		this.getData()
 	},
 	methods: {

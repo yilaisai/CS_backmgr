@@ -126,16 +126,16 @@ export default {
 			}
         }
     },
-    methods: {
-        queryData () {
+methods: {
+		queryData () {
 			if(this.formData.create_time) {
 				this.formData.startDate = this.formData.create_time[0]
 				this.formData.endDate = this.formData.create_time[1]
 			}
-            this.$emit('queryData', this.formData)
-        },
-        clear () {
-            this.formData = {
+			this.$emit('queryData', this.formData)
+		},
+		clear () {
+				this.formData = {
 				create_time: '',
 				addr: '', //地址
 				coinName: null, //币种名称
@@ -148,10 +148,10 @@ export default {
 				status: null, //状态0-失败,1-成功,2-待审核,3-审核不通过,4-审核通过
 				txId: '' //txid
 			}
-        },
-        fetchFilter () {
-            return this.filter
-        }
+		},
+		fetchFilter () {
+				return this.filter
+		}
 	},
 	computed:{
 		...mapState(['coinInfo'])

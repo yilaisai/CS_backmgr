@@ -157,7 +157,7 @@ export default {
 			dialogTitle: "修改"
 		}
 	},
-	mounted() {
+	activated() {
 		this.getDetails()
 	},
 	methods: {

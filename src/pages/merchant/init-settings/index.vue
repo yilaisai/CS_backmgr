@@ -12,9 +12,9 @@
 			</div>
 			<ul>
 				<li><label>{{coinName}}当前市价:</label><span>{{form.toRMBPrice}}</span></li>
-				<li v-if="form.MERCHANT_RATE_TYPE == 1"><label>{{coinName}}当前兑入价格:</label><span>{{Math.floor(form.MERCHANT_IN_PRICE * form.MERCHANT_IN_PRICE_FLOAT * 1000000) / 1000000}}</span></li>
+				<li v-if="form.MERCHANT_RATE_TYPE == 1"><label>{{coinName}}当前兑入价格:</label><span>{{Math.floor(form.toRMBPrice * form.MERCHANT_IN_PRICE_FLOAT * 1000000) / 1000000}}</span></li>
 				<li v-else><label>{{coinName}}当前兑入价格:</label><span>{{form.MERCHANT_IN_PRICE}}</span></li>
-				<li v-if="form.MERCHANT_RATE_TYPE == 1"><label>{{coinName}}当前兑出价格:</label><span>{{Math.floor(form.MERCHANT_OUT_PRICE * form.MERCHANT_OUT_PRICE_FLOAT * 1000000) / 1000000}}</span></li>
+				<li v-if="form.MERCHANT_RATE_TYPE == 1"><label>{{coinName}}当前兑出价格:</label><span>{{Math.floor(form.toRMBPrice * form.MERCHANT_OUT_PRICE_FLOAT * 1000000) / 1000000}}</span></li>
 				<li v-else><label>{{coinName}}当前兑出价格:</label><span>{{form.MERCHANT_OUT_PRICE}}</span></li>
 				<!-- <li><label>商户最小兑入:</label><span>6.93 RMT</span></li>
 				<li><label>商户最大兑入:</label><span>6.93 RMT</span></li>

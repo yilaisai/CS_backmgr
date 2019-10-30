@@ -131,11 +131,6 @@ export default {
 	},
 	data(){
 		return {
-			formInline: {
-				user: 'user',
-				region: '',
-				taker:'taker  0.4USDT    直推 0.1 USDT     间推  0.1USDT'
-			},
 			detaileData:{
 
 			},

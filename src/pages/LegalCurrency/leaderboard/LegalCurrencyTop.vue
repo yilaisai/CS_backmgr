@@ -107,11 +107,9 @@
               phoneOrEmail: '',
               pageNum: 1,
               pageSize: 20,
-              coinName:'USDT',//'BTC'
               order:'desc'//和asc
             },
             coinType:'BTC',
-            coinList:['BTC','USDT','ETH'],
             listData: {
               total: null,
               list: [],

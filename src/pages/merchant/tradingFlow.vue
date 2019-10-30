@@ -162,11 +162,6 @@ export default {
 				{value:'已取消',label:"4"},
 				{value:'申述中',label:"5"},
 			],
-			coinList:[
-				{value:'所有',label:""},
-				{value:'USDT',label:"USDT"},
-				{value:'BTC',label:"BTC"},
-			],
 			transList:[
 				{value:'所有',label:""},
 				{value:'抢单兑出',label:"3"},

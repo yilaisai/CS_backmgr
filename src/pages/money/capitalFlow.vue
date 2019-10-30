@@ -73,12 +73,6 @@ export default {
 				total: null,
 				list: [],
 			},
-			coinList:[
-				{value:'所有',label:""},
-				{value:'USDT',label:"USDT"},
-				{value:'BTC',label:"BTC"},
-				{value:'ETH',label:"ETH"},
-			],
 		}
 	},
 	activated(){

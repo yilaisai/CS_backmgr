@@ -204,7 +204,7 @@ export default {
 			showDialog:false,
 			showDialog2:false,
 			filterForm:{
-				coinName:'USDT',
+				coinName:'RMT',
 				userId:'',
 			},
 			sysRushMatchSwitch:false,
@@ -348,7 +348,7 @@ export default {
 		},
 		updateSysSwitch(key,val){
 			let queruData={
-				coinName:'USDT',
+				coinName: this.filterForm.coinName,
 				userId:this.filterForm.userId
 			}
 			queruData[key]=val

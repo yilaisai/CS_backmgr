@@ -192,7 +192,7 @@
           if(a.prop=="btcAmount"){
             this.filterForm.coinName = 'BTC'
           }else{
-            this.filterForm.coinName = 'USDT'
+            this.filterForm.coinName = 'RMT'
           }
           // this.filterForm.pageSize = 1;
           this.filterForm.pageNum = 1;

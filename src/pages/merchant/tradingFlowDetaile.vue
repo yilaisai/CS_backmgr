@@ -54,7 +54,7 @@
 						<el-input v-model="detaileData.makerPrice"  disabled></el-input>
 					</el-form-item>
 					<el-form-item label="数量:">
-						<el-input v-model="detaileData.makerAmount"  disabled></el-input>
+						<el-input :value="detaileData.makerAmount+detaileData.coinName"  disabled></el-input>
 					</el-form-item>
 					<el-form-item label="金额:">
 						<el-input v-model="detaileData.amount"  disabled></el-input>
@@ -66,7 +66,7 @@
 						<el-input :value="detaileData.takerAmount" disabled></el-input>
 					</el-form-item>
 					<el-form-item label="手续费:">
-						<el-input v-model="detaileData.fee" disabled></el-input>
+						<el-input :value="detaileData.fee+detaileData.coinName" disabled></el-input>
 					</el-form-item>
 				</el-form>
 				<h3>交易奖励</h3>
@@ -78,7 +78,7 @@
 						<el-input :value=" '卡商'+detaileData.makerCommission+detaileData.coinName+',直接'+detaileData.makerFirstCommission+detaileData.coinName+',间接'+detaileData.makerSecondaryCommission+detaileData.coinName  " disabled></el-input>
 					</el-form-item>
 					<el-form-item label="平台盈利:">
-						<el-input v-model="detaileData.amount" disabled></el-input>
+						<el-input :value=" Math.floor(detaileData.fee*10000 -(detaileData.makerCommission*10000+detaileData.makerFirstCommission*10000+detaileData.makerSecondaryCommission*10000))/10000+detaileData.coinName  " disabled></el-input>
 					</el-form-item>
 				</el-form>
 				<h3>收款信息</h3>

@@ -247,10 +247,9 @@ export default {
 		findInviteTree(){
 			this.inviteList = []
 			this.$http.post('/wallet/invite/backmgr/findInviteTree',{
-				// inviteeId:this.filterForm.userId
 				inviteeId:this.filterForm.userId
 			}).then(res=>{
-				if(res.code==200){
+				if(res.code == 200 && res.result){
 					this.inviteList = [res.result]
 				}
 			})
@@ -268,24 +267,22 @@ export default {
 			this.getList()
 		} ,
 		updateInviteShip(inviterId){
-
 			this.$confirm('确定要执行迁移操作吗?', '提示', {
 				confirmButtonText: '确定',
 				cancelButtonText: '取消',
 				type: 'warning'
 			}).then(() => {
-					this.$http.post('/wallet/invite/backmgr/updateInviteShip',{
-						inviterId:inviterId,
-						inviteeId:this.currItem.inviteeId
-					}).then(res=>{
-						if(res.code==200){
-							this.showDialog2 = false
-							this.findInviteTree()
-							this.$message.success('迁移成功')
-						}
-					})
+				this.$http.post('/wallet/invite/backmgr/updateInviteShip',{
+					inviterId:inviterId,
+					inviteeId:this.currItem.inviteeId
+				}).then(res=>{
+					if(res.code==200){
+						this.showDialog2 = false
+						this.findInviteTree()
+						this.$message.success('迁移成功')
+					}
+				})
 			}).catch(() => {})
-		
 		},
 		updateRewardRate(){
 			this.$http.post('/wallet/invite/backmgr/updateRewardRate',{

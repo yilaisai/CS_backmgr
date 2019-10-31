@@ -60,6 +60,14 @@
 			<ul>
 				<li>
 					<label>商户兑入手续费:</label>
+					<!-- <el-select v-model="payType" placeholder="请选择" size="mini" style="width:100px">
+						<el-option
+							v-for="item in pageData.payList"
+							:key="item.code"
+							:label="item.typeName"
+							:value="item.code">
+						</el-option>
+					</el-select> -->
 					<span>{{pageData.coinInfo.apiMatchFee}}</span>
 					<el-button type="primary" plain size="mini" @click="showDialog('feeRateIn')">修改</el-button>
 				</li>
@@ -72,6 +80,14 @@
 				</li>
 				<li>
 					<label>商户兑出手续费:</label>
+					<!-- <el-select v-model="payType" placeholder="请选择" size="mini" style="width:100px">
+						<el-option
+							v-for="item in pageData.payList"
+							:key="item.code"
+							:label="item.typeName"
+							:value="item.code">
+						</el-option>
+					</el-select> -->
 					<span>{{pageData.coinInfo.apiCashoutFee}}</span>
 					<el-button type="primary" plain size="mini" @click="showDialog('feeRateIn')">修改</el-button>
 				</li>
@@ -144,7 +160,8 @@ export default {
 			coinName: this.$variableCoin,
 			pageData: {
 				coinInfo: {},
-				info: {}
+				info: {},
+				payList: []
 			},
 			formData: {
 				value1: '',
@@ -154,7 +171,13 @@ export default {
 			dialogType: "",
 			label1: "",
 			label2: "",
-			dialogTitle: "修改"
+			dialogTitle: "修改",
+			payTypes: [
+				{value: 1, label: '银行卡'},
+				{value: 2, label: '支付宝'},
+				{value: 3, label: '微信'}
+			],
+			payType: 1
 		}
 	},
 	activated() {

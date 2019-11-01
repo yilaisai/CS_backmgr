@@ -1,8 +1,3 @@
-/**
-*  Created by   阿紫
-*  On  2018/8/10
-*  Content
-*/
 <template>
   <div class="sac-home">
     <div class="sac-queryCondition">
@@ -37,10 +32,10 @@
       </el-form>
     </div>
     <sac-table :data="listData.list">
-      <el-table-column prop="phone" label="账号"></el-table-column>
-      <el-table-column prop="realName" label="姓名"></el-table-column>
-      <el-table-column prop="cardNo" label="身份证号码"></el-table-column>
-      <el-table-column label="状态">
+      <el-table-column prop="phone" label="账号" align="center"></el-table-column>
+      <el-table-column prop="realName" label="姓名" align="center"></el-table-column>
+      <el-table-column prop="cardNo" label="身份证号码" align="center"></el-table-column>
+      <el-table-column label="状态" align="center">
         <template slot-scope="scope">
           <span v-show="scope.row.antiMoneyAudit == -1">未申请</span>
           <span v-show="scope.row.antiMoneyAudit == 0">不通过</span>
@@ -48,17 +43,17 @@
           <span v-show="scope.row.antiMoneyAudit == 2">待审核</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" prop="tradeStatus">
+      <el-table-column label="操作" prop="tradeStatus" align="center">
         <template slot-scope="scope" prop="tradeStatus">
           <el-button type="success" size="small" @click.native="goDetails(scope.row)">查看详情</el-button>
         </template>
       </el-table-column>
     </sac-table>
     <sac-pagination v-show="listData.list.length>0"
-                    @handleChange="getPaginationChange"
-                    :total="+listData.total"
-                    :page-size="filterForm.pageSize"
-                    :current-page="filterForm.pageNum">
+		@handleChange="getPaginationChange"
+		:total="+listData.total"
+		:page-size="filterForm.pageSize"
+		:current-page="filterForm.pageNum">
     </sac-pagination>
   </div>
 </template>

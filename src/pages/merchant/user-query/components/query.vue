@@ -40,7 +40,6 @@ export default {
 	},
     data () {
         return {
-			coinTypes: ['USDT', 'ETH', 'BTC', 'EOS'],
             pickerOptions: {
                 disabledDate(time) {
                     return time.getTime() > Date.now();

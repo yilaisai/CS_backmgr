@@ -66,7 +66,7 @@
     </div>
 </template>
 <script>
-  import { dateFormat } from '@/common/util';
+import { dateFormat } from '@/common/util';
 export default {
     name:'red-envelope',
     data(){
@@ -103,7 +103,6 @@ export default {
     },
     methods:{
         getbill() {
-            
             this.filterForm.beginTime = this.selectedDate && this.selectedDate[0];
             this.filterForm.endTime = this.selectedDate && this.selectedDate[1];
             if(!this.selectedDate){
@@ -121,7 +120,6 @@ export default {
             });
         },
         check(itemData){
-            //alert(itemData.main_redenvlp_id)
             this.$router.push(
                 {
                     name:'red-envelope-detail',
@@ -146,8 +144,10 @@ export default {
         const end = dateFormat(new Date(),'YYYY-MM-DD HH:mm:ss');
         const start = dateFormat(new Date().getTime() - 3600 * 1000 * 24 * 15,'YYYY-MM-DD HH:mm:ss');
         this.selectedDate = [start, end];
-        this.getbill() 
-    }
+	},
+	activated() {
+		this.getbill() 
+	}
 }
 </script>
 <style lang="less" scoped>

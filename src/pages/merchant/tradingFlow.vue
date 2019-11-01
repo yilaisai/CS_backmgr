@@ -79,8 +79,8 @@
 								<el-table-column  label="类型" align="center">
 									<template slot-scope="scope">{{advTypeMap[scope.row.adv_type]}}</template>
 								</el-table-column>
-								<el-table-column  label="单号/下单时间" width="180" align="center" >
-									<span slot-scope="scope">{{scope.row.trade_id}}<br />{{ $fmtDate(scope.row.create_time,'full') }}</span>
+								<el-table-column  label="商户单号/平台单号/下单时间" width="180" align="center" >
+									<span slot-scope="scope">{{scope.row.api_trade_id}}<br />{{scope.row.trade_id}}<br />{{ $fmtDate(scope.row.create_time,'full') }}</span>
 								</el-table-column>
 								<el-table-column label="商户昵称/账户" width="150" align="center" >
 									<span slot-scope="scope">{{scope.row.taker_nick_name}}<br />{{scope.row.taker_phone}}</span>
@@ -102,9 +102,10 @@
 								</el-table-column>
 								<el-table-column prop="coin_name" label="币种" align="center"></el-table-column>
 								<el-table-column prop="fee" label="手续费" align="center"></el-table-column>
-								<el-table-column prop="price" label="操作" fixed="right" align="center">
+								<el-table-column prop="price" label="操作" fixed="right" align="center" width="200">
 									<template slot-scope="scope">
-										<el-button type="text" @click.native="$router.push({path:'/merchant/merchantTradingFlowDetaile',query:{tradeId:scope.row.trade_id}})">查看详情</el-button>
+										<el-button type="primary" size="mini" @click.native="$router.push({path:'/merchant/merchantTradingFlowDetaile',query:{tradeId:scope.row.trade_id}})">查看详情</el-button>
+										<el-button type="warning" size="mini" v-if="(scope.row.adv_type == 4 || scope.row.adv_type == 5) && (scope.row.trade_status == 3 || scope.row.trade_status == 6)" @click="returnApi(scope.row)">异步补发</el-button>
 									</template>
 								</el-table-column>
 						</el-table>
@@ -162,11 +163,6 @@ export default {
 				{value:'已取消',label:"4"},
 				{value:'申述中',label:"5"},
 			],
-			coinList:[
-				{value:'所有',label:""},
-				{value:'USDT',label:"USDT"},
-				{value:'BTC',label:"BTC"},
-			],
 			transList:[
 				{value:'所有',label:""},
 				{value:'抢单兑出',label:"3"},
@@ -201,7 +197,6 @@ export default {
 				this.SumTradeRecd()
 				const { list ,total} = res.result.pageData;
 				this.listData.list = list;
-				console.log(this.listData.list)
 				this.listData.total = total;
 			})
 		},
@@ -216,7 +211,21 @@ export default {
 				}
 			})
 		},
-		
+		// 异步补发
+		returnApi(item) {
+			this.$http.post('/wallet/backmgr/merchant/returnApi', {
+				tradeId: item.trade_id,
+				userId: item.taker_user_id
+			}).then(res=>{
+				if(res.code==200){
+					this.$notify({
+						title: '成功',
+						message: res.msg,
+						type: 'success'
+					});
+				}
+			})
+		},
 		setDateType(){
 			//获取系统当前时间
 			let nowdate = new Date();
@@ -273,7 +282,6 @@ export default {
             this.getList()
         }, */
         download(){
-
             location.href =`${ SERVER_PATH}/wallet/app/otc/backmgr/exportExcel?startDate=${this.filterForm.startDate}&endDate=${this.filterForm.endDate}&userId=${this.filterForm.userId}&token=${localStorage.getItem('cus_token')}`;
         }
 	},

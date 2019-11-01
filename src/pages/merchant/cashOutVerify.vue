@@ -103,7 +103,6 @@ export default {
 				{label:'匹配兑出',value:1},
 				{label:'抢单兑出',value:2}
 			],
-			coinList:['USDT','BTC'],
 			listData: {
 				total: null,
 				list: [],

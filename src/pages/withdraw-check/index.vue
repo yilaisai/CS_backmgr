@@ -162,8 +162,10 @@ export default {
 	computed: {
 		...mapState(['coinInfo'])
 	},
-    created () {
+	created() {
         this.getCoins()
+	},
+    activated() {
         this.getData(true)
     },
     components: { Query, Table, ReleaseDialog, ManualRecordDialog }

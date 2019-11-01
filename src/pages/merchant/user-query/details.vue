@@ -60,7 +60,15 @@
 			<ul>
 				<li>
 					<label>商户兑入手续费:</label>
-					<span>{{pageData.coinInfo.apiMatchFee}}</span>
+					<el-select v-model="payType" placeholder="请选择" size="mini" style="width:90px">
+						<el-option
+							v-for="item in pageData.payList"
+							:key="item.payType"
+							:label="item.description"
+							:value="item.payType">
+						</el-option>
+					</el-select>
+					<span>{{inFee}} %</span>
 					<el-button type="primary" plain size="mini" @click="showDialog('feeRateIn')">修改</el-button>
 				</li>
 				<li>
@@ -72,7 +80,15 @@
 				</li>
 				<li>
 					<label>商户兑出手续费:</label>
-					<span>{{pageData.coinInfo.apiCashoutFee}}</span>
+					<el-select v-model="payType" placeholder="请选择" size="mini" style="width:90px">
+						<el-option
+							v-for="item in pageData.payList"
+							:key="item.payType"
+							:label="item.description"
+							:value="item.payType">
+						</el-option>
+					</el-select>
+					<span>{{outFee}} %</span>
 					<el-button type="primary" plain size="mini" @click="showDialog('feeRateIn')">修改</el-button>
 				</li>
 				<li>
@@ -118,13 +134,13 @@
 		<el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="40%" :before-close="handleClose">
 			<el-form ref="form" :model="formData" label-width="120px">
 				<el-form-item :label="label1">
-					<el-input v-model="formData.value1">
-						<template slot="append" v-if="dialogType == 'firstRate' || dialogType == 'secRate'">%</template>
+					<el-input type="number" v-model="formData.value1">
+						<template slot="append" v-if="dialogType == 'feeRateIn' || dialogType == 'firstRate' || dialogType == 'secRate'">%</template>
 					</el-input>
 				</el-form-item>
 				<el-form-item :label="label2">
-					<el-input v-model="formData.value2">
-						<template slot="append" v-if="dialogType == 'firstRate' || dialogType == 'secRate'">%</template>
+					<el-input type="number" v-model="formData.value2">
+						<template slot="append" v-if="dialogType == 'feeRateIn' || dialogType == 'firstRate' || dialogType == 'secRate'">%</template>
 					</el-input>
 				</el-form-item>
 			</el-form>
@@ -144,7 +160,9 @@ export default {
 			coinName: this.$variableCoin,
 			pageData: {
 				coinInfo: {},
-				info: {}
+				info: {},
+				payList: [],
+				feeList: []
 			},
 			formData: {
 				value1: '',
@@ -154,7 +172,8 @@ export default {
 			dialogType: "",
 			label1: "",
 			label2: "",
-			dialogTitle: "修改"
+			dialogTitle: "修改",
+			payType: 1
 		}
 	},
 	activated() {
@@ -226,11 +245,11 @@ export default {
 				this.formData.value1 = this.pageData.coinInfo.minOut
 				this.formData.value2 = this.pageData.coinInfo.maxOut
 			}else if(this.dialogType == 'feeRateIn') {
-				this.dialogTitle = '修改商户手续费'
+				this.dialogTitle = '修改商户手续费【' + this.payTypeName + '】'
 				this.label1 = '商户兑入手续费:'
 				this.label2 = '商户兑出手续费:'
-				this.formData.value1 = this.pageData.coinInfo.apiMatchFee
-				this.formData.value2 = this.pageData.coinInfo.apiCashoutFee
+				this.formData.value1 = this.inFee
+				this.formData.value2 = this.outFee
 			}else if(this.dialogType == 'firstRate') {
 				this.dialogTitle = '修改直推人费率'
 				this.label1 = '兑入佣金费率：'
@@ -286,10 +305,11 @@ export default {
 		updateMerchantFee(type) {
 			this.$http.post('/wallet/backmgr/merchant/updateMerchantFee', {
 				coinName: this.coinName,
+				payType: this.payType,
 				type: type,   //1、兑入；2、兑出；
 				userId: this.$route.query.id,
-				value1: this.formData.value1,   //最小兑入额
-				value2: this.formData.value2   //最大兑入额
+				value1: this.formData.value1 / 100,   //最小兑入手续费
+				value2: this.formData.value2 / 100   //最大兑入手续费
 			}).then(res => {
 				this.formData.value1 = ""
 				this.formData.value2 = ""
@@ -313,6 +333,38 @@ export default {
 			}else if(this.dialogType == 'secRate') {
 				this.updateMerchantInfo(3)
 			}
+		}
+	},
+	computed: {
+		inFee() {
+			let inFee = 0
+			this.pageData.feeList.forEach((val, idx) => {
+				if(val.payType == this.payType) {
+					inFee = val.inFee
+					return
+				}
+			})
+			return inFee*100
+		},
+		outFee() {
+			let outFee = 0
+			this.pageData.feeList.forEach((val, idx) => {
+				if(val.payType == this.payType) {
+					outFee = val.outFee
+					return
+				}
+			})
+			return outFee*100
+		},
+		payTypeName() {
+			let payTypeName = ""
+			this.pageData.payList.forEach((val, idx) => {
+				if(val.payType == this.payType) {
+					payTypeName = val.description
+					return
+				}
+			})
+			return payTypeName
 		}
 	},
 	activated() {

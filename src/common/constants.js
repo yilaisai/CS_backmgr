@@ -111,3 +111,7 @@ export const fundTypes = {
 	fee: '充值归拢费',
 	manual: '手动打币'
 }
+
+const constants = {
+	
+}

@@ -25,7 +25,7 @@
         </el-header>
         <el-main>
           <transition name="el-zoom-in-center">
-            <keep-alive :exclude="/NotAlive$/">
+            <keep-alive>
               <router-view class="router-view"></router-view>
             </keep-alive>
           </transition>

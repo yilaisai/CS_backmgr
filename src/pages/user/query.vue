@@ -22,7 +22,6 @@
       <el-form-item label="昵称:" >
         <el-input placeholder="请输入用户昵称" v-model="filterForm.nickName" ></el-input>
       </el-form-item>
-      
       <el-form-item label="广告商类型:" >
         <el-select v-model="filterForm.userLevel" >
           <el-option value="" label='所有'></el-option>
@@ -136,13 +135,9 @@
         callback();
       }
       const checkPwd = (rule, value, callback) => {
-        console.log(value)
         if (!value || value.length < 6 || value.length > 16) {
           return callback(new Error('请输入6-16位密码'));
         }
-        // if (!/(?=.*[a-z])(?=.*\d)(?=.*[#@!~%^&*.])[a-z\d#@!~%^&*.]/i.test(value)) {
-        //   return callback(new Error('登录密码必须是字母、数字和符号的组合'));
-        // }
         callback();
       };
       return {
@@ -215,172 +210,169 @@
         optDialogFormVisible: false
       };
     },
-    mounted(){
+    activated(){
       this.getUserInfoList()
     },
     methods: {
-       indexMethod(index) {
-        return   10*(this.filterForm.pageNum-1)+(index+1)
-      },
-      dialogConfirm(){
-            this.ruleState.forEach(v=>{
-                if(v.value==this.ruleForm.status){
-                    this.ruleForm.reason=v.label
-                    return
-                }
-            })
-            //console.log(this.ruleForm)
-            this.$refs.ruleForm.validate(valid => {
-                if (valid) {
-                this.$http.post("/wallet/app/otc/backmgr/setCustomStatus", this.ruleForm).then(res => {
-                    this.$notify({
-                        title: "成功",
-                        message: `修改成功`,
-                        type: "success"
-                    });
-                        this.dialogVisible = false;
-                        // this.getList();
-                    });
-                } else {
-                    console.log("error submit!!");
-                    return false;
-                }
-            });
-        },
-      modify(itemData){
-        this.$refs.ruleForm && this.$refs.ruleForm.resetFields();
-        let default_status=0
-        this.ruleState.forEach(v=>{
-            if(v.label==itemData.reason){
-                default_status=v.value
-                return
-            }
-        })
-        this.ruleForm.userId=itemData.userId
-        this.ruleForm.status=default_status
-        this.dialogVisible=true
-    },
-      submitForm(num) {
-        if(this.selectedDate.length == 2 ){
-					this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
-					this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
-					}
-        this.filterForm.pageNum = num;
-        const { phone, nickName, userLevel,company, endDate } = this.filterForm
-        if (phone || nickName || userLevel || company||endDate) {
-          this.getUserInfoList();
-        } else {
-          this.$notify.error({
-            title: '错误',
-            message: '查询内容不能为空'
-          });
-        }
-      },
-      getUserInfoList() {
-        this.$http.post('/wallet/backmgr/user/getUserInfoList', this.filterForm)
-          .then((res) => {
-            const { list, total } = res.result.list;
-            this.listData.list = list;
-            this.listData.total = total;
-          });
-      },
-      getPaginationChange(val, currentPage) {
-        this.filterForm.pageSize = val;
-        // this.filterForm.pageNum = currentPage;
-        this.filterForm.pageNum = currentPage;
-        this.getUserInfoList()
-      },
-      goDetail(userId) {
-        this.$router.push({ name: 'queryDetails', query: { userId:userId } });
-      },
-      /**
-       * 冻结/解冻 锁定/解锁 用户   optStatus  用户状态：2表示冻结，1表示锁定，0表示解冻
-       * */
-      optStatusHandle(type, title, data) {
-        this.optDialogFormVisible = true;
-        this.dialogForm = {
-          userId: data.userId,
-          optStatus: type,
-          phone: data.phone,
-          optReason: ''
-        }
-      },
-      optStatusChange(type, title, data) {
-        const h = this.$createElement;
-        this.$msgbox({
-          title: '提示',
-          message: h('p', null, [
-            h('span', null, '确定执行 '),
-            h('span', { style: 'color: red' }, `${title} `),
-            h('span', { style: 'color: #0a52e0' }, `${data.phone}`),
-            h('span', null, ' 吗?'),
-          ]),
-          showCancelButton: true,
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          beforeClose: (action, instance, done) => {
-            if (action === 'confirm') {
-              this.$http.post('wallet/backmgr/user/operatetUser', {
-                userId: data.userId,
-                optStatus: type,
-              }).then((res) => {
-                this.$notify({
-                  title: '成功',
-                  message: `${title} ${data.phone} 成功`,
-                  type: 'success'
-                });
-                this.getUserInfoList();
-                done();
-              })
-            } else {
-              done();
-            }
-          }
-        })
-      },
-      optSubmit(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (!valid) return;
-          const title = this.dialogForm.optStatus == 1 ? '锁定' : '冻结';
-          this.$http.post('wallet/backmgr/user/operatetUser', this.dialogForm).then((res) => {
-            this.$notify({
-              title: '成功',
-              message: `${title} ${this.dialogForm.phone} 成功`,
-              type: 'success'
-            });
-            this.optDialogFormVisible = false;
-            this.getUserInfoList();
-          })
-        })
-      },
-      // 创建用户
-      addUser() {
-        this.dialogTitle = '创建用户';
-        this.dialogFormVisible = true;
-        this.ruleForm = {
-          phone: '',
-          pwd: '',
-          nickName: '',
-        };
-        this.$refs.ruleForm && this.$refs.ruleForm.resetFields(); // 重置query的数据
-      },
-      determine() {
-        const { phone, nickName } = this.ruleForm;
-        const pwd = Md5(this.ruleForm.pwd);
-        this.$http.post('wallet/backmgr/user/addUsers', {
-          pwd,
-          phone,
-          nickName
-        }).then((res) => {
-          this.$notify({
-            title: '成功',
-            message: `创建用户 ${this.ruleForm.phone} 成功`,
-            type: 'success'
-          });
-          this.dialogFormVisible = false;
-        });
-      }
-    }
+       	indexMethod(index) {
+			return 10*(this.filterForm.pageNum-1)+(index+1)
+		},
+		dialogConfirm(){
+			this.ruleState.forEach(v=>{
+				if(v.value==this.ruleForm.status){
+					this.ruleForm.reason=v.label
+					return
+				}
+			})
+			this.$refs.ruleForm.validate(valid => {
+				if (valid) {
+				this.$http.post("/wallet/app/otc/backmgr/setCustomStatus", this.ruleForm).then(res => {
+					this.$notify({
+						title: "成功",
+						message: `修改成功`,
+						type: "success"
+					});
+						this.dialogVisible = false;
+					});
+				} else {
+					console.log("error submit!!");
+					return false;
+				}
+			})
+		},
+		modify(itemData){
+			this.$refs.ruleForm && this.$refs.ruleForm.resetFields();
+			let default_status=0
+			this.ruleState.forEach(v=>{
+				if(v.label==itemData.reason){
+					default_status=v.value
+					return
+				}
+			})
+			this.ruleForm.userId=itemData.userId
+			this.ruleForm.status=default_status
+			this.dialogVisible=true
+		},
+		submitForm(num) {
+			if(this.selectedDate.length == 2 ){
+						this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
+						this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
+						}
+			this.filterForm.pageNum = num;
+			const { phone, nickName, userLevel,company, endDate } = this.filterForm
+			if (phone || nickName || userLevel || company||endDate) {
+			this.getUserInfoList();
+			} else {
+			this.$notify.error({
+				title: '错误',
+				message: '查询内容不能为空'
+			});
+			}
+		},
+		getUserInfoList() {
+			this.$http.post('/wallet/backmgr/user/getUserInfoList', this.filterForm)
+			.then((res) => {
+				const { list, total } = res.result.list;
+				this.listData.list = list;
+				this.listData.total = total;
+			});
+		},
+		getPaginationChange(val, currentPage) {
+			this.filterForm.pageSize = val;
+			this.filterForm.pageNum = currentPage;
+			this.getUserInfoList()
+		},
+		goDetail(userId) {
+			this.$router.push({ name: 'queryDetails', query: { userId:userId } });
+		},
+		/**
+		 * 冻结/解冻 锁定/解锁 用户   optStatus  用户状态：2表示冻结，1表示锁定，0表示解冻
+		 * */
+		optStatusHandle(type, title, data) {
+			this.optDialogFormVisible = true;
+			this.dialogForm = {
+			userId: data.userId,
+			optStatus: type,
+			phone: data.phone,
+			optReason: ''
+			}
+		},
+		optStatusChange(type, title, data) {
+			const h = this.$createElement;
+			this.$msgbox({
+			title: '提示',
+			message: h('p', null, [
+				h('span', null, '确定执行 '),
+				h('span', { style: 'color: red' }, `${title} `),
+				h('span', { style: 'color: #0a52e0' }, `${data.phone}`),
+				h('span', null, ' 吗?'),
+			]),
+			showCancelButton: true,
+			confirmButtonText: '确定',
+			cancelButtonText: '取消',
+			beforeClose: (action, instance, done) => {
+				if (action === 'confirm') {
+				this.$http.post('wallet/backmgr/user/operatetUser', {
+					userId: data.userId,
+					optStatus: type,
+				}).then((res) => {
+					this.$notify({
+					title: '成功',
+					message: `${title} ${data.phone} 成功`,
+					type: 'success'
+					});
+					this.getUserInfoList();
+					done();
+				})
+				} else {
+				done();
+				}
+			}
+			})
+		},
+		optSubmit(formName) {
+			this.$refs[formName].validate((valid) => {
+			if (!valid) return;
+			const title = this.dialogForm.optStatus == 1 ? '锁定' : '冻结';
+			this.$http.post('wallet/backmgr/user/operatetUser', this.dialogForm).then((res) => {
+				this.$notify({
+				title: '成功',
+				message: `${title} ${this.dialogForm.phone} 成功`,
+				type: 'success'
+				});
+				this.optDialogFormVisible = false;
+				this.getUserInfoList();
+			})
+			})
+		},
+		// 创建用户
+		addUser() {
+			this.dialogTitle = '创建用户';
+			this.dialogFormVisible = true;
+			this.ruleForm = {
+			phone: '',
+			pwd: '',
+			nickName: '',
+			};
+			this.$refs.ruleForm && this.$refs.ruleForm.resetFields(); // 重置query的数据
+		},
+		determine() {
+			const { phone, nickName } = this.ruleForm;
+			const pwd = Md5(this.ruleForm.pwd);
+			this.$http.post('wallet/backmgr/user/addUsers', {
+			pwd,
+			phone,
+			nickName
+			}).then((res) => {
+			this.$notify({
+				title: '成功',
+				message: `创建用户 ${this.ruleForm.phone} 成功`,
+				type: 'success'
+			});
+			this.dialogFormVisible = false;
+			});
+		}
+	}
   };
 </script>
 <style lang="less" scoped>

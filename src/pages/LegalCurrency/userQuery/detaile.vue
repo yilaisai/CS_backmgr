@@ -132,14 +132,14 @@
 						prop="reward"
 						label="买入佣金费率">
 						<div slot-scope="scope">
-							{{ Math.floor(scope.row.buyRate*10000)/10 }}‰
+							{{ Math.floor(scope.row.buyRate*1000)/10 }}%
 						</div>
 					</el-table-column>
 					<el-table-column align="center"
 						prop="reward"
 						label="卖出佣金费率">
 						<div slot-scope="scope">
-							{{ Math.floor(scope.row.rate*10000)/10 }}‰
+							{{ Math.floor(scope.row.rate*1000)/10 }}%
 						</div>
 					</el-table-column>
 					<el-table-column label="操作" width="120">
@@ -155,13 +155,13 @@
 			<div class=" inputGroup ">
 				<span>买入佣金费率：</span>
 				<el-input placeholder="请输入内容" v-model="buyRate" >
-					<template slot="append">‰</template>
+					<template slot="append">%</template>
 				</el-input>
 			</div>
 			<div class=" inputGroup ">
 				<span>卖出佣金费率：</span>
 				<el-input placeholder="请输入内容" v-model="rate" >
-					<template slot="append">‰</template>
+					<template slot="append">%</template>
 				</el-input>
 			</div>
 			<div slot="footer" class="dialog-footer">
@@ -207,7 +207,7 @@ export default {
 			showDialog:false,
 			showDialog2:false,
 			filterForm:{
-				coinName:'USDT',
+				coinName:'RMT',
 				userId:'',
 			},
 			sysRushMatchSwitch:false,
@@ -250,18 +250,17 @@ export default {
 		findInviteTree(){
 			this.inviteList = []
 			this.$http.post('/wallet/invite/backmgr/findInviteTree',{
-				// inviteeId:this.filterForm.userId
 				inviteeId:this.filterForm.userId
 			}).then(res=>{
-				if(res.code==200){
+				if(res.code == 200 && res.result){
 					this.inviteList = [res.result]
 				}
 			})
 		},
 		EditRate(data){
 			this.currItem = data
-			this.buyRate = Math.floor(data.buyRate*1000) 
-			this.rate =  Math.floor(data.rate*1000)
+			this.buyRate = data.buyRate * 100
+			this.rate =  data.rate * 100
 			this.showDialog=true
 		} ,
 		brokerage(data){
@@ -271,31 +270,27 @@ export default {
 			this.getList()
 		} ,
 		updateInviteShip(inviterId){
-
 			this.$confirm('确定要执行迁移操作吗?', '提示', {
 				confirmButtonText: '确定',
 				cancelButtonText: '取消',
 				type: 'warning'
 			}).then(() => {
-					this.$http.post('/wallet/invite/backmgr/updateInviteShip',{
-						inviterId:inviterId,
-						inviteeId:this.currItem.inviteeId
-					}).then(res=>{
-						if(res.code==200){
-							this.showDialog2 = false
-							this.findInviteTree()
-							this.$message.success('迁移成功')
-						}
-					})
+				this.$http.post('/wallet/invite/backmgr/updateInviteShip',{
+					inviterId:inviterId,
+					inviteeId:this.currItem.inviteeId
+				}).then(res=>{
+					if(res.code==200){
+						this.showDialog2 = false
+						this.findInviteTree()
+						this.$message.success('迁移成功')
+					}
+				})
 			}).catch(() => {})
-		
 		},
 		updateRewardRate(){
-			// console.log(Math.floor(this.rate*10)/10000)
-			// return
 			this.$http.post('/wallet/invite/backmgr/updateRewardRate',{
-				buyRate:Math.floor(this.buyRate*10)/10000,
-				rate:Math.floor(this.rate*10)/10000,
+				buyRate: Math.floor(this.buyRate*10)/1000,
+				rate: Math.floor(this.rate*10)/1000,
 				inviteeId:this.currItem.inviteeId
 			}).then(res=>{
 				if(res.code==200){
@@ -351,7 +346,7 @@ export default {
 		},
 		updateSysSwitch(key,val){
 			let queruData={
-				coinName:'USDT',
+				coinName: this.filterForm.coinName,
 				userId:this.filterForm.userId
 			}
 			queruData[key]=val

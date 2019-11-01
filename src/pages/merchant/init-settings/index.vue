@@ -12,9 +12,9 @@
 			</div>
 			<ul>
 				<li><label>{{coinName}}当前市价:</label><span>{{form.toRMBPrice}}</span></li>
-				<li v-if="form.MERCHANT_RATE_TYPE == 1"><label>{{coinName}}当前兑入价格:</label><span>{{Math.floor(form.MERCHANT_IN_PRICE * form.MERCHANT_IN_PRICE_FLOAT * 1000000) / 1000000}}</span></li>
+				<li v-if="form.MERCHANT_RATE_TYPE == 1"><label>{{coinName}}当前兑入价格:</label><span>{{Math.floor(form.toRMBPrice * form.MERCHANT_IN_PRICE_FLOAT * 1000000) / 1000000}}</span></li>
 				<li v-else><label>{{coinName}}当前兑入价格:</label><span>{{form.MERCHANT_IN_PRICE}}</span></li>
-				<li v-if="form.MERCHANT_RATE_TYPE == 1"><label>{{coinName}}当前兑出价格:</label><span>{{Math.floor(form.MERCHANT_OUT_PRICE * form.MERCHANT_OUT_PRICE_FLOAT * 1000000) / 1000000}}</span></li>
+				<li v-if="form.MERCHANT_RATE_TYPE == 1"><label>{{coinName}}当前兑出价格:</label><span>{{Math.floor(form.toRMBPrice * form.MERCHANT_OUT_PRICE_FLOAT * 1000000) / 1000000}}</span></li>
 				<li v-else><label>{{coinName}}当前兑出价格:</label><span>{{form.MERCHANT_OUT_PRICE}}</span></li>
 				<!-- <li><label>商户最小兑入:</label><span>6.93 RMT</span></li>
 				<li><label>商户最大兑入:</label><span>6.93 RMT</span></li>
@@ -36,19 +36,19 @@
 							</el-radio-group>
 						</el-form-item>
 						<el-form-item label="货币：">
-							<el-input v-model="form.MERCHANT_COIN_NAME" :disabled="true" style="width:100px"></el-input>
+							<el-input v-model.trim="form.MERCHANT_COIN_NAME" :disabled="true" style="width:100px"></el-input>
 						</el-form-item>
 						<el-form-item label="兑入价格：" v-if="form.MERCHANT_RATE_TYPE == 1">
-							<el-input v-model="form.toRMBPrice" style="width:100px" :disabled="true"></el-input>　*　<el-input v-model="form.MERCHANT_IN_PRICE_FLOAT" placeholder="输入倍数（如0.9）"></el-input>
+							<el-input v-model.trim="form.toRMBPrice" style="width:100px" :disabled="true"></el-input>　*　<el-input v-model.trim="form.MERCHANT_IN_PRICE_FLOAT" placeholder="输入倍数（如0.9）"></el-input>
 						</el-form-item>
 						<el-form-item label="兑入价格：" v-else>
-							<el-input v-model="form.MERCHANT_IN_PRICE"></el-input>
+							<el-input v-model.trim="form.MERCHANT_IN_PRICE"></el-input>
 						</el-form-item>
 						<el-form-item label="兑出价格：" v-if="form.MERCHANT_RATE_TYPE == 1">
-							<el-input v-model="form.toRMBPrice" style="width:100px" :disabled="true"></el-input>　*　<el-input v-model="form.MERCHANT_OUT_PRICE_FLOAT" placeholder="输入倍数（如1.1）"></el-input>
+							<el-input v-model.trim="form.toRMBPrice" style="width:100px" :disabled="true"></el-input>　*　<el-input v-model.trim="form.MERCHANT_OUT_PRICE_FLOAT" placeholder="输入倍数（如1.1）"></el-input>
 						</el-form-item>
 						<el-form-item label="兑出价格：" v-else>
-							<el-input v-model="form.MERCHANT_OUT_PRICE"></el-input>
+							<el-input v-model.trim="form.MERCHANT_OUT_PRICE"></el-input>
 						</el-form-item>
 					</el-form>
 					<p class="tips">提示：价格默认使用系统设置的价格，开启手动设置的价格，则自动关闭系统价格，关闭手动设置的价格，则自动开启系统价格。</p>
@@ -57,23 +57,38 @@
 			<el-tabs type="border-card">
 				<el-tab-pane label="商户初始化设置">
 					<el-form ref="form" :model="form" :inline="true" label-width="155px" size="small">
+						<el-form-item label="支付方式：">
+							<el-select v-model="payType" placeholder="请选择">
+								<el-option
+									v-for="item in form.otcPayLists"
+									:key="item.payType"
+									:label="item.description"
+									:value="item.payType">
+								</el-option>
+							</el-select>
+						</el-form-item>
+						<el-form-item></el-form-item>
 						<el-form-item label="商户兑入手续费比例：">
-							<el-input v-model="form.MERCHANT_IN_FEE_RATE" placeholder="未设置默认1.5%"></el-input>
+							<el-input type="number" v-model.trim="inFee" placeholder="未设置默认1.5%">
+								<template slot="append">%</template>
+							</el-input>
 						</el-form-item>
 						<el-form-item label="商户兑出手续费比例：">
-							<el-input v-model="form.MERCHANT_OUT_FEE_RATE" placeholder="未设置默认0.3%"></el-input>
+							<el-input type="number" v-model.trim="outFee" placeholder="未设置默认0.3%">
+								<template slot="append">%</template>
+							</el-input>
 						</el-form-item>
 						<el-form-item label="商户最小兑入额度：">
-							<el-input v-model="form.MERCHANT_MIN_IN_AMOUNT"></el-input>
+							<el-input type="number" v-model.trim="form.MERCHANT_MIN_IN_AMOUNT"></el-input>
 						</el-form-item>
 						<el-form-item label="商户最大兑入额度：">
-							<el-input v-model="form.MERCHANT_MAX_IN_AMOUNT"></el-input>
+							<el-input type="number" v-model.trim="form.MERCHANT_MAX_IN_AMOUNT"></el-input>
 						</el-form-item>
 						<el-form-item label="商户最小兑出额度：">
-							<el-input v-model="form.MERCHANT_MIN_OUT_AMOUNT"></el-input>
+							<el-input type="number" v-model.trim="form.MERCHANT_MIN_OUT_AMOUNT"></el-input>
 						</el-form-item>
 						<el-form-item label="商户最大兑出额度：">
-							<el-input v-model="form.MERCHANT_MAX_OUT_AMOUNT"></el-input>
+							<el-input type="number" v-model.trim="form.MERCHANT_MAX_OUT_AMOUNT"></el-input>
 						</el-form-item>
 					</el-form>
 					<p class="tips">提示：商户默认该参数，可在商户查询模块单独配置该参数。初始化设置修改后只对新增商户生效。</p>
@@ -83,10 +98,10 @@
 				<el-tab-pane label="全局设置">
 					<el-form ref="form" :model="form" label-width="100px" size="small">
 						<el-form-item label="提币手续费：">
-							<el-input v-model="form.MERCHANT_WITHDRAW_RATE"></el-input>
+							<el-input type="number" v-model.trim="form.MERCHANT_WITHDRAW_RATE"></el-input>
 						</el-form-item>
 						<el-form-item label="转账手续费：">
-							<el-input v-model="form.MERCHANT_TRADE_RATE"></el-input>
+							<el-input type="number" v-model.trim="form.MERCHANT_TRADE_RATE"></el-input>
 						</el-form-item>
 					</el-form>
 				</el-tab-pane>
@@ -100,8 +115,13 @@
 export default {
 	data() { 
 		return {
-			form: {},
-			coinName: "RMT"
+			form: {
+				otcPayLists: []
+			},
+			inFee: 0,
+			outFee: 0,
+			coinName: "RMT",
+			payType: ""
 		}
 	},
 	activated() {
@@ -113,6 +133,9 @@ export default {
 				coinName: this.coinName
 			}).then(res => {
 				this.form = res.result
+				if(this.form.otcPayLists.length > 0) {
+					this.payType = this.form.otcPayLists[0].payType
+				}
 			})
 		},
 		open() {
@@ -137,6 +160,9 @@ export default {
 				return
 			}
 			this.form.secret = ggCode
+			this.form.inFee = this.inFee / 100
+			this.form.outFee = this.outFee / 100
+			this.form.payType = this.payType
 			this.$http.post('/wallet/backmgr/merchant/trade/updateConfig', this.form).then(res => {
 				this.$notify.success({
 					title: '提示',
@@ -148,6 +174,14 @@ export default {
 	watch: {
 		coinName() {
 			this.getData()
+		},
+		payType(newVal, oldVal) {
+			this.form.otcPayLists.forEach((val, idx) => {
+				if(val.payType == this.payType) {
+					this.inFee = val.inFee*100
+					this.outFee = val.outFee*100
+				}
+			})
 		}
 	}
 }

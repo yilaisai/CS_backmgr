@@ -92,22 +92,22 @@
 					<el-form-item label="收款账号:" >
 						<el-input :value="payList.num" disabled></el-input>
 					</el-form-item>
-					<el-form-item label="付款凭证:" >
+					<!-- <el-form-item label="付款凭证:" >
 						<el-input disabled></el-input>
 					</el-form-item>
 					<el-form-item label="退回凭证:" >
 						<el-input disabled></el-input>
-					</el-form-item>
+					</el-form-item> -->
 				</el-form>
 				<h3>时间信息</h3>
 				<el-form :inline="true" :model="detaileData" class="demo-form-inline" size="small">
 					<el-form-item label="发起时间:">
 						<el-input :value="$fmtDate(detaileData.createTime, 'full')" disabled></el-input>
 					</el-form-item>
-					<el-form-item label="付款时间:" >
+					<el-form-item label="付款时间:" v-if="detaileData.payTime">
 						<el-input :value="$fmtDate(detaileData.payTime, 'full')" disabled></el-input>
 					</el-form-item>
-					<el-form-item label="确认时间:" >
+					<el-form-item label="确认时间:" v-if="detaileData.letgoTime">
 						<el-input :value="$fmtDate(detaileData.letgoTime, 'full')" disabled></el-input>
 					</el-form-item>
 				</el-form>
@@ -131,11 +131,6 @@ export default {
 	},
 	data(){
 		return {
-			formInline: {
-				user: 'user',
-				region: '',
-				taker:'taker  0.4USDT    直推 0.1 USDT     间推  0.1USDT'
-			},
 			detaileData:{
 
 			},

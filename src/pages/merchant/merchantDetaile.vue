@@ -47,9 +47,6 @@
 </template>
 <script>
 export default {
-	components:{
-
-	},
 	data(){
 		return {
 			detaileData:{},
@@ -59,12 +56,8 @@ export default {
 	activated(){
 		this.detaileData = this.$route.query.data
 	},
-	mounted(){
-		
-	},
 	methods:{
 		selectCoin(){
-			console.log(1)
 			this.getData()
 		},
 		getData(){
@@ -93,13 +86,7 @@ export default {
 
 
 	},
-	watch:{
-
-	},
-	computed:{
-
-	}
-	}
+}
 </script>
 <style lang="less" scoped>
 .merchantDetaile-page{

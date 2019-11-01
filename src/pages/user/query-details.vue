@@ -88,7 +88,7 @@
         totalToRMB:'',
         totalWithdrawToRMB:'',
       };
-    },
+	},
     methods: {
       getDetail(userId) {
         this.$http.post('wallet/backmgr/user/queryUserInfo', {

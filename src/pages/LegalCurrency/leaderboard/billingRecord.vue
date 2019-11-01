@@ -33,7 +33,7 @@
 				</el-table-column>
 				<el-table-column  :label="'可用资金变化（'+coinName+'）'">
 					<div slot-scope="scope">
-						{{ type==1?scope.row.balanceChangeAmount:scope.row.balanceChange }}
+						{{ type==1?(scope.row.balanceChangeAmount>0?'+'+scope.row.balanceChangeAmount:scope.row.balanceChangeAmount):(scope.row.balanceChange>0?'+'+scope.row.balanceChange:scope.row.balanceChange) }}
 					</div>
 				</el-table-column>
 				<el-table-column prop="balance"  :label="'可用余额('+coinName+'）'"></el-table-column>

@@ -10,7 +10,7 @@
 				<el-table stripe border   :data="customerInfo" >
 					<el-table-column prop="phone" label="手机号" align="center"></el-table-column>
 					<el-table-column prop="nickName" label="昵称" align="center"></el-table-column>
-					<el-table-column prop="totalToUsdt"  label="资产总折合（CNY）" align="center"></el-table-column>
+					<el-table-column prop="totalToRmb"  label="资产总折合（CNY）" align="center"></el-table-column>
 					<el-table-column prop="registTime"  label="注册时间" align="center">
 						<template slot-scope="scope">
 							{{  $fmtDate(scope.row.registTime,'full')}}
@@ -23,12 +23,12 @@
 					<h3>资产账户资产表</h3>
 					<p>
 						<span>资产总折合（CNY）</span>
-						<span>{{walletSumTotalToUsdt}}</span>
+						<span>{{walletSumAmount}}</span>
 					</p>
 					<el-table stripe border :data="walletList">
 						<el-table-column prop="coinName" label="币种" align="center"></el-table-column>
-						<el-table-column prop="amount" label="可用（CNY）" align="center"></el-table-column>
-						<el-table-column prop="frozenAmount"  label="冻结（CNY）" align="center"></el-table-column>
+						<el-table-column prop="amount" label="可用" align="center"></el-table-column>
+						<el-table-column prop="frozenAmount"  label="冻结" align="center"></el-table-column>
 						<el-table-column prop="registTime"  label="操作" align="center">
 							<template slot-scope="scope">
 								<el-button size="mini" @click="$router.push({path:'/LegalCurrency/billingRecord',query:{nickName:customerInfo[0].nickName,phone:customerInfo[0].phone,userId:userId,type:1,coinName:scope.row.coinName,list:walletList}})" >查看详情</el-button>
@@ -40,12 +40,12 @@
 					<h3>法币账户资产表</h3>
 					<p>
 						<span>资产总折合（CNY）</span>
-						<span>{{otcSumTotalToUsdt}}</span>
+						<span>{{otcSumTotalToRmb}}</span>
 					</p>
 					<el-table stripe border :data="otcList" >
 						<el-table-column prop="coinName" label="币种" align="center"></el-table-column>
-						<el-table-column prop="amount" label="可用（CNY）" align="center"></el-table-column>
-						<el-table-column prop="frozenAmount"  label="冻结（CNY）" align="center"></el-table-column>
+						<el-table-column prop="amount" label="可用" align="center"></el-table-column>
+						<el-table-column prop="frozenAmount"  label="冻结" align="center"></el-table-column>
 						<el-table-column prop="registTime"  label="操作" align="center">
 							<template slot-scope="scope">
 								<el-button size="mini" @click="$router.push({path:'/LegalCurrency/billingRecord',query:{nickName:customerInfo[0].nickName,phone:customerInfo[0].phone,userId:userId,type:2,coinName:scope.row.coinName,list:otcList}})" >查看详情</el-button>
@@ -69,8 +69,8 @@ export default {
 			customerInfo:[],
 			otcList:[],
 			walletList:[],
-			otcSumTotalToUsdt:'',
-			walletSumTotalToUsdt:'',
+			otcSumTotalToRmb:'',
+			walletSumAmount:'',
 			userId:'',
 		}
 	},
@@ -89,13 +89,13 @@ export default {
 					this.otcList = otcList
 					this.walletList = walletList
 					this.customerInfo= [{
-						totalToUsdt:res.result.totalToUsdt,
+						totalToRmb:res.result.totalToRmb,
 						nickName:res.result.customerInfo.nickName,
 						phone:res.result.customerInfo.phone,
 						registTime:res.result.customerInfo.registTime
 					}]
-					this.otcSumTotalToUsdt = res.result.otcSumTotalToUsdt
-					this.walletSumTotalToUsdt = res.result.walletSumTotalToUsdt
+					this.otcSumTotalToRmb = res.result.otcSumTotalToRmb
+					this.walletSumAmount = res.result.walletSumAmount
 				}
 			})
 		},

@@ -73,9 +73,10 @@
 				</li>
 				<li>
 					<label>商户兑入方式:</label>
-					<span>
-						<el-radio v-model="pageData.info.inType" :label="1" @change="inTypeChange">派单</el-radio>
-  						<el-radio v-model="pageData.info.inType" :label="2" @change="inTypeChange">抢单</el-radio>
+					<el-switch v-model="pageData.info.matchSwitch" :active-value="1" :inactive-value="0" @change="updateMerchantSwitch" style="margin-left: 10px;"></el-switch>
+					<span style="margin-left: 15px;">
+						<el-radio v-model="pageData.info.inType" :disabled="pageData.info.matchSwitch == 0" :label="1" @change="inTypeChange">派单</el-radio>
+  						<el-radio v-model="pageData.info.inType" :disabled="pageData.info.matchSwitch == 0" :label="2" @change="inTypeChange">抢单</el-radio>
 					</span>
 				</li>
 				<li>
@@ -333,7 +334,20 @@ export default {
 			}else if(this.dialogType == 'secRate') {
 				this.updateMerchantInfo(3)
 			}
-		}
+		},
+		// 修改商户兑入兑出开关
+		updateMerchantSwitch(val) {
+			this.$http.post('/wallet/backmgr/merchant/updateMerchantSwitch', {
+				matchSwitch: val,
+				userId: this.pageData.info.userId
+			}).then(res => {
+				this.$notify.success({
+					title: '提示',
+					message: res.msg
+				})	
+				this.getDetails()
+			})
+		},
 	},
 	computed: {
 		inFee() {

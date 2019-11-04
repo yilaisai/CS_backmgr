@@ -37,8 +37,7 @@
 	  <el-form-item><el-button class="search" size="mini" type="primary" @click="submitForm(1)">搜索</el-button></el-form-item>
     </el-form>
     <sac-table :data="listData.list">
-      <el-table-column align="center" label="序号" type="index" :index="indexMethod" width="50">
-      </el-table-column>
+      <el-table-column align="center" label="序号" type="index" width="50"></el-table-column>
       <!-- <el-table-column align="center" prop="userId" label="序号" width="100"></el-table-column> -->
       <el-table-column align="center" prop="phone" label=账号 width="130"></el-table-column>
       <el-table-column align="center" prop="nickName" label="昵称"></el-table-column>
@@ -74,37 +73,38 @@
       </el-table-column>
     </sac-table>
     <sac-pagination v-show="listData.list.length>0"
-                    @handleChange="getPaginationChange"
-                    :total="+listData.total"
-                    :page-size="filterForm.pageSize"
-                    :current-page="filterForm.pageNum">
+		@handleChange="getPaginationChange"
+		:total="+listData.total"
+		:page-size="filterForm.pageSize"
+		:current-page="filterForm.pageNum">
     </sac-pagination>
+
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
-        <sac-input ref="phone" v-model="ruleForm.phone" label="手机号" prop="phone"></sac-input>
-        <sac-input ref="nickName" v-model="ruleForm.nickName" label="昵称" prop="nickName"></sac-input>
-        <sac-input ref="pwd" type="password" v-model="ruleForm.pwd" label="登录密码" placeholder="请输入6-16位密码"
-                   prop="pwd"></sac-input>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false" size="small">取 消</el-button>
-        <el-button type="primary" @click="determine" size="small">确 定</el-button>
-      </div>
+		<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
+			<sac-input ref="phone" v-model="ruleForm.phone" label="手机号" prop="phone"></sac-input>
+			<sac-input ref="nickName" v-model="ruleForm.nickName" label="昵称" prop="nickName"></sac-input>
+			<sac-input ref="pwd" type="password" v-model="ruleForm.pwd" label="登录密码" placeholder="请输入6-16位密码" prop="pwd"></sac-input>
+		</el-form>
+		<div slot="footer" class="dialog-footer">
+			<el-button @click="dialogFormVisible = false" size="small">取 消</el-button>
+			<el-button type="primary" @click="determine" size="small">确 定</el-button>
+		</div>
     </el-dialog>
 
     <el-dialog title="备注" :visible.sync="optDialogFormVisible" class="opt-dialog-wrap">
-      <el-form :model="dialogForm" :rules="optRules" ref="dialogForm">
-        <el-form-item prop="optReason" :label="`${dialogForm.optStatus == 1 ? '锁定':'冻结'}账号${dialogForm.phone}理由：`">
-          <el-input type="textarea"
-                    :autosize="{ minRows: 2, maxRows: 6 }"
-                    v-model="dialogForm.optReason" maxlength="50"
-                    placeHolder="请输入理由"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="optDialogFormVisible = false" size="small">取 消</el-button>
-        <el-button type="primary" @click.native="optSubmit('dialogForm')" size="small">确 定</el-button>
-      </div>
+		<el-form :model="dialogForm" :rules="optRules" ref="dialogForm">
+			<el-form-item prop="optReason" :label="`${dialogForm.optStatus == 1 ? '锁定':'冻结'}账号${dialogForm.phone}理由：`">
+				<el-input type="textarea"
+					:autosize="{ minRows: 2, maxRows: 6 }"
+					v-model="dialogForm.optReason" maxlength="50"
+					placeHolder="请输入理由">
+				</el-input>
+			</el-form-item>
+		</el-form>
+		<div slot="footer" class="dialog-footer">
+			<el-button @click="optDialogFormVisible = false" size="small">取 消</el-button>
+			<el-button type="primary" @click.native="optSubmit('dialogForm')" size="small">确 定</el-button>
+		</div>
     </el-dialog>
     <el-dialog title="修改用户状态" :visible.sync="dialogVisible" width="40%">
         <el-form :inline="true" label-width="90px" ref="ruleForm"  :model="ruleForm">
@@ -255,19 +255,20 @@
 		},
 		submitForm(num) {
 			if(this.selectedDate.length == 2 ){
-						this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
-						this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
-						}
-			this.filterForm.pageNum = num;
-			const { phone, nickName, userLevel,company, endDate } = this.filterForm
-			if (phone || nickName || userLevel || company||endDate) {
-			this.getUserInfoList();
-			} else {
-			this.$notify.error({
-				title: '错误',
-				message: '查询内容不能为空'
-			});
+				this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
+				this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
 			}
+			this.filterForm.pageNum = SVGAnimatedNumber
+			const { phone, nickName, userLevel,company, endDate } = this.filterForm
+			this.getUserInfoList()
+			// if (phone || nickName || userLevel || company || endDate) {
+			// 	this.getUserInfoList();
+			// } else {
+			// 	this.$notify.error({
+			// 		title: '错误',
+			// 		message: '查询内容不能为空'
+			// 	})
+			// }
 		},
 		getUserInfoList() {
 			this.$http.post('/wallet/backmgr/user/getUserInfoList', this.filterForm)

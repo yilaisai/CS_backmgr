@@ -1,27 +1,47 @@
 <template>
 	<div class="LegalCurrencySetting-page">
-		<h3>普通交易设置</h3>
-		<div>
-			<el-form 
-             label-width="86px"
-             ref="filterForm">
-				<el-form-item label="币种:">
-				<el-select v-model="filterForm.coinName" @change="queryOtcCoinConfig" >
-					<el-option v-for="(item, key) in coinInfo" :key="key" :value="item.coinName" :label="item.coinName"></el-option>
-				</el-select>
-				</el-form-item>
-				<el-form-item label="手续费:">
-					<el-input placeholder="请输入手续费" v-model="detaileData.otcFee" class="input-with-select"></el-input>
-				</el-form-item>
-				<el-form-item label="保证金:">
-					<el-input placeholder="请输入保证金" v-model="detaileData.deposit" class="input-with-select"></el-input>
-				</el-form-item>
-				<el-form-item label="">
-						<el-button type="primary" @click="UpdateOtcCoinConfig">保存</el-button>
+		<el-tabs type="border-card">
+			<el-tab-pane label="普通交易设置">
+				<el-form label-width="100px" ref="filterForm" size="mini">
+					<el-form-item label="币种:">
+						<el-select v-model="filterForm.coinName" @change="queryOtcCoinConfig" >
+							<el-option v-for="(item, key) in coinInfo" :key="key" :value="item.coinName" :label="item.coinName"></el-option>
+						</el-select>
 					</el-form-item>
-					
-			</el-form>
-		</div>
+					<el-form-item label="手续费:">
+						<el-input placeholder="请输入手续费" v-model="detaileData.otcFee" class="input-with-select"></el-input>
+					</el-form-item>
+					<el-form-item label="保证金:">
+						<el-input placeholder="请输入保证金" v-model="detaileData.deposit" class="input-with-select"></el-input>
+					</el-form-item>
+				</el-form>
+			</el-tab-pane>
+		</el-tabs>
+		<el-tabs type="border-card">
+			<el-tab-pane label="承兑商接单额度全局设置">
+				<el-form label-width="100px" ref="filterForm" size="mini">
+					<el-form-item label="全局买币范围:">
+						<el-input v-model="detaileData.sysMatchMin" placeholder="请输入">
+							<template slot="append">{{filterForm.coinName}}</template>
+						</el-input>
+						<span>　~　</span>
+						<el-input v-model="detaileData.sysMatchMax" placeholder="请输入">
+							<template slot="append">{{filterForm.coinName}}</template>
+						</el-input>
+					</el-form-item>
+					<el-form-item label="全局卖币范围:">
+						<el-input v-model="detaileData.sysCashoutMin" placeholder="请输入">
+							<template slot="append">{{filterForm.coinName}}</template>
+						</el-input>
+						<span>　~　</span>
+						<el-input v-model="detaileData.sysCashoutMax" placeholder="请输入">
+							<template slot="append">{{filterForm.coinName}}</template>
+						</el-input>
+					</el-form-item>
+				</el-form>
+			</el-tab-pane>
+		</el-tabs>
+		<el-button type="primary" class="save" @click="UpdateOtcCoinConfig">保存修改</el-button>
 		<!-- <h3>返佣设置</h3>
 		<div>
 			<el-form 
@@ -55,13 +75,10 @@
 <script>
 import {mapState} from 'vuex'
 export default {
-	components:{
-
-	},
 	data(){
 		return {
 			filterForm:{
-				coinName:'',
+				coinName: '',
 			},
 			detaileData:{
 				otcFee:''
@@ -83,7 +100,15 @@ export default {
 			})
 		},
 		UpdateOtcCoinConfig(){
-			this.$http.post("/wallet/app/otc/backmgr/UpdateOtcCoinConfig", {coinId:this.detaileData.coinId,deposit:this.detaileData.deposit,otcFee:this.detaileData.otcFee}).then(res => {
+			this.$http.post("/wallet/app/otc/backmgr/UpdateOtcCoinConfig", {
+				coinId: this.detaileData.coinId,
+				deposit:this.detaileData.deposit,
+				otcFee:this.detaileData.otcFee,
+				sysMatchMin: this.detaileData.sysMatchMin,
+				sysMatchMax: this.detaileData.sysMatchMax,
+				sysCashoutMin: this.detaileData.sysCashoutMin,
+				sysCashoutMax: this.detaileData.sysCashoutMax
+			}).then(res => {
 				if(res.code == 200){
 					this.$notify({
 						title: "成功",
@@ -118,25 +143,19 @@ export default {
 	height: 100%;
 	display: flex;
 	flex-direction: column;
-	&>div{
-		border: 1px solid #DCDFE6;
-		box-sizing: border-box;
-		padding: 40px 0;
-
-	}
-	.main{
-		flex: 1;
-		overflow: hidden;
-		overflow-y: scroll;
-		-webkit-overflow-scrolling: touch;
-		background: #F6F9FC;
-		
+	.el-tabs {
+		margin-bottom: 20px;
 	}
 	/deep/.el-form-item__content{
 		.el-input{
 			width: 194px;
 		}
 			
+	}
+	.save {
+		display: block;
+		width: 30%;
+		margin: 0 auto 20px;
 	}
 }
 </style>

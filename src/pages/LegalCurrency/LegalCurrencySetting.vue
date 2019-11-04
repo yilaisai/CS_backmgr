@@ -1,13 +1,17 @@
 <template>
 	<div class="LegalCurrencySetting-page">
+		<div class="title">
+			<h2>法币设置</h2>
+			<div class="select-wrap">
+				<label>币种：</label>
+				<el-select v-model="filterForm.coinName" @change="queryOtcCoinConfig" size="small">
+					<el-option v-for="(item, key) in coinInfo" :key="key" :value="item.coinName" :label="item.coinName"></el-option>
+				</el-select>
+			</div>
+		</div>
 		<el-tabs type="border-card">
 			<el-tab-pane label="普通交易设置">
 				<el-form label-width="100px" ref="filterForm" size="mini">
-					<el-form-item label="币种:">
-						<el-select v-model="filterForm.coinName" @change="queryOtcCoinConfig" >
-							<el-option v-for="(item, key) in coinInfo" :key="key" :value="item.coinName" :label="item.coinName"></el-option>
-						</el-select>
-					</el-form-item>
 					<el-form-item label="手续费:">
 						<el-input placeholder="请输入手续费" v-model="detaileData.otcFee" class="input-with-select"></el-input>
 					</el-form-item>
@@ -151,6 +155,19 @@ export default {
 			width: 194px;
 		}
 			
+	}
+	.title {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 10px;
+		h2 {
+			margin: 0;
+			padding: 0;
+			font-size: 18px;
+		}
+		.select-wrap {
+		}
 	}
 	.save {
 		display: block;

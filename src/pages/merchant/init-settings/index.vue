@@ -67,7 +67,7 @@
 								</el-option>
 							</el-select>
 						</el-form-item>
-						<el-form-item></el-form-item>
+						<br />
 						<el-form-item label="商户兑入手续费比例：">
 							<el-input type="number" v-model.trim="inFee" placeholder="未设置默认1.5%">
 								<template slot="append">%</template>

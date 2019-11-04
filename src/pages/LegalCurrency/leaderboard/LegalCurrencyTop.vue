@@ -1,80 +1,66 @@
 <template>
     <div class='exchangeSAC'>
-      <el-form :inline="true"
-               label-width="90px"
-               ref="filterForm"
-               :model="filterForm">
-        <sac-input
-          ref="phone"
-          label="账号"
-          v-model.trim="filterForm.phoneOrEmail"></sac-input>
-        <sac-input
-          ref="phone"
-          label="昵称"
-          v-model.trim="filterForm.nickName"></sac-input>
-        <sac-submit-form
-          :isReset='false'
-          @submitForm="getUserRaking()"></sac-submit-form>
-      </el-form>
+		<el-form :inline="true" label-width="90px" ref="filterForm" :model="filterForm">
+			<sac-input ref="phone" label="账号" v-model.trim="filterForm.phoneOrEmail"></sac-input>
+			<sac-input ref="phone" label="昵称" v-model.trim="filterForm.nickName"></sac-input>
+			<sac-submit-form :isReset='false' @submitForm="getUserRaking()"></sac-submit-form>
+		</el-form>
       
-       <el-table stripe border class="ExList" size="mini"    :data="ExList">
-        <el-table-column prop="phone" label="手机号"></el-table-column>
-        <el-table-column prop="nickName" label="昵称"></el-table-column>
-        <el-table-column prop="usdtAmount" :label="$variableCoin"></el-table-column>
-        <el-table-column prop="btcAmount"  label="BTC"></el-table-column>
-        <el-table-column prop="registTime" label="时间">
-          <template slot-scope="scope">
-            {{  $fmtDate(scope.row.registTime,'full')}}
-          </template>
-        </el-table-column>
-         <el-table-column  label="操作" width="180px" fixed="right" >
-          <template slot-scope="scope">
-            <el-button size="mini" @click="$router.push({path:'/LegalCurrency/personalAssets',query:{userId:scope.row.userId}})" >详情</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-table stripe border height="100%" size="mini"    :default-sort = "{prop: 'usdtAmount', order: 'descending'}" :data="listData.list" @sort-change='sortChange'>
-        <el-table-column
-          type="index"
-          label="序号"
-          :index="indexMethod">
-        </el-table-column>
-        <el-table-column prop="phone" label="手机号"></el-table-column>
-        <el-table-column prop="nickName" label="昵称"></el-table-column>
-        <el-table-column prop="usdtAmount" sortable='custom' :label="$variableCoin"></el-table-column>
-        <el-table-column prop="btcAmount" sortable ='custom' label="BTC"></el-table-column>
-        <el-table-column prop="userStatusName"  label="状态"></el-table-column>
-        <el-table-column prop="registTime" label="时间">
-          <template slot-scope="scope">
-            {{  $fmtDate(scope.row.registTime,'full')}}
-          </template>
-        </el-table-column>
-         <el-table-column  label="操作" width="180px" fixed="right" >
-          <template slot-scope="scope">
-            <el-button size="mini" @click="modify(scope.row)" >修改状态</el-button>
-            <el-button size="mini" @click="$router.push({path:'/LegalCurrency/personalAssets',query:{userId:scope.row.userId}})" >详情</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <sac-pagination v-show="listData.list.length>0"
-        @handleChange="getPaginationChange"
-        :total="+listData.total"
-        :page-size="filterForm.pageSize"
-        :current-page="filterForm.pageNum">
-      </sac-pagination>
-      <el-dialog title="修改用户状态" :visible.sync="dialogVisible" width="500">
-        <el-form :inline="true" label-width="90px" ref="ruleForm"  :model="ruleForm">
-          <el-form-item label="状态调整:" prop="status">
-              <el-select v-model="ruleForm.status">
-                  <el-option :label="item.label" :value="item.value" v-for="(item,index) in ruleState" :key="index"></el-option>
-              </el-select>
-          </el-form-item>
-        </el-form>
-        <span slot="footer" class="dialog-footer">
-            <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="dialogConfirm">确认</el-button>
-        </span>
-      </el-dialog>
+		<el-table stripe border class="ExList" size="mini" :data="ExList">
+			<el-table-column prop="phone" label="手机号" align="center"></el-table-column>
+			<el-table-column prop="nickName" label="昵称" align="center"></el-table-column>
+			<el-table-column prop="usdtAmount" :label="$variableCoin" align="center"></el-table-column>
+			<el-table-column prop="btcAmount"  label="BTC" align="center"></el-table-column>
+			<el-table-column prop="registTime" label="时间" align="center">
+				<template slot-scope="scope">
+					{{  $fmtDate(scope.row.registTime,'full')}}
+				</template>
+			</el-table-column>
+			<el-table-column  label="操作" width="180px" fixed="right" align="center">
+				<template slot-scope="scope">
+					<el-button size="mini" @click="$router.push({path:'/LegalCurrency/personalAssets',query:{userId:scope.row.userId}})" >详情</el-button>
+				</template>
+			</el-table-column>
+		</el-table>
+
+		<el-table stripe border height="100%" size="mini" :default-sort = "{prop: 'usdtAmount', order: 'descending'}" :data="listData.list" @sort-change='sortChange'>
+			<el-table-column type="index" label="序号" :index="indexMethod" align="center"></el-table-column>
+			<el-table-column prop="phone" label="手机号" align="center"></el-table-column>
+			<el-table-column prop="nickName" label="昵称" align="center"></el-table-column>
+			<el-table-column prop="usdtAmount" sortable='custom' :label="$variableCoin" align="center"></el-table-column>
+			<el-table-column prop="btcAmount" sortable ='custom' label="BTC" align="center"></el-table-column>
+			<el-table-column prop="userStatusName"  label="状态" align="center"></el-table-column>
+			<el-table-column prop="registTime" label="时间">
+				<template slot-scope="scope">
+					{{  $fmtDate(scope.row.registTime,'full')}}
+				</template>
+			</el-table-column>
+			<el-table-column  label="操作" width="180px" fixed="right" >
+				<template slot-scope="scope">
+					<el-button size="mini" @click="modify(scope.row)" >修改状态</el-button>
+					<el-button size="mini" @click="$router.push({path:'/LegalCurrency/personalAssets',query:{userId:scope.row.userId}})" >详情</el-button>
+				</template>
+			</el-table-column>
+		</el-table>
+		<sac-pagination v-show="listData.list.length>0"
+			@handleChange="getPaginationChange"
+			:total="+listData.total"
+			:page-size="filterForm.pageSize"
+			:current-page="filterForm.pageNum">
+		</sac-pagination>
+		<el-dialog title="修改用户状态" :visible.sync="dialogVisible" width="500">
+			<el-form :inline="true" label-width="90px" ref="ruleForm"  :model="ruleForm">
+			<el-form-item label="状态调整:" prop="status">
+				<el-select v-model="ruleForm.status">
+					<el-option :label="item.label" :value="item.value" v-for="(item,index) in ruleState" :key="index"></el-option>
+				</el-select>
+			</el-form-item>
+			</el-form>
+			<span slot="footer" class="dialog-footer">
+				<el-button @click="dialogVisible = false">取 消</el-button>
+				<el-button type="primary" @click="dialogConfirm">确认</el-button>
+			</span>
+		</el-dialog>
     </div>
 </template>
 <script>

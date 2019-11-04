@@ -47,7 +47,7 @@
 			</el-table-column>
 			<el-table-column align="center"  label="状态" width="130">
 				<div slot-scope="scope">
-					<p>{{scope.row.auditStatus==0?'待审核':scope.row.auditStatus==1?'通过审核':scope.row.auditStatus==2?'审核不通过':''}}</p>
+					{{scope.row.auditStatus==0?'待审核':scope.row.auditStatus==1?'通过审核':scope.row.auditStatus==2?'审核不通过':''}}
 				</div>
 			</el-table-column>
 			<el-table-column align="center"  label="价格/数量/金额" width="130">

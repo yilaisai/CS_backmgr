@@ -78,12 +78,14 @@
 								<template slot="append">%</template>
 							</el-input>
 						</el-form-item>
+						<br />
 						<el-form-item label="商户最小兑入额度：">
 							<el-input type="number" v-model.trim="form.MERCHANT_MIN_IN_AMOUNT"></el-input>
 						</el-form-item>
 						<el-form-item label="商户最大兑入额度：">
 							<el-input type="number" v-model.trim="form.MERCHANT_MAX_IN_AMOUNT"></el-input>
 						</el-form-item>
+						<br />
 						<el-form-item label="商户最小兑出额度：">
 							<el-input type="number" v-model.trim="form.MERCHANT_MIN_OUT_AMOUNT"></el-input>
 						</el-form-item>

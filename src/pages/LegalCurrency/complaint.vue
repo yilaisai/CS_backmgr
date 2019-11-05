@@ -125,7 +125,8 @@ export default {
                 name:'complaint-details',
                 query:{
                     tradeId:itemData.tradeId,
-                    appealId:itemData.appealId
+					appealId:itemData.appealId,
+					appealResult: itemData.appealResult
                 }
             })
         },

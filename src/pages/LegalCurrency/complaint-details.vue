@@ -9,10 +9,10 @@
     <div class="complaint-details">
         <el-header>
             <el-button type="primary" @click="routerReturn">返回</el-button>
-            <el-button type="primary" @click="judgment">判决</el-button>
+            <el-button type="primary" @click="judgment" v-if="$route.query.appealResult == 0">判决</el-button>
         </el-header>
         <div class="card-all-box clearfix">
-            <div class="card-box"  v-if="BuyList.length>0">
+            <div class="card-box" v-if="BuyList.length>0">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span>买家信息</span>
@@ -283,11 +283,11 @@ export default {
             }
             this.$http.post('/wallet/app/otc/backmgr/infoBuyList',postdata).then(res=>{
                 //console.log(res)
-                const { list} = res.result;
+                const {list} = res.result;
                 this.BuyList = list;
                 const postdata2={
                     appealId:this.appealId,
-                    userId:res.list[0].userId
+                    userId:res.result.list[0].userId
                 }
                 // this.$http.post('/wallet/app/otc/backmgr/proofInfo',postdata2).then(res2=>{
                 //     this.BuyProofInfo = res2;
@@ -308,7 +308,7 @@ export default {
                 this.SaleList = list;
                 const postdata2={
                     appealId:this.appealId,
-                    userId:res.list[0].userId
+                    userId:res.result.list[0].userId
                 }
                 // this.$http.post('/wallet/app/otc/backmgr/proofInfo',postdata2).then(res2=>{
                     

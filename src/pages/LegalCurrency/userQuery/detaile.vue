@@ -64,20 +64,16 @@
 			</div>
 			<div>
 				<h3>抢派单参数</h3>
-				<el-form :inline="true" label-width="220px" :model="MatchConfig" class="panicBuying">
+				<el-form :inline="true" label-width="200px" :model="MatchConfig" class="panicBuying">
 					<el-form-item :label="'派单兑入开关(' + filterForm.coinName + ')：'">
 						<el-switch
 							v-model="sysMatchSwitch"
-							@change='onSysMatchSwitch'
-							active-color="#13ce66"
-							inactive-color="#ff4949">
+							@change='onSysMatchSwitch'>
 						</el-switch>
 					</el-form-item>
 					<el-form-item :label="'派单兑出开关(' + filterForm.coinName + ')：'">
 						<el-switch
 							v-model="sysCashoutSwitch"
-							active-color="#13ce66"
-							inactive-color="#ff4949"
 							@change='onSysCashoutSwitch'>
 						</el-switch>
 					</el-form-item>
@@ -85,21 +81,17 @@
 					<el-form-item :label="'抢单兑入开关(' + filterForm.coinName + ')：'">
 						<el-switch
 							v-model="sysRushMatchSwitch"
-							@change='onSysRushMatchSwitch'
-							active-color="#13ce66"
-							inactive-color="#ff4949">
+							@change='onSysRushMatchSwitch'>
 						</el-switch>
 					</el-form-item>
 					<el-form-item :label="'抢单兑出开关(' + filterForm.coinName + ')：'">
 						<el-switch
 							v-model="sysRushCashoutSwitch"
-							@change='onSysRushCashoutSwitch'
-							active-color="#13ce66"
-							inactive-color="#ff4949">
+							@change='onSysRushCashoutSwitch'>
 						</el-switch>
 					</el-form-item>
 					<br>
-					<el-form-item  :label="'派单兑入最小额度1(' + filterForm.coinName + ')：'">
+					<el-form-item  :label="'派单兑入最小额度(' + filterForm.coinName + ')：'">
 						<el-input v-model=" MatchConfig.matchMin" disabled ></el-input>
 					</el-form-item>
 					<el-form-item :label="'派单兑入最大额度(' + filterForm.coinName + ')：'" >
@@ -360,9 +352,6 @@ export default {
 			})
 		}
 	},
-	watch:{
-
-	},
 	computed:{
 		...mapState(['coinInfo'])
 	}
@@ -423,7 +412,7 @@ export default {
 			}
 			.panicBuying{
 				/deep/.el-form-item{
-					width: 380px;
+					width: 420px;
 				}
 			}
 		}

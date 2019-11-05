@@ -89,9 +89,7 @@
 									<span slot-scope="scope">{{scope.row.nick_name}}<br />{{scope.row.phone}}</span>
 								</el-table-column>
 								<el-table-column prop="tradeTime" label="状态" align="center" >
-									<div slot-scope="scope">
-										<span >{{ scope.row.trade_status==1?'未付款':scope.row.trade_status==2?'待放行':scope.row.trade_status==3?'已完成':scope.row.trade_status==4?'已取消':scope.row.trade_status==5?'申述':scope.row.trade_status==6?'已完成':scope.row.trade_status==8?'已取消':'' }}</span>
-									</div>
+									<template slot-scope="scope">{{tradeStatusMap[scope.row.trade_status]}}</template>
 								</el-table-column>
 								<el-table-column label="价格/数量/金额" width="120" align="center">
 									<div slot-scope="scope">
@@ -171,7 +169,14 @@ export default {
 				{value:'派单兑出',label:"6"},
 			],
 			tradeStatusMap: {
-
+				1: '未付款',
+				2: '待放行',
+				3: '已完成',
+				4: '已取消',
+				5: '申述',
+				6: '已完成',
+				7: '申诉后取消交易',
+				8: '已取消'
 			},
 			dateList:[
 				{value:'今天',label:"1"},

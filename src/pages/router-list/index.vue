@@ -1,6 +1,6 @@
 <template>
 	<div class="router-list">
-		<el-table :data="routerList" border style="width: 100%" height="100%">
+		<el-table :data="routerList" border style="width: 100%" height="100%" size="mini">
 			<el-table-column label="序号" width="80" type="index" align="center"></el-table-column>
 			<el-table-column prop="title" label="名称"></el-table-column>
 			<el-table-column prop="path" label="路径"></el-table-column>

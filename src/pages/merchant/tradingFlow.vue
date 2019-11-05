@@ -53,7 +53,7 @@
 								</el-form-item>
 							</div>
 						</el-form>
-						<ul class="statistics" v-if="statistics">
+						<!-- <ul class="statistics" v-if="statistics">
 							<li>
 								<p>待付款</p>
 								<p>交易数：{{ statistics.pendingGoNum }}</p>
@@ -74,7 +74,7 @@
 								<p>交易数：{{ statistics.appealNum }}</p>
 								<p>交易额：{{ statistics.appealAmount }}{{filterForm.coinName}}</p>
 							</li>
-						</ul>
+						</ul> -->
 						<el-table :data="listData.list" border height="100%" size="mini">
 								<el-table-column  label="类型" align="center">
 									<template slot-scope="scope">{{advTypeMap[scope.row.adv_type]}}</template>

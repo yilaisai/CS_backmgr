@@ -116,7 +116,7 @@
           if(a.prop=="btcAmount"){
             this.filterForm.coinName = 'BTC'
           }else{
-            this.filterForm.coinName = 'USDT'
+            this.filterForm.coinName = this.$variableCoin
           }
           // this.filterForm.pageSize = 1;
           this.filterForm.pageNum = 1;

@@ -106,7 +106,8 @@ export default {
       return row.id
     },
     brokerage(data){
-			this.currItem = data
+      this.currItem = data
+      this.account = ''
       this.showDialog=true
       this.listData.amount = ''
 			this.listData.pageNum = 1
@@ -150,7 +151,10 @@ export default {
 				pageSize:this.listData.pageSize
 			}).then(res=>{
 				if(res.code==200){
-					this.listData.list = res.result.list
+          this.listData.list = res.result.list
+          if(this.listData.list.length<1 ){
+            this.$message.error('不允许迁移至自己的下级或该账号不存在')
+          }
 					this.listData.total = res.result.total
 					// this.findInviteTree()
 				}

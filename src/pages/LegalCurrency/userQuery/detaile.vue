@@ -257,6 +257,7 @@ export default {
 		} ,
 		brokerage(data){
 			this.currItem = data
+			this.account = ''
 			this.showDialog2=true
 			this.listData.pageNum = 1
 			this.getList()
@@ -300,8 +301,11 @@ export default {
 			}).then(res=>{
 				if(res.code==200){
 					this.listData.list = res.result.list
+					if(this.listData.list.length<1){
+						this.$message.error('不允许迁移至自己的下级或该账号不存在')
+					}
 					this.listData.total = res.result.total
-					this.findInviteTree()
+					// this.findInviteTree()
 				}
 			})
 		},

@@ -69,9 +69,6 @@
 </template>
 <script>
 export default {
-  components:{
-
-  },
   data(){
     return {
       account:'',
@@ -91,8 +88,7 @@ export default {
       currItem:{}
     }
   },
-  mounted(){
-    // this.getList()
+  activated(){
     this.getInviteData()
   },
   methods:{
@@ -143,45 +139,41 @@ export default {
       })
     },
     getList(){
-      console.log(this.currItem)
-			this.$http.post('/wallet/invite/backmgr/queryInviteShip',{
-				account:this.account,
-				inviteeId:this.currItem.userId,
-				pageNum:this.listData.pageNum,
-				pageSize:this.listData.pageSize
-			}).then(res=>{
-				if(res.code==200){
-          this.listData.list = res.result.list
-          if(this.listData.list.length<1 ){
-            this.$message.error('不允许迁移至自己的下级或该账号不存在')
-          }
-					this.listData.total = res.result.total
-					// this.findInviteTree()
+		this.$http.post('/wallet/invite/backmgr/queryInviteShip',{
+			account:this.account,
+			inviteeId:this.currItem.userId,
+			pageNum:this.listData.pageNum,
+			pageSize:this.listData.pageSize
+		}).then(res=>{
+			if(res.code==200){
+				this.listData.list = res.result.list
+				if(this.listData.list.length<1 ){
+					this.$message.error('不允许迁移至自己的下级或该账号不存在')
 				}
-			})
+				this.listData.total = res.result.total
+			}
+		})
     },
     updateInviteShip(inviterId){
-
-			this.$confirm('确定要执行迁移操作吗?', '提示', {
-				confirmButtonText: '确定',
-				cancelButtonText: '取消',
-				type: 'warning'
-			}).then(() => {
-					this.$http.post('/wallet/invite/backmgr/updateInviteShip',{
-						inviterId:inviterId,
-						inviteeId:this.currItem.userId
-					}).then(res=>{
-						if(res.code==200){
-              this.showDialog2 = false
-              this.filterForm={account:'',inviteCode:'',nickName:''},
-              this.showDialog = false
-							this.getInviteData()
-							this.$message.success('迁移成功')
-						}
-					})
-			}).catch(() => {})
-		
-		},
+		this.$confirm('确定要执行迁移操作吗?', '提示', {
+			confirmButtonText: '确定',
+			cancelButtonText: '取消',
+			type: 'warning'
+		}).then(() => {
+				this.$http.post('/wallet/invite/backmgr/updateInviteShip',{
+					inviterId:inviterId,
+					inviteeId:this.currItem.userId
+				}).then(res=>{
+					if(res.code==200){
+			this.showDialog2 = false
+			this.filterForm={account:'',inviteCode:'',nickName:''},
+			this.showDialog = false
+						this.getInviteData()
+						this.$message.success('迁移成功')
+					}
+				})
+		}).catch(() => {})
+	},
     load(tree, treeNode, resolve) {
       let inviteCode = tree.inviteCode
       this.$http.post('/wallet/invite/backmgr/findInviteChild',{inviteCode:inviteCode}).then(res=>{
@@ -197,34 +189,9 @@ export default {
         resolve(list)
         // this.inviteData = list;
       })
-
-      console.log(tree)
-      console.log(treeNode)
-        // setTimeout(() => {
-        //   resolve([
-        //     {
-        //       id: 31,
-        //       date: '2016-05-01',
-        //       name: '王小虎',
-        //       address: '上海市普陀区金沙江路 1519 弄',
-              
-        //     }, {
-        //       id: 32,
-        //       date: '2016-05-01',
-        //       name: '王小虎',
-        //       address: '上海市普陀区金沙江路 1519 弄'
-        //     }
-        //   ])
-        // }, 1000)
       }
   },
-  watch:{
-
-  },
-  computed:{
-
-  }
-  }
+}
 </script>
 <style lang="less" scoped>
 .invite-page{

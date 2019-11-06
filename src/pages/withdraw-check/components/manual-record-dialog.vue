@@ -13,10 +13,7 @@
 			</el-form-item>
 			<el-form-item label="币种">
 				<el-select v-model="form.coinName" placeholder="请选择币种">
-					<el-option label="RMT" value="RMT"></el-option>
-					<el-option label="ETH" value="ETH"></el-option>
-					<el-option label="BTC" value="BTC"></el-option>
-					<el-option label="EOS" value="EOS"></el-option>
+					<el-option v-for="(coin, idx) in coinInfo" :label="coin.coinName" :value="coin.coinName" :key="idx"></el-option>
 				</el-select>
 			</el-form-item>
 			<el-form-item label="TXID">
@@ -47,6 +44,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
 	props: {
 		showDialogMR: {
@@ -98,6 +96,7 @@ export default {
 		}
 	},
 	computed: {
+		...mapState(['coinInfo']),
         dialogVisible: {
             get () {
                 return this.showDialogMR
@@ -106,7 +105,7 @@ export default {
                 this.$emit('hideDialogMR', val)
             }
         }
-    },
+	},
 }
 </script>
 

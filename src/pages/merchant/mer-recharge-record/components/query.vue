@@ -125,7 +125,7 @@ export default {
 			}
         }
     },
-methods: {
+	methods: {
 		queryData () {
 			if(this.formData.create_time) {
 				this.formData.startDate = this.formData.create_time[0]

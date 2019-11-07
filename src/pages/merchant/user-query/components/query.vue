@@ -1,7 +1,10 @@
 <template>
-	<el-form ref="form" :model="formData" label-width="60px" size="mini" inline>
-		<el-form-item label="搜索：">
-			<el-input v-model="formData.appId" placeholder="请输入appid/账户/昵称"></el-input>
+	<el-form ref="form" :model="formData" label-width="75px" size="mini" inline>
+		<el-form-item label="appId：">
+			<el-input v-model="formData.appId" placeholder="请输入appid"></el-input>
+		</el-form-item>
+		<el-form-item label="账户/昵称：">
+			<el-input v-model="formData.name" placeholder="请输入账户或者昵称"></el-input>
 		</el-form-item>
 		<el-form-item label="币种：">
 			<el-select v-model="formData.coinName" placeholder="选择类型" clearable style="width: 185px">

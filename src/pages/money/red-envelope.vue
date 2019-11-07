@@ -7,7 +7,7 @@
  */
 <template>
     <div class="red-envelope">
-        <el-form :inline="true" label-width="120px" ref="filterForm" :model="filterForm">
+        <el-form :inline="true" label-width="80px" ref="filterForm" :model="filterForm">
             <div class="title">
                 <el-form-item label="账号" class="el-input--small">
                     <el-input v-model="filterForm.phone" placeholder="请输入账号"></el-input>

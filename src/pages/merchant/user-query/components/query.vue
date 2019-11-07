@@ -6,12 +6,12 @@
 		<el-form-item label="账户/昵称：">
 			<el-input v-model="formData.name" placeholder="请输入账户或者昵称"></el-input>
 		</el-form-item>
-		<el-form-item label="币种：">
+		<!-- <el-form-item label="币种：">
 			<el-select v-model="formData.coinName" placeholder="选择类型" clearable style="width: 185px">
 				<el-option :value="null" label="全部"></el-option>
 				<el-option v-for="(item, key) in coinInfo" :key="key" :value="item.coinName" :label="item.coinName"></el-option>
 			</el-select>
-		</el-form-item>
+		</el-form-item> -->
 		<el-form-item label="时间：">
 			<el-date-picker
 				id="createtime"

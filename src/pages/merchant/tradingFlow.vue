@@ -136,10 +136,12 @@ export default {
 				endDate:'',
 				coinName:'',
 				trade_status:'',
+				status: '',
 				tradeType:'3',
 				advType:'',
 				dateType:'1',
-				timeOut: ""
+				timeOut: "",
+				recdId: "",
 			},
 			advTypeMap: {
 				1: '在线出售',

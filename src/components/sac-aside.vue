@@ -4,103 +4,85 @@
 *  Content
 */
 <template>
-  <div class="sac-aside">
-    <div class="logo">
-      <img src="@/assets/logo.png" alt="logo">
-    </div>
-    <el-menu
-      @select="handleSelect"
-      :default-active="activeIndex"
-      class="el-menu-vertical-demo scroll"
-      background-color="#1a2238"
-      text-color="#fff"
-      unique-opened
-      router
-    >
-      <template v-for="(item, index) in menuList">
-        <el-menu-item :index="`${index}`" :route="item.menuUrl" :key="index"
-                      v-if="!item.children">
-          <i class="iconfont" :class="`icon-${item.icon}`"></i>
-          <span slot="title">{{item.name}}</span>
-        </el-menu-item>
-        <el-submenu :index="`${index}`" :key="index" v-else>
-          <template slot="title">
-            <i class="iconfont" :class="`icon-${item.icon}`"></i>
-            <span>{{item.name}}</span>
-          </template>
-          <template v-for="(itemChildren, itemIndex) in item.children">
-            <el-submenu   :index="`${index}-${itemIndex}`" v-if="itemChildren.children">
-              <span slot="title"  style="padding-left: 10px;">{{itemChildren.name}}</span>
-              <el-menu-item     style="padding-left: 70px;"
-                :index="`${index}-${itemIndex}-${itemIndex2}`"
-                :key="itemIndex2"
-                :route="`${itemChildren2.menuUrl}`"
-                v-for="(itemChildren2, itemIndex2) in itemChildren.children">
-                {{itemChildren2.name}}
-              </el-menu-item>
-              <!-- <el-submenu  :index="`${index}-${itemIndex}`"  :route="`${itemChildren.menuUrl}`" v-if="itemChildren.children">
-              {{itemChildren.name}}
-              </el-submenu> -->
-            </el-submenu>
-            <el-menu-item
-              style="padding-left: 50px;"
-              :index="`${index}-${itemIndex}`"
-              :route="`${itemChildren.menuUrl}`"
-              :key="itemIndex" v-else>{{itemChildren.name}}
-
-            </el-menu-item>
-          </template>
-
-        </el-submenu>
-      </template>
-    </el-menu>
-  </div>
+	<div class="sac-aside">
+		<div class="logo">
+			<img src="@/assets/logo.png" alt="logo">
+		</div>
+		<el-menu @select="handleSelect" :default-active="activeIndex" class="el-menu-vertical-demo scroll" background-color="#1a2238" text-color="#fff" unique-opened router>
+			<template v-for="(item, index) in menuList">
+				<el-menu-item :index="`${index}`" :route="item.menuUrl" :key="index" v-if="!item.children">
+					<i class="iconfont" :class="`icon-${item.icon}`"></i>
+					<span slot="title">{{item.name}}</span>
+				</el-menu-item>
+				<el-submenu :index="`${index}`" :key="index" v-else>
+					<template slot="title">
+						<i class="iconfont" :class="`icon-${item.icon}`"></i>
+						<span>{{item.name}}</span>
+					</template>
+					<template v-for="(itemChildren, itemIndex) in item.children">
+						<el-submenu :index="`${index}-${itemIndex}`" v-if="itemChildren.children">
+							<span slot="title"  style="padding-left: 10px;">{{itemChildren.name}}</span>
+							<el-menu-item style="padding-left: 70px;"
+								:index="`${index}-${itemIndex}-${itemIndex2}`"
+								:key="itemIndex2"
+								:route="`${itemChildren2.menuUrl}`"
+								v-for="(itemChildren2, itemIndex2) in itemChildren.children">
+								{{itemChildren2.name}}
+							</el-menu-item>
+						</el-submenu>
+						<el-menu-item style="padding-left: 50px;" :index="`${index}-${itemIndex}`" :route="`${itemChildren.menuUrl}`" :key="itemIndex" v-else>
+							{{itemChildren.name}}
+						</el-menu-item>
+					</template>
+				</el-submenu>
+			</template>
+		</el-menu>
+	</div>
 </template>
 
 <script>
-  import { appRouter } from '../router/router';
-
-  export default {
-    name: 'sac-aside',
-    data() {
-      return {
-        activeIndex: '0',
-        menuList: [],
-      };
-    },
-    methods: {
-      handleSelect(key) {
-        this.activeIndex = key;
-        localStorage.setItem('menuDefaultActive', key);
-      },
-    },
-    mounted() {
-      // 默认显示页面菜单设置
-    const menuList = JSON.parse(localStorage.getItem('wallet_menuUrls')) || [];
-      if (location.hash == '#/home' || !localStorage.getItem('menuDefaultActive')) {
-        this.activeIndex = '0';
-      } else {
-        this.activeIndex = localStorage.getItem('menuDefaultActive');
-        const curHref = location.href.split('#');
-        const activeIndex = this.activeIndex.split('-');
-        let historyRout = '';
-        if (activeIndex[1]) {
-          historyRout =  menuList[activeIndex[0]].children[activeIndex[1]].menuUrl;
-        } else {
-          historyRout = menuList[activeIndex[0]].menuUrl
-        }
-        if (curHref[1] != historyRout) {
-          this.$router.push({
-            path: historyRout
-          })
-        }
-      }
-      menuList.forEach((item) => {
-        item.icon = item.menuUrl.split('/')[1] ? item.menuUrl.split('/')[1] : 'home';
-      });
-      this.menuList = menuList;
-    },
-  };
+import { appRouter } from '../router/router'
+export default {
+	name: 'sac-aside',
+	data() {
+		return {
+			activeIndex: '0',
+			menuList: [],
+		}
+	},
+	methods: {
+		handleSelect(key) {
+			this.activeIndex = key
+			localStorage.setItem('menuDefaultActive', key)
+		},
+	},
+	mounted() {
+		// 默认显示页面菜单设置
+		const menuList = JSON.parse(localStorage.getItem('wallet_menuUrls')) || []
+		if (location.hash == '#/home' || !localStorage.getItem('menuDefaultActive')) {
+			this.activeIndex = '0'
+		} else {
+			this.activeIndex = localStorage.getItem('menuDefaultActive')
+			const curHref = location.href.split('#')
+			const activeIndex = this.activeIndex.split('-')
+			let historyRout = ''
+			if (activeIndex[1]) {
+				historyRout =  menuList[activeIndex[0]].children[activeIndex[1]].menuUrl
+			} else {
+				historyRout = menuList[activeIndex[0]].menuUrl
+			}
+			if (curHref[1] != historyRout) {
+				this.$router.push({
+					path: historyRout
+				})
+			}
+		}
+		menuList.forEach((item) => {
+			item.icon = item.menuUrl.split('/')[1] ? item.menuUrl.split('/')[1] : 'home'
+		})
+		this.menuList = menuList
+	}
+}
 </script>
 
 <style lang='less'>

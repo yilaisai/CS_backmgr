@@ -8,8 +8,8 @@
 								<el-form-item label="订单号:">
 									<el-input placeholder="请输入单号" v-model="filterForm.recdId" class="input-with-select"></el-input>
 								</el-form-item>
-								<el-form-item label="账号:">
-									<el-input placeholder="请输入用户账号" v-model="filterForm.name" class="input-with-select"></el-input>
+								<el-form-item label="账号/昵称:">
+									<el-input placeholder="请输入用户账号或昵称" v-model="filterForm.account" class="input-with-select"></el-input>
 								</el-form-item>
 								<el-form-item label="状态:">
 									<el-select v-model="filterForm.status" >
@@ -130,7 +130,7 @@ export default {
 			currentPage:1,
 			filterForm:{
 				pageNum:1,
-				name:'',
+				account:'',
 				pageSize: 10,
 				startDate:'',
 				endDate:'',

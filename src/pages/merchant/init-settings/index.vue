@@ -69,12 +69,12 @@
 						</el-form-item>
 						<br />
 						<el-form-item label="商户兑入手续费比例：">
-							<el-input type="number" v-model.trim="inFee" placeholder="未设置默认1.5%">
+							<el-input type="number" v-model.trim="inFee" @input="inFee = inFee.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')" placeholder="未设置默认1.5%">
 								<template slot="append">%</template>
 							</el-input>
 						</el-form-item>
 						<el-form-item label="商户兑出手续费比例：">
-							<el-input type="number" v-model.trim="outFee" placeholder="未设置默认0.3%">
+							<el-input type="number" v-model.trim="outFee" @input="outFee = outFee.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')" placeholder="未设置默认0.3%">
 								<template slot="append">%</template>
 							</el-input>
 						</el-form-item>
@@ -162,14 +162,15 @@ export default {
 				return
 			}
 			this.form.secret = ggCode
-			this.form.inFee = this.inFee / 100
-			this.form.outFee = this.outFee / 100
+			this.form.inFee = (this.inFee / 100).toFixed(4)
+			this.form.outFee = (this.outFee / 100).toFixed(4)
 			this.form.payType = this.payType
 			this.$http.post('/wallet/backmgr/merchant/trade/updateConfig', this.form).then(res => {
 				this.$notify.success({
 					title: '提示',
 					message: res.msg
 				})
+				this.getData()
 			})
 		}
 	},
@@ -180,8 +181,8 @@ export default {
 		payType(newVal, oldVal) {
 			this.form.otcPayLists.forEach((val, idx) => {
 				if(val.payType == this.payType) {
-					this.inFee = val.inFee*100
-					this.outFee = val.outFee*100
+					this.inFee = Math.floor(val.inFee*10000) / 100
+					this.outFee = Math.floor(val.outFee*10000) / 100
 				}
 			})
 		}

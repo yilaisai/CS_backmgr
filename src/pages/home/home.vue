@@ -38,20 +38,21 @@
       getData() {
         this.$http.post('wallet/backmgr/user/selectSysInfo')
           .then((res) => {
-            const { list, total, tdCount, ytdCount } = res.result;
+            const { list, total, tdCount, ytdCount, onlineNum } = res.result;
             this.account = list;
             this.user = [{
               date: dateFormat(new Date, 'YYYY年MM月DD日'),
               total,
               tdCount,
-              ytdCount
+              ytdCount,
+              onlineNum
             }];
           })
       },
     },
-	activated() {
-		this.getData()
-	}
+  	activated() {
+  		this.getData()
+  	}
   };
 </script>
 <style lang='less'>

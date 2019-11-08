@@ -103,6 +103,7 @@
 								<el-table-column prop="price" label="操作" fixed="right" align="center" width="200">
 									<template slot-scope="scope">
 										<el-button type="primary" size="mini" @click.native="$router.push({path:'/merchant/merchantTradingFlowDetaile',query:{tradeId:scope.row.trade_id}})">查看详情</el-button>
+										<el-button type="danger" size="mini" v-if="scope.row.trade_status==8&&showActiveBtn(scope.row.create_time)" @click.native="orderActivation(scope.row)">激活订单</el-button>
 										<el-button type="warning" size="mini" v-if="(scope.row.adv_type == 4 || scope.row.adv_type == 5) && (scope.row.trade_status == 3 || scope.row.trade_status == 6)" @click="returnApi(scope.row)">异步补发</el-button>
 									</template>
 								</el-table-column>
@@ -179,7 +180,7 @@ export default {
 				5: '申述',
 				6: '已完成',
 				7: '申诉后取消交易',
-				8: '已取消'
+				8: '超时取消'
 			},
 			dateList:[
 				{value:'今天',label:"1"},
@@ -219,6 +220,26 @@ export default {
 				}
 			})
 		},
+		orderActivation(item){
+			this.$http.post('/wallet/backmgr/merchant/activation',{tradeId: item.trade_id,}).then(res=>{
+				if(res.code==200){
+					// this.statistics = res.result
+					this.getList()
+					this.$notify({
+						title: '成功',
+						message: res.msg,
+						type: 'success'
+					});
+				}
+			})
+		},
+		showActiveBtn(create_time){
+			if(new Date().getTime()-create_time<86400000){
+				return true
+			}else{
+				return false
+			}
+		},
 		// 异步补发
 		returnApi(item) {
 			this.$http.post('/wallet/backmgr/merchant/returnApi', {
@@ -226,11 +247,15 @@ export default {
 				userId: item.taker_user_id
 			}).then(res=>{
 				if(res.code==200){
-					this.$notify({
-						title: '成功',
-						message: res.msg,
-						type: 'success'
-					});
+					this.$alert('返回结果：'+res.result, {
+						title:'提示',
+						dangerouslyUseHTMLString: true
+					});	
+					// this.$notify({
+					// 	title: '成功',
+					// 	message: res.msg,
+					// 	type: 'success'
+					// });
 				}
 			})
 		},

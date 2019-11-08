@@ -91,6 +91,9 @@ Vue.filter("optType", function (val) {  //保留小数位，acc为保留几位�
     break;
     case 27:
       return 'otc提币失败'
+	break;
+	case 28:
+      return '激活订单'
     break;
     default:
       return ''

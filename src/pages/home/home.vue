@@ -5,6 +5,7 @@
       <el-table :data="user" border size="mini">
         <el-table-column prop="date" label="日期" align="center"></el-table-column>
         <el-table-column prop="total" label="用户总数" align="center"></el-table-column>
+		<el-table-column prop="onlineNum" label="当前在线人数" align="center"></el-table-column>
         <el-table-column prop="tdCount" label="今日新增" align="center"></el-table-column>
         <el-table-column prop="ytdCount" label="昨日新增" align="center"></el-table-column>
       </el-table>

@@ -135,12 +135,12 @@
 		<el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="40%" :before-close="handleClose">
 			<el-form ref="form" :model="formData" label-width="120px">
 				<el-form-item :label="label1">
-					<el-input type="number" v-model="formData.value1">
+					<el-input type="number" v-model="formData.value1" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')">
 						<template slot="append" v-if="dialogType == 'feeRateIn' || dialogType == 'firstRate' || dialogType == 'secRate'">%</template>
 					</el-input>
 				</el-form-item>
 				<el-form-item :label="label2">
-					<el-input type="number" v-model="formData.value2">
+					<el-input type="number" v-model="formData.value2" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')">
 						<template slot="append" v-if="dialogType == 'feeRateIn' || dialogType == 'firstRate' || dialogType == 'secRate'">%</template>
 					</el-input>
 				</el-form-item>
@@ -309,8 +309,8 @@ export default {
 				payType: this.payType,
 				type: type,   //1、兑入；2、兑出；
 				userId: this.$route.query.id,
-				value1: this.formData.value1 / 100,   //最小兑入手续费
-				value2: this.formData.value2 / 100   //最大兑入手续费
+				value1: (this.formData.value1 / 100).toFixed(4),   //最小兑入手续费
+				value2: (this.formData.value2 / 100).toFixed(4)   //最大兑入手续费
 			}).then(res => {
 				this.formData.value1 = ""
 				this.formData.value2 = ""
@@ -358,7 +358,7 @@ export default {
 					return
 				}
 			})
-			return inFee*100
+			return Math.floor(inFee*10000)/100
 		},
 		outFee() {
 			let outFee = 0
@@ -368,7 +368,7 @@ export default {
 					return
 				}
 			})
-			return outFee*100
+			return Math.floor(outFee*10000)/100
 		},
 		payTypeName() {
 			let payTypeName = ""

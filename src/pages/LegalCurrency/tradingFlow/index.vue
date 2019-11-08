@@ -6,10 +6,10 @@
 				<el-form :inline="true"  ref="filterForm" :model="filterForm" size="mini" label-width="80px">
 					<div class="form-group">
 						<el-form-item label="订单号:">
-							<el-input placeholder="请输入单号" v-model="filterForm.recdId" class="input-with-select"></el-input>
+							<el-input placeholder="请输入单号" v-model.trim="filterForm.recdId" class="input-with-select"></el-input>
 						</el-form-item>
 						<el-form-item label="账号:">
-							<el-input placeholder="请输入用户账号" v-model="filterForm.userId" class="input-with-select"></el-input>
+							<el-input placeholder="请输入用户账户或昵称" v-model.trim="filterForm.account" class="input-with-select"></el-input>
 						</el-form-item>
 						<el-form-item label="状态:">
 							<el-select v-model="filterForm.tradeStatus" >
@@ -48,17 +48,17 @@
 				</el-form>
 				<!-- 表格 -->
 				<Table :listData="listData.list"></Table>
-	</el-main>
-		<el-footer>
-			<sac-pagination v-show="listData.list.length>0"
-				@handleChange="handleCurrentChange"
-				:total="+listData.total"
-				:page-size="filterForm.pageSize"
-				:current-page="filterForm.pageNum">
-			</sac-pagination>
-		</el-footer>
+			</el-main>
+			<el-footer>
+				<sac-pagination v-show="listData.list.length>0"
+					@handleChange="handleCurrentChange"
+					:total="+listData.total"
+					:page-size="filterForm.pageSize"
+					:current-page="filterForm.pageNum">
+				</sac-pagination>
+			</el-footer>
 		</el-container>
-		<el-dialog class="SumMap"  :visible.sync="showSumMap">
+		<el-dialog class="SumMap" v-if="sumMap" :visible.sync="showSumMap">
 			<div>
 				<ul>
 					<li>
@@ -105,6 +105,8 @@ export default {
 					coinName:'',
 					tradeStatus:'',
 					trans:'',
+					recdId: "",
+					account: ""
 				},
 				tradeTypeList:[
 					{value:'全部',label:""},

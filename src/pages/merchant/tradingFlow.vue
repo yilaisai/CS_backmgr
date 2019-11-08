@@ -6,10 +6,10 @@
 						<el-form :inline="true"  ref="filterForm" :model="filterForm" size="mini" label-width="80px">
 							<div class="form-group">
 								<el-form-item label="订单号:">
-									<el-input placeholder="请输入单号" v-model="filterForm.recdId" class="input-with-select"></el-input>
+									<el-input placeholder="请输入单号" v-model.trim="filterForm.recdId" class="input-with-select"></el-input>
 								</el-form-item>
 								<el-form-item label="账号/昵称:">
-									<el-input placeholder="请输入用户账号或昵称" v-model="filterForm.account" class="input-with-select"></el-input>
+									<el-input placeholder="请输入用户账号或昵称" v-model.trim="filterForm.account" class="input-with-select"></el-input>
 								</el-form-item>
 								<el-form-item label="状态:">
 									<el-select v-model="filterForm.status" >
@@ -137,10 +137,12 @@ export default {
 				endDate:'',
 				coinName:'',
 				trade_status:'',
+				status: '',
 				tradeType:'3',
 				advType:'',
 				dateType:'1',
-				timeOut: ""
+				timeOut: "",
+				recdId: "",
 			},
 			advTypeMap: {
 				1: '在线出售',

@@ -1,7 +1,7 @@
 <template>
   <div class="invite-page">
     <div class="header">
-      <el-form :inline="true"  ref="filterForm" :model="filterForm">
+      <el-form :inline="true"  ref="filterForm" :model="filterForm" size="mini">
         <el-form-item label="账号:">
           <el-input placeholder="请输入用户账号" v-model="filterForm.account" class="input-with-select"></el-input>
         </el-form-item>
@@ -11,22 +11,11 @@
         <el-form-item label="邀请码:">
           <el-input placeholder="请输入邀请码" v-model="filterForm.inviteCode" class="input-with-select"></el-input>
         </el-form-item>
-        
-        <el-button  class="btn" type="primary"  size="mini"
-          @click.native="getInviteData('saerch')">查询
-        </el-button>
+        <el-button  class="btn" type="primary" size="mini" @click.native="getInviteData('saerch')">查询</el-button>
       </el-form>
     </div>
     <div class="table">
-      <el-table
-        :data="inviteData"
-        height="100%"
-        style="width: 100%;height:100%;"
-        row-key="inviteCode" 
-        border
-        lazy
-        :load="load"
-        :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+      <el-table :data="inviteData" height="100%" style="width: 100%;height:100%;" row-key="inviteCode" border lazy :load="load" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" size="mini">
         <el-table-column prop="userId" label="ID" > </el-table-column>
         <el-table-column align="center" prop="account" label="账号"  width="180"> </el-table-column>
         <el-table-column align="center" prop="nickName" label="姓名"  width="180"> </el-table-column>
@@ -38,7 +27,6 @@
           </template>
         </el-table-column>
       </el-table>
-        
     </div>
     <el-dialog title="迁移关系" :visible.sync="showDialog" width="650px" class="brokerageTable">
 			<div class=" inputGroup ">
@@ -201,9 +189,6 @@ export default {
   flex-direction: column;
     .table{
       height: 100%;
-    }
-    .btn{
-      height: 39px;
     }
     .brokerageTable{
       /deep/.el-dialog__body{

@@ -30,7 +30,7 @@
 			<el-table-column prop="amount" label="商户余额" width="140" align="center"></el-table-column>
 			<el-table-column prop="to_addr" label="累计充值额（CNY）" width="140" align="center"></el-table-column>
 			<el-table-column prop="id" label="累计提现额（CNY）" width="140" align="center"></el-table-column>
-			<el-table-column prop="createDate" label="创建时间" width="140" align="center"></el-table-column>
+			<el-table-column prop="createDate" label="创建时间" width="160" align="center"></el-table-column>
 			<el-table-column prop="date" label="操作" fixed="right" width="110" align="center">
 				<template slot-scope="scope">
 					<el-button

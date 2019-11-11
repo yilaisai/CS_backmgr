@@ -1,4 +1,3 @@
-
 <template>
 	<div class="userQuery-page">
 		<el-container>
@@ -11,12 +10,6 @@
 							<el-form-item label="昵称:" >
 							<el-input placeholder="请输入用户昵称" v-model="filterForm.nickName" class="input-with-select"></el-input>
 						</el-form-item>
-						<!-- <el-form-item  label="广告商类型:" >
-							<el-select v-model="filterForm.userLevel" >
-								<el-option value="" label='所有'></el-option>
-								<el-option v-for="(item, key) in advList" :key="key" :value="item.label" :label="item.value"></el-option>
-							</el-select>
-						</el-form-item> -->
 						<el-form-item  label="企业类型:" >
 							<el-select v-model="filterForm.company" >
 								<el-option value="" label='所有'></el-option>
@@ -38,32 +31,27 @@
 						<el-form-item><el-button  type="primary" size="mini" @click.native="search">搜索</el-button></el-form-item>
 					</div>
 				</el-form>
-				<el-table :data="listData.list" border size="mini" height="100%" >
-					<el-table-column label="账户/昵称" width="150" >
-						<div class="scope" slot-scope="scope">
-							<p>{{scope.row.account}}</p>
-							<p>{{scope.row.nickName}}</p>
-						</div>
+				<el-table :data="listData.list" border size="mini" height="100%">
+					<el-table-column label="账户/昵称">
+						<div class="scope" slot-scope="scope">{{scope.row.account}} -- {{scope.row.nickName}}</div>
 					</el-table-column>
-					<el-table-column  label="企业类型" align="center">
+					<el-table-column  label="企业类型" align="center" width="100">
 						<div class="scope" slot-scope="scope">
 							<span v-if="scope.row.userEnterprise==0">非企业号</span>
 							<span v-if="scope.row.userEnterprise==1">企业号</span>
 						</div>
 					</el-table-column>
-					<el-table-column label="卖出佣金费率" align="center" >
-						<p slot-scope="scope">{{ Math.floor(scope.row.firstRate*10000)/100 }}%</p>
+					<el-table-column label="卖出佣金费率" align="center" width="100">
+						<template slot-scope="scope">{{ Math.floor(scope.row.firstRate*10000)/100 }}%</template>
 					</el-table-column>
 					<el-table-column prop="price" label="授权商户" width="150"></el-table-column>
-					<el-table-column prop="price" label="注册时间" width="150">
-						<div slot-scope="scope">
-							{{ $fmtDate(scope.row.registTimeStamp,'full') }}
-						</div>
+					<el-table-column prop="price" label="注册时间" width="140">
+						<div slot-scope="scope">{{ $fmtDate(scope.row.registTimeStamp,'full') }}</div>
 					</el-table-column>
-					<el-table-column prop="price" label="操作" fixed="right" width="150">
+					<el-table-column prop="price" label="操作" fixed="right" width="190">
 						<div class="scope" slot-scope="scope">
-							<el-button type="text" @click.native="$router.push({path:'/LegalCurrency/userQueryDetaile',query:{userId:scope.row.userId}})">查看详情</el-button>
-							<el-button type="text" @click.native=" editType(scope.row) ">修改类型</el-button>
+							<el-button type="primary" @click.native="$router.push({path:'/LegalCurrency/userQueryDetaile',query:{userId:scope.row.userId}})" size="mini">查看详情</el-button>
+							<el-button type="warning" @click.native=" editType(scope.row)" size="mini">修改类型</el-button>
 						</div>
 					</el-table-column>
 				</el-table>

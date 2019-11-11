@@ -26,9 +26,7 @@
 			</el-form>
 			<el-table :data="listData.list" border height="100%" size="mini">
 				<el-table-column  label="时间" width="180"  align="center">
-					<div slot-scope="scope">
-						<p>{{ scope.row.create_time }}</p>
-					</div>
+					<template slot-scope="scope">{{ scope.row.create_time }}</template>
 				</el-table-column>
 				<el-table-column prop="coin_name" label="币种" align="center" ></el-table-column>
 				<el-table-column prop="phone" label="账号" align="center" ></el-table-column>

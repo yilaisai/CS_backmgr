@@ -58,9 +58,9 @@
 			<el-table-column align="center" prop="coinName" label="币种"></el-table-column>
 			<el-table-column align="center" prop="fee" label="手续费"></el-table-column>
 			<el-table-column align="center" prop="auditUserName" label="操作人"></el-table-column>
-			<el-table-column align="center" label="操作" fixed="right" >
+			<el-table-column align="center" label="操作" fixed="right">
 				<template slot-scope="scope">
-					<el-button v-show="scope.row.auditStatus==0" size="mini" type="text" @click="open(scope.row)">审核</el-button>
+					<el-button v-show="scope.row.auditStatus==0" size="mini" type="primary" @click="open(scope.row)">审核</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -73,7 +73,6 @@
 				:current-page="filterForm.pageNum">
 			</sac-pagination>
 		</div>
-
 		<el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
 			<el-input type="textarea" :rows="2" placeholder="请输入不通过理由" v-model="reason"></el-input>
 			<span slot="footer" class="dialog-footer">

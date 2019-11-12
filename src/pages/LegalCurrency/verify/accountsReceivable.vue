@@ -14,7 +14,7 @@
 			<el-table-column align="center" prop="nickName" label="昵称"></el-table-column>
 			<el-table-column align="center" prop="userLevel" label="企业类型">
 				<template slot-scope="scope">
-					{{scope.row.userLevel ==1?'广告商':'普通用户' }}
+					{{scope.row.userEnterprise ==0?'非企业类型':'企业类型' }}
 				</template>
 			</el-table-column>
 			<el-table-column align="center"  label="支付宝">

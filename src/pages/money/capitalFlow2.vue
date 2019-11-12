@@ -32,9 +32,10 @@
 				<el-table-column prop="coinName" label="币种" align="center" ></el-table-column>
 				<el-table-column prop="phone" label="账号" align="center" ></el-table-column>
 				<el-table-column prop="nickName" label="昵称" align="center" ></el-table-column>
-				<el-table-column  label="类型" width="140" align="center">
+				<el-table-column prop="remark" label="类型" align="center" ></el-table-column>
+				<!-- <el-table-column  label="类型" width="140" align="center">
 					<div slot-scope="scope">  {{ scope.row.optType | optType }}</div>
-				</el-table-column>
+				</el-table-column> -->
 				<el-table-column prop="balanceChangeAmount" label="可用资金变化" width="120" align="center"></el-table-column>
 				<el-table-column prop="balance" label="可用资金余额" width="120" align="center"></el-table-column>
 				<el-table-column label="冻结资金变化" prop="frozenChangeAmount" width="120" align="center"></el-table-column>

@@ -22,16 +22,10 @@
       <el-form-item label="昵称:" >
         <el-input placeholder="请输入用户昵称" v-model="filterForm.nickName" ></el-input>
       </el-form-item>
-      <el-form-item label="广告商类型:" >
-        <el-select v-model="filterForm.userLevel" >
-          <el-option value="" label='所有'></el-option>
-          <el-option v-for="(item, key) in advList" :key="key" :value="item.label" :label="item.value"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item  label="企业类型:" >
-         <el-select v-model="filterForm.company" >
+      <el-form-item  label="用户类型:" >
+         <el-select v-model="filterForm.userType" >
             <el-option value="" label='所有'></el-option>
-            <el-option v-for="(item, key) in companyType" :key="key" :value="item.label" :label="item.value"></el-option>
+            <el-option v-for="(item, key) in userTypeList" :key="key" :value="item.label" :label="item.value"></el-option>
           </el-select>
       </el-form-item>
 	  <el-form-item><el-button class="search" size="mini" type="primary" @click="submitForm(1)">搜索</el-button></el-form-item>
@@ -42,6 +36,11 @@
       <el-table-column align="center" prop="phone" label=账号 width="130"></el-table-column>
       <el-table-column align="center" prop="nickName" label="昵称"></el-table-column>
       <el-table-column align="center" prop="realName" label="真实姓名"></el-table-column>
+      <el-table-column align="center" prop="nickStatus" label="用户类型">
+        <template slot-scope="scope">
+          <span >{{scope.row.userType== 1?'普通用户':scope.row.optStatus== 20?'商户':'系统用户'}}</span>
+        </template>
+      </el-table-column>
       <el-table-column align="center" prop="cardNo" label="身份证号" width="160px"></el-table-column>
       <el-table-column align="center" prop="nickStatus" label="状态">
         <template slot-scope="scope">
@@ -157,18 +156,12 @@
                 value:2
             }
         ],
-        advList:[
-          {value:'普通用户',label:"0"},
-          {value:'普通广告商',label:"1"},
-          {value:'高级广告商',label:"2"},
-          {value:'企业广告商',label:"3"},
-        ],
-        companyType:[
-          {value:'非企业',label:"0"},
-          {value:'企业号',label:"1"},
+        userTypeList:[
+          {value:'普通用户',label:"1"},
+          {value:'商户',label:"20"},
+          {value:'系统用户',label:"100"},
         ],
         filterForm: {
-          userLevel:'',
           company:"",
           phone: '',
           nickName: '',
@@ -258,7 +251,7 @@
 				this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
 				this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
 			}
-			this.filterForm.pageNum = SVGAnimatedNumber
+			this.filterForm.pageNum = num
 			const { phone, nickName, userLevel,company, endDate } = this.filterForm
 			this.getUserInfoList()
 			// if (phone || nickName || userLevel || company || endDate) {
@@ -271,6 +264,7 @@
 			// }
 		},
 		getUserInfoList() {
+      console.log(this.filterForm)
 			this.$http.post('/wallet/backmgr/user/getUserInfoList', this.filterForm)
 			.then((res) => {
 				const { list, total } = res.result.list;
@@ -279,6 +273,7 @@
 			});
 		},
 		getPaginationChange(val, currentPage) {
+      console.log(val, currentPage)
 			this.filterForm.pageSize = val;
 			this.filterForm.pageNum = currentPage;
 			this.getUserInfoList()

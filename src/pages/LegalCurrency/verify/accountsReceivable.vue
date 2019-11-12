@@ -12,7 +12,7 @@
 		<el-table stripe border height="100%" :default-sort = "{prop: 'usdtAmount', order: 'descending'}" :data="listData.list" @sort-change='sortChange' size="mini">
 			<el-table-column align="center" prop="phone" label="账号"></el-table-column>
 			<el-table-column align="center" prop="nickName" label="昵称"></el-table-column>
-			<el-table-column align="center" prop="userLevel" label="用户类型">
+			<el-table-column align="center" prop="userLevel" label="企业类型">
 				<template slot-scope="scope">
 					{{scope.row.userLevel ==1?'广告商':'普通用户' }}
 				</template>

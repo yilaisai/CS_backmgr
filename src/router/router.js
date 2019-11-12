@@ -74,7 +74,7 @@ export const appRouter = [
         path: 'menu',
         name: 'menu',
         meta: {
-          title: '菜单管理',
+          title: '功能管理',
         },
         component: () => import('@/pages/permissions/menu.vue'),
       },
@@ -147,7 +147,7 @@ export const appRouter = [
         path: 'accountsReceivable',
         name:'accountsReceivable',
         meta: {
-          title: '收款账户',
+          title: '支付方式审核',
         },
         component: () => import('@/pages/LegalCurrency/verify/accountsReceivable.vue'),
       },
@@ -155,7 +155,7 @@ export const appRouter = [
         path: 'accountsReceivableDetaile',
         name:'accountsReceivableDetaile',
         meta: {
-          title: '收款账户-详情',
+          title: '支付方式-详情',
         },
         component: () => import('@/pages/LegalCurrency/verify/accountsReceivableDetaile.vue'),
       },
@@ -235,7 +235,7 @@ export const appRouter = [
         path: 'merchantAudit',
         name: 'merchantAudit',
         meta: {
-          title: '商家申请审核',
+          title: '广告商审核',
         },
         component: () => import('@/pages/merchant-audit/index'),
       },
@@ -270,7 +270,7 @@ export const appRouter = [
 			path: 'blockchain-statistics',
 			name: 'blockchainStatistics',
 			meta: {
-				title: '区块链数据统计'
+				title: '区块链统计'
 			},
 			component: () => import('@/pages/blockchain-statistics/index.vue')
 		  }
@@ -289,14 +289,14 @@ export const appRouter = [
 			  path: 'merchantList',
 			  name: 'merchantList',
 			  meta: {
-				  title: '商户查询'
+				  title: '商户注册申请'
 			  },
 			  component: () => import('@/pages/merchant/index.vue')
       },{
 			  path: 'merchantDetaile',
 			  name: 'merchantDetaile',
 			  meta: {
-				  title: '商户审核详情'
+				  title: '商户详情'
 			  },
 			  component: () => import('@/pages/merchant/merchantDetaile.vue')
       },{
@@ -371,7 +371,7 @@ export const appRouter = [
         path: 'transfer-query',
         name: 'transferQuery',
         meta: {
-          title: '转账记录查询',
+          title: '转账记录',
         },
         component: () => import('@/pages/money/transfer-query.vue'),
       },
@@ -715,7 +715,7 @@ export const appRouter = [
       {
         path: 'identity',
         meta: {
-          title: '身份审核',
+          title: '实名审核',
         },
         component: () => import('@/pages/identity/identity.vue'),
       },
@@ -731,7 +731,7 @@ export const appRouter = [
         path: 'identity-details',
         name: 'identityDetails',
         meta: {
-          title: '身份审核详情',
+          title: '实名审核详情',
         },
         component: () => import('@/pages/identity/identity-details.vue'),
       },
@@ -785,14 +785,14 @@ export const appRouter = [
     name: 'invite',
     redirect: '/invite/invite',
     meta: {
-      title: '注册邀请查询',
+      title: '邀请关系',
     },
     component: Index,
     children: [
       {
         path: 'invite',
         meta: {
-          title: '注册邀请查询',
+          title: '邀请关系',
         },
         component: () => import('@/pages/invite/invite.vue'),
       },

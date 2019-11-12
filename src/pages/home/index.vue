@@ -24,6 +24,7 @@
           </ul>
         </el-header>
         <el-main>
+          <Tags></Tags>
           <transition name="el-zoom-in-center">
             <keep-alive>
               <router-view class="router-view"></router-view>
@@ -51,12 +52,14 @@
 
 <script>
   import SacAside from '@/components/sac-aside';
+  import Tags from '@/components/Tags';
   import Md5 from '../../../static/js/md5';
 
   export default {
     name: 'homeIndex',
     components: {
       SacAside,
+      Tags
     },
     data() {
       var checkOldPwd = (rule, value, callback) => {
@@ -252,11 +255,15 @@
     display: flex;
     .el-main {
       flex: 1;
-      padding: 15px;
+      // padding: 15px;
       background: #fff;
+      display: flex;
+      flex-direction: column;
       .router-view {
+        flex: 1;
         display: flex;
         height: 100%;
+        padding: 15px;
         flex-direction: column;
       }
     }

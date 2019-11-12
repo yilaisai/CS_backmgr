@@ -38,7 +38,7 @@
       <el-table-column align="center" prop="realName" label="真实姓名"></el-table-column>
       <el-table-column align="center" prop="nickStatus" label="用户类型">
         <template slot-scope="scope">
-          <span >{{scope.row.userType== 1?'普通用户':scope.row.optStatus== 20?'商户':'系统用户'}}</span>
+          <span >{{scope.row.userType== 1?'普通用户':scope.row.userType== 20?'商户':'系统用户'}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" prop="cardNo" label="身份证号" width="160px"></el-table-column>

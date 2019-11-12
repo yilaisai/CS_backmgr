@@ -153,10 +153,13 @@ export default {
     },
     methods:{
         getList(){
-			if(this.selectedDate.length==2){
+			if(this.selectedDate && this.selectedDate.length==2){
 				this.filterForm.startDate = this.selectedDate[0]
 				this.filterForm.endDate = this.selectedDate[1]
-			}	
+			}else {
+				this.filterForm.startDate = ""
+				this.filterForm.endDate = ""
+			}
 			this.$http.post('/wallet/app/otc/backmgr/getTradeMainList',this.filterForm).then(res=>{
 				const { list ,total} = res.result.pageInfo
 				this.sumMap = res.result.sumMap

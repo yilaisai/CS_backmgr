@@ -26,19 +26,19 @@
 				<el-form-item><el-button type="primary" @click.native="search">搜索</el-button></el-form-item>
 			</el-form>
 			<el-table :data="listData.list" border height="100%" size="mini">
-				<el-table-column  label="时间" width="180"  align="center">
-					<template slot-scope="scope">{{ scope.row.create_time }}</template>
+				<el-table-column  label="时间" width="140" align="center">
+					<template slot-scope="scope">{{ scope.row.createTime }}</template>
 				</el-table-column>
-				<el-table-column prop="coin_name" label="币种" align="center" ></el-table-column>
+				<el-table-column prop="coinName" label="币种" align="center" ></el-table-column>
 				<el-table-column prop="phone" label="账号" align="center" ></el-table-column>
-				<el-table-column prop="nick_name" label="昵称" align="center" ></el-table-column>
-				<el-table-column  label="类型" width="120" align="center">
-					<div slot-scope="scope">  {{ scope.row.opt_type | optType }}</div>
+				<el-table-column prop="nickName" label="昵称" align="center" ></el-table-column>
+				<el-table-column  label="类型" width="140" align="center">
+					<div slot-scope="scope">  {{ scope.row.optType | optType }}</div>
 				</el-table-column>
-				<el-table-column prop="balance_change" label="可用资金变化" width="120" align="center"></el-table-column>
+				<el-table-column prop="balanceChangeAmount" label="可用资金变化" width="120" align="center"></el-table-column>
 				<el-table-column prop="balance" label="可用资金余额" width="120" align="center"></el-table-column>
-				<el-table-column label="冻结资金变化" prop="frozen_amount_change" width="120" align="center"></el-table-column>
-				<el-table-column label="冻结资金余额" prop="frozen_amount" width="120" align="center"></el-table-column>
+				<el-table-column label="冻结资金变化" prop="frozenChangeAmount" width="120" align="center"></el-table-column>
+				<el-table-column label="冻结资金余额" prop="frozenAmount" width="120" align="center"></el-table-column>
 			</el-table>
 			<div>
 				<sac-pagination v-show="listData.list.length>0"
@@ -83,9 +83,12 @@ export default {
 			this.getList()
 		},
 		getList(){
-			if(this.selectedDate.length == 2 ){
-			this.filterForm.startDate = this.selectedDate[0]
-			this.filterForm.endDate = this.selectedDate[1]
+			if(this.selectedDate && this.selectedDate.length == 2 ){
+				this.filterForm.startDate = this.selectedDate[0]
+				this.filterForm.endDate = this.selectedDate[1]
+			}else {
+				this.filterForm.startDate = ""
+				this.filterForm.endDate = ""
 			}
 			this.$http.post('/wallet/backmgr/trade/queryAmountFlowPage',this.filterForm).then(res=>{
 				const { list ,total} = res.result.pageInfo;

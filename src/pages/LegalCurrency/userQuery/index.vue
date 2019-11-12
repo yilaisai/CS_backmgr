@@ -128,43 +128,46 @@ export default {
     },
     methods:{
         getList(){
-					if(this.selectedDate.length == 2 ){
-					this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
-					this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
-					}
-					this.$http.post('/wallet/app/otc/backmgr/queryOtcUser',this.filterForm).then(res=>{
-						const { list ,total} = res.result;
-						this.listData.list = list;
-						this.listData.total = total;
-					})
-				},
-				// 
-				updateOtcUserLevel(userid){
-					this.$http.post('/wallet/app/otc/backmgr/updateOtcUserLevel',this.userTypeForm).then(res=>{
-						this.$message.success('类型修改成功')
-						this.dialogFormVisible=false
-						this.getList()
-					})
-				},
-				dateChange(){
-				},
-				editType(data){
-					this.userTypeForm = {
-							userLevel:data.userLevel+'',
-							userEnterprise:data.userEnterprise+'',
-							userId:data.userId
-						}
-					this.dialogFormVisible=true
-				},
-				setDateType(){
-					//获取系统当前时间
-					let nowdate = new Date();
-					let y = nowdate.getFullYear();
-					let m = nowdate.getMonth()+1;
-					let d = nowdate.getDate();
-					let formatnowdate = y+'-'+m+'-'+d;
-					this.selectedDate=[formatnowdate,formatnowdate]
-				},
+			if(this.selectedDate && this.selectedDate.length == 2 ){
+				this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
+				this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
+			}else {
+				this.filterForm.startDate = ""
+				this.filterForm.endDate = ""
+			}
+			this.$http.post('/wallet/app/otc/backmgr/queryOtcUser',this.filterForm).then(res=>{
+				const { list ,total} = res.result;
+				this.listData.list = list;
+				this.listData.total = total;
+			})
+		},
+		// 
+		updateOtcUserLevel(userid){
+			this.$http.post('/wallet/app/otc/backmgr/updateOtcUserLevel',this.userTypeForm).then(res=>{
+				this.$message.success('类型修改成功')
+				this.dialogFormVisible=false
+				this.getList()
+			})
+		},
+		dateChange(){
+		},
+		editType(data){
+			this.userTypeForm = {
+					userLevel:data.userLevel+'',
+					userEnterprise:data.userEnterprise+'',
+					userId:data.userId
+				}
+			this.dialogFormVisible=true
+		},
+		setDateType(){
+			//获取系统当前时间
+			let nowdate = new Date();
+			let y = nowdate.getFullYear();
+			let m = nowdate.getMonth()+1;
+			let d = nowdate.getDate();
+			let formatnowdate = y+'-'+m+'-'+d;
+			this.selectedDate=[formatnowdate,formatnowdate]
+		},
         search(){
             this.getList()
         },

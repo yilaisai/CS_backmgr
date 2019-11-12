@@ -195,11 +195,13 @@ export default {
 	},
 	methods:{
 		getList(){
-		
-			if(this.selectedDate.length==2){
+			if(this.selectedDate && this.selectedDate.length==2){
 				this.filterForm.startDate = this.selectedDate[0]
 				this.filterForm.endDate = this.selectedDate[1]
-			}	
+			}else {
+				this.filterForm.startDate = ""
+				this.filterForm.endDate = ""
+			}
 			this.$http.post('/wallet/backmgr/merchant/trade/list',this.filterForm).then(res=>{
 				this.SumTradeRecd()
 				const { list ,total} = res.result.pageData;
@@ -208,10 +210,13 @@ export default {
 			})
 		},
 		SumTradeRecd(){
-			if(this.selectedDate.length==2){
+			if(this.selectedDate && this.selectedDate.length==2){
 				this.filterForm.startDate = this.selectedDate[0]
 				this.filterForm.endDate = this.selectedDate[1]
-			}	
+			}else {
+				this.filterForm.startDate = ""
+				this.filterForm.endDate = ""
+			}
 			this.$http.post('/wallet/app/otc/backmgr/SumTradeRecd',this.filterForm).then(res=>{
 				if(res.code==200){
 					this.statistics = res.result

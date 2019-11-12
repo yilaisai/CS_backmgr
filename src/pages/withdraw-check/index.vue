@@ -106,6 +106,9 @@ export default {
             if (filter.create_time) {
                 filter.beginTime = filter.create_time[0] + ' 00:00:00'
                 filter.endTime = filter.create_time[1] + ' 23:59:59'
+			}else {
+				filter.beginTime = ""
+                filter.endTime = ""
 			}
 			filter = Object.assign(filter, {
 				pageNum: this.pageNum,

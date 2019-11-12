@@ -130,6 +130,9 @@ export default {
 			if(this.formData.create_time) {
 				this.formData.startDate = this.formData.create_time[0]
 				this.formData.endDate = this.formData.create_time[1]
+			}else {
+				this.formData.startDate = ""
+				this.formData.endDate = ""
 			}
 			this.$emit('queryData', this.formData)
 		},

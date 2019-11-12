@@ -6,12 +6,12 @@
 <template>
   <el-form-item label="币　　种:" :prop="prop">
     <el-select v-model="selected"
-               size="small"
+               size="mini"
                placeholder="请选择币种"
                filterable
                @change="selectedChange">
       <el-option v-for="(item, index) in coinList"
-                 size="small"
+                 size="mini"
                  :label="item.label"
                  :value="item.value"
                  :key="index"></el-option>

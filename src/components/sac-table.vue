@@ -4,7 +4,7 @@
 *  Content
 */
 <template>
-  <el-table  height="100%" :data="data" border size="small">
+  <el-table  height="100%" :data="data" border size="mini">
     <slot></slot>
   </el-table>
 </template>

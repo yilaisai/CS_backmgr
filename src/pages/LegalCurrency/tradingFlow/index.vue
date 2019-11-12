@@ -34,7 +34,8 @@
 						<el-form-item class='dateItem' label="时间:">
 							<el-date-picker
 								v-model="selectedDate"
-								type="daterange"
+								type="datetimerange"
+								value-format="yyyy-MM-dd HH:mm:ss"
 								range-separator="至"
 								start-placeholder="开始日期"
 								end-placeholder="结束日期" @change='filterForm.dateType=""'>
@@ -153,8 +154,8 @@ export default {
     methods:{
         getList(){
 			if(this.selectedDate.length==2){
-				this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
-				this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
+				this.filterForm.startDate = this.selectedDate[0]
+				this.filterForm.endDate = this.selectedDate[1]
 			}	
 			this.$http.post('/wallet/app/otc/backmgr/getTradeMainList',this.filterForm).then(res=>{
 				const { list ,total} = res.result.pageInfo
@@ -275,7 +276,7 @@ export default {
 			}
 		}
    /deep/ .dateItem  .el-form-item__content{
-        width: 352px;
+        width: auto;
 		}
 		/deep/.el-radio__label{
 			color: #909399;

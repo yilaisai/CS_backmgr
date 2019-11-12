@@ -28,10 +28,10 @@
 					<el-date-picker
 						id="createtime"
 						v-model="formData.create_time"
-						type="daterange"
+						type="datetimerange"
 						align="right"
 						width="auto"
-						value-format="yyyy-MM-dd"
+						value-format="yyyy-MM-dd HH:mm:ss"
 						unlink-panels
 						range-separator="至"
 						start-placeholder="开始日期"

@@ -1,71 +1,61 @@
-/**
-*  Created by   阿紫
-*  On  2018/8/10
-*  Content 转账记录查询
-*/
 <template>
-  <div class='transfer-query'>
-    <el-form :inline="true"
-             label-width="86px"
-             ref="filterForm">
-      <el-form-item ref="selectedDate" label="日　　期" class="sac-date">
-        <el-date-picker
-          v-model="selectedDate"
-          :editable="false"
-          type="datetimerange"
-          align="center"
-          size="small"
-          unlink-panels
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          value-format="yyyy-MM-dd HH:mm:ss">
-        </el-date-picker>
-      </el-form-item>
-      <sac-input ref="fromOrToUserPhone" label="用户账号" v-model.trim="filterForm.fromOrToUserPhone"></sac-input>
-      <sac-coin ref="coinId" v-model="filterForm.coinId"></sac-coin>
-      <sac-select ref="tradeStatus" label="状　　态" v-model="filterForm.tradeStatus"
-                  :dataList="transferQueryStatus"></sac-select>
-                  <sac-submit-form
-        @submitForm="submitForm(1)"
-        :isReset="false"></sac-submit-form>
-      <!-- <el-button type="primary" @click="exportExcel" size="small">导出Excel</el-button>  -->
-    </el-form>
-    <sac-table :data="listData.list">
-      <el-table-column align="center" prop="tradeTime" label="创建时间" min-width="153"></el-table-column>
-      <el-table-column align="center" prop="coinName" label="币种" min-width="60"></el-table-column>
-      <el-table-column align="center" prop="amount" label="数量" min-width="150"></el-table-column>
-      <el-table-column align="center" prop="fee" label="手续费" min-width="150"></el-table-column>
-      <el-table-column align="center" prop="tradeType" label="交易类型" min-width="80">
-        <template slot-scope="scope">
-          <span>{{scope.row.tradeType | convertTransactionType}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" prop="fromUserPhone" label="from账号" min-width="150"></el-table-column>
-      <el-table-column align="center" prop="fromNickName" label="from昵称" min-width="150"></el-table-column>
-      <el-table-column align="center" prop="toUserPhone" label="to账号" min-width="150"></el-table-column>
-      <el-table-column align="center" prop="toNickName" label="to昵称" min-width="150"></el-table-column>
-      <el-table-column align="center" label="状态" min-width="110" fixed="right">
-        <template slot-scope="scope">
-          <el-tag v-if='scope.row.tradeStatus === 0' type="info">失败</el-tag>
-          <el-tag v-if='scope.row.tradeStatus === 1' type="success">成功</el-tag>
-          <el-tag v-if='scope.row.tradeStatus === 2'>待审核</el-tag>
-          <el-tag v-if='scope.row.tradeStatus === 3' type="warning">审核不通过</el-tag>
-          <el-tag v-if='scope.row.tradeStatus === 4' type="danger">审核通过</el-tag>
-          <el-tag v-if='scope.row.tradeStatus === 5'>处理中</el-tag>
-          <el-tag v-if='scope.row.tradeStatus === 6'>已支付</el-tag>
-          <el-tag v-if='scope.row.tradeStatus === 7'>已发送</el-tag>
-        </template>
-      </el-table-column>
+	<div class='transfer-query'>
+		<el-form :inline="true" label-width="86px" ref="filterForm" size="mini">
+			<el-form-item ref="selectedDate" label="日　　期:" class="sac-date">
+				<el-date-picker
+					v-model="selectedDate"
+					:editable="false"
+					type="datetimerange"
+					align="center"
+					size="mini"
+					unlink-panels
+					range-separator="至"
+					start-placeholder="开始日期"
+					end-placeholder="结束日期"
+					value-format="yyyy-MM-dd HH:mm:ss">
+				</el-date-picker>
+			</el-form-item>
+			<sac-input ref="fromOrToUserPhone" label="用户账号" v-model.trim="filterForm.fromOrToUserPhone"></sac-input>
+			<sac-coin ref="coinId" v-model="filterForm.coinId"></sac-coin>
+			<sac-select ref="tradeStatus" label="状　　态" v-model="filterForm.tradeStatus" :dataList="transferQueryStatus"></sac-select>
+			<sac-submit-form @submitForm="submitForm(1)" :isReset="false"></sac-submit-form>
+		<!-- <el-button type="primary" @click="exportExcel" size="small">导出Excel</el-button>  -->
+		</el-form>
+		<sac-table :data="listData.list">
+		<el-table-column align="center" prop="tradeTime" label="创建时间" min-width="153"></el-table-column>
+		<el-table-column align="center" prop="coinName" label="币种" min-width="60"></el-table-column>
+		<el-table-column align="center" prop="amount" label="数量" min-width="150"></el-table-column>
+		<el-table-column align="center" prop="fee" label="手续费" min-width="150"></el-table-column>
+		<el-table-column align="center" prop="tradeType" label="交易类型" min-width="80">
+			<template slot-scope="scope">
+			<span>{{scope.row.tradeType | convertTransactionType}}</span>
+			</template>
+		</el-table-column>
+		<el-table-column align="center" prop="fromUserPhone" label="from账号" min-width="150"></el-table-column>
+		<el-table-column align="center" prop="fromNickName" label="from昵称" min-width="150"></el-table-column>
+		<el-table-column align="center" prop="toUserPhone" label="to账号" min-width="150"></el-table-column>
+		<el-table-column align="center" prop="toNickName" label="to昵称" min-width="150"></el-table-column>
+		<el-table-column align="center" label="状态" min-width="110" fixed="right">
+			<template slot-scope="scope">
+			<el-tag v-if='scope.row.tradeStatus === 0' type="info" size="mini">失败</el-tag>
+			<el-tag v-if='scope.row.tradeStatus === 1' type="success" size="mini">成功</el-tag>
+			<el-tag v-if='scope.row.tradeStatus === 2' size="mini">待审核</el-tag>
+			<el-tag v-if='scope.row.tradeStatus === 3' type="warning" size="mini">审核不通过</el-tag>
+			<el-tag v-if='scope.row.tradeStatus === 4' type="danger" size="mini">审核通过</el-tag>
+			<el-tag v-if='scope.row.tradeStatus === 5' size="mini">处理中</el-tag>
+			<el-tag v-if='scope.row.tradeStatus === 6' size="mini">已支付</el-tag>
+			<el-tag v-if='scope.row.tradeStatus === 7' size="mini">已发送</el-tag>
+			</template>
+		</el-table-column>
 
-    </sac-table>
-    <sac-pagination v-show="listData.list.length>0"
-                    @handleChange="getPaginationChange"
-                    :total="+listData.total"
-                    :page-size="filterForm.pageSize"
-                    :current-page="filterForm.pageNum">
-    </sac-pagination>
-  </div>
+		</sac-table>
+		<sac-pagination v-show="listData.list.length>0"
+						@handleChange="getPaginationChange"
+						:total="+listData.total"
+						:page-size="filterForm.pageSize"
+						:current-page="filterForm.pageNum">
+		</sac-pagination>
+	</div>
 </template>
 <script>
   import { transactionType, alarmConditionType, transferQueryStatus } from '@/common/constants';
@@ -192,7 +182,7 @@
       border-bottom: none;
     }
     .el-form-item {
-      margin-bottom: 3px;
+      margin-bottom: 15px;
     }
     .el-collapse-item__header {
       line-height: 40px;

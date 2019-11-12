@@ -332,7 +332,6 @@ export default {
             this.dialogVisible=true
         },
         dialogConfirm(){
-            
             this.ruleForm.appealId=this.appealId;
             this.$http.post('/wallet/app/otc/backmgr/adjustAppeal',this.ruleForm).then(res2=>{
                 this.$notify({

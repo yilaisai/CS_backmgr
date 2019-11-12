@@ -5,6 +5,16 @@
 					<div class="main">
 						<el-form :inline="true"  ref="filterForm" :model="filterForm" size="mini" label-width="80px">
 							<div class="form-group">
+								<el-form-item class='dateItem' label="时间:">
+									<el-date-picker
+										v-model="selectedDate"
+										type="datetimerange"
+										value-format="yyyy-MM-dd HH:mm:ss"
+										range-separator="至"
+										start-placeholder="开始日期"
+										end-placeholder="结束日期" @change='filterForm.dateType=""'>
+									</el-date-picker>
+								</el-form-item>
 								<el-form-item label="订单号:">
 									<el-input placeholder="请输入单号" v-model.trim="filterForm.recdId" class="input-with-select"></el-input>
 								</el-form-item>
@@ -27,27 +37,13 @@
 										<el-option v-for="(item, key) in transList" :key="key" :value="item.label" :label="item.value"></el-option>
 									</el-select>
 								</el-form-item>
-								<el-form-item class='dateItem' label="时间:">
-									<el-date-picker
-										v-model="selectedDate"
-										type="daterange"
-										range-separator="至"
-										start-placeholder="开始日期"
-										end-placeholder="结束日期" @change='filterForm.dateType=""'>
-									</el-date-picker>
-								</el-form-item>
+								
 								<el-form-item label="超时筛选:">
 									<el-select v-model="filterForm.timeOut" >
 										<el-option value="" label="所有"></el-option>
 										<el-option value="1" label="已超时"></el-option>
 									</el-select>
 								</el-form-item>
-								<!-- <div class="radioBox">
-									<label >最近:</label>
-									<el-radio-group v-model="filterForm.dateType" @change=" setDateType ">
-										<el-radio v-for="(item,index) in dateList" :key="index" :label="item.label">{{item.value}}</el-radio>
-									</el-radio-group>
-								</div> -->
 								<el-form-item>
 									<el-button type="primary" @click.native="search" size="mini">搜索</el-button>
 								</el-form-item>
@@ -164,6 +160,7 @@ export default {
 				{value:'已完成',label:"3"},
 				{value:'已取消',label:"4"},
 				{value:'申述中',label:"5"},
+				{value:'超时取消',label:"8"}
 			],
 			transList:[
 				{value:'所有',label:""},
@@ -198,9 +195,10 @@ export default {
 	},
 	methods:{
 		getList(){
+		
 			if(this.selectedDate.length==2){
-				this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
-				this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
+				this.filterForm.startDate = this.selectedDate[0]
+				this.filterForm.endDate = this.selectedDate[1]
 			}	
 			this.$http.post('/wallet/backmgr/merchant/trade/list',this.filterForm).then(res=>{
 				this.SumTradeRecd()
@@ -211,8 +209,8 @@ export default {
 		},
 		SumTradeRecd(){
 			if(this.selectedDate.length==2){
-				this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
-				this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
+				this.filterForm.startDate = this.selectedDate[0]
+				this.filterForm.endDate = this.selectedDate[1]
 			}	
 			this.$http.post('/wallet/app/otc/backmgr/SumTradeRecd',this.filterForm).then(res=>{
 				if(res.code==200){
@@ -397,7 +395,7 @@ export default {
 			}
 		}
    /deep/ .dateItem  .el-form-item__content{
-        width: 352px;
+        width: auto;
 		}
 		/deep/.el-radio__label{
 			color: #909399;

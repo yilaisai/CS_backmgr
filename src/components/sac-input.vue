@@ -7,7 +7,7 @@
   <el-form-item :label="`${label}:`" :prop="prop">
     <el-input v-model.trim="inputName"
               :value="value"
-              size="small"
+              size="mini"
               :type="type"
               :placeholder="placeholder?placeholder:`请输入${label}`"
               clearable

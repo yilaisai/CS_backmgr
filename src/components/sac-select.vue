@@ -7,13 +7,13 @@
   <el-form-item :label="`${label}:`" :prop="prop">
     <el-select v-model="selected"
                :value="value"
-               size="small"
+               size="mini"
                :placeholder="placeholder?placeholder:`请选择${label}`"
                filterable
                :multiple="multiple"
                @change="selectedChange">
       <el-option v-for="(item, index) in dataList"
-                 size="small"
+                 size="mini"
                  :label="item[props.label]"
                  :value="item[props.value]"
                  :key="index"></el-option>

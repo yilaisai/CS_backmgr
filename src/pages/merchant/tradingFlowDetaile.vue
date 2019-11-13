@@ -1,8 +1,8 @@
 <template>
 	<div class="tradingFlowDetaile-page">
-		<el-header>
+		<!-- <el-header>
 			<el-button type="primary" @click="$router.go(-1)">返回</el-button>
-		</el-header>
+		</el-header> -->
 		<!-- <el-main></el-main> -->
 		<div class="main">
 			<div>
@@ -60,7 +60,8 @@
 						<el-input v-model="detaileData.amount"  disabled></el-input>
 					</el-form-item>
 					<el-form-item label="商户到账数量:" v-if="detaileData.advType == 4 || detaileData.advType == 5">
-						<el-input :value="detaileData.takerAmount" disabled></el-input>
+						<el-input v-if="detaileData.tradeStatus == 3 || detaileData.tradeStatus == 6" :value="detaileData.takerAmount" disabled></el-input>
+						<el-input v-else value="--" disabled></el-input>
 					</el-form-item>
 					<el-form-item label="商户支付数量:" v-else>
 						<el-input :value="detaileData.takerAmount" disabled></el-input>
@@ -78,7 +79,8 @@
 						<el-input :value=" '承兑商'+detaileData.makerCommission+detaileData.coinName+',直接'+detaileData.makerFirstCommission+detaileData.coinName+',间接'+detaileData.makerSecondaryCommission+detaileData.coinName  " disabled></el-input>
 					</el-form-item>
 					<el-form-item label="平台盈利:">
-						<el-input :value=" Math.floor(detaileData.fee*10000 -(detaileData.makerCommission*10000+detaileData.makerFirstCommission*10000+detaileData.makerSecondaryCommission*10000))/10000+detaileData.coinName  " disabled></el-input>
+						<el-input v-if="detaileData.tradeStatus == 3 || detaileData.tradeStatus == 6" :value=" Math.floor(detaileData.fee*10000 -(detaileData.makerCommission*10000+detaileData.makerFirstCommission*10000+detaileData.makerSecondaryCommission*10000))/10000+detaileData.coinName  " disabled></el-input>
+						<el-input v-else value="--" disabled></el-input>
 					</el-form-item>
 				</el-form>
 				<h3>收款信息</h3>
@@ -126,9 +128,6 @@
 </template>
 <script>
 export default {
-	components:{
-
-	},
 	data(){
 		return {
 			detaileData:{

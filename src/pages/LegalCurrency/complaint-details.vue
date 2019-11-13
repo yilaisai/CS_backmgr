@@ -8,7 +8,7 @@
 <template>
     <div class="complaint-details">
         <el-header>
-            <el-button type="primary" @click="routerReturn">返回</el-button>
+            <!-- <el-button type="primary" @click="routerReturn">返回</el-button> -->
             <el-button type="primary" @click="judgment" v-if="$route.query.appealResult == 0">判决</el-button>
         </el-header>
         <div class="card-all-box clearfix">
@@ -356,8 +356,9 @@ export default {
 </script>
 <style lang="less">
 .complaint-details{
+	overflow-y: auto;
     .card-all-box{
-        margin-bottom:15px;
+		margin: 15px 0;
         .box-card{
             width: 700px;
             float:left;

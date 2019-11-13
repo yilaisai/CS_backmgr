@@ -51,118 +51,120 @@
 </template>
 
 <script>
-  import SacAside from '@/components/sac-aside';
-  import Tags from '@/components/Tags';
-  import Md5 from '../../../static/js/md5';
+import SacAside from '@/components/sac-aside';
+import Tags from '@/components/Tags';
+import Md5 from '../../../static/js/md5';
+import {mapState} from 'vuex'
+export default {
+	name: 'homeIndex',
+	components: {
+		SacAside,
+		Tags
+	},
+	data() {
+		var checkOldPwd = (rule, value, callback) => {
+			if (!value) {
+			return callback(new Error('请输入旧登录密码'));
+			}
+			callback();
+		};
+		var validatePass = (rule, value, callback) => {
+			if (!value || value.length < 6 || value.length > 16) {
+			return callback(new Error('请输入6-16位密码'));
+			}
+			if (value == this.ruleForm.oldPwd) {
+			callback(new Error('新旧密码不能一致!'));
+			}
+			// if (!/(?=.*[a-z])(?=.*\d)(?=.*[#@!~%^&*.])[a-z\d#@!~%^&*.]/i.test(value)) {
+			//   return callback(new Error('登录密码必须是字母、数字和符号的组合'));
+			// }
+			if (this.ruleForm.checkPass !== '') {
+			this.$refs.ruleForm.validateField('checkPass');
+			}
+			callback();
+		};
+		var checkPass = (rule, value, callback) => {
+			if (value === '') {
+			callback(new Error('请再次输入密码'));
 
-  export default {
-    name: 'homeIndex',
-    components: {
-      SacAside,
-      Tags
-    },
-    data() {
-      var checkOldPwd = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('请输入旧登录密码'));
-        }
-        callback();
-      };
-      var validatePass = (rule, value, callback) => {
-        if (!value || value.length < 6 || value.length > 16) {
-          return callback(new Error('请输入6-16位密码'));
-        }
-        if (value == this.ruleForm.oldPwd) {
-          callback(new Error('新旧密码不能一致!'));
-        }
-        // if (!/(?=.*[a-z])(?=.*\d)(?=.*[#@!~%^&*.])[a-z\d#@!~%^&*.]/i.test(value)) {
-        //   return callback(new Error('登录密码必须是字母、数字和符号的组合'));
-        // }
-        if (this.ruleForm.checkPass !== '') {
-          this.$refs.ruleForm.validateField('checkPass');
-        }
-        callback();
-      };
-      var checkPass = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请再次输入密码'));
-
-        } else if (value !== this.ruleForm.pwd) {
-          callback(new Error('两次输入密码不一致!'));
-        } else {
-          callback();
-        }
-      };
-      return {
-        userName: '',
-        roleName: '',
-        dialogFormVisible: false,
-        ruleForm: {
-          oldPwd: '',
-          pwd: '',
-          checkPass: '',
-        },
-        rules: {
-          oldPwd: [
-            { validator: checkOldPwd, trigger: 'blur' }
-          ],
-          pwd: [
-            { validator: validatePass, trigger: 'blur' }
-          ],
-          checkPass: [
-            { validator: checkPass, trigger: 'blur' }
-          ]
-        }
-      };
-    },
-    computed: {},
-    methods: {
-      goLogout() {
-        this.$http.post('wallet/backmgr/sysuser/logout', {})
-          .then((res) => {
-            localStorage.removeItem('wallet_roleName');
-            localStorage.removeItem('wallet_menuUrls');
-            localStorage.removeItem('menuDefaultActive');
-            localStorage.removeItem('wallet_token');
-            localStorage.removeItem('wallet_username');
-            this.$router.push('login');
-          });
-      },
-      submitFormPwd() {
-        this.$refs.ruleForm.validate((valid) => {
-          if (valid) {
-            const { oldPwd, pwd, checkPass } = this.ruleForm
-            const oldMd5Pwd = Md5(oldPwd);
-            const newMd5Pwd = Md5(pwd);
-            this.$http.post('wallet/backmgr/sysuser/changePwd', {
-              oldMd5Pwd,
-              newMd5Pwd
-            }).then((res) => {
-              this.$notify({
-                title: '成功',
-                message: `修改密码成功`,
-                type: 'success'
-              });
-            }).catch((res) => {
-              console.error(res);
-            })
-            this.$refs.oldPwd.reset();
-            this.$refs.pwd.reset();
-            this.$refs.checkPass.reset();
-            this.$refs.ruleForm.resetFields();
-            this.dialogFormVisible = false;
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
-      },
-    },
-    mounted() {
-      this.userName = localStorage.getItem('wallet_username');
-      this.roleName = localStorage.getItem('wallet_roleName') || '暂无角色';
-    },
-  };
+			} else if (value !== this.ruleForm.pwd) {
+			callback(new Error('两次输入密码不一致!'));
+			} else {
+			callback();
+			}
+		};
+		return {
+			userName: '',
+			roleName: '',
+			dialogFormVisible: false,
+			ruleForm: {
+				oldPwd: '',
+				pwd: '',
+				checkPass: '',
+			},
+			rules: {
+			oldPwd: [
+				{ validator: checkOldPwd, trigger: 'blur' }
+			],
+			pwd: [
+				{ validator: validatePass, trigger: 'blur' }
+			],
+			checkPass: [
+				{ validator: checkPass, trigger: 'blur' }
+			]
+			},
+		};
+	},
+	methods: {
+		goLogout() {
+			this.$http.post('wallet/backmgr/sysuser/logout', {})
+			.then((res) => {
+				localStorage.removeItem('wallet_roleName');
+				localStorage.removeItem('wallet_menuUrls');
+				localStorage.removeItem('menuDefaultActive');
+				localStorage.removeItem('wallet_token');
+				localStorage.removeItem('wallet_username');
+				this.$router.push('login');
+			});
+		},
+		submitFormPwd() {
+			this.$refs.ruleForm.validate((valid) => {
+			if (valid) {
+				const { oldPwd, pwd, checkPass } = this.ruleForm
+				const oldMd5Pwd = Md5(oldPwd);
+				const newMd5Pwd = Md5(pwd);
+				this.$http.post('wallet/backmgr/sysuser/changePwd', {
+				oldMd5Pwd,
+				newMd5Pwd
+				}).then((res) => {
+				this.$notify({
+					title: '成功',
+					message: `修改密码成功`,
+					type: 'success'
+				});
+				}).catch((res) => {
+				console.error(res);
+				})
+				this.$refs.oldPwd.reset();
+				this.$refs.pwd.reset();
+				this.$refs.checkPass.reset();
+				this.$refs.ruleForm.resetFields();
+				this.dialogFormVisible = false;
+			} else {
+				console.log('error submit!!');
+				return false;
+			}
+			});
+		},
+	},
+	mounted() {
+		this.userName = localStorage.getItem('wallet_username');
+		this.roleName = localStorage.getItem('wallet_roleName') || '暂无角色';
+	},
+	computed: {
+		...mapState(['tagsList'])
+	},
+};
 </script>
 
 <style lang='less'>

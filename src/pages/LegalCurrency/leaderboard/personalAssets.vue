@@ -2,7 +2,7 @@
 	<div class="personalAssets-page">
 		<el-header>
 			<div class="nav">资产排名>查看个人详情<span v-show="customerInfo.length>0">-{{customerInfo[0].nickName}}</span></div>
-			<el-button type="primary" @click="$router.go(-1)">返回</el-button>
+			<!-- <el-button type="primary" @click="$router.go(-1)">返回</el-button> -->
 		</el-header>
 		<div class="main">
 			<div class="title">

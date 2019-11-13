@@ -6,10 +6,7 @@
 <template>
   <div class='identity-details'>
     <el-row style="margin-bottom: 30px;">
-      <el-col :span="4">
-        <el-button size="small" type="primary" plain @click="$router.go(-1)">返回</el-button>
-      </el-col>
-      <el-col :span="16" style="text-align: right;">
+      <el-col>
         <el-button class="refuse-btn" type="danger" :disabled="details.antiMoneyAudit == 0" size="small"
                    @click.native="modifyState('refuse')">拒绝
         </el-button>
@@ -194,16 +191,12 @@
       }
     },
     activated() {
-      if (this.$route.params.userId) {
         this.resetForm();
-        this.details = this.$route.params;
+        this.details = this.$route.query;
         this.details.autoVerifyDesc = this.details.autoVerifyDesc && this.details.autoVerifyDesc.indexOf(':') > -1 ? this.details.autoVerifyDesc.split(':')[1] : this.details.autoVerifyDesc;
         this.getAuditRecdList();
-      } else {
-        this.$router.go(-1);
-      }
-    }
-  };
+	},
+};
 </script>
 <style lang="less">
   .identity-details {

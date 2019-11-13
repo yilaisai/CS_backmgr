@@ -99,10 +99,10 @@ export default {
 			});
 		},
 		goDetails(itemDate) {
-		this.$router.push({
-			name: 'identityDetails',
-			params: itemDate,
-		})
+			this.$router.push({
+				path: '/identity/identity-details',
+				query: itemDate,
+			})
 		},
 		quickAudit() {
 		this.$confirm('确定一键审核吗?', '提示', {

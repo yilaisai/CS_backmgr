@@ -713,6 +713,7 @@ export const appRouter = [
     component: Index,
     children: [
       {
+		name: 'identity',
         path: 'identity',
         meta: {
           title: '实名审核',
@@ -790,6 +791,7 @@ export const appRouter = [
     component: Index,
     children: [
       {
+		name: 'invite222',
         path: 'invite',
         meta: {
           title: '邀请关系',

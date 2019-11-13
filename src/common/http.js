@@ -3,12 +3,11 @@ import { Notification } from 'element-ui'
 import router from '@/router'
 import store from '../store'
 import qs from 'qs'
-
-axios.defaults.baseURL = SERVER_PATH
+axios.defaults.baseURL = localStorage.getItem('SERVER_PATH') || SERVER_PATH
 
 const httpInstance = axios.create({
 	responseType: 'json',
-	timeout: 1000000000000000000,
+	timeout: 5000,
 	params: {},
 	data: {},
 	validateStatus(status) {
@@ -36,7 +35,14 @@ function responseErrorHandler(error) {
 			})
 		}
 	} else {
-		text = '系统错误'
+		text = '请求超时'
+		// 切换请求地址
+		if(axios.defaults.baseURL == window.SERVER_PATH) {
+			axios.defaults.baseURL = window.SERVER_PATH2
+		}else {
+			axios.defaults.baseURL = window.SERVER_PATH
+		}
+		localStorage.setItem("SERVER_PATH", axios.defaults.baseURL)
 	}
 
 	Notification({
@@ -48,7 +54,9 @@ function responseErrorHandler(error) {
 }
 
 httpInstance.interceptors.request.use((config) => {
+	config.url = axios.defaults.baseURL + config.url
 	const configs = config
+
 	const token = localStorage.getItem('wallet_token')
 	if (token) {
 		config.headers.token = token

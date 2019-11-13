@@ -196,7 +196,6 @@ export default {
         }
     },
     activated(){
-        // this.setDateType()
         this.getList()
     }
 }

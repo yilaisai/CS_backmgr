@@ -15,3 +15,11 @@ export const setQueryOrderType = (state, payload) => {
 export const setCoinInfo = (state, payload) => {
 	state.coinInfo = payload
 }
+
+export const setTagsList = (state, payload) => {
+	let arr = []
+	payload.forEach((val, idx) => {
+		arr.push(val.routeName)
+	})
+	state.tagsList = arr
+}

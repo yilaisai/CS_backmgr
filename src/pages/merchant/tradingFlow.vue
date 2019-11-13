@@ -72,37 +72,37 @@
 							</li>
 						</ul> -->
 						<el-table :data="listData.list" border height="100%" size="mini">
-								<el-table-column  label="类型" align="center">
-									<template slot-scope="scope">{{advTypeMap[scope.row.adv_type]}}</template>
-								</el-table-column>
-								<el-table-column  label="商户单号/平台单号/下单时间" width="180" align="center" >
-									<span slot-scope="scope">{{scope.row.api_trade_id}}<br />{{scope.row.trade_id}}<br />{{ $fmtDate(scope.row.create_time,'full') }}</span>
-								</el-table-column>
-								<el-table-column label="商户昵称/账户" width="150" align="center" >
-									<span slot-scope="scope">{{scope.row.taker_nick_name}}<br />{{scope.row.taker_phone}}</span>
-								</el-table-column>
-								<el-table-column label="承兑商昵称/账户" width="150" align="center">
-									<span slot-scope="scope">{{scope.row.nick_name}}<br />{{scope.row.phone}}</span>
-								</el-table-column>
-								<el-table-column prop="tradeTime" label="状态" align="center" >
-									<template slot-scope="scope">{{tradeStatusMap[scope.row.trade_status]}}</template>
-								</el-table-column>
-								<el-table-column label="价格/数量/金额" width="120" align="center">
-									<div slot-scope="scope">
-										<span>{{scope.row.taker_price}}</span><br />
-										<span>{{scope.row.taker_amount}}</span><br />
-										<span>{{scope.row.amount}}</span>
-									</div>
-								</el-table-column>
-								<el-table-column prop="coin_name" label="币种" align="center"></el-table-column>
-								<el-table-column prop="fee" label="手续费" align="center"></el-table-column>
-								<el-table-column prop="price" label="操作" fixed="right" align="center" width="200">
-									<template slot-scope="scope">
-										<el-button type="primary" size="mini" @click.native="$router.push({path:'/merchant/merchantTradingFlowDetaile',query:{tradeId:scope.row.trade_id}})">查看详情</el-button>
-										<el-button type="danger" size="mini" v-if="scope.row.trade_status==8&&showActiveBtn(scope.row.create_time)" @click.native="orderActivation(scope.row)">激活订单</el-button>
-										<el-button type="warning" size="mini" v-if="(scope.row.adv_type == 4 || scope.row.adv_type == 5) && (scope.row.trade_status == 3 || scope.row.trade_status == 6)" @click="returnApi(scope.row)">异步补发</el-button>
-									</template>
-								</el-table-column>
+							<el-table-column  label="类型/下单时间" align="center" width="140">
+								<template slot-scope="scope">{{advTypeMap[scope.row.adv_type]}}<br />{{ $fmtDate(scope.row.create_time,'full') }}</template>
+							</el-table-column>
+							<el-table-column  label="商户单号/平台单号" width="180" align="center" >
+								<span slot-scope="scope">{{scope.row.api_trade_id}}<br />{{scope.row.trade_id}}</span>
+							</el-table-column>
+							<el-table-column label="商户昵称/账户" width="150" align="center" >
+								<span slot-scope="scope">{{scope.row.taker_nick_name}}<br />{{scope.row.taker_phone}}</span>
+							</el-table-column>
+							<el-table-column label="承兑商昵称/账户" width="150" align="center">
+								<span slot-scope="scope">{{scope.row.nick_name}}<br />{{scope.row.phone}}</span>
+							</el-table-column>
+							<el-table-column prop="tradeTime" label="状态" align="center" >
+								<template slot-scope="scope">{{tradeStatusMap[scope.row.trade_status]}}</template>
+							</el-table-column>
+							<el-table-column label="价格/数量" width="120" align="center">
+								<div slot-scope="scope">
+									<span>{{scope.row.taker_price}}</span><br />
+									<span>{{scope.row.taker_amount}}</span><br />
+								</div>
+							</el-table-column>
+							<el-table-column prop="amount" label="金额" align="center"></el-table-column>
+							<el-table-column prop="coin_name" label="币种" align="center"></el-table-column>
+							<el-table-column prop="fee" label="手续费" align="center"></el-table-column>
+							<el-table-column prop="price" label="操作" fixed="right" align="center" width="200">
+								<template slot-scope="scope">
+									<el-button type="primary" size="mini" @click.native="$router.push({path:'/merchant/merchantTradingFlowDetaile',query:{tradeId:scope.row.trade_id}})">查看详情</el-button>
+									<el-button type="danger" size="mini" v-if="scope.row.trade_status==8&&showActiveBtn(scope.row.create_time)" @click.native="orderActivation(scope.row)">激活订单</el-button>
+									<el-button type="warning" size="mini" v-if="(scope.row.adv_type == 4 || scope.row.adv_type == 5) && (scope.row.trade_status == 3 || scope.row.trade_status == 6)" @click="returnApi(scope.row)">异步补发</el-button>
+								</template>
+							</el-table-column>
 						</el-table>
 				</div>
             <el-footer>

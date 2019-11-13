@@ -1,6 +1,6 @@
 <template>
 	<div class="details">
-		<div class="topbar">
+		<!-- <div class="topbar">
 			<el-button type="primary" size="mini" @click="$router.go(-1)">返回</el-button>
 			<el-select v-model="coinName" placeholder="请选择" size="mini">
 				<el-option
@@ -8,7 +8,7 @@
 				:value="$variableCoin">
 				</el-option>
 			</el-select>
-		</div>
+		</div> -->
 		<div class="basic">
 			<div class="title"><h3>基本信息</h3></div>
 			<ul>

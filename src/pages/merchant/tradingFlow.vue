@@ -100,6 +100,8 @@
 									<template slot-scope="scope">
 										<el-button type="primary" size="mini" @click.native="$router.push({path:'/merchant/merchantTradingFlowDetaile',query:{tradeId:scope.row.trade_id}})">查看详情</el-button>
 										<el-button type="danger" size="mini" v-if="scope.row.trade_status==8&&showActiveBtn(scope.row.create_time)" @click.native="orderActivation(scope.row)">激活订单</el-button>
+										<el-button type="primary" size="mini" v-if="scope.row.trade_status==2&&scope.row.isActivation==1" @click.native="activationLetgo(scope.row.trade_id)">&nbsp;&nbsp;放 &nbsp;&nbsp;行&nbsp;&nbsp;</el-button>
+										
 										<el-button type="warning" size="mini" v-if="(scope.row.adv_type == 4 || scope.row.adv_type == 5) && (scope.row.trade_status == 3 || scope.row.trade_status == 6)" @click="returnApi(scope.row)">异步补发</el-button>
 									</template>
 								</el-table-column>
@@ -208,6 +210,29 @@ export default {
 				this.listData.list = list;
 				this.listData.total = total;
 			})
+		},
+		activationLetgo(tradeId){
+			this.$confirm('确定要放行该订单吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$http.post('/wallet/backmgr/merchant/activationLetgo',{
+						tradeId:tradeId
+					}).then(res=>{
+						if(res.code==200){
+							// this.statistics = res.result
+							this.getList()
+							this.$notify({
+								title: '成功',
+								message: res.msg,
+								type: 'success'
+							});
+						}
+					})
+        }).catch(() => {    
+        });
+			
 		},
 		SumTradeRecd(){
 			if(this.selectedDate && this.selectedDate.length==2){

@@ -21,15 +21,15 @@
 						<el-submenu :index="itemChildren.menuUrl" v-if="itemChildren.children" :key="itemIndex">
 							<span slot="title" style="padding-left: 10px;">{{itemChildren.name}}</span>
 							<el-menu-item style="padding-left: 70px;"
-								:index="itemChildren.menuUrl"
+								:index="itemChildren2.menuUrl"
 								:key="itemIndex2"
-								:route="`${itemChildren2.menuUrl}`"
+								:route="itemChildren2.menuUrl"
 								v-for="(itemChildren2, itemIndex2) in itemChildren.children">
 								{{itemChildren2.name}}
 							</el-menu-item>
 						</el-submenu>
 						<!-- 没有3级子菜单 -->
-						<el-menu-item style="padding-left: 50px;" :index="itemChildren.menuUrl" :route="`${itemChildren.menuUrl}`" :key="itemIndex" v-else>
+						<el-menu-item style="padding-left: 50px;" :index="itemChildren.menuUrl" :route="itemChildren.menuUrl" :key="itemIndex" v-else>
 							{{itemChildren.name}}
 						</el-menu-item>
 					</template>

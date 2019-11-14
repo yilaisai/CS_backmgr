@@ -10,11 +10,13 @@ const Login = () => import('@/pages/login/index');
 import systemRouter from './routers/system'  //系统页面
 import brm from './routers/brm'   //资金管理
 import merchant from './routers/merchant'  //商户服务
+import operation from './routers/operation'  //运营管理
 
 export const appRouter = [
 	...systemRouter,
 	...brm,
 	...merchant,
+	...operation,
   {
     path: '/',
     name: 'Index',

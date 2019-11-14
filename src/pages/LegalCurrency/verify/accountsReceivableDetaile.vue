@@ -1,10 +1,10 @@
 <template>
   <div class='query-details'>
-    <el-row class="sac-row">
+    <!-- <el-row class="sac-row">
       <el-col :span="4">
         <el-button size="small" type="primary" plain @click="$router.go(-1)">返回</el-button>
       </el-col>
-    </el-row>
+    </el-row> -->
 		<label>当前待审核：</label>
     <sac-table :data="OtcAuditPayRecdList">
 			<el-table-column label="账号" >

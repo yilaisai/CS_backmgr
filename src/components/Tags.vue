@@ -1,7 +1,7 @@
 <template>
     <div class="tags" >
         <ul>
-            <li class="tags-li" v-for="(item,index) in tagsList" :class="{'active': isActive(item.path)}" :key="index">
+            <li class="tags-li" v-for="(item,index) in tagsList" :class="{'active': isActive(item.routePath)}" :key="index">
                 <router-link :to="item.path" class="tags-li-title">
                     {{item.title}}
                 </router-link>
@@ -26,12 +26,12 @@
     export default {
         data() {
             return {
-								tagsList: []
-						}
+				tagsList: []
+			}
         },
         methods: {
             isActive(path) {
-                return path === this.$route.fullPath;
+                return path === this.$route.path;
             },
             // 关闭单个标签
             closeTags(index) {
@@ -51,24 +51,30 @@
             // 关闭其他标签
             closeOther(){
                 const curItem = this.tagsList.filter(item => {
-                    return item.path === this.$route.fullPath;
+					return item.path === this.$route.fullPath;
                 })
                 this.tagsList = curItem;
             },
             // 设置标签
             setTags(route){
                 const isExist = this.tagsList.some(item => {
-                    return item.path === route.fullPath;
+					return item.path === route.fullPath
                 })
                 if(!isExist){
+					this.tagsList.forEach((val, idx) => {
+						if(val.routePath == route.path) {
+							this.closeTags(idx)
+						}
+					})
                     if(this.tagsList.length >= 8){
                         this.tagsList.shift();
-										}
-										console.log(route.meta)
+					}
                     this.tagsList.push({
                         title: route.meta.title,
-                        path: route.fullPath,
-                        name: route.matched[1].components.default.name
+						path: route.fullPath,
+						routePath: route.path,
+						name: route.matched[1].components.default.name,
+						routeName: route.name
                     })
                 }
             },
@@ -84,10 +90,13 @@
         watch:{
             $route(newValue, oldValue){
                 this.setTags(newValue);
-            }
+			},
+			tagsList(newVal, oldVal) {
+				this.$store.commit('setTagsList', newVal)
+			}
         },
         created(){
-            this.setTags(this.$route);
+			this.setTags(this.$route);
         }
     }
 

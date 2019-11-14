@@ -1,8 +1,8 @@
 <template>
 	<div class="merchantDetaile-page">
-		<el-header>
+		<!-- <el-header>
 			<el-button type="primary" @click="$router.go(-1)">返回</el-button>
-		</el-header>
+		</el-header> -->
 		<!-- <el-main></el-main> -->
 		<div class="main">
 			<div>
@@ -103,7 +103,7 @@ export default {
 		width: 100%;
 		box-sizing: border-box;
 		overflow: hidden;
-		overflow-y: scroll;
+		overflow-y: auto;
 		-webkit-overflow-scrolling: touch;
 		background: #F6F9FC;
 		padding: 10px;

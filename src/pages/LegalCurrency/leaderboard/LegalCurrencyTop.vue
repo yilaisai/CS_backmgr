@@ -103,84 +103,84 @@
             ExList:[]
           };
         },
-      methods: {
-        indexMethod(index) {
-          return   (this.filterForm.pageNum-1)*this.filterForm.pageSize+index+1
-        },
-        sortChange(a){
-          if(a.order=="ascending"){//上升
-            this.filterForm.order = 'asc'
-          }else{//下降
-            this.filterForm.order = 'desc'
-          }
-          if(a.prop=="btcAmount"){
-            this.filterForm.coinName = 'BTC'
-          }else{
-            this.filterForm.coinName = this.$variableCoin
-          }
-          // this.filterForm.pageSize = 1;
-          this.filterForm.pageNum = 1;
-          this.getUserRaking();
-        },
-        dialogConfirm(){
-            this.ruleState.forEach(v=>{
-                if(v.value==this.ruleForm.status){
-                    this.ruleForm.reason=v.label
-                    return
-                }
-            })
-            //console.log(this.ruleForm)
-            this.$refs.ruleForm.validate(valid => {
-                if (valid) {
-                this.$http.post("/wallet/app/otc/backmgr/setCustomStatus", this.ruleForm).then(res => {
-                    this.$notify({
-                        title: "成功",
-                        message: `修改成功`,
-                        type: "success"
-                    });
-                        this.dialogVisible = false;
-                        this.getUserRaking();
-                    });
-                } else {
-                    console.log("error submit!!");
-                    return false;
-                }
-            });
-        },
-        getPaginationChange(val, currentPage) {
-          this.filterForm.pageSize = val;
-          this.filterForm.pageNum = currentPage;
-          this.getUserRaking();
-        },
-        modify(itemData){
-            this.$refs.ruleForm && this.$refs.ruleForm.resetFields();
-            let default_status=0
-            this.ruleState.forEach(v=>{
-                if(v.label==itemData.userStatusName){
-                    default_status=v.value
-                    return
-                }
-            })
-            this.ruleForm.userId=itemData.userId
-            this.ruleForm.status=default_status
-            this.dialogVisible=true
-        },
-        // 查询代理用户列表
-        getUserRaking() {
-          this.$http.post("/wallet/app/otc/backmgr/getUserRaking", this.filterForm).then((res) => {
-            this.listData.list = res.result.CustomerInfoExList.list;
-            this.ExList = res.result.sysCustomerInfoExList
-            this.listData.total = res.result.CustomerInfoExList.total;
-          })
-        },
-        detail(data){
-          console.log(data)
-        }
-      },
-      activated() {
-		this.getUserRaking();      // 查询代理用户列表
-		console.log(this.$variableCoin)
-      }
+		methods: {
+			indexMethod(index) {
+				return   (this.filterForm.pageNum-1)*this.filterForm.pageSize+index+1
+			},
+			sortChange(a){
+				if(a.order=="ascending"){//上升
+					this.filterForm.order = 'asc'
+				}else{//下降
+					this.filterForm.order = 'desc'
+				}
+				if(a.prop=="btcAmount"){
+					this.filterForm.coinName = 'BTC'
+				}else{
+					this.filterForm.coinName = this.$variableCoin
+				}
+				// this.filterForm.pageSize = 1;
+				this.filterForm.pageNum = 1;
+				this.getUserRaking();
+			},
+			dialogConfirm(){
+				this.ruleState.forEach(v=>{
+					if(v.value==this.ruleForm.status){
+						this.ruleForm.reason=v.label
+						return
+					}
+				})
+				//console.log(this.ruleForm)
+				this.$refs.ruleForm.validate(valid => {
+					if (valid) {
+					this.$http.post("/wallet/app/otc/backmgr/setCustomStatus", this.ruleForm).then(res => {
+						this.$notify({
+							title: "成功",
+							message: `修改成功`,
+							type: "success"
+						});
+							this.dialogVisible = false;
+							this.getUserRaking();
+						});
+					} else {
+						console.log("error submit!!");
+						return false;
+					}
+				});
+			},
+			getPaginationChange(val, currentPage) {
+				console.log(11)
+				this.filterForm.pageSize = val;
+				this.filterForm.pageNum = currentPage;
+				this.getUserRaking();
+			},
+			modify(itemData){
+				this.$refs.ruleForm && this.$refs.ruleForm.resetFields();
+				let default_status=0
+				this.ruleState.forEach(v=>{
+					if(v.label==itemData.userStatusName){
+						default_status=v.value
+						return
+					}
+				})
+				this.ruleForm.userId=itemData.userId
+				this.ruleForm.status=default_status
+				this.dialogVisible=true
+			},
+			// 查询代理用户列表
+			getUserRaking() {
+				this.$http.post("/wallet/app/otc/backmgr/getUserRaking", this.filterForm).then((res) => {
+					this.listData.list = res.result.CustomerInfoExList.list;
+					this.ExList = res.result.sysCustomerInfoExList
+					this.listData.total = res.result.CustomerInfoExList.total;
+				})
+			},
+			detail(data){
+				console.log(data)
+			}
+		},
+		activated() {
+			//this.getUserRaking();      // 查询代理用户列表
+		}
     };
 </script>
 <style lang="less">

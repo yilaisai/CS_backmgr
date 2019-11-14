@@ -1,8 +1,8 @@
 <template>
 	<div class="userQueryDetaile-page">
-		<el-header>
+		<!-- <el-header>
 			<el-button type="primary" @click="$router.go(-1)">返回</el-button>
-		</el-header>
+		</el-header> -->
 		<!-- <el-main></el-main> -->
 		<div class="main">
 			<div>
@@ -309,7 +309,7 @@ export default {
 				}
 			})
 		},
-		getData(){
+		getData() {
 			this.$http.post('/wallet/app/otc/backmgr/queryOtcUserDetail',this.filterForm).then(res=>{
 				if(res.code==200){
 					this.detaileData = res.result;
@@ -358,7 +358,7 @@ export default {
 	},
 	computed:{
 		...mapState(['coinInfo'])
-	}
+	},
 }
 </script>
 <style lang="less" scoped>

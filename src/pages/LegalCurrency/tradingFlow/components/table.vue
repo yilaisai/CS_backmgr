@@ -18,9 +18,10 @@
 				<span v-else>出售</span>
 			</template>
 		</el-table-column>
-		<el-table-column label="价格/数量/金额" width="120" align="center">
-			<span slot-scope="scope">{{scope.row.price}} <br />{{scope.row.amount}} <br />{{scope.row.money}}</span>
+		<el-table-column label="价格/数量" width="120" align="center">
+			<span slot-scope="scope">{{scope.row.price}} / {{scope.row.amount}}</span>
 		</el-table-column>
+		<el-table-column prop="money" label="金额" align="center" ></el-table-column>
 		<el-table-column prop="coinName" label="币种" align="center" ></el-table-column>
 		<el-table-column prop="fee" label="手续费" align="center" ></el-table-column>
 	</el-table>

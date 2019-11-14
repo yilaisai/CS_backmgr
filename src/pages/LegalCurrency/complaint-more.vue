@@ -8,11 +8,11 @@
 <template>
     <div class="complaint-more">
         <el-container>
-            <el-header>
+            <!-- <el-header>
                 <el-button type="primary" @click="routerReturn">返回</el-button>
-            </el-header>
+            </el-header> -->
             <el-main>
-                <el-table :data="listData.list" border  height="100%">
+                <el-table :data="listData.list" border  height="100%" size="mini">
                     <el-table-column prop="tradeId" label="订单号" width="180"></el-table-column>
                     <el-table-column prop="userId" label="用户ID" width="80"></el-table-column>
                     <el-table-column prop="isBuyer" label="身份" width="60">
@@ -45,8 +45,8 @@
                     
                 </el-table>
             </el-main>
-            <el-footer>
-                <sac-pagination v-show="listData.list.length>0"
+            <el-footer v-show="listData.list.length>0">
+                <sac-pagination 
                     @handleChange="handleCurrentChange"
                     :total="+listData.total"
                     :page-size="filterForm.pageSize"
@@ -165,16 +165,16 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-
 .complaint-more{
-     height:100%;
+	height:100%;
+	overflow-x: hidden;
+	overflow-y: auto;
     .el-container{
         height:100%;
         .el-main{
             height:100%;
-            
+            width: 100%;
         }
     } 
-    
 }
 </style>

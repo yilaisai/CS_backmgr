@@ -50,11 +50,12 @@
 					{{scope.row.auditStatus==0?'待审核':scope.row.auditStatus==1?'通过审核':scope.row.auditStatus==2?'审核不通过':''}}
 				</div>
 			</el-table-column>
-			<el-table-column align="center"  label="价格/数量/金额" width="130">
+			<el-table-column align="center"  label="价格/数量" width="130">
 				<template slot-scope="scope">
-					<span>{{scope.row.apiPrice}}<br />{{scope.row.apiStock}}<br />{{scope.row.apiAmount}}</span>
+					<span>{{scope.row.apiPrice}}<br />{{scope.row.apiStock}}</span>
 				</template>
 			</el-table-column>
+			<el-table-column align="center" prop="apiAmount" label="金额"></el-table-column>
 			<el-table-column align="center" prop="coinName" label="币种"></el-table-column>
 			<el-table-column align="center" prop="fee" label="手续费"></el-table-column>
 			<el-table-column align="center" prop="auditUserName" label="操作人"></el-table-column>

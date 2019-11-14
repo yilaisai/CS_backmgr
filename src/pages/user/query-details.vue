@@ -7,7 +7,7 @@
   <div class='query-details'>
       <el-header>
         <div class="nav">用户管理>用户查询>查看用户详情</div>
-        <el-button type="primary" @click="$router.go(-1)">返回</el-button>
+        <!-- <el-button type="primary" @click="$router.go(-1)">返回</el-button> -->
       </el-header>
     <div class="content">
       <label>基本信息：</label>
@@ -78,7 +78,7 @@
   </div>
 </template>
 <script>
-  export default {
+export default {
     name: 'query-details',
     data() {
       return {
@@ -106,8 +106,8 @@
     },
     activated() {
       this.getDetail(this.$route.query.userId);
-    }
-  };
+	},
+};
 </script>
 <style lang="less">
   .query-details {

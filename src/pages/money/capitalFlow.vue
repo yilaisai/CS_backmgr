@@ -112,6 +112,7 @@ export default {
 	height: 100%;
 	display: flex;
 	flex-direction: column;
+	box-sizing: border-box;
 	/deep/.scope p{
 		margin: 0;
 	}

@@ -30,7 +30,9 @@
                             <td>投诉类型：{{BuyList[0].appealType | filterType}}</td>
                         </tr>
                         <tr>
-                            <td>交易金额：{{BuyList[0].money}}</td>
+                            <td>交易金额：{{BuyList[0].money}}
+                                 <!-- <el-button class="edit" type="text" @click="showEdit()">修改</el-button>  -->
+                                 </td>
                             <td>数量：{{BuyList[0].amount}}</td>
                             <td>价格：{{BuyList[0].price}}</td>
                         </tr>
@@ -176,6 +178,20 @@
                 <p  v-if="payItem.payType!=1&&payItem.qrcode">收款码：<img style="width:384px;vertical-align: text-top;" :src="payItem.qrcode" alt=""></p>
              </div>
          </el-dialog>
+         <el-dialog class="EditPrompt" title="确认修改金额？" :visible.sync="dialogVisible2" width="420px">
+            <p>修改后，订单金额将发生变化，确认修改？</p>
+            <el-form ref="form" label-width="55px" size="mini">
+                <el-form-item label="金额：">
+                    <el-input v-model.trim="money" @input="moneyInput">
+                        <template slot="append">CNY</template>
+                    </el-input>
+                </el-form-item>
+            </el-form>
+            <div class="btns">
+                <el-button @click="dialogVisible2 = false" size="mini">取 消</el-button>
+                <el-button type="primary" size="mini" @click="appealChangeMoney">确 定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -183,8 +199,10 @@ export default {
     name:'complaint-details',
     data(){
         return{
+            money:'',
             dialogTitle:'结果裁定',
             dialogVisible:false,
+            dialogVisible2:false,
             payDetaileShow:false,
             tradeId:'',
             appealId:'',
@@ -276,7 +294,47 @@ export default {
 					}
 				})
 			})
+        },
+        showEdit(){
+            this.dialogVisible2=true
+            this.money = ''
+        },
+        moneyInput(){
+			this.money = this.money + ""
+			this.money = this.money.replace(/^\.$/g,"")  //清除第一个“.”   
+			this.money = this.money.replace(/[^\d.]/g,"")  //清除“数字”和“.”以外的字符   
+			this.money = this.money.replace(/\.{2,}/g,".") //只保留第一个. 清除多余的   
+			this.money = this.money.replace(".","$#$").replace(/\./g,"").replace("$#$",".")  
+			this.money = this.money.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3') //只能输入2个小数   
+			if(this.money.indexOf(".") < 0 && this.money != ""){ //以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额  
+				this.money = parseFloat(this.money)
+			}
 		},
+        appealChangeMoney(){
+            if( !(this.money>0) ){
+                this.$notify({
+                    title: "提示",
+                    message: `请输入金额`,
+                    type: "error"
+                });
+                return
+            }
+            this.$http.post('/wallet/app/otc/backmgr/appealChangeMoney', {
+                appealId: this.appealId,
+                money:Number(this.money)
+			}).then(res=>{
+				if(res.code == 200){
+                    this.getBuyList()
+                    this.$notify({
+                        title: "成功",
+                        message: res.msg,
+                        type: "success"
+                    });
+                    this.dialogVisible2 = false
+                }
+                
+			})
+        },
         getBuyList(){
             const postdata={
                 appealId:this.appealId
@@ -285,10 +343,10 @@ export default {
                 //console.log(res)
                 const {list} = res.result;
                 this.BuyList = list;
-                const postdata2={
-                    appealId:this.appealId,
-                    userId:res.result.list[0].userId
-                }
+                // const postdata2={
+                //     appealId:this.appealId,
+                //     userId:res.result.list[0].userId
+                // }
                 // this.$http.post('/wallet/app/otc/backmgr/proofInfo',postdata2).then(res2=>{
                 //     this.BuyProofInfo = res2;
                 // })
@@ -299,6 +357,7 @@ export default {
             this.payItem = data
             this.payDetaileShow = true
         },
+        
         getSaleList(){
             const postdata={
                 appealId:this.appealId
@@ -428,6 +487,17 @@ export default {
             .el-textarea textarea{
                 min-height:100px !important;
             }
+        }
+    }
+    .edit{
+        padding: 3px 5px;
+    }
+    .EditPrompt{
+        /deep/.el-dialog__body{
+            padding-top: 0;
+        }
+        .btns{
+            text-align: right;
         }
     }
 }

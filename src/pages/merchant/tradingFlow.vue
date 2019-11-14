@@ -102,7 +102,7 @@
 										<el-button type="danger" size="mini" v-if="scope.row.trade_status==8&&showActiveBtn(scope.row.create_time)" @click.native="orderActivation(scope.row)">激活订单</el-button>
 										<el-button type="danger" size="mini" v-if="scope.row.trade_status==2&&scope.row.isActivation==1" @click.native="activationLetgo(scope.row.trade_id)">&nbsp;&nbsp;放 &nbsp;&nbsp;行&nbsp;&nbsp;</el-button>
 										
-										<el-button type="warning" size="mini" v-if="(scope.row.adv_type == 4 || scope.row.adv_type == 5) && (scope.row.trade_status == 3 || scope.row.trade_status == 6)" @click="returnApi(scope.row)">异步补发</el-button>
+										<el-button type="warning" size="mini" v-if="((scope.row.adv_type == 4 || scope.row.adv_type == 5) && (scope.row.trade_status == 3 || scope.row.trade_status == 6))&&scope.row.trade_type!=3" @click="returnApi(scope.row)">异步补发</el-button>
 										<el-button type="warning" size="mini" v-if="((scope.row.adv_type == 4 || scope.row.adv_type == 5) && (scope.row.trade_status == 3 || scope.row.trade_status == 6))&&scope.row.trade_type!=3" @click="showPrompt(scope.row)">手动录单</el-button>
 									</template>
 								</el-table-column>
@@ -121,7 +121,7 @@
 					<p>录单成功将生成一笔订单状态为完成的单，确认录单？</p>
 					<el-form ref="form" label-width="55px" size="mini">
 						<el-form-item label="金额：">
-							<el-input v-model.trim="amount">
+							<el-input v-model.trim="amount" @input="moneyInput">
 								<template slot="append">CNY</template>
 							</el-input>
 						</el-form-item>
@@ -235,10 +235,30 @@ export default {
 		// 
 		showPrompt(selectItem){
 			this.selectItem = selectItem
+			this.amount = ''
 			this.dialogVisible = true
 			
 		},
+		moneyInput(){
+			this.amount = this.amount + ""
+			this.amount = this.amount.replace(/^\.$/g,"")  //清除第一个“.”   
+			this.amount = this.amount.replace(/[^\d.]/g,"")  //清除“数字”和“.”以外的字符   
+			this.amount = this.amount.replace(/\.{2,}/g,".") //只保留第一个. 清除多余的   
+			this.amount = this.amount.replace(".","$#$").replace(/\./g,"").replace("$#$",".")  
+			this.amount = this.amount.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3') //只能输入2个小数   
+			if(this.amount.indexOf(".") < 0 && this.amount != ""){ //以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额  
+				this.amount = parseFloat(this.amount)
+			}
+		},
 		addNewRecordAdmin(){
+			if( !(this.amount>0) ){
+					this.$notify({
+							title: "提示",
+							message: `请输入金额`,
+							type: "error"
+					});
+					return
+			}
 			this.$http.post('/wallet/backmgr/merchant/addNewRecordAdmin',{
 				tradeId: this.selectItem.trade_id,
 				amount:this.amount
@@ -498,7 +518,7 @@ export default {
 		/deep/.el-dialog__body{
 			padding-top: 0;
 			p{
-				&:first-of-type{
+				&:last-of-type{
 					color: red;
 				}
 			}

@@ -72,7 +72,7 @@
 							</li>
 						</ul> -->
 						<el-table :data="listData.list" border height="100%" size="mini">
-								<el-table-column  label="类型" align="center">
+								<el-table-column  label="类型" align="center" width="100">
 									<template slot-scope="scope">{{advTypeMap[scope.row.adv_type]}}</template>
 								</el-table-column>
 								<el-table-column  label="商户单号/平台单号/下单时间" width="180" align="center" >
@@ -84,25 +84,26 @@
 								<el-table-column label="承兑商昵称/账户" width="150" align="center">
 									<span slot-scope="scope">{{scope.row.nick_name}}<br />{{scope.row.phone}}</span>
 								</el-table-column>
-								<el-table-column prop="tradeTime" label="状态" align="center" >
+								<el-table-column prop="tradeTime" label="状态" width="100" align="center" >
 									<template slot-scope="scope">{{tradeStatusMap[scope.row.trade_status]}}</template>
 								</el-table-column>
-								<el-table-column label="价格/数量/金额" width="120" align="center">
+								<el-table-column label="价格/数量/金额" width="150" align="center">
 									<div slot-scope="scope">
 										<span>{{scope.row.taker_price}}</span><br />
 										<span>{{scope.row.taker_amount}}</span><br />
 										<span>{{scope.row.amount}}</span>
 									</div>
 								</el-table-column>
-								<el-table-column prop="coin_name" label="币种" align="center"></el-table-column>
-								<el-table-column prop="fee" label="手续费" align="center"></el-table-column>
-								<el-table-column prop="price" label="操作" fixed="right" align="center" width="200">
+								<el-table-column prop="coin_name" label="币种" width="60" align="center"></el-table-column>
+								<el-table-column prop="fee" label="手续费" width="150" align="center"></el-table-column>
+								<el-table-column prop="price" label="操作" fixed="right" align="center" width="300">
 									<template slot-scope="scope">
 										<el-button type="primary" size="mini" @click.native="$router.push({path:'/merchant/merchantTradingFlowDetaile',query:{tradeId:scope.row.trade_id}})">查看详情</el-button>
 										<el-button type="danger" size="mini" v-if="scope.row.trade_status==8&&showActiveBtn(scope.row.create_time)" @click.native="orderActivation(scope.row)">激活订单</el-button>
-										<el-button type="primary" size="mini" v-if="scope.row.trade_status==2&&scope.row.isActivation==1" @click.native="activationLetgo(scope.row.trade_id)">&nbsp;&nbsp;放 &nbsp;&nbsp;行&nbsp;&nbsp;</el-button>
+										<el-button type="danger" size="mini" v-if="scope.row.trade_status==2&&scope.row.isActivation==1" @click.native="activationLetgo(scope.row.trade_id)">&nbsp;&nbsp;放 &nbsp;&nbsp;行&nbsp;&nbsp;</el-button>
 										
 										<el-button type="warning" size="mini" v-if="(scope.row.adv_type == 4 || scope.row.adv_type == 5) && (scope.row.trade_status == 3 || scope.row.trade_status == 6)" @click="returnApi(scope.row)">异步补发</el-button>
+										<el-button type="warning" size="mini" v-if="((scope.row.adv_type == 4 || scope.row.adv_type == 5) && (scope.row.trade_status == 3 || scope.row.trade_status == 6))&&scope.row.trade_type!=3" @click="showPrompt(scope.row)">手动录单</el-button>
 									</template>
 								</el-table-column>
 						</el-table>
@@ -116,6 +117,21 @@
                 </sac-pagination>
             </el-footer>
         </el-container>
+				<el-dialog class="EntryPrompt" title="确定手动录单？" :visible.sync="dialogVisible" width="420px">
+					<p>录单成功将生成一笔订单状态为完成的单，确认录单？</p>
+					<el-form ref="form" label-width="55px" size="mini">
+						<el-form-item label="金额：">
+							<el-input v-model.trim="amount">
+								<template slot="append">CNY</template>
+							</el-input>
+						</el-form-item>
+					</el-form>
+					<p>其他信息同订单号：{{selectItem.trade_id}}</p>
+					<div class="btns">
+						<el-button @click="dialogVisible = false" size="mini">取 消</el-button>
+						<el-button type="primary" size="mini" @click="addNewRecordAdmin">确 定</el-button>
+					</div>
+				</el-dialog>
     </div>
 </template>
 <script>
@@ -125,6 +141,11 @@ export default {
 	name:'transaction-details',
 	data(){
 		return{
+			dialogVisible:false,
+			selectItem:{
+				trade_id:''
+			},
+			amount:'',
 			selectedDate: [], //已选日期
 			currentPage:1,
 			filterForm:{
@@ -211,11 +232,31 @@ export default {
 				this.listData.total = total;
 			})
 		},
+		// 
+		showPrompt(selectItem){
+			this.selectItem = selectItem
+			this.dialogVisible = true
+			
+		},
+		addNewRecordAdmin(){
+			this.$http.post('/wallet/backmgr/merchant/addNewRecordAdmin',{
+				tradeId: this.selectItem.trade_id,
+				amount:this.amount
+			}).then(res=>{
+				this.dialogVisible = false
+				this.getList()
+				this.$notify({
+								title: '成功',
+								message: res.msg,
+								type: 'success'
+							});
+			})
+		},
 		activationLetgo(tradeId){
-			this.$confirm('确定要放行该订单吗?', '提示', {
+			this.$confirm('放行后订单状态将变为已完成(码商扣币，商户加币)，确认放行？', '确认放行订单？', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          type: 'warning'
+          // type: 'warning'
         }).then(() => {
           this.$http.post('/wallet/backmgr/merchant/activationLetgo',{
 						tradeId:tradeId
@@ -249,17 +290,25 @@ export default {
 			})
 		},
 		orderActivation(item){
-			this.$http.post('/wallet/backmgr/merchant/activation',{tradeId: item.trade_id,}).then(res=>{
-				if(res.code==200){
-					// this.statistics = res.result
-					this.getList()
-					this.$notify({
-						title: '成功',
-						message: res.msg,
-						type: 'success'
-					});
-				}
-			})
+			this.$confirm('激活后订单状态将变为已付款待放行，确认激活?', '确认激活订单？', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          // type: 'warning'
+        }).then(() => {
+          this.$http.post('/wallet/backmgr/merchant/activation',{tradeId: item.trade_id,}).then(res=>{
+						if(res.code==200){
+							// this.statistics = res.result
+							this.getList()
+							this.$notify({
+								title: '成功',
+								message: res.msg,
+								type: 'success'
+							});
+						}
+					})
+        }).catch(() => {    
+        });
+			
 		},
 		showActiveBtn(create_time){
 			if(new Date().getTime()-create_time<86400000){
@@ -442,6 +491,22 @@ export default {
 			}
 			
 		}
+	.EntryPrompt{
+		// position: fixed;
+		// width: 100%;
+		// height: 100%;
+		/deep/.el-dialog__body{
+			padding-top: 0;
+			p{
+				&:first-of-type{
+					color: red;
+				}
+			}
+			.btns{
+				text-align: right;
+			}
+		}
+	}
 }
   
 </style>

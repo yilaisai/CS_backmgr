@@ -37,12 +37,16 @@ function responseErrorHandler(error) {
 	} else {
 		text = '请求超时'
 		// 切换请求地址
-		if(axios.defaults.baseURL == window.SERVER_PATH) {
-			axios.defaults.baseURL = window.SERVER_PATH2
-		}else {
-			axios.defaults.baseURL = window.SERVER_PATH
+		if((new Date().getTime()-(localStorage.getItem('setUrlTime')||0))/1000>10){
+			if(axios.defaults.baseURL == window.SERVER_PATH) {
+				axios.defaults.baseURL = window.SERVER_PATH2
+			}else {
+				axios.defaults.baseURL = window.SERVER_PATH
+			}
+			localStorage.setItem("SERVER_PATH", axios.defaults.baseURL)
+			localStorage.setItem("setUrlTime", new Date().getTime())
 		}
-		localStorage.setItem("SERVER_PATH", axios.defaults.baseURL)
+		
 	}
 
 	Notification({

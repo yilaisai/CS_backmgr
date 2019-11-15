@@ -3,43 +3,53 @@
     <div class="complaint">
         <el-container>
             <el-header>
-                <div class="left">
+                <!-- <div class="left">
                     <el-input placeholder="请输入订单号" v-model="filterForm.tradeId" class="input-with-select">
                         <el-select v-model="filterForm.appealStatus"  slot="prepend" style="width:130px">
                             <el-option :label="item.label" :value="item.value" v-for="(item,index) in stateData" :key="index"></el-option>
                         </el-select>
                         <el-button slot="append" icon="el-icon-search" @click="search">搜索</el-button>
                     </el-input>
-                </div>
-                <div class="right">
+                </div> -->
+                
+                <el-form :inline="true"  ref="filterForm" :model="filterForm" size="mini" label-width="80px">
+                    <el-form-item label="订单号:">
+                        <el-input placeholder="请输入单号" v-model.trim="filterForm.tradeId" class="input-with-select"></el-input>
+                    </el-form-item>
+                    <el-form-item label="交易类型:">
+                        <el-select v-model="filterForm.advType" >
+                            <el-option v-for="(item, key) in advTypeList" :key="key" :value="item.value " :label="item.label"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="交易状态:">
+                        <el-select v-model="filterForm.appealStatus" >
+                            <el-option :label="item.label" :value="item.value" v-for="(item,index) in stateData" :key="index"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-button @click="search" type="primary" >搜索</el-button>
                     <el-button @click="checkLog" >查看客服操作日志</el-button>
-                </div>
+                </el-form>   
+                <!-- <div class="right">
+                    <el-button @click="checkLog" >查看客服操作日志</el-button>
+                </div> -->
             </el-header>
             <el-main>
                 <el-table :data="listData.list" border style="width: 100%" height="100%" size="mini">
-                    <el-table-column prop="tradeId" label="订单号" width="150" align="center"></el-table-column>
-                    <el-table-column prop="userId" label="用户id" width="60" align="center" ></el-table-column>
-                    <el-table-column prop="appealType" label="投诉类型" >
+                    <el-table-column prop="tradeId" label="订单号" align="center"></el-table-column>
+                    <el-table-column prop="userId" label="用户id"  align="center" ></el-table-column>
+                    <el-table-column prop="appealType" align="center" width="90" label="交易类型" >
                         <template slot-scope="scope">
-                            <span v-if="scope.row.appealType==0">其他</span>
-                            <span v-if="scope.row.appealType==1">对方未付款</span>
-                            <span v-if="scope.row.appealType==2">对方未放行</span>
-                            <span v-if="scope.row.appealType==3">对方无应答</span>
-                            <span v-if="scope.row.appealType==4">对方有欺诈行为</span>
+                            <span>{{ scope.row.advType | advTypeFilter}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="isBuyer" label="身份" width="60" align="center">
+                    <el-table-column prop="isBuyer" label="身份"  align="center">
                         <template slot-scope="scope">
-                            <span v-if="scope.row.isBuyer == 0">卖家</span>
-                            <span v-else>买家</span>
+                            <span v-if="scope.row.taker == 1">商户</span>
+                            <span v-else>码商</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="referNo" label="付款参考号" align="center"></el-table-column>
-                    <el-table-column prop="appealCode" label="申诉对接口令" align="center"></el-table-column>
-                    <el-table-column prop="slaveCode" label="被申诉对接口令" align="center"></el-table-column>
-                    
-                    <el-table-column prop="appealId" label="申诉号" width="150" align="center" ></el-table-column>
-                    <el-table-column  prop="tradeTime" label="投诉时间" width="150" align="center"></el-table-column>
+                    <el-table-column prop="appealId" label="申诉号" align="center" ></el-table-column>
+                    <el-table-column  prop="tradeTime" label="投诉时间"  align="center"></el-table-column>
                     <el-table-column label="操作" width="120" >
                         <template slot-scope="scope">
                             <el-button  plain size="small" 
@@ -79,10 +89,15 @@ export default {
             filterForm:{
                 appealStatus:'0',
                 tradeId:'',
+                advType:'',
                 pageNum:1,
                 pageSize: 20
             },
             stateData:[
+                {
+                    label:'全部',
+                    value:"2"
+                },
                 {
                     label:'处理中',
                     value:"0"
@@ -91,10 +106,14 @@ export default {
                     label:'已处理',
                     value:"1"
                 },
-                {
-                    label:'全部',
-                    value:"2"
-                },
+            ],
+            advTypeList:[
+                {value:'',label:"全部"},
+                {value:'1',label:"普通交易"},
+                {value:'3',label:"抢单兑出"},
+                {value:'4',label:"抢单兑入"},
+                {value:'6',label:"派单兑出"},
+                {value:'5',label:"派单兑入"},
             ],
             listData: {
                 total: null,
@@ -169,5 +188,19 @@ export default {
       float: right;
       overflow: hidden;
   }
-}    
+} 
+/deep/.el-form{
+    display: flex;
+    flex-direction: row;
+    .el-form-item{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    .el-button{
+        padding: 0 15px;
+        height: 29px;
+    }
+}
+   
 </style>

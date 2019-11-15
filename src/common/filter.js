@@ -48,3 +48,21 @@ export const transferQueryStatusType = (value) => {
   }
 };
 Vue.filter('transferQueryStatusType', transferQueryStatusType);
+//1, 3  4 5 6
+export const advTypeFilter = (value) => {
+  switch (value) {
+    case 1:
+      return '普通交易';
+    case 2:
+      return '普通交易';
+    case 3:
+      return '抢单兑出';
+    case 4:
+      return '抢单兑入';
+    case 5:
+      return '派单兑入';
+    case 6:
+      return '派单兑出';
+  }
+};
+Vue.filter('advTypeFilter', advTypeFilter);

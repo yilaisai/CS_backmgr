@@ -15,62 +15,11 @@
             <el-button type="primary" @click="$router.go(-1)" v-else>返回</el-button>
         </el-header>
         <div class="card-all-box clearfix">
-            <div class="card-box" v-if="BuyList.length>0">
-                <el-card class="box-card">
-                    <div slot="header" class="clearfix">
-                        <span>买家信息</span>
-                        <el-button style="float: right; padding: 3px 0" type="text" @click="routerMore(BuyList[0].userId)">查看更多</el-button>
-                    </div>
-                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#dee2e6" class="com-table">
-                        <tr>
-                            <td>订单号：{{BuyList[0].tradeId}}</td>
-                            <td>用户id：{{BuyList[0].userId}}</td>
-                            <td>账号：{{BuyList[0].phone}}</td>
-                        </tr>
-                        <tr>
-                            <td>昵称：{{BuyList[0].nickName}}</td>
-                            <td>交易类型：{{BuyList[0].advType | advTypeFilter}}</td>
-                            <td>投诉时间：{{$fmtDate(BuyList[0].createTime,'full') }}</td>
-                        </tr>
-                        <tr>
-                            <td>交易金额：{{BuyList[0].money}} <el-button class="edit" type="text" @click="showEdit()">修改</el-button> </td>
-                            <td>数量：{{BuyList[0].amount}}</td>
-                            <td>价格：{{BuyList[0].price}}</td>
-                        </tr>
-                         <tr class="payList">
-                            <td v-show="BuyList[0].aPayList&&BuyList[0].aPayList.length>0">
-                                <div>
-                                    <p>支付宝：</p>
-                                    <ul>
-                                        <li v-for=" (item,index) in BuyList[0].aPayList " :key="index"> 账号 <span >{{index+1}}</span> ： {{  item.num }} <el-button  type="text" @click="payDetaile(item)">详情</el-button></li>
-                                    </ul>
-                                </div>
-                            </td>
-                            <td v-show="BuyList[0].wPayList&&BuyList[0].wPayList.length>0">
-                                <div>
-                                    <p>微信：</p>
-                                    <ul>
-                                        <li v-for=" (item,index) in BuyList[0].wPayList " :key="index"> 账号 <span >{{index+1}}</span> ： {{  item.num }}<el-button  type="text" @click="payDetaile(item)">详情</el-button></li>
-                                    </ul>
-                                </div>
-                            </td>
-                            <td v-show="BuyList[0].bankPayList&&BuyList[0].bankPayList.length>0">
-                                <div>
-                                    <p>银行卡：</p>
-                                    <ul>
-                                        <li v-for=" (item,index) in BuyList[0].bankPayList " :key="index"> 账号 <span >{{index+1}}</span> ： {{  item.num }}<el-button  type="text" @click="payDetaile(item)">详情</el-button></li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                </el-card>
-            </div>
             <div class="card-box" v-if="SaleList.length>0">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
-                        <span>卖家信息</span>
-                        <el-button style="float: right; padding: 3px 0" type="text" @click="routerMore(SaleList[0].userId)">查看更多</el-button>
+                        <span>商户信息</span>
+                        <!-- <el-button style="float: right; padding: 3px 0" type="text" @click="routerMore(SaleList[0].userId)">查看更多</el-button> -->
                     </div>
                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#dee2e6" class="com-table">
                         <tr>
@@ -79,9 +28,14 @@
                             <td>账号：{{SaleList[0].phone}}</td>
                         </tr>
                         <tr>
-                            <td>昵称{{SaleList[0].nickName}}</td>
+                            <td>昵称：{{SaleList[0].nickName}}</td>
                             <td>交易类型：{{SaleList[0].advType | advTypeFilter}}</td>
                             <td>投诉时间：{{$fmtDate(SaleList[0].createTime,'full') }}</td>
+                        </tr>
+                        <tr>
+                            <td>交易金额：{{SaleList[0].money}} <el-button class="edit" type="text" @click="showEdit()">修改</el-button> </td>
+                            <td>数量：{{SaleList[0].amount}}</td>
+                            <td>价格：{{SaleList[0].price}}</td>
                         </tr>
                         <tr class="payList">
                             <td  v-show="SaleList[0].aPayList&&SaleList[0].aPayList.length>0 ">
@@ -112,6 +66,53 @@
                     </table>
                 </el-card>
             </div>
+            <div class="card-box" v-if="BuyList.length>0">
+                <el-card class="box-card">
+                    <div slot="header" class="clearfix">
+                        <span>码商信息</span>
+                        <!-- <el-button style="float: right; padding: 3px 0" type="text" @click="routerMore(BuyList[0].userId)">查看更多</el-button> -->
+                    </div>
+                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#dee2e6" class="com-table">
+                        <tr>
+                            <td>订单号：{{BuyList[0].tradeId}}</td>
+                            <td>用户id：{{BuyList[0].userId}}</td>
+                            <td>账号：{{BuyList[0].phone}}</td>
+                        </tr>
+                        <tr>
+                            <td>昵称：{{BuyList[0].nickName}}</td>
+                            <td>交易类型：{{BuyList[0].advType | advTypeFilter}}</td>
+                            <td>投诉时间：{{$fmtDate(BuyList[0].createTime,'full') }}</td>
+                        </tr>
+                         <tr class="payList">
+                            <td v-show="BuyList[0].aPayList&&BuyList[0].aPayList.length>0">
+                                <div>
+                                    <p>支付宝：</p>
+                                    <ul>
+                                        <li v-for=" (item,index) in BuyList[0].aPayList " :key="index"> 账号 <span >{{index+1}}</span> ： {{  item.num }} <el-button  type="text" @click="payDetaile(item)">详情</el-button></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td v-show="BuyList[0].wPayList&&BuyList[0].wPayList.length>0">
+                                <div>
+                                    <p>微信：</p>
+                                    <ul>
+                                        <li v-for=" (item,index) in BuyList[0].wPayList " :key="index"> 账号 <span >{{index+1}}</span> ： {{  item.num }}<el-button  type="text" @click="payDetaile(item)">详情</el-button></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td v-show="BuyList[0].bankPayList&&BuyList[0].bankPayList.length>0">
+                                <div>
+                                    <p>银行卡：</p>
+                                    <ul>
+                                        <li v-for=" (item,index) in BuyList[0].bankPayList " :key="index"> 账号 <span >{{index+1}}</span> ： {{  item.num }}<el-button  type="text" @click="payDetaile(item)">详情</el-button></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </el-card>
+            </div>
+            
         </div>
         <div class="card-all-box clearfix">
             <div class="card-box">

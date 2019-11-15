@@ -177,6 +177,12 @@ export default {
 					case 27:
 						return 'otc提币失败'
 					break;
+						case 28:
+						return '激活订单'
+					break;
+					case 29:
+						return '申诉修改金额'
+						break;
 					default:
 						return 'null'
 				} 

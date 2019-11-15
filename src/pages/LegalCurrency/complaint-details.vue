@@ -33,7 +33,7 @@
                             <td>投诉时间：{{$fmtDate(SaleList[0].createTime,'full') }}</td>
                         </tr>
                         <tr>
-                            <td>交易金额：{{SaleList[0].money}} <el-button class="edit" type="text" @click="showEdit()">修改</el-button> </td>
+                            <td>交易金额：{{SaleList[0].money}} <el-button v-if="appealStatus+'' == '0'" class="edit" type="text" @click="showEdit()">修改</el-button> </td>
                             <td>数量：{{SaleList[0].amount}}</td>
                             <td>价格：{{SaleList[0].price}}</td>
                         </tr>

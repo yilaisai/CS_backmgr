@@ -330,7 +330,7 @@ export default {
 			
 		},
 		showActiveBtn(create_time){
-			if(new Date().getTime()-create_time<86400000){
+			if(new Date().getTime()-create_time<259200000){
 				return true
 			}else{
 				return false

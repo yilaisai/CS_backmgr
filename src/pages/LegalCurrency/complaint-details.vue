@@ -9,73 +9,56 @@
     <div class="complaint-details">
         <el-header>
             <!-- <el-button type="primary" @click="routerReturn">返回</el-button> -->
-            <el-button type="primary" @click="judgment" v-if="$route.query.appealResult == 0">判决</el-button>
+            <p>
+            </p>
+            <el-button type="primary" @click="judgment" v-if="appealStatus+'' == '0'">判决</el-button>
+            <el-button type="primary" @click="$router.go(-1)" v-else>返回</el-button>
         </el-header>
         <div class="card-all-box clearfix">
-            <div class="card-box" v-if="BuyList.length>0">
-                <el-card class="box-card">
-                    <div slot="header" class="clearfix">
-                        <span>买家信息</span>
-                        <el-button style="float: right; padding: 3px 0" type="text" @click="routerMore(BuyList[0].userId)">查看更多</el-button>
-                    </div>
-                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#dee2e6" class="com-table">
-                        <tr>
-                            <td>订单号：{{BuyList[0].tradeId}}</td>
-                            <td>用户id：{{BuyList[0].userId}}</td>
-                            <td>身份：{{BuyList[0].isBuyer==1?'买家':'卖家'}}</td>
-                        </tr>
-                        <tr>
-                            <td>付款参考号：{{BuyList[0].referNo}}</td>
-                            <td>申诉对接口令：{{BuyList[0].code}}</td>
-                            <td>投诉类型：{{BuyList[0].appealType | filterType}}</td>
-                        </tr>
-                        <tr>
-                            <td>交易金额：{{BuyList[0].money}}</td>
-                            <td>数量：{{BuyList[0].amount}}</td>
-                            <td>价格：{{BuyList[0].price}}</td>
-                        </tr>
-                    </table>
-                </el-card>
-            </div>
             <div class="card-box" v-if="SaleList.length>0">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
-                        <span>卖家信息</span>
-                        <el-button style="float: right; padding: 3px 0" type="text" @click="routerMore(SaleList[0].userId)">查看更多</el-button>
+                        <span>商户信息</span>
+                        <!-- <el-button style="float: right; padding: 3px 0" type="text" @click="routerMore(SaleList[0].userId)">查看更多</el-button> -->
                     </div>
                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#dee2e6" class="com-table">
                         <tr>
                             <td>订单号：{{SaleList[0].tradeId}}</td>
                             <td>用户id：{{SaleList[0].userId}}</td>
-                            <td>身份：{{SaleList[0].isBuyer==1?'买家':'卖家'}}</td>
+                            <td>账号：{{SaleList[0].phone}}</td>
                         </tr>
                         <tr>
-                            <td>付款参考号：{{SaleList[0].referNo}}</td>
-                            <td>申诉对接口令：{{SaleList[0].code}}</td>
-                            <td>投诉类型：{{SaleList[0].appealType | filterType}}</td>
+                            <td>昵称：{{SaleList[0].nickName}}</td>
+                            <td>交易类型：{{SaleList[0].advType | advTypeFilter}}</td>
+                            <td>投诉时间：{{$fmtDate(SaleList[0].createTime,'full') }}</td>
+                        </tr>
+                        <tr>
+                            <td>交易金额：{{SaleList[0].money}} <el-button v-if="appealStatus+'' == '0'" class="edit" type="text" @click="showEdit()">修改</el-button> </td>
+                            <td>数量：{{SaleList[0].amount}}</td>
+                            <td>价格：{{SaleList[0].price}}</td>
                         </tr>
                         <tr class="payList">
-                            <td >
+                            <td  v-show="SaleList[0].aPayList&&SaleList[0].aPayList.length>0 ">
                                 <div>
                                     <p>支付宝：</p>
                                     <ul>
-                                        <li v-for=" (item,index) in SaleList[0].aPayList " :key="index"> 账号 <span v-show="SaleList[0].aPayList.length>1">{{index+1}}</span> ： {{  item.num }} <el-button  type="text" @click="payDetaile(item)">详情</el-button></li>
+                                        <li v-for=" (item,index) in SaleList[0].aPayList " :key="index"> 账号 <span>{{index+1}}</span> ： {{  item.num }} <el-button  type="text" @click="payDetaile(item)">详情</el-button></li>
                                     </ul>
                                 </div>
                             </td>
-                            <td>
+                            <td v-show="SaleList[0].wPayList&&SaleList[0].wPayList.length>0">
                                 <div>
                                     <p>微信：</p>
                                     <ul>
-                                        <li v-for=" (item,index) in SaleList[0].wPayList " :key="index"> 账号 <span v-show="SaleList[0].wPayList.length>1">{{index+1}}</span> ： {{  item.num }}<el-button  type="text" @click="payDetaile(item)">详情</el-button></li>
+                                        <li v-for=" (item,index) in SaleList[0].wPayList " :key="index"> 账号 <span >{{index+1}}</span> ： {{  item.num }}<el-button  type="text" @click="payDetaile(item)">详情</el-button></li>
                                     </ul>
                                 </div>
                             </td>
-                            <td>
+                            <td v-show="SaleList[0].bankPayList&&SaleList[0].bankPayList.length>0">
                                 <div>
                                     <p>银行：</p>
                                     <ul>
-                                        <li v-for=" (item,index) in SaleList[0].bankPayList " :key="index"> 账号 <span v-show="SaleList[0].bankPayList.length>1">{{index+1}}</span> ： {{  item.num }}<el-button  type="text" @click="payDetaile(item)">详情</el-button></li>
+                                        <li v-for=" (item,index) in SaleList[0].bankPayList " :key="index"> 账号 <span >{{index+1}}</span> ： {{  item.num }}<el-button  type="text" @click="payDetaile(item)">详情</el-button></li>
                                     </ul>
                                 </div>
                             </td>
@@ -83,6 +66,53 @@
                     </table>
                 </el-card>
             </div>
+            <div class="card-box" v-if="BuyList.length>0">
+                <el-card class="box-card">
+                    <div slot="header" class="clearfix">
+                        <span>码商信息</span>
+                        <!-- <el-button style="float: right; padding: 3px 0" type="text" @click="routerMore(BuyList[0].userId)">查看更多</el-button> -->
+                    </div>
+                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#dee2e6" class="com-table">
+                        <tr>
+                            <td>订单号：{{BuyList[0].tradeId}}</td>
+                            <td>用户id：{{BuyList[0].userId}}</td>
+                            <td>账号：{{BuyList[0].phone}}</td>
+                        </tr>
+                        <tr>
+                            <td>昵称：{{BuyList[0].nickName}}</td>
+                            <td>交易类型：{{BuyList[0].advType | advTypeFilter}}</td>
+                            <td>投诉时间：{{$fmtDate(BuyList[0].createTime,'full') }}</td>
+                        </tr>
+                         <tr class="payList">
+                            <td v-show="BuyList[0].aPayList&&BuyList[0].aPayList.length>0">
+                                <div>
+                                    <p>支付宝：</p>
+                                    <ul>
+                                        <li v-for=" (item,index) in BuyList[0].aPayList " :key="index"> 账号 <span >{{index+1}}</span> ： {{  item.num }} <el-button  type="text" @click="payDetaile(item)">详情</el-button></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td v-show="BuyList[0].wPayList&&BuyList[0].wPayList.length>0">
+                                <div>
+                                    <p>微信：</p>
+                                    <ul>
+                                        <li v-for=" (item,index) in BuyList[0].wPayList " :key="index"> 账号 <span >{{index+1}}</span> ： {{  item.num }}<el-button  type="text" @click="payDetaile(item)">详情</el-button></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td v-show="BuyList[0].bankPayList&&BuyList[0].bankPayList.length>0">
+                                <div>
+                                    <p>银行卡：</p>
+                                    <ul>
+                                        <li v-for=" (item,index) in BuyList[0].bankPayList " :key="index"> 账号 <span >{{index+1}}</span> ： {{  item.num }}<el-button  type="text" @click="payDetaile(item)">详情</el-button></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </el-card>
+            </div>
+            
         </div>
         <div class="card-all-box clearfix">
             <div class="card-box">
@@ -196,6 +226,7 @@ export default {
     name:'complaint-details',
     data(){
         return{
+            appealStatus:'',
             money:'',
             dialogTitle:'结果裁定',
             dialogVisible:false,
@@ -339,8 +370,10 @@ export default {
             }
             this.$http.post('/wallet/app/otc/backmgr/infoBuyList',postdata).then(res=>{
                 //console.log(res)
-                const {list} = res.result;
-                this.BuyList = list;
+                this.appealStatus = res.result.appealStatus
+                const {makerMap,takerMap} = res.result;
+                this.BuyList = [makerMap];
+                this.SaleList = [takerMap]
                 // const postdata2={
                 //     appealId:this.appealId,
                 //     userId:res.result.list[0].userId
@@ -397,6 +430,7 @@ export default {
                     type: "success"
                 });
                 this.dialogVisible=false
+                this.getBuyList()
             })
         }
     },
@@ -407,7 +441,7 @@ export default {
         this.appealId=this.$route.query.appealId
 		this.getProofInfo()
 		this.getBuyList()
-		this.getSaleList()
+		// this.getSaleList()
     }
 }
 </script>

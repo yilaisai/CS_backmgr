@@ -95,6 +95,9 @@ Vue.filter("optType", function (val) {  //保留小数位，acc为保留几位�
 	case 28:
       return '激活订单'
     break;
+  case 29:
+    return '申诉修改金额'
+    break;
     default:
       return ''
   }

@@ -148,7 +148,8 @@ export default {
 
 <style scoped lang="less">
 .complaint{
-     height:100%;
+	 height:100%;
+	 box-sizing: border-box;
     .el-container{
         height:100%;
         .el-main{

@@ -91,6 +91,7 @@ export default {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
+	overflow: hidden;
 	h4 {
 		padding: 0 10px;
 		margin: 0;

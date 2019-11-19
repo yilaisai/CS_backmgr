@@ -109,6 +109,7 @@ export default {
 	height: 100%;
 	display: flex;
 	flex-direction: column;
+	box-sizing: border-box;
 		.dateItem{
 			width: 480px;
 		}

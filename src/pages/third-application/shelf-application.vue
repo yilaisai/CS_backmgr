@@ -6,7 +6,7 @@
 <template>
   <div class='shelf-application'>
     <sac-table :data="listData.list">
-      <el-table-column label="图标">
+      <el-table-column label="图标" align="center">
         <template slot-scope="scope" prop="updateTime">
           <viewer :options="options"
                   class="viewer" ref="viewer"
@@ -17,8 +17,8 @@
           <span v-if="scope.row.appIcon.indexOf('http')">{{scope.row.appIcon}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="appName" label="名称"></el-table-column>
-      <el-table-column label="用户兑换申请" width="140">
+      <el-table-column prop="appName" label="名称" align="center"></el-table-column>
+      <el-table-column label="用户兑换申请" width="140" align="center">
         <template slot-scope="scope">
           <el-button size="small" type="primary"
                      @click.native="$router.push({name: 'applicationDetails', params:{
@@ -29,7 +29,7 @@
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="300">
+      <el-table-column label="操作" width="280" align="center">
         <template slot-scope="scope">
           <el-button size="small" type="primary" @click.native="$router.push({name: 'applicationDetails', params: {
           'appId': scope.row.appId,

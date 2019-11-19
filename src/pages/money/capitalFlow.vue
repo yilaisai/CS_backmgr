@@ -32,9 +32,9 @@
 				</div>
 			</el-table-column>
 			<el-table-column prop="coinName" label="币种" align="center" width="60"></el-table-column>
-			<el-table-column prop="phone" label="账号" align="center" ></el-table-column>
+			<el-table-column prop="phone" label="账号" align="center" width="140"></el-table-column>
 			<el-table-column prop="nickName" label="昵称" align="center" ></el-table-column>
-			<el-table-column prop="tradeType" label="类型" width="120" align="center">
+			<el-table-column prop="tradeType" label="类型" align="center">
 					<template slot-scope="scope">
 							<span >{{ scope.row.optType | optType }}</span>
 					</template>

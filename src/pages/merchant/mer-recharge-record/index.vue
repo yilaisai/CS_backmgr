@@ -93,6 +93,7 @@ export default {
 
 <style lang="less" scoped>
 .recharge-record{
+	overflow: hidden;
 	.load-more {
         display: flex;
         align-items: center;

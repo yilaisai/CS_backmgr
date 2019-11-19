@@ -260,13 +260,13 @@ export default {
       // padding: 15px;
       background: #fff;
       display: flex;
-      flex-direction: column;
+	  flex-direction: column;
+	  overflow: hidden;
       .router-view {
         flex: 1;
         display: flex;
-        height: 100%;
         padding: 15px;
-        flex-direction: column;
+		flex-direction: column;
       }
     }
   }

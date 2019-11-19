@@ -1,15 +1,11 @@
 <template>
      <div class="withdraw-check-page">
-        <div>
-            <Query ref="query" @queryData='getData' @resetFilter="resetFilter" :coins="coinInfo"/>
-        </div>
+        <Query ref="query" @queryData='getData' @resetFilter="resetFilter" :coins="coinInfo"/>
         <!-- 表格 -->
         <Table :tableData="data.list" :btnHandle="btnHandle" @hideDialogMR="hideDialogMR"></Table>
         <!-- 分页器 -->
         <div class="load-more" style="display: flex;">
-            <div class="count">
-                
-            </div>
+            <div class="count"></div>
             <el-pagination
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
@@ -176,7 +172,8 @@ export default {
 </script>
 <style lang="less" scoped>
 .withdraw-check-page {
-    // overflow: hidden;
+	overflow: hidden;
+	box-sizing: border-box;
     /deep/ .el-collapse-item__header {
         font-size: 14px;
         font-weight: 600;

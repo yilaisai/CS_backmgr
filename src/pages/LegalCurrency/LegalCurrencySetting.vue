@@ -147,6 +147,7 @@ export default {
 	height: 100%;
 	display: flex;
 	flex-direction: column;
+	box-sizing: border-box;
 	.el-tabs {
 		margin-bottom: 20px;
 	}

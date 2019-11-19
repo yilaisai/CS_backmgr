@@ -30,9 +30,7 @@
                             <td>投诉类型：{{BuyList[0].appealType | filterType}}</td>
                         </tr>
                         <tr>
-                            <td>交易金额：{{BuyList[0].money}}
-                                 <!-- <el-button class="edit" type="text" @click="showEdit()">修改</el-button>  -->
-                                 </td>
+                            <td>交易金额：{{BuyList[0].money}}</td>
                             <td>数量：{{BuyList[0].amount}}</td>
                             <td>价格：{{BuyList[0].price}}</td>
                         </tr>
@@ -168,30 +166,29 @@
                 <el-button type="primary" @click="dialogConfirm">确认</el-button>
             </span>
         </el-dialog>
-         <el-dialog title="收款信息" :visible.sync="payDetaileShow" width="500px">
-
-             <div>
-                <p>收款姓名：{{payItem.userName}}</p>
-                <p v-if="payItem.payType==1">银行名称：{{payItem.bankName}}</p>
-                <p v-if="payItem.payType==1&&payItem.bankBranch">支行名称：{{payItem.bankBranch}}</p>
-                <p> {{ payItem.payType==1?'银行卡号码：':'收款账号：' }} {{payItem.num}}</p>
-                <p  v-if="payItem.payType!=1&&payItem.qrcode">收款码：<img style="width:384px;vertical-align: text-top;" :src="payItem.qrcode" alt=""></p>
-             </div>
-         </el-dialog>
-         <el-dialog class="EditPrompt" title="确认修改金额？" :visible.sync="dialogVisible2" width="420px">
-            <p>修改后，订单金额将发生变化，确认修改？</p>
-            <el-form ref="form" label-width="55px" size="mini">
-                <el-form-item label="金额：">
-                    <el-input v-model.trim="money" @input="moneyInput">
-                        <template slot="append">CNY</template>
-                    </el-input>
-                </el-form-item>
-            </el-form>
-            <div class="btns">
-                <el-button @click="dialogVisible2 = false" size="mini">取 消</el-button>
-                <el-button type="primary" size="mini" @click="appealChangeMoney">确 定</el-button>
-            </div>
-        </el-dialog>
+		<el-dialog title="收款信息" :visible.sync="payDetaileShow" width="500px">
+			<div>
+			<p>收款姓名：{{payItem.userName}}</p>
+			<p v-if="payItem.payType==1">银行名称：{{payItem.bankName}}</p>
+			<p v-if="payItem.payType==1&&payItem.bankBranch">支行名称：{{payItem.bankBranch}}</p>
+			<p> {{ payItem.payType==1?'银行卡号码：':'收款账号：' }} {{payItem.num}}</p>
+			<p  v-if="payItem.payType!=1&&payItem.qrcode">收款码：<img style="width:384px;vertical-align: text-top;" :src="payItem.qrcode" alt=""></p>
+			</div>
+		</el-dialog>
+		<el-dialog class="EditPrompt" title="确认修改金额？" :visible.sync="dialogVisible2" width="420px">
+			<p>修改后，订单金额将发生变化，确认修改？</p>
+			<el-form ref="form" label-width="55px" size="mini">
+				<el-form-item label="金额：">
+					<el-input v-model.trim="money" @input="moneyInput">
+						<template slot="append">CNY</template>
+					</el-input>
+				</el-form-item>
+			</el-form>
+			<div class="btns">
+				<el-button @click="dialogVisible2 = false" size="mini">取 消</el-button>
+				<el-button type="primary" size="mini" @click="appealChangeMoney">确 定</el-button>
+			</div>
+		</el-dialog>
     </div>
 </template>
 <script>
@@ -286,6 +283,7 @@ export default {
 			this.$http.post('/wallet/app/otc/backmgr/proofInfo', {
 				appealId: this.appealId
 			}).then(res=>{
+				
 				res.result.forEach((val, idx) => {
 					if(val.isBuyer == 1) {
 						this.BuyProofInfo = val

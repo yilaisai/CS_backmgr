@@ -6,7 +6,7 @@
 				<el-button type="primary" size="mini" icon="el-icon-circle-plus" @click="$emit('hideDialogMR', true)">手动录单</el-button>
 			</div>
 		</div>
-        <el-table :data="tableData" border size="mini" style="width: 100%" height="calc(100% - 50px)">
+        <el-table :data="tableData" border size="mini" style="width: 100%" height="100">
             <el-table-column prop="create_time" label="时间" width="140" align="center"></el-table-column>
             <el-table-column prop="phone" label="账号" width="100" align="center"></el-table-column>
             <el-table-column prop="nickName" label="昵称" width="90" align="center"></el-table-column>
@@ -88,10 +88,10 @@ export default {
 
 <style lang="less" scoped>
 .withdraw-check-table-cpt {
-	// flex: 1;
-	// display: flex;
-    // flex-direction: column;
-    height: 100%;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
     h4 {
 		padding: 0 10px;
 		margin: 0;

@@ -192,6 +192,7 @@ export default {
 
 <style lang="less" scoped>
 .init-settings{
+	overflow-y: auto;
 	.current {
 		.title {
 			display: flex;

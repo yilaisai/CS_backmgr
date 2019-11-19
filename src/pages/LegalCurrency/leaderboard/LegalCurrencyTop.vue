@@ -30,7 +30,7 @@
 			<el-table-column prop="usdtAmount" sortable='custom' :label="$variableCoin" align="center"></el-table-column>
 			<el-table-column prop="btcAmount" sortable ='custom' label="BTC" align="center"></el-table-column>
 			<el-table-column prop="userStatusName"  label="状态" align="center"></el-table-column>
-			<el-table-column prop="registTime" label="时间">
+			<el-table-column prop="registTime" label="时间" align="center">
 				<template slot-scope="scope">
 					{{  $fmtDate(scope.row.registTime,'full')}}
 				</template>

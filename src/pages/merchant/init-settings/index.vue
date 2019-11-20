@@ -193,14 +193,17 @@ export default {
 <style lang="less" scoped>
 .init-settings{
 	overflow-y: auto;
+	h3 {
+		margin: 0;
+		font-size: 14px;
+	}
 	.current {
 		.title {
 			display: flex;
 			justify-content: space-between;
+			align-items: center;
 		}
-		h3 {
-			margin: 0;
-		}
+		
 		ul {
 			display: flex;
 			flex-wrap: wrap;
@@ -221,6 +224,11 @@ export default {
 					font-weight: 700;
 				}
 			}
+		}
+	}
+	.content-wrap {
+		h3 {
+			margin: 10px 0;
 		}
 	}
 	.el-input {

@@ -1,36 +1,41 @@
 <template>
 	<div class="cashOutVerify-page">
-		<el-form :inline="true" label-width="86px" ref="filterForm" size="mini" :model="filterForm">
-			<el-form-item class='dateItem' label="时间:">
-				<el-date-picker
-					v-model="selectedDate"
-					type="daterange"
-					range-separator="至"
-					start-placeholder="开始日期"
-					format="yyyy-MM-dd "
-					end-placeholder="结束日期" >
-				</el-date-picker>
-			</el-form-item>
-			<el-form-item label="账号:" >
-				<el-input placeholder="请输入用户账号" v-model="filterForm.phoneOrEmail" ></el-input>
-			</el-form-item>
-			<el-form-item label="商户订单号:" >
-				<el-input placeholder="请输入商户订单号" v-model="filterForm.apiOrderId" ></el-input>
-			</el-form-item>
-			<el-form-item label="类型:" >
-				<el-select v-model="filterForm.tradeType" >
-					<el-option value="" label='所有'></el-option>
-					<el-option v-for="(item, key) in typeList" :key="key" :value="item.value" :label="item.label "></el-option>
-				</el-select>
-			</el-form-item>
-			<el-form-item  label="币种:" >
-				<el-select v-model="filterForm.coinName" >
-						<el-option value="" label='所有'></el-option>
-						<el-option v-for="(item, key) in coinInfo" :key="key" :value="item.coinName" :label="item.coinName"></el-option>
-				</el-select>
-			</el-form-item>
-			<el-form-item><el-button class="btn" type="primary" @click="search()">搜索</el-button></el-form-item>
-		</el-form>
+		<el-collapse value="filter">
+			<el-collapse-item title="查询条件" name="filter">
+				<el-form :inline="true" label-width="86px" ref="filterForm" size="mini" :model="filterForm">
+					<el-form-item label="账号:" >
+						<el-input placeholder="请输入用户账号" v-model="filterForm.phoneOrEmail" ></el-input>
+					</el-form-item>
+					<el-form-item label="类型:" >
+						<el-select v-model="filterForm.tradeType" >
+							<el-option value="" label='所有'></el-option>
+							<el-option v-for="(item, key) in typeList" :key="key" :value="item.value" :label="item.label "></el-option>
+						</el-select>
+					</el-form-item>
+					<el-form-item  label="币种:" >
+						<el-select v-model="filterForm.coinName" >
+								<el-option value="" label='所有'></el-option>
+								<el-option v-for="(item, key) in coinInfo" :key="key" :value="item.coinName" :label="item.coinName"></el-option>
+						</el-select>
+					</el-form-item>
+					<br />
+					<el-form-item class='dateItem' label="时间:">
+						<el-date-picker
+							v-model="selectedDate"
+							type="daterange"
+							range-separator="至"
+							start-placeholder="开始日期"
+							format="yyyy-MM-dd "
+							end-placeholder="结束日期" >
+						</el-date-picker>
+					</el-form-item>
+					<el-form-item label="商户订单号:" >
+						<el-input placeholder="请输入商户订单号" v-model="filterForm.apiOrderId" ></el-input>
+					</el-form-item>
+					<el-button class="btn" type="primary" @click="search()" size="mini" style="margin-left: 20px;">搜索</el-button>
+				</el-form>
+			</el-collapse-item>
+    	</el-collapse>
 		<el-table height="auto" size="mini" border :data="listData.list">
 			<el-table-column align="center"  label="类型" width="80">
 				<div slot-scope="scope"> {{scope.row.type==1?'匹配兑出':scope.row.type==2?'抢单兑出':''}} </div>
@@ -191,6 +196,11 @@ export default {
                 }
             }
         }
-    }
+	}
+	/deep/ .el-collapse-item__header {
+		font-size: 14px;
+		font-weight: 600;
+		padding: 0 10px;
+	}
 }
 </style>

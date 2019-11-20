@@ -89,6 +89,7 @@ export default {
 
 <style lang="less" scoped>
 .mer_user-query{
+	overflow: hidden;
 	.load-more {
         display: flex;
         align-items: center;

@@ -117,21 +117,56 @@
 					:tree-props="{children: 'children', hasChildren: 'hasChildren'}">
 					<el-table-column
 						prop="inviteeName"
-						label="昵称">
+						label="账号">
 					</el-table-column>
 					
 					<el-table-column align="center"
 						prop="reward"
 						label="买入佣金费率">
 						<div slot-scope="scope">
-							{{ Math.floor(scope.row.buyRate*1000)/10 }}%
+							<ul class="rate">
+								<li>
+									<p>银行卡</p>
+									<p>{{ Math.floor(scope.row.cardBuyRate*10000)/100 }}% </p>
+								</li>
+								<li>
+									<p>支付宝</p>
+									<p>{{ Math.floor(scope.row.abuyRate*10000)/100 }}% </p>
+								</li>
+								<li>
+									<p>微信</p>
+									<p>{{ Math.floor(scope.row.wxBuyRate*10000)/100 }}% </p>
+								</li>
+								<li>
+									<p>宝转卡</p>
+									<p>{{ Math.floor(scope.row.bbuyRate*10000)/100 }}% </p>
+								</li>
+							</ul>
+							
 						</div>
 					</el-table-column>
 					<el-table-column align="center"
 						prop="reward"
 						label="卖出佣金费率">
 						<div slot-scope="scope">
-							{{ Math.floor(scope.row.rate*1000)/10 }}%
+							<ul class="rate">
+								<li>
+									<p>银行卡</p>
+									<p>{{ Math.floor(scope.row.cardSaleRate*10000)/100 }}% </p>
+								</li>
+								<li>
+									<p>支付宝</p>
+									<p>{{ Math.floor(scope.row.asaleRate*10000)/100 }}% </p>
+								</li>
+								<li>
+									<p>微信</p>
+									<p>{{ Math.floor(scope.row.wxSaleRate*10000)/100 }}% </p>
+								</li>
+								<li>
+									<p>宝转卡</p>
+									<p>{{ Math.floor(scope.row.bsaleRate*10000)/100 }}% </p>
+								</li>
+							</ul>
 						</div>
 					</el-table-column>
 					<el-table-column label="操作" width="120">
@@ -145,11 +180,21 @@
 		</div>
 		<el-dialog title="修改佣金" :visible.sync="showDialog">
 			<div class=" inputGroup ">
+				<span>支付通道:</span>
+				<el-select v-model="payType"  placeholder="请选择"  @change="setRate">
+					<el-option label="银行卡" :value="1"></el-option>
+					<el-option label="支付宝" :value="2"></el-option>
+					<el-option label="微信" :value="3"></el-option>
+					<el-option label="宝转卡" :value="4"></el-option>
+				</el-select>
+			</div>
+			<div class=" inputGroup ">
 				<span>买入佣金费率：</span>
 				<el-input placeholder="请输入内容" v-model="buyRate" >
 					<template slot="append">%</template>
 				</el-input>
 			</div>
+			
 			<div class=" inputGroup ">
 				<span>卖出佣金费率：</span>
 				<el-input placeholder="请输入内容" v-model="rate" >
@@ -193,6 +238,7 @@ export default {
 	data(){
 		return {
 			//editBrokerage
+			payType:1,
 			account:'',
 			rate:'',
 			buyRate:'',
@@ -227,6 +273,22 @@ export default {
 		this.findInviteTree()
 	},
 	methods:{
+		setRate(e){
+			console.log(e)
+			if(e == 1){
+				this.buyRate = this.currItem.cardBuyRate * 100
+				this.rate =  this.currItem.cardSaleRate * 100
+			}else if(e == 2){
+				this.buyRate = this.currItem.abuyRate * 100
+				this.rate =  this.currItem.asaleRate * 100
+			}else if(e == 3){
+				this.buyRate = this.currItem.wxBuyRate * 100
+				this.rate =  this.currItem.wxSaleRate * 100
+			}else if(e == 4){
+				this.buyRate = this.currItem.bbuyRate * 100
+				this.rate =  this.currItem.bsaleRate * 100
+			}
+		},
 		selectCoin(){
 			this.getData()
 		},
@@ -251,8 +313,9 @@ export default {
 		},
 		EditRate(data){
 			this.currItem = data
-			this.buyRate = data.buyRate * 100
-			this.rate =  data.rate * 100
+			this.payType = 1
+			this.buyRate = this.currItem.cardBuyRate * 100
+			this.rate =  this.currItem.cardSaleRate * 100
 			this.showDialog=true
 		} ,
 		brokerage(data){
@@ -284,9 +347,14 @@ export default {
 			this.$http.post('/wallet/invite/backmgr/updateRewardRate',{
 				buyRate: Math.floor(this.buyRate*10)/1000,
 				rate: Math.floor(this.rate*10)/1000,
-				inviteeId:this.currItem.inviteeId
+				inviteeId:this.currItem.inviteeId,
+				payType:this.payType
 			}).then(res=>{
 				if(res.code==200){
+					this.$message({
+						type: 'success',
+						message: res.msg
+					})
 					this.showDialog = false
 					this.findInviteTree()
 				}
@@ -423,6 +491,28 @@ export default {
 		/deep/.el-tree{
 			min-width: 840px;
 		}
+		.rate{
+				list-style: none;
+				display: flex;
+				flex-direction: row;
+				// justify-content: space-between;
+				margin: 0;
+				padding: 0;
+				li{
+					width: 25%;
+					p{
+						margin: 0;
+						padding: 0;
+						font-size: 12px;
+						line-height: 14px;
+						&:last-of-type{
+							font-size: 14px;
+							line-height: 18px;
+							color: #409EFF;
+						}
+					}
+				}
+			}
 		.custom-tree-node{
 			display: flex;
 			flex-direction: row;
@@ -461,11 +551,13 @@ export default {
 			flex-direction: row;
 			justify-content: space-between;
 			align-items: center;
-			&:first-of-type{
-				margin-bottom: 20px;
+			margin-bottom: 20px;
+			&:last-of-type{
+				margin-bottom: 0px;
 			}
-			/deep/.el-input{
-				margin-right: 20px;
+			/deep/.el-select{
+				// margin-right: 20px;
+				width: 100%;
 			}
 			&>span{
 				width: 140px;

@@ -166,7 +166,8 @@
           phone: '',
           nickName: '',
           cardNo: '',
-          coinAddr: '',
+		  coinAddr: '',
+		  userType: '',
           pageNum: 1,
           pageSize: 20
         },
@@ -228,7 +229,6 @@
 						this.dialogVisible = false;
 					});
 				} else {
-					console.log("error submit!!");
 					return false;
 				}
 			})
@@ -247,9 +247,12 @@
 			this.dialogVisible=true
 		},
 		submitForm(num) {
-			if(this.selectedDate.length == 2 ){
+			if(this.selectedDate && this.selectedDate.length == 2 ){
 				this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
 				this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
+			}else {
+				this.filterForm.startDate = null
+				this.filterForm.endDate = null
 			}
 			this.filterForm.pageNum = num
 			const { phone, nickName, userLevel,company, endDate } = this.filterForm
@@ -264,7 +267,6 @@
 			// }
 		},
 		getUserInfoList() {
-      console.log(this.filterForm)
 			this.$http.post('/wallet/backmgr/user/getUserInfoList', this.filterForm)
 			.then((res) => {
 				const { list, total } = res.result.list;
@@ -273,7 +275,6 @@
 			});
 		},
 		getPaginationChange(val, currentPage) {
-      console.log(val, currentPage)
 			this.filterForm.pageSize = val;
 			this.filterForm.pageNum = currentPage;
 			this.getUserInfoList()

@@ -54,7 +54,7 @@
 							</el-form-item>
 							<el-form-item>
 								<el-button type="primary" @click.native="search" size="mini">搜索</el-button>
-								<el-button type="primary" @click.native="exportExcel" size="mini">导出Excel</el-button>
+								<el-button type="primary" @click.native="exportExcel" size="mini" icon="el-icon-document-checked">导出Excel</el-button>
 							</el-form-item>
 						</el-form>
 					</el-collapse-item>
@@ -118,6 +118,11 @@
 				</el-table>
 			</div>
             <el-footer>
+				<div class="statistics">
+					总数量： <span>{{sumInfo.sumTakerAmount}} {{$variableCoin}}</span>
+					总金额： <span>{{sumInfo.sumAmount}} CNY</span>
+					手续费： <span>{{sumInfo.sumFee}} {{$variableCoin}}</span>
+				</div>
                 <sac-pagination v-show="listData.list.length>0"
                     @handleChange="handleCurrentChange"
                     :total="+listData.total"
@@ -224,6 +229,11 @@ export default {
                 total: null,
                 list: [],
 			},
+			sumInfo: {
+				sumTakerAmount: "--",
+				sumAmount: "--",
+				sumFee: "--"
+			},
 			statistics:{},
 			payTypes,
 		}
@@ -241,6 +251,7 @@ export default {
 			this.$http.post('/wallet/backmgr/merchant/trade/list',this.filterForm).then(res=>{
 				this.SumTradeRecd()
 				const { list ,total} = res.result.pageData;
+				this.sumInfo = res.result.sumInfo
 				this.listData.list = list;
 				this.listData.total = total;
 			})
@@ -454,7 +465,28 @@ export default {
 			width: 100%;
 			display: flex;
 			flex-direction: column;
-        }
+		}
+		.el-footer {
+			display: flex;
+			height: auto !important;
+			align-items: center;
+			margin-top: 10px;
+			padding: 0;
+			.statistics {
+				display: block;
+				height: auto;
+				border: none;
+				font-size: 14px;
+				span {
+					margin-right: 10px;
+					color: #409EFF;
+					font-weight: 700;
+				}
+			}
+			.el-pagination {
+				margin: 0;
+			}
+		}
 	} 
 	/deep/ .el-collapse-item__header {
 		font-size: 14px;

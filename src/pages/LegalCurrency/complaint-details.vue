@@ -62,6 +62,15 @@
                                     </ul>
                                 </div>
                             </td>
+                            <td v-show="SaleList[0].atobPayList&&SaleList[0].atobPayList.length>0">
+                                <div>
+                                    <p>宝转卡：</p>
+                                    <ul>
+                                        <li v-for=" (item,index) in SaleList[0].atobPayList " :key="index"> 账号 <span >{{index+1}}</span> ： {{  item.num }}<el-button  type="text" @click="payDetaile(item)">详情</el-button></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            
                         </tr>
                     </table>
                 </el-card>
@@ -105,6 +114,14 @@
                                     <p>银行卡：</p>
                                     <ul>
                                         <li v-for=" (item,index) in BuyList[0].bankPayList " :key="index"> 账号 <span >{{index+1}}</span> ： {{  item.num }}<el-button  type="text" @click="payDetaile(item)">详情</el-button></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td v-show="BuyList[0].atobPayList&&BuyList[0].atobPayList.length>0">
+                                <div>
+                                    <p>宝转卡：</p>
+                                    <ul>
+                                        <li v-for=" (item,index) in BuyList[0].atobPayList " :key="index"> 账号 <span >{{index+1}}</span> ： {{  item.num }}<el-button  type="text" @click="payDetaile(item)">详情</el-button></li>
                                     </ul>
                                 </div>
                             </td>
@@ -162,7 +179,7 @@
                 </el-card>
             </div>
         </div>
-        <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="40%">
+        <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="470">
             <el-form :inline="true" label-width="90px" ref="ruleForm"  :model="ruleForm" :rules="rules">
                 <div>
                     <el-form-item label="判断输赢:" prop="appealResult" class="judgment-box">
@@ -253,11 +270,11 @@ export default {
             appealResultData:[
                 {
                     label:'买方胜诉（卖家的币放行，直接打给买方）',
-                    value:1
+                    value:2
                 },
                 {
                     label:'卖方胜诉（卖家的币取消锁定）',
-                    value:0
+                    value:1
                 }
             ],
             dealData:[

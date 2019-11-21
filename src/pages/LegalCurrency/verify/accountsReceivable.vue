@@ -58,7 +58,7 @@
 				</el-table-column>
 				<el-table-column align="center"  label="状态" width="90">
 					<template slot-scope="scope">
-						{{ scope.row.status ==1?'已审核':'待审核' }}
+						{{ scope.row.payAuditStatus ==1?'已审核':'待审核' }}
 					</template>
 				</el-table-column>
 				<el-table-column align="center" fixed="right" label="操作" width="200">

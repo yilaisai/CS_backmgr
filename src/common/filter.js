@@ -66,3 +66,17 @@ export const advTypeFilter = (value) => {
   }
 };
 Vue.filter('advTypeFilter', advTypeFilter);
+
+export const payTypeFilter = (value) => {
+  switch (value) {
+    case 1:
+      return '银行卡';
+    case 2:
+      return '支付宝';
+    case 3:
+      return '微信';
+    case 4:
+      return '宝转卡';
+  }
+};
+Vue.filter('payTypeFilter', payTypeFilter);

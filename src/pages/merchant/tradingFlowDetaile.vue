@@ -93,7 +93,7 @@
 						<el-input :value="payList.userName" disabled></el-input>
 					</el-form-item>
 					<el-form-item label="收款方式:" >
-						<el-input :value="payTypeMap[payList.payType]" disabled></el-input>
+						<el-input :value="payList.payType | advTypeFilter" disabled></el-input>
 					</el-form-item>
 					<el-form-item label="收款账号:" >
 						<el-input :value="payList.num" disabled></el-input>
@@ -150,7 +150,8 @@ export default {
 			payTypeMap: {
 				1: '银行卡',
 				2: '支付宝',
-				3: '微信'
+				3: '微信',
+				4: '宝转卡'
 			},
 			payList: {}
 		}

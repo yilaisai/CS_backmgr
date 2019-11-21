@@ -58,7 +58,7 @@ export default {
 				{name: '未知', val: 17},
 			],
 			showDialogMR: false,
-			
+			formData: {}
 		}
 	},
 	activated() {
@@ -66,9 +66,11 @@ export default {
 	},
 	methods: {
 		getData(formData) {
-			formData = formData || {}
+			if(formData) this.pageNum = 1
+			formData = formData || this.formData
 			formData.pageNum = this.pageNum
 			formData.pageSize = this.pageSize
+			this.formData = formData
 			this.$http.post('/wallet/backmgr/merchant/trade/queryAmountFlowPage', formData).then(res => {
 				if(res.code == 200) {
 					this.pageData = res.result.pageInfo

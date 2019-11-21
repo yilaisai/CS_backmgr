@@ -111,6 +111,13 @@ export const fundTypes = {
 	fee: '充值归拢费',
 	manual: '手动打币'
 }
+// 支付渠道
+export const payTypes = {
+	1: '银行卡',
+	2: '支付宝',
+	3: '微信',
+	4: '宝转卡'
+}
 
 const constants = {
 	

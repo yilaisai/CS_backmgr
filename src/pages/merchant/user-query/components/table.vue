@@ -6,25 +6,13 @@
 				<!-- <el-button type="primary" size="mini" icon="el-icon-circle-plus" @click="$emit('hideDialogMR', true)">手动录单</el-button> -->
 			</div>
 		</div>
-		<el-table
-			:data="list"
-			height="auto"
-			border
-			size="mini"
-			style="min-width: 100%">
+		<el-table :data="list" height="auto" border size="mini" style="min-width: 100%">
 			<el-table-column prop="appId" label="appid" align="center" width="90"></el-table-column>
-			<el-table-column prop="phone" label="账号/昵称" width="140" align="center">
-				<div class="scope" slot-scope="scope">
-					<p>{{ scope.row.phone }}</p>
-					<p>{{ scope.row.name }}</p>
-				</div>
-			</el-table-column>
+			<el-table-column prop="phone" label="账号" align="center"></el-table-column>
+			<el-table-column prop="name" label="昵称" align="center"></el-table-column>
 			<el-table-column prop="feeRate" label="手续费" align="center"></el-table-column>
 			<el-table-column label="直推人账户/费率" align="center" width="110">
-				<div class="scope" slot-scope="scope">
-					<p>{{ scope.row.firstPhone }}</p>
-					<p>{{ scope.row.firstRateIn }}</p>
-				</div>
+				<template class="scope" slot-scope="scope"><span v-if="scope.row.firstPhone">{{ scope.row.firstPhone }} /</span> {{ scope.row.firstRateIn }}</template>
 			</el-table-column>
 			<el-table-column prop="secRateIn" label="间推人账户" width="110" align="center"></el-table-column>
 			<el-table-column prop="amount" label="商户余额" width="140" align="center"></el-table-column>
@@ -103,6 +91,7 @@ export default {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
+	overflow: hidden;
 	h4 {
 		padding: 0 10px;
 		margin: 0;

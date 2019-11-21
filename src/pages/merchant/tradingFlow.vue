@@ -2,111 +2,121 @@
 <template>
     <div class="transaction-details">
         <el-container>
-					<div class="main">
+			<div class="main">
+				<el-collapse value="filter">
+					<el-collapse-item title="查询条件" name="filter">
 						<el-form :inline="true"  ref="filterForm" :model="filterForm" size="mini" label-width="80px">
-							<div class="form-group">
-								<el-form-item class='dateItem' label="时间:">
-									<el-date-picker
-										v-model="selectedDate"
-										type="datetimerange"
-										value-format="yyyy-MM-dd HH:mm:ss"
-										range-separator="至"
-										start-placeholder="开始日期"
-										end-placeholder="结束日期" @change='filterForm.dateType=""'>
-									</el-date-picker>
-								</el-form-item>
-								<el-form-item label="订单号:">
-									<el-input placeholder="请输入单号" v-model.trim="filterForm.recdId" class="input-with-select"></el-input>
-								</el-form-item>
-								<el-form-item label="账号/昵称:">
-									<el-input placeholder="请输入用户账号或昵称" v-model.trim="filterForm.account" class="input-with-select"></el-input>
-								</el-form-item>
-								<el-form-item label="状态:">
-									<el-select v-model="filterForm.status" >
-										<el-option v-for="(item, key) in statusList" :key="key" :value="item.label" :label="item.value"></el-option>
-									</el-select>
-								</el-form-item>
-								<el-form-item label="币种:">
-									<el-select v-model="filterForm.coinName" >
-										<el-option value="" label="全部"></el-option>
-										<el-option v-for="(item, key) in coinInfo" :key="key" :value="item.coinName" :label="item.coinName"></el-option>
-									</el-select>
-								</el-form-item>
-								<el-form-item label="交易类型:">
-									<el-select v-model="filterForm.advType" >
-										<el-option v-for="(item, key) in transList" :key="key" :value="item.label" :label="item.value"></el-option>
-									</el-select>
-								</el-form-item>
-								
-								<el-form-item label="超时筛选:">
-									<el-select v-model="filterForm.timeOut" >
-										<el-option value="" label="所有"></el-option>
-										<el-option value="1" label="已超时"></el-option>
-									</el-select>
-								</el-form-item>
-								<el-form-item>
-									<el-button type="primary" @click.native="search" size="mini">搜索</el-button>
-								</el-form-item>
-							</div>
+							<el-form-item class='dateItem' label="时间:">
+								<el-date-picker
+									v-model="selectedDate"
+									type="datetimerange"
+									value-format="yyyy-MM-dd HH:mm:ss"
+									range-separator="至"
+									start-placeholder="开始日期"
+									end-placeholder="结束日期" @change='filterForm.dateType=""'>
+								</el-date-picker>
+							</el-form-item>
+							<el-form-item label="订单号:">
+								<el-input placeholder="请输入单号" v-model.trim="filterForm.recdId" class="input-with-select"></el-input>
+							</el-form-item>
+							<br />
+							<el-form-item label="账号/昵称:">
+								<el-input placeholder="请输入用户账号或昵称" v-model.trim="filterForm.account" class="input-with-select"></el-input>
+							</el-form-item>
+							<el-form-item label="状态:">
+								<el-select v-model="filterForm.status" >
+									<el-option v-for="(item, key) in statusList" :key="key" :value="item.label" :label="item.value"></el-option>
+								</el-select>
+							</el-form-item>
+							<el-form-item label="币种:">
+								<el-select v-model="filterForm.coinName" >
+									<el-option value="" label="全部"></el-option>
+									<el-option v-for="(item, key) in coinInfo" :key="key" :value="item.coinName" :label="item.coinName"></el-option>
+								</el-select>
+							</el-form-item>
+							<br />
+							<el-form-item label="支付渠道:">
+								<el-select v-model="filterForm.payType" >
+									<el-option value="" label="全部"></el-option>
+									<el-option v-for="(item, key) in payTypes" :key="key" :value="key" :label="item"></el-option>
+								</el-select>
+							</el-form-item>
+							<el-form-item label="交易类型:">
+								<el-select v-model="filterForm.advType" >
+									<el-option v-for="(item, key) in transList" :key="key" :value="item.label" :label="item.value"></el-option>
+								</el-select>
+							</el-form-item>
+							<el-form-item label="超时筛选:">
+								<el-select v-model="filterForm.timeOut" >
+									<el-option value="" label="所有"></el-option>
+									<el-option value="1" label="已超时"></el-option>
+								</el-select>
+							</el-form-item>
+							<el-form-item>
+								<el-button type="primary" @click.native="search" size="mini">搜索</el-button>
+								<el-button type="primary" @click.native="exportExcel" size="mini">导出Excel</el-button>
+							</el-form-item>
 						</el-form>
-						<!-- <ul class="statistics" v-if="statistics">
-							<li>
-								<p>待付款</p>
-								<p>交易数：{{ statistics.pendingGoNum }}</p>
-								<p>交易额：{{ statistics.pendingGoAmount }}{{filterForm.coinName}}</p>
-							</li>
-							<li>
-								<p>待放行</p>
-								<p>交易数：{{ statistics.pendingNum }}</p>
-								<p>交易额：{{ statistics.pendingAmount }}{{filterForm.coinName}}</p>
-							</li>
-							<li>
-								<p>已完成</p>
-								<p>交易数：{{ statistics.completeNum }}</p>
-								<p>交易额：{{ statistics.completeAmount }}{{filterForm.coinName}}</p>
-							</li>
-							<li>
-								<p>申诉中</p>
-								<p>交易数：{{ statistics.appealNum }}</p>
-								<p>交易额：{{ statistics.appealAmount }}{{filterForm.coinName}}</p>
-							</li>
-						</ul> -->
-						<el-table :data="listData.list" border height="100%" size="mini">
-								<el-table-column prop="coin_name" label="币种" width="60" align="center"></el-table-column>
-								<el-table-column  label="类型/下单时间" align="center" width="140">
-									<template slot-scope="scope">{{advTypeMap[scope.row.adv_type]}}<br />{{ $fmtDate(scope.row.create_time,'full') }}</template>
-								</el-table-column>
-								<el-table-column  label="商户单号/平台单号" width="180" align="center" >
-									<span slot-scope="scope">{{scope.row.api_trade_id}}<br />{{scope.row.trade_id}}</span>
-								</el-table-column>
-								<el-table-column label="商户昵称/账户" width="150" align="center" >
-									<span slot-scope="scope">{{scope.row.taker_nick_name}}<br />{{scope.row.taker_phone}}</span>
-								</el-table-column>
-								<el-table-column label="承兑商昵称/账户" width="150" align="center">
-									<span slot-scope="scope">{{scope.row.nick_name}}<br />{{scope.row.phone}}</span>
-								</el-table-column>
-								<el-table-column prop="tradeTime" label="状态" width="120" align="center" >
-									<template slot-scope="scope">{{tradeStatusMap[scope.row.trade_status]}}</template>
-								</el-table-column>
-								<el-table-column label="价格/数量" align="center">
-									<div slot-scope="scope">
-										<span>{{scope.row.taker_price}}</span><br />
-										<span>{{scope.row.taker_amount}}</span>
-									</div>
-								</el-table-column>
-								<el-table-column prop="amount" label="金额" align="center"></el-table-column>
-								<el-table-column prop="fee" label="手续费" align="center"></el-table-column>
-								<el-table-column prop="price" label="操作" fixed="right" align="center" width="300">
-									<template slot-scope="scope">
-										<el-button type="primary" size="mini" @click.native="$router.push({path:'/merchant/merchantTradingFlowDetaile',query:{tradeId:scope.row.trade_id}})">查看详情</el-button>
-										<el-button type="danger" size="mini" v-if="(scope.row.trade_status==8||scope.row.trade_status==4)&&showActiveBtn(scope.row.create_time)" @click.native="orderActivation(scope.row)">激活订单</el-button>
-										<el-button type="danger" size="mini" v-if="scope.row.trade_status==2&&scope.row.isActivation==1" @click.native="activationLetgo(scope.row.trade_id)">&nbsp;&nbsp;放 &nbsp;&nbsp;行&nbsp;&nbsp;</el-button>
-										<el-button type="warning" size="mini" v-if="((scope.row.adv_type == 4 || scope.row.adv_type == 5) && (scope.row.trade_status == 3 || scope.row.trade_status == 6))&&scope.row.trade_type!=3" @click="returnApi(scope.row)">异步补发</el-button>
-										<el-button type="warning" size="mini" v-if="((scope.row.adv_type == 4 || scope.row.adv_type == 5) && (scope.row.trade_status == 3 || scope.row.trade_status == 6))&&scope.row.trade_type!=3" @click="showPrompt(scope.row)">手动录单</el-button>
-									</template>
-								</el-table-column>
-						</el-table>
-				</div>
+					</el-collapse-item>
+    			</el-collapse>
+				<!-- <ul class="statistics" v-if="statistics">
+					<li>
+						<p>待付款</p>
+						<p>交易数：{{ statistics.pendingGoNum }}</p>
+						<p>交易额：{{ statistics.pendingGoAmount }}{{filterForm.coinName}}</p>
+					</li>
+					<li>
+						<p>待放行</p>
+						<p>交易数：{{ statistics.pendingNum }}</p>
+						<p>交易额：{{ statistics.pendingAmount }}{{filterForm.coinName}}</p>
+					</li>
+					<li>
+						<p>已完成</p>
+						<p>交易数：{{ statistics.completeNum }}</p>
+						<p>交易额：{{ statistics.completeAmount }}{{filterForm.coinName}}</p>
+					</li>
+					<li>
+						<p>申诉中</p>
+						<p>交易数：{{ statistics.appealNum }}</p>
+						<p>交易额：{{ statistics.appealAmount }}{{filterForm.coinName}}</p>
+					</li>
+				</ul> -->
+				<el-table :data="listData.list" border height="100%" size="mini">
+						<el-table-column prop="coin_name" label="币种" width="60" align="center"></el-table-column>
+						<el-table-column  label="类型/下单时间" align="center" width="140">
+							<template slot-scope="scope"><img :src="'/static/img/paytype/' + scope.row.pay_type + '.svg'" style="vertical-align: sub;width: 18px;" alt=""> {{advTypeMap[scope.row.adv_type]}}<br />{{ $fmtDate(scope.row.create_time,'full') }}</template>
+						</el-table-column>
+						<el-table-column  label="商户单号/平台单号" width="180" align="center" >
+							<span slot-scope="scope">{{scope.row.api_trade_id}}<br />{{scope.row.trade_id}}</span>
+						</el-table-column>
+						<el-table-column label="商户昵称/账户" width="150" align="center" >
+							<span slot-scope="scope">{{scope.row.taker_nick_name}}<br />{{scope.row.taker_phone}}</span>
+						</el-table-column>
+						<el-table-column label="承兑商昵称/账户" width="150" align="center">
+							<span slot-scope="scope">{{scope.row.nick_name}}<br />{{scope.row.phone}}</span>
+						</el-table-column>
+						<el-table-column prop="tradeTime" label="状态" width="120" align="center" >
+							<template slot-scope="scope">{{tradeStatusMap[scope.row.trade_status]}}</template>
+						</el-table-column>
+						<el-table-column label="价格/数量" align="center">
+							<div slot-scope="scope">
+								<span>{{scope.row.taker_price}}</span><br />
+								<span>{{scope.row.taker_amount}}</span>
+							</div>
+						</el-table-column>
+						<el-table-column prop="amount" label="金额" align="center"></el-table-column>
+						<el-table-column prop="fee" label="手续费" align="center"></el-table-column>
+						<el-table-column prop="price" label="操作" fixed="right" align="center" width="300">
+							<template slot-scope="scope">
+								<el-button type="primary" size="mini" @click.native="$router.push({path:'/merchant/merchantTradingFlowDetaile',query:{tradeId:scope.row.trade_id}})">查看详情</el-button>
+								<el-button type="danger" size="mini" v-if="(scope.row.trade_status==8||scope.row.trade_status==4)&&showActiveBtn(scope.row.create_time)" @click.native="orderActivation(scope.row)">激活订单</el-button>
+								<el-button type="danger" size="mini" v-if="scope.row.trade_status==2&&scope.row.isActivation==1" @click.native="activationLetgo(scope.row.trade_id)">&nbsp;&nbsp;放 &nbsp;&nbsp;行&nbsp;&nbsp;</el-button>
+								<el-button type="warning" size="mini" v-if="((scope.row.adv_type == 4 || scope.row.adv_type == 5) && (scope.row.trade_status == 3 || scope.row.trade_status == 6))&&scope.row.trade_type!=3" @click="returnApi(scope.row)">异步补发</el-button>
+								<el-button type="warning" size="mini" v-if="((scope.row.adv_type == 4 || scope.row.adv_type == 5) && (scope.row.trade_status == 3 || scope.row.trade_status == 6))&&scope.row.trade_type!=3" @click="showPrompt(scope.row)">手动录单</el-button>
+							</template>
+						</el-table-column>
+				</el-table>
+			</div>
             <el-footer>
                 <sac-pagination v-show="listData.list.length>0"
                     @handleChange="handleCurrentChange"
@@ -116,26 +126,27 @@
                 </sac-pagination>
             </el-footer>
         </el-container>
-				<el-dialog class="EntryPrompt" title="确定手动录单？" :visible.sync="dialogVisible" width="420px">
-					<p>录单成功将生成一笔订单状态为完成的单，确认录单？</p>
-					<el-form ref="form" label-width="55px" size="mini">
-						<el-form-item label="金额：">
-							<el-input v-model.trim="amount" @input="moneyInput">
-								<template slot="append">CNY</template>
-							</el-input>
-						</el-form-item>
-					</el-form>
-					<p>其他信息同订单号：{{selectItem.trade_id}}</p>
-					<div class="btns">
-						<el-button @click="dialogVisible = false" size="mini">取 消</el-button>
-						<el-button type="primary" size="mini" @click="addNewRecordAdmin">确 定</el-button>
-					</div>
-				</el-dialog>
+		<el-dialog class="EntryPrompt" title="确定手动录单？" :visible.sync="dialogVisible" width="420px">
+			<p>录单成功将生成一笔订单状态为完成的单，确认录单？</p>
+			<el-form ref="form" label-width="55px" size="mini">
+				<el-form-item label="金额：">
+					<el-input v-model.trim="amount" @input="moneyInput">
+						<template slot="append">CNY</template>
+					</el-input>
+				</el-form-item>
+			</el-form>
+			<p>其他信息同订单号：{{selectItem.trade_id}}</p>
+			<div class="btns">
+				<el-button @click="dialogVisible = false" size="mini">取 消</el-button>
+				<el-button type="primary" size="mini" @click="addNewRecordAdmin">确 定</el-button>
+			</div>
+		</el-dialog>
     </div>
 </template>
 <script>
-import { dateFormat } from "@/common/util";
-import {mapState} from 'vuex'
+import { payTypes } from "@/common/constants"
+import { mapState } from 'vuex'
+import qs from 'qs'
 export default {
 	name:'transaction-details',
 	data(){
@@ -150,7 +161,7 @@ export default {
 			filterForm:{
 				pageNum:1,
 				account:'',
-				pageSize: 10,
+				pageSize: 20,
 				startDate:'',
 				endDate:'',
 				coinName:'',
@@ -161,6 +172,7 @@ export default {
 				dateType:'1',
 				timeOut: "",
 				recdId: "",
+				payType: ""  //支付渠道
 			},
 			advTypeMap: {
 				1: '在线出售',
@@ -182,6 +194,7 @@ export default {
 				{value:'已完成',label:"3"},
 				{value:'已取消',label:"4"},
 				{value:'申述中',label:"5"},
+				{value:'申诉后完成交易',label:"6"},
 				{value:'超时取消',label:"8"}
 			],
 			transList:[
@@ -197,7 +210,7 @@ export default {
 				3: '已完成',
 				4: '已取消',
 				5: '申述',
-				6: '已完成',
+				6: '申诉后完成交易',
 				7: '申诉后取消交易',
 				8: '超时取消'
 			},
@@ -212,6 +225,7 @@ export default {
                 list: [],
 			},
 			statistics:{},
+			payTypes,
 		}
         
 	},
@@ -231,7 +245,22 @@ export default {
 				this.listData.total = total;
 			})
 		},
-		// 
+		// 导出excel
+		exportExcel() {
+			if(this.selectedDate && this.selectedDate.length==2){
+				this.filterForm.startDate = this.selectedDate[0]
+				this.filterForm.endDate = this.selectedDate[1]
+			}else {
+				this.filterForm.startDate = ""
+				this.filterForm.endDate = ""
+			}
+			if(this.filterForm.coinName == "") {
+				delete this.filterForm.coinName
+			}
+			this.filterForm.token = localStorage.getItem('wallet_token') || ""
+			const baseUrl = localStorage.getItem('SERVER_PATH') || window.SERVER_PATH
+			window.open(baseUrl + '/wallet/backmgr/merchant/trade/list/export?' + qs.stringify(this.filterForm))
+		},
 		showPrompt(selectItem){
 			this.selectItem = selectItem
 			this.amount = ''
@@ -273,26 +302,25 @@ export default {
 		},
 		activationLetgo(tradeId){
 			this.$confirm('放行后订单状态将变为已完成(码商扣币，商户加币)，确认放行？', '确认放行订单？', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          // type: 'warning'
-        }).then(() => {
-          this.$http.post('/wallet/backmgr/merchant/activationLetgo',{
-						tradeId:tradeId
-					}).then(res=>{
-						if(res.code==200){
-							// this.statistics = res.result
-							this.getList()
-							this.$notify({
-								title: '成功',
-								message: res.msg,
-								type: 'success'
-							});
-						}
-					})
-        }).catch(() => {    
-        });
-			
+				confirmButtonText: '确定',
+				cancelButtonText: '取消',
+			// type: 'warning'
+			}).then(() => {
+				this.$http.post('/wallet/backmgr/merchant/activationLetgo',{
+					tradeId:tradeId
+				}).then(res=>{
+					if(res.code==200){
+						// this.statistics = res.result
+						this.getList()
+						this.$notify({
+							title: '成功',
+							message: res.msg,
+							type: 'success'
+						});
+					}
+				})
+			}).catch(() => {    
+			});
 		},
 		SumTradeRecd(){
 			if(this.selectedDate && this.selectedDate.length==2){
@@ -310,24 +338,23 @@ export default {
 		},
 		orderActivation(item){
 			this.$confirm('激活后订单状态将变为已付款待放行，确认激活?', '确认激活订单？', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          // type: 'warning'
-        }).then(() => {
-          this.$http.post('/wallet/backmgr/merchant/activation',{tradeId: item.trade_id,}).then(res=>{
-						if(res.code==200){
-							// this.statistics = res.result
-							this.getList()
-							this.$notify({
-								title: '成功',
-								message: res.msg,
-								type: 'success'
-							});
-						}
-					})
-        }).catch(() => {    
-        });
-			
+				confirmButtonText: '确定',
+				cancelButtonText: '取消',
+          		// type: 'warning'
+			}).then(() => {
+				this.$http.post('/wallet/backmgr/merchant/activation',{tradeId: item.trade_id,}).then(res=>{
+					if(res.code==200){
+						// this.statistics = res.result
+						this.getList()
+						this.$notify({
+							title: '成功',
+							message: res.msg,
+							type: 'success'
+						});
+					}
+				})
+			}).catch(() => {    
+			});
 		},
 		showActiveBtn(create_time){
 			if(new Date().getTime()-create_time<259200000){
@@ -347,11 +374,6 @@ export default {
 						title:'提示',
 						dangerouslyUseHTMLString: true
 					});	
-					// this.$notify({
-					// 	title: '成功',
-					// 	message: res.msg,
-					// 	type: 'success'
-					// });
 				}
 			})
 		},
@@ -364,7 +386,6 @@ export default {
 			let formatnowdate = y+'-'+m+'-'+d;
 			if(this.filterForm.dateType==1){
 				this.selectedDate=[formatnowdate,formatnowdate]
-				console.log(this.selectedDate)
 			}else if(this.filterForm.dateType==2){
 				let oneweekdate = new Date(nowdate-7*24*3600*1000);
 				let y = oneweekdate.getFullYear();
@@ -389,8 +410,8 @@ export default {
 			}
 		},
         search(){
-					this.filterForm.pageNum = 1
-					this.getList()
+			this.filterForm.pageNum = 1
+			this.getList()
         },
         checkLog(){
             this.$router.push({
@@ -423,7 +444,6 @@ export default {
 	}
 }
 </script>
-
 <style scoped lang="less">
 .transaction-details{
      height:100%;
@@ -435,7 +455,12 @@ export default {
 			display: flex;
 			flex-direction: column;
         }
-    } 
+	} 
+	/deep/ .el-collapse-item__header {
+		font-size: 14px;
+		font-weight: 600;
+		padding: 0 10px;
+	}
     .el-form--inline .el-form-item__label{
         width:80px !important;
 		}

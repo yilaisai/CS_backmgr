@@ -10,7 +10,7 @@
 			</div>
 		</div>
 		<el-tabs type="border-card">
-			<el-tab-pane label="普通交易设置">
+				<h3>普通交易设置</h3>
 				<el-form label-width="100px" ref="filterForm" size="mini">
 					<el-form-item label="手续费:">
 						<el-input placeholder="请输入手续费" v-model="detaileData.otcFee" class="input-with-select"></el-input>
@@ -19,10 +19,7 @@
 						<el-input placeholder="请输入保证金" v-model="detaileData.deposit" class="input-with-select"></el-input>
 					</el-form-item>
 				</el-form>
-			</el-tab-pane>
-		</el-tabs>
-		<el-tabs type="border-card">
-			<el-tab-pane label="承兑商接单额度全局设置">
+				<h3>承兑商接单额度全局设置</h3>
 				<el-form label-width="100px" ref="filterForm" size="mini">
 					<el-form-item label="全局买币范围:">
 						<el-input v-model="detaileData.sysMatchMin" placeholder="请输入">
@@ -42,36 +39,54 @@
 							<template slot="append">{{filterForm.coinName}}</template>
 						</el-input>
 					</el-form-item>
+					<el-form-item label=""><el-button type="primary"  @click="UpdateOtcCoinConfig">保存修改</el-button></el-form-item>
 				</el-form>
-			</el-tab-pane>
 		</el-tabs>
-		<el-button type="primary" class="save" @click="UpdateOtcCoinConfig">保存修改</el-button>
-		<!-- <h3>返佣设置</h3>
-		<div>
-			<el-form 
-             label-width="186px"
-             ref="filterForm">
-				<el-form-item label="全局最大兑入返佣比例:">
-					<el-input placeholder="未设置默认0.7%" v-model="detaileData.otcFee" class="input-with-select"></el-input>
+		<h3>返佣设置</h3>
+		<el-tabs type="border-card">
+				
+				<el-form label-width="160px" ref="filterForm" size="mini">
+					<el-form-item label="全局最大兑入返佣比例:">
+					<el-input placeholder="未设置默认0.7%" v-model="rateDetaile.totalBuyRate" class="input-with-select"><template slot="append">%</template></el-input>
 					<span>设置后三级返佣比例之和不可超过该值</span>
 				</el-form-item>
 				<el-form-item label="全局最大兑出返佣比例:">
-					<el-input placeholder="未设置默认0.2%" v-model="detaileData.deposit" class="input-with-select"></el-input>
+					<el-input placeholder="未设置默认0.2%" v-model="rateDetaile.totalSaleRate" class="input-with-select"><template slot="append">%</template></el-input>
 					<span>设置后三级返佣比例之和不可超过该值</span>
 				</el-form-item>
+				<br>
+				<br>
+				<el-form-item label="支付通道:">
+					<el-select v-model="rateDetaile.payType"  placeholder="请选择"  @change="getDefaultRate">
+							<el-option label="银行卡" :value="1"></el-option>
+							<el-option label="支付宝" :value="2"></el-option>
+							<el-option label="微信" :value="3"></el-option>
+							<el-option label="宝转卡" :value="4"></el-option>
+						</el-select>
+				</el-form-item>
+				<el-form-item label="反佣等级:">
+					<el-select v-model="rateDetaile.rank"  placeholder="请选择" @change="getDefaultRate">
+						<el-option label="一级反佣" :value="1"></el-option>
+						<el-option label="二级反佣" :value="2"></el-option>
+						<el-option label="三级反佣" :value="3"></el-option>
+					</el-select>
+				</el-form-item>
 				<el-form-item label="默认返佣兑入返佣比例:">
-					<el-input placeholder="未设置默认0.6%" v-model="detaileData.otcFee" class="input-with-select"></el-input>
+					<el-input placeholder="未设置默认0.6%" v-model="rateDetaile.buyRate" class="input-with-select">
+						<template slot="append">%</template>
+					</el-input>
 				</el-form-item>
 				<el-form-item label="默认返佣兑出返佣比例:">
-					<el-input placeholder="未设置0.1%" v-model="detaileData.deposit" class="input-with-select"></el-input>
+					<el-input placeholder="未设置默认0.1%" v-model="rateDetaile.saleRate" class="input-with-select">
+						<template slot="append">%</template>
+					</el-input>
 				</el-form-item>
 				
 				<el-form-item label="">
-						<el-button type="primary">保存</el-button>
-					</el-form-item>
-					
+					<el-button type="primary" @click="updateDefaultRate">保存</el-button>
+				</el-form-item>
 			</el-form>
-		</div> -->
+		</el-tabs>
 		
 
 	</div>
@@ -86,6 +101,14 @@ export default {
 			},
 			detaileData:{
 				otcFee:''
+			},
+			rateDetaile:{
+				buyRate: null,
+				payType: 1,
+				rank: 1,
+				saleRate: null,
+				totalBuyRate: 0.1,
+				totalSaleRate: 0.1,
 			}
 		}
 	},
@@ -94,8 +117,41 @@ export default {
 			this.filterForm.coinName = this.coinInfo[0].coinName
 			this.queryOtcCoinConfig()
 		}
+		this.getDefaultRate()
 	},
 	methods:{
+		//
+		
+		updateDefaultRate(){
+			let queryDate ={
+				buyRate:Math.floor(this.rateDetaile.buyRate)/100,
+				saleRate:Math.floor(this.rateDetaile.saleRate)/100,
+				totalBuyRate:Math.floor(this.rateDetaile.totalBuyRate)/100,
+				totalSaleRate:Math.floor(this.rateDetaile.totalSaleRate)/100,
+				payType:this.rateDetaile.payType,
+				rank:this.rateDetaile.payType,
+			}
+			this.$http.post("/wallet/invite/backmgr/updateDefaultRate", queryDate).then(res => {
+				if(res.code == 200){
+					this.$message({
+						type: 'success',
+						message: res.msg
+					})
+					this.getDefaultRate()
+				}
+			})
+		},
+		getDefaultRate(){
+			this.$http.post("/wallet/invite/backmgr/getDefaultRate", {payType:this.rateDetaile.payType,rank:this.rateDetaile.rank}).then(res => {
+				if(res.code == 200){
+					res.result.totalBuyRate = Math.floor(res.result.totalBuyRate*10000)/100
+					res.result.totalSaleRate = Math.floor(res.result.totalSaleRate*10000)/100
+					res.result.saleRate = Math.floor(res.result.saleRate*10000)/100
+					res.result.buyRate = Math.floor(res.result.buyRate*10000)/100
+					this.rateDetaile = res.result
+				}
+			})
+		},
 		queryOtcCoinConfig(){
 			this.$http.post("/wallet/app/otc/backmgr/queryOtcCoinConfig", {coinName:this.filterForm.coinName}).then(res => {
 				if(res.code == 200){
@@ -148,15 +204,28 @@ export default {
 	display: flex;
 	flex-direction: column;
 	box-sizing: border-box;
+	overflow: hidden;
+	overflow-y: scroll;
+	h3{margin-top: 0;}
 	.el-tabs {
 		margin-bottom: 20px;
+		
 	}
 	/deep/.el-form-item__content{
 		.el-input{
 			width: 194px;
 		}
+		.el-select{
+			// .el-input{
+			// 	width: 80px;
+			// 	.el-input__inner{
+			// 		padding-left: 10px;
+			// 	}
+			// }
+		}
 			
 	}
+	
 	.title {
 		display: flex;
 		align-items: center;

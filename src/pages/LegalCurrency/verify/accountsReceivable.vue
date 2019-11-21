@@ -22,7 +22,7 @@
 						<div class="listData" v-if="scope.row.alipayList&&scope.row.alipayList.length>0" style="color:#409EFF">
 							<!-- <p v-for="(item,index) in scope.row.alipayList" :key = index> <span>账号{{ index+1 }}:</span> {{ item.num }}</p> -->
 							<p v-if="scope.row.alipayList.length>1" class="btn" @click=" showPayNum(scope.row.alipayList) "> 查看更多</p>
-							<p v-else>{{ scope.row.alipayList[0].recdId }}</p>
+							<p v-else>{{ scope.row.alipayList[0].num }}</p>
 						</div>
 						<span v-else> 当前未使用 </span>
 					</template>
@@ -31,7 +31,7 @@
 					<template slot-scope="scope">
 						<div class="listData" v-if="scope.row.wechatList&&scope.row.wechatList.length>0" style="color:#409EFF">
 							<p v-if="scope.row.wechatList.length>1" class="btn" @click=" showPayNum(scope.row.wechatList) "> 查看更多</p>
-							<p v-else>{{ scope.row.wechatList[0].recdId }}</p>
+							<p v-else>{{ scope.row.wechatList[0].num }}</p>
 						</div>
 						<span v-else> 当前未使用 </span>
 					</template>
@@ -41,7 +41,7 @@
 						<div class="listData" v-if="scope.row.bankExList&&scope.row.bankExList.length>0" style="color:#409EFF">
 							<!-- <p v-for="(item,index) in scope.row.bankExList" :key = index> <span>账号{{ index+1 }}:</span> {{ item.num }}</p> -->
 							<p v-if="scope.row.bankExList.length>1" class="btn" @click=" showPayNum(scope.row.bankExList) "> 查看更多</p>
-							<p v-else>{{ scope.row.bankExList[0].recdId }}</p>
+							<p v-else>{{ scope.row.bankExList[0].num }}</p>
 						</div>
 						<span v-else> 当前未使用 </span>
 					</template>
@@ -51,7 +51,7 @@
 						<div class="listData" v-if="scope.row.alipayToBankList&&scope.row.alipayToBankList.length>0" style="color:#409EFF">
 							<!-- <p v-for="(item,index) in scope.row.alipayToBankList" :key = index> <span>账号{{ index+1 }}:</span> {{ item.num }}</p> -->
 							<p v-if="scope.row.alipayToBankList.length>1" class="btn" @click=" showPayNum(scope.row.alipayToBankList) "> 查看更多</p>
-							<p v-else>{{ scope.row.alipayToBankList[0].recdId }}</p>
+							<p v-else>{{ scope.row.alipayToBankList[0].num }}</p>
 						</div>
 						<span v-else> 当前未使用 </span>
 					</template>

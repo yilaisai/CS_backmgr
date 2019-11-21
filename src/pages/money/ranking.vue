@@ -74,13 +74,15 @@
 				</template>
 			</el-table-column>
 		</el-table>
-      	<p class="total"> <span>RMT：</span> 可用{{rmtAmount}}   冻结{{rmtFrozenAmount}}    <span>BTC：</span> 可用{{btcAmount}}    冻结{{btcFrozenAmount}}      <span>ETH：</span>可用{{ethAmount}}   冻结{{ethFrozenAmount}}    <span>EOS：</span>可用{{eosAmount}}   冻结{{eosFrozenAmount}} </p>
-		<sac-pagination v-show="listData.list.length > 0"
-			@handleChange="getPaginationChange"
-			:total="+listData.total"
-			:page-size="filterForm.pageSize"
-			:current-page="filterForm.pageNum">
-		</sac-pagination>
+		<div class="load-more">
+			<p class="total"> <span>RMT：</span> 可用{{rmtAmount}}   冻结{{rmtFrozenAmount}}    <span>BTC：</span> 可用{{btcAmount}}    冻结{{btcFrozenAmount}}      <span>ETH：</span>可用{{ethAmount}}   冻结{{ethFrozenAmount}}    <span>EOS：</span>可用{{eosAmount}}   冻结{{eosFrozenAmount}} </p>
+			<sac-pagination v-show="listData.list.length > 0"
+				@handleChange="getPaginationChange"
+				:total="+listData.total"
+				:page-size="filterForm.pageSize"
+				:current-page="filterForm.pageNum">
+			</sac-pagination>
+		</div>
 		<el-dialog title="修改用户状态" :visible.sync="dialogVisible" width="500">
 			<el-form :inline="true" label-width="90px" ref="ruleForm"  :model="ruleForm">
 				<el-form-item label="状态调整:" prop="status">
@@ -247,6 +249,14 @@ export default {
 	}
 	/deep/ .scope{
 		p{
+			margin: 0;
+		}
+	}
+	.load-more {
+		display: flex;
+		justify-content: space-between;
+		margin-top: 10px;
+		.el-pagination {
 			margin: 0;
 		}
 	}

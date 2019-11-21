@@ -1,7 +1,7 @@
 <template>
   <div class="sac-home">
     <div class="table-wrap">
-      <h2 class="t-title">HOMO钱包运营数据</h2>
+      <h2 class="t-title">运营数据</h2>
       <el-table :data="user" border size="mini">
         <el-table-column prop="date" label="日期" align="center"></el-table-column>
         <el-table-column prop="total" label="用户总数" align="center"></el-table-column>

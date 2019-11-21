@@ -73,13 +73,17 @@
 				<h3>交易奖励</h3>
 				<el-form :inline="true" :model="detaileData" class="demo-form-inline" size="small">
 					<el-form-item label="商户方奖励:" class="big">
-						<el-input :value=" '直接 0'+detaileData.coinName+',间接 0'+detaileData.coinName  " disabled></el-input>
+						<el-input :value=" '直接 0'+detaileData.coinName+', 间接 0'+detaileData.coinName  " disabled></el-input>
 					</el-form-item>
 					<el-form-item label="承兑商方折扣:" class="big">
-						<el-input :value=" '承兑商'+detaileData.makerCommission+detaileData.coinName+',直接'+detaileData.makerFirstCommission+detaileData.coinName+',间接'+detaileData.makerSecondaryCommission+detaileData.coinName  " disabled></el-input>
+						<el-input :value=" '承兑商'+detaileData.makerCommission+detaileData.coinName+', 直接'+detaileData.makerFirstCommission+detaileData.coinName+', 间接'+detaileData.makerSecondaryCommission+detaileData.coinName  " disabled></el-input>
 					</el-form-item>
 					<el-form-item label="平台盈利:">
-						<el-input v-if="detaileData.tradeStatus == 3 || detaileData.tradeStatus == 6" :value=" Math.floor(detaileData.fee*10000 -(detaileData.makerCommission*10000+detaileData.makerFirstCommission*10000+detaileData.makerSecondaryCommission*10000))/10000+detaileData.coinName  " disabled></el-input>
+						<el-input
+							v-if="detaileData.tradeStatus == 3 || detaileData.tradeStatus == 6"
+							:value=" Math.floor(detaileData.fee*10000 -(detaileData.makerCommission*10000+detaileData.makerFirstCommission*10000+detaileData.makerSecondaryCommission*10000))/10000+detaileData.coinName  "
+							disabled>
+						</el-input>
 						<el-input v-else value="--" disabled></el-input>
 					</el-form-item>
 				</el-form>
@@ -184,6 +188,7 @@ export default {
 	display: flex;
 	flex-direction: column;
 	box-sizing: border-box;
+	background-color: #F6F9FC;
 	.el-header{
 		width: 100%;
 	}
@@ -194,8 +199,6 @@ export default {
 		overflow: hidden;
 		overflow-y: scroll;
 		-webkit-overflow-scrolling: touch;
-		background: #F6F9FC;
-		padding: 10px;
 		h3 {
 			font-size: 16px;
 			border-bottom: 1px solid #e6e6e6;

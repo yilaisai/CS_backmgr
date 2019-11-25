@@ -60,7 +60,7 @@
 							<el-option label="银行卡" :value="1"></el-option>
 							<el-option label="支付宝" :value="2"></el-option>
 							<el-option label="微信" :value="3"></el-option>
-							<el-option label="宝转卡" :value="4"></el-option>
+							<!-- <el-option label="宝转卡" :value="4"></el-option> -->
 						</el-select>
 				</el-form-item>
 				<el-form-item label="反佣等级:">

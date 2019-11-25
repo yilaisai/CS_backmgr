@@ -60,11 +60,11 @@
 						{{ scope.row.payAuditStatus ==1?'已审核':'待审核' }}
 					</template>
 				</el-table-column>
-				<el-table-column align="center" fixed="right" label="操作" width="200">
+				<el-table-column align="center" fixed="right" label="操作" width="100">
 					<template slot-scope="scope">
-						<el-button @click="goDetaile(scope)" type="text" size="mini">查看审核</el-button>
-						<el-button @click="showQRcode(scope)" type="text" size="mini">收款测试</el-button>
-						<el-button @click="showStopWindow(scope)" type="text" size="mini">停止使用</el-button>
+						<el-button @click="goDetaile(scope)" type="text" size="mini">{{ scope.row.payAuditStatus ==1?'查看详情':'查看审核' }}</el-button>
+						<!-- <el-button @click="showQRcode(scope)" type="text" size="mini">收款测试</el-button>
+						<el-button @click="showStopWindow(scope)" type="text" size="mini">停止使用</el-button> -->
 					</template>
 				</el-table-column>
 			</el-table>

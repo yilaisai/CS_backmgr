@@ -195,7 +195,7 @@ export default {
 	overflow-y: auto;
 	h3 {
 		margin: 0;
-		font-size: 14px;
+		font-size: 16px;
 	}
 	.current {
 		.title {

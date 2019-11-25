@@ -10,7 +10,7 @@
 			</div>
 		</div>
 		<el-tabs type="border-card">
-				<h3>普通交易设置</h3>
+				<h4>普通交易设置</h4>
 				<el-form label-width="100px" ref="filterForm" size="mini">
 					<el-form-item label="手续费:">
 						<el-input placeholder="请输入手续费" v-model="detaileData.otcFee" class="input-with-select"></el-input>
@@ -19,7 +19,7 @@
 						<el-input placeholder="请输入保证金" v-model="detaileData.deposit" class="input-with-select"></el-input>
 					</el-form-item>
 				</el-form>
-				<h3>承兑商接单额度全局设置</h3>
+				<h4>承兑商接单额度全局设置</h4>
 				<el-form label-width="100px" ref="filterForm" size="mini">
 					<el-form-item label="全局买币范围:">
 						<el-input v-model="detaileData.sysMatchMin" placeholder="请输入">
@@ -44,7 +44,6 @@
 		</el-tabs>
 		<h3>返佣设置</h3>
 		<el-tabs type="border-card">
-				
 				<el-form label-width="160px" ref="filterForm" size="mini">
 					<el-form-item label="全局最大兑入返佣比例:">
 					<el-input placeholder="未设置默认0.7%" v-model="rateDetaile.totalBuyRate" class="input-with-select"><template slot="append">%</template></el-input>
@@ -207,6 +206,14 @@ export default {
 	overflow: hidden;
 	overflow-y: scroll;
 	h3{margin-top: 0;}
+	h4 {
+		padding: 0;
+		margin: 0;
+		font-size: 14px;
+	}
+	.el-form {
+		margin-top: 10px;
+	}
 	.el-tabs {
 		margin-bottom: 20px;
 		

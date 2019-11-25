@@ -185,6 +185,7 @@
 </script>
 <style lang="less">
     .exchangeSAC {
+		overflow: hidden;
       /deep/.ExList{
         flex: none;
       }

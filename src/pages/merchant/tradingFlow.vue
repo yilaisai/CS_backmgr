@@ -59,28 +59,6 @@
 						</el-form>
 					</el-collapse-item>
     			</el-collapse>
-				<!-- <ul class="statistics" v-if="statistics">
-					<li>
-						<p>待付款</p>
-						<p>交易数：{{ statistics.pendingGoNum }}</p>
-						<p>交易额：{{ statistics.pendingGoAmount }}{{filterForm.coinName}}</p>
-					</li>
-					<li>
-						<p>待放行</p>
-						<p>交易数：{{ statistics.pendingNum }}</p>
-						<p>交易额：{{ statistics.pendingAmount }}{{filterForm.coinName}}</p>
-					</li>
-					<li>
-						<p>已完成</p>
-						<p>交易数：{{ statistics.completeNum }}</p>
-						<p>交易额：{{ statistics.completeAmount }}{{filterForm.coinName}}</p>
-					</li>
-					<li>
-						<p>申诉中</p>
-						<p>交易数：{{ statistics.appealNum }}</p>
-						<p>交易额：{{ statistics.appealAmount }}{{filterForm.coinName}}</p>
-					</li>
-				</ul> -->
 				<el-table :data="listData.list" border height="100%" size="mini">
 						<el-table-column prop="coin_name" label="币种" width="60" align="center"></el-table-column>
 						<el-table-column  label="类型/下单时间" align="center" width="140">
@@ -121,7 +99,7 @@
 				<div class="statistics">
 					总数量： <span>{{sumInfo.sumTakerAmount}} {{$variableCoin}}</span>
 					总金额： <span>{{sumInfo.sumAmount}} CNY</span>
-					手续费： <span>{{sumInfo.sumFee}} {{$variableCoin}}</span>
+					已到账手续费： <span>{{sumInfo.sumFee}} {{$variableCoin}}</span>
 				</div>
                 <sac-pagination v-show="listData.list.length>0"
                     @handleChange="handleCurrentChange"
@@ -249,7 +227,6 @@ export default {
 				this.filterForm.endDate = ""
 			}
 			this.$http.post('/wallet/backmgr/merchant/trade/list',this.filterForm).then(res=>{
-				this.SumTradeRecd()
 				const { list ,total} = res.result.pageData;
 				this.sumInfo = res.result.sumInfo
 				this.listData.list = list;
@@ -332,20 +309,6 @@ export default {
 				})
 			}).catch(() => {    
 			});
-		},
-		SumTradeRecd(){
-			if(this.selectedDate && this.selectedDate.length==2){
-				this.filterForm.startDate = this.selectedDate[0]
-				this.filterForm.endDate = this.selectedDate[1]
-			}else {
-				this.filterForm.startDate = ""
-				this.filterForm.endDate = ""
-			}
-			this.$http.post('/wallet/app/otc/backmgr/SumTradeRecd',this.filterForm).then(res=>{
-				if(res.code==200){
-					this.statistics = res.result
-				}
-			})
 		},
 		orderActivation(item){
 			this.$confirm('激活后订单状态将变为已付款待放行，确认激活?', '确认激活订单？', {

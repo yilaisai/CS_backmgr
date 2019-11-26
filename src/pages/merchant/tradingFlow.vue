@@ -86,6 +86,8 @@
 						<el-table-column prop="fee" label="手续费" align="center"></el-table-column>
 						<el-table-column prop="price" label="操作" fixed="right" align="center" width="300">
 							<template slot-scope="scope">
+								
+								<!-- <el-button type="danger" size="mini" v-if="scope.row.trade_status==1||scope.row.trade_status==2" @click="appealClick(scope.row) ">申诉</el-button> -->
 								<el-button type="primary" size="mini" @click.native="$router.push({path:'/merchant/merchantTradingFlowDetaile',query:{tradeId:scope.row.trade_id}})">查看详情</el-button>
 								<el-button type="danger" size="mini" v-if="(scope.row.trade_status==8||scope.row.trade_status==4)&&showActiveBtn(scope.row.create_time)" @click.native="orderActivation(scope.row)">激活订单</el-button>
 								<el-button type="danger" size="mini" v-if="scope.row.trade_status==2&&scope.row.isActivation==1" @click.native="activationLetgo(scope.row.trade_id)">&nbsp;&nbsp;放 &nbsp;&nbsp;行&nbsp;&nbsp;</el-button>
@@ -95,20 +97,57 @@
 						</el-table-column>
 				</el-table>
 			</div>
-            <el-footer>
-				<div class="statistics">
-					总数量： <span>{{sumInfo.sumTakerAmount}} {{$variableCoin}}</span>
-					总金额： <span>{{sumInfo.sumAmount}} CNY</span>
-					已到账手续费： <span>{{sumInfo.sumFee}} {{$variableCoin}}</span>
-				</div>
-                <sac-pagination v-show="listData.list.length>0"
-                    @handleChange="handleCurrentChange"
-                    :total="+listData.total"
-                    :page-size="filterForm.pageSize"
-                    :current-page="filterForm.pageNum">
-                </sac-pagination>
-            </el-footer>
-        </el-container>
+			<el-footer>
+					<div class="statistics">
+						总数量： <span>{{sumInfo.sumTakerAmount}} {{$variableCoin}}</span>
+						总金额： <span>{{sumInfo.sumAmount}} CNY</span>
+						已到账手续费： <span>{{sumInfo.sumFee}} {{$variableCoin}}</span>
+					</div>
+					<sac-pagination v-show="listData.list.length>0"
+							@handleChange="handleCurrentChange"
+							:total="+listData.total"
+							:page-size="filterForm.pageSize"
+							:current-page="filterForm.pageNum">
+					</sac-pagination>
+			</el-footer>
+		</el-container>
+				
+		<el-dialog class="EntryPrompt" title="申诉" :visible.sync="showAppeal" width="460px">
+			<el-form ref="appealData" label-width="80px" size="mini">
+				<el-form-item label="申诉人:">
+					<el-select v-model="appealData.userId" >
+						<el-option v-for="(item, key) in appealList" :key="key" :value="item.value " :label="item.label"></el-option>
+					</el-select>
+				</el-form-item>
+				<el-form-item label="申诉理由:">
+					<el-input type="textarea" v-model="appealData.proofTxt"></el-input>
+				</el-form-item>
+				<el-form-item label="上传图片:">
+					<div v-if="appealData.proofImg" class="selectImg">
+						<img  :src="appealData.proofImg" >
+						<span @click=" appealData.proofImg='' ">删除</span>
+					</div>
+					<el-upload v-else
+						class="avatar-uploader"
+						:action="server_path + 'wallet/backmgr/uploadFile'"
+						name="files"
+						list-type="picture-card"
+						:data="{type:'img',token :token}"
+						:show-file-list="false"
+						:on-success="upload">
+						
+						<i class="el-icon-plus avatar-uploader-icon"></i>
+						<!-- <el-button size="small" type="primary">点击上传</el-button> -->
+					</el-upload>
+				</el-form-item>
+				
+				 
+			</el-form>
+			<div class="btns">
+				<el-button @click="dialogVisible = false" size="mini">取 消</el-button>
+				<el-button type="primary" size="mini" @click="submitAppeal">提交申诉</el-button>
+			</div>
+		</el-dialog>
 		<el-dialog class="EntryPrompt" title="确定手动录单？" :visible.sync="dialogVisible" width="420px">
 			<p>录单成功将生成一笔订单状态为完成的单，确认录单？</p>
 			<el-form ref="form" label-width="55px" size="mini">
@@ -135,6 +174,13 @@ export default {
 	data(){
 		return{
 			dialogVisible:false,
+			showAppeal:false,
+			appealData:{
+				appealType:'4',
+				proofTxt:'',
+				proofImg:'',
+				tradeId:''
+			},
 			selectItem:{
 				trade_id:''
 			},
@@ -169,6 +215,10 @@ export default {
 				{value:'全部',label:""},
 				{value:'派单',label:"0"},
 				{value:'抢单',label:"1"}
+			],
+			appealList:[
+				{value:'0',label:"买方"},
+				{value:'1',label:"卖方"}
 			],
 			statusList:[
 				{value:'全部',label:""},
@@ -214,10 +264,41 @@ export default {
 			},
 			statistics:{},
 			payTypes,
+			server_path:'',
+			token:localStorage.getItem('wallet_token')
 		}
         
 	},
 	methods:{
+		appealClick(data){
+			
+			this.appealData.tradeId = data.trade_id
+			this.appealData.proofTxt = '' 
+			this.appealData.proofImg = '' 
+			this.appealList=[
+				{value:data.taker_user_id,label:'商户:'+data.taker_nick_name},
+				{value:data.maker_user_id,label:'承兑商:'+data.nick_name}
+			]
+			console.log(data)
+			// {value:'1',label:"卖方"}
+			this.showAppeal = true
+		}, 
+		upload(response, file, fileList) {
+        this.appealData.proofImg = response.result.urls[0]
+      },
+		submitAppeal(){
+			this.$http.post('/wallet/app/otc/backmgr/submitAppeal',this.appealData).then(res=>{
+				if(res.code==200){
+					this.getList()
+						this.$notify({
+							title: "提示",
+							message: `申诉处理成功`,
+							type: "success"
+					});
+				}
+				this.showAppeal = false
+			})
+		},
 		getList(){
 			if(this.selectedDate && this.selectedDate.length==2){
 				this.filterForm.startDate = this.selectedDate[0]
@@ -414,6 +495,7 @@ export default {
 		...mapState(['coinInfo'])
 	},
 	activated(){
+		this.server_path =  localStorage.getItem('SERVER_PATH') || SERVER_PATH
 			this.getList()
 	}
 }
@@ -544,6 +626,27 @@ export default {
 			.btns{
 				text-align: right;
 			}
+		}
+	}
+	.selectImg{
+		width: 148px;
+		position: relative;
+		line-height: 0;
+		img{
+			width: 100%;
+		}
+		span{
+			position: absolute;
+			width: 148px;
+			height: 24px;
+			line-height: 24px;
+			background: rgba(0, 0, 0, .5);
+			color: #fff;
+			left: 0;
+			bottom: 0;
+			text-align: center;
+			font-weight: 500;
+			cursor: pointer;
 		}
 	}
 }

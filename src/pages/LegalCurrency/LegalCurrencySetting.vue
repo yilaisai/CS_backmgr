@@ -123,10 +123,10 @@ export default {
 		
 		updateDefaultRate(){
 			let queryDate ={
-				buyRate:Math.floor(this.rateDetaile.buyRate)/100,
-				saleRate:Math.floor(this.rateDetaile.saleRate)/100,
-				totalBuyRate:Math.floor(this.rateDetaile.totalBuyRate)/100,
-				totalSaleRate:Math.floor(this.rateDetaile.totalSaleRate)/100,
+				buyRate:Math.floor(this.rateDetaile.buyRate*100)/10000,
+				saleRate:Math.floor(this.rateDetaile.saleRate*100)/10000,
+				totalBuyRate:Math.floor(this.rateDetaile.totalBuyRate*100)/10000,
+				totalSaleRate:Math.floor(this.rateDetaile.totalSaleRate*100)/10000,
 				payType:this.rateDetaile.payType,
 				rank:this.rateDetaile.payType,
 			}

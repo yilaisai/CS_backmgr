@@ -258,11 +258,14 @@ export default {
 		font-weight: 600;
 		padding: 0 10px;
 	}
-	.price>p{
-		margin: 0;
-		text-align: left;
-		span{
-			color: #409EFF;
+	.price{
+		display: inline-block;
+		p{
+			margin: 0;
+			text-align: left;
+			span{
+				color: #409EFF;
+			}
 		}
 	}
 	.ipInfo{

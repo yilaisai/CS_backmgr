@@ -52,10 +52,8 @@
 									<el-option value="1" label="已超时"></el-option>
 								</el-select>
 							</el-form-item>
-							<el-form-item>
-								<el-button type="primary" @click.native="search" size="mini">搜索</el-button>
-								<el-button type="primary" @click.native="exportExcel" size="mini" icon="el-icon-document-checked">导出Excel</el-button>
-							</el-form-item>
+							<el-button type="primary" @click.native="search" size="mini">搜索</el-button>
+							<el-button type="primary" @click.native="exportExcel" size="mini" icon="el-icon-document-checked">导出Excel</el-button>
 						</el-form>
 					</el-collapse-item>
     			</el-collapse>
@@ -456,6 +454,12 @@ export default {
 		font-weight: 600;
 		padding: 0 10px;
 	}
+	/deep/.el-collapse-item__content {
+		padding-bottom: 0;
+	}
+	/deep/.el-form--inline .el-form-item__content {
+		width: 151px;
+	}
     .el-form--inline .el-form-item__label{
         width:80px !important;
 		}
@@ -512,7 +516,7 @@ export default {
 				}
 			}
 		}
-   /deep/ .dateItem  .el-form-item__content{
+   	/deep/.dateItem  .el-form-item__content{
         width: auto;
 		}
 		/deep/.el-radio__label{

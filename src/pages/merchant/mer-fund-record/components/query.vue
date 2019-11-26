@@ -1,7 +1,7 @@
 <template>
 	<el-collapse>
 		<el-collapse-item title="查询条件" name="filter">
-			<el-form ref="form" :model="formData" label-width="80px" size="mini" inline>
+			<el-form ref="form" :model="formData" label-width="50px" size="mini" inline>
 				<div>
 					<el-form-item label="账号：">
 						<el-input v-model="formData.name" placeholder="账号"></el-input>
@@ -166,5 +166,8 @@ export default {
 	font-size: 14px;
 	font-weight: 600;
 	padding: 0 10px;
+}
+/deep/.el-collapse-item__content {
+	padding-bottom: 0;
 }
 </style>

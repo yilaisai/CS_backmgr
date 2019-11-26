@@ -13,14 +13,14 @@
 			size="mini"
 			style="min-width: 100%">
 			<el-table-column prop="create_time" label="发起时间" width="140"></el-table-column>
-			<el-table-column prop="nickName" label="账号|昵称" width="140">
+			<el-table-column prop="nickName" label="账号|昵称" width="170" align="center">
 				<template slot-scope="scope">
 					<span>{{scope.row.phone + ' | ' + scope.row.nickName}}</span>
 				</template>
 			</el-table-column>
-			<el-table-column prop="coin_name" label="币种" align="center"></el-table-column>
-			<el-table-column prop="amount" label="数量"></el-table-column>
-			<el-table-column prop="fee" label="手续费"></el-table-column>
+			<el-table-column prop="coin_name" label="币种" align="center" width="60"></el-table-column>
+			<el-table-column prop="amount" label="数量" align="center"></el-table-column>
+			<el-table-column prop="fee" label="手续费" align="center"></el-table-column>
 			<el-table-column prop="status" label="状态" align="center">
 				<span slot-scope="scope">{{scope.row.status | filterStatus(orderStatus)}}</span>
 			</el-table-column>

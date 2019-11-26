@@ -45,7 +45,7 @@ export default {
 				{name: '审核通过', val: 4},
 			],
 			showDialogMR: false,
-			
+			formData: {}
 		}
 	},
 	activated() {
@@ -53,9 +53,11 @@ export default {
 	},
 	methods: {
 		getData(formData) {
-			formData = formData || {}
+			if(formData) this.pageNum = 1
+			formData = formData || this.formData
 			formData.pageNum = this.pageNum
 			formData.pageSize = this.pageSize
+			this.formData = formData
 			this.$http.post('/wallet/backmgr/merchant/trade/queryRechargeWithdrawPage', formData).then(res => {
 				if(res.code == 200) {
 					this.pageData = res.result.pageInfo
@@ -109,6 +111,6 @@ export default {
                 }
             }
         }
-    }
+	}
 }
 </style>

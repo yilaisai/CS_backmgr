@@ -1,7 +1,7 @@
 <template>
 	<el-collapse>
 		<el-collapse-item title="查询条件" name="filter">
-			<el-form ref="form" :model="formData" label-width="80px" size="mini" inline>
+			<el-form ref="form" :model="formData" label-width="60px" size="mini" inline>
 				<div>
 					<el-form-item label="账号：">
 						<el-input v-model="formData.name" placeholder="账号"></el-input>
@@ -9,7 +9,7 @@
 					<el-form-item label="地址：">
 						<el-input v-model="formData.addr" placeholder="搜索地址"></el-input>
 					</el-form-item>
-					<el-form-item label="订单号码：">
+					<el-form-item label="单号：">
 						<el-input v-model="formData.orderId" placeholder="搜索订单号"></el-input>
 					</el-form-item>
 				</div>
@@ -18,19 +18,19 @@
 						<el-input v-model="formData.txId" placeholder="搜索TXID"></el-input>
 					</el-form-item>
 					<el-form-item label="币种：">
-						<el-select v-model="formData.coinName" placeholder="选择类型" clearable style="width: 185px">
+						<el-select v-model="formData.coinName" placeholder="选择类型" clearable>
 							<el-option :value="null" label="全部"></el-option>
 							<el-option v-for="(item, key) in coinInfo" :key="key" :value="item.coinName" :label="item.coinName"></el-option>
 						</el-select>
 					</el-form-item>
-					<el-form-item label="订单状态：">
-						<el-select v-model="formData.status" placeholder="选择订单状态" clearable style="width: 185px">
+					<el-form-item label="状态：">
+						<el-select v-model="formData.status" placeholder="选择订单状态" clearable>
 							<el-option :value="null" label="全部"></el-option>
 							<el-option v-for="(item, key) in orderStatus" :key="key" :value="item.val" :label="item.name"></el-option>
 						</el-select>
 					</el-form-item>
 				</div>
-				<el-form-item label="时间：">
+				<el-form-item label="时间：" style="width: 466px">
 					<el-date-picker
 						id="createtime"
 						v-model="formData.create_time"
@@ -47,7 +47,7 @@
 				</el-form-item>
 				
 				<el-form-item>
-					<el-button type="primary" @click="queryData" style="margin-left: 60px">查询</el-button>
+					<el-button type="primary" @click="queryData" style="margin-left: 40px">查询</el-button>
 					<el-button type="primary" @click="clear">清空</el-button>
 				</el-form-item>
 			</el-form>
@@ -163,7 +163,7 @@ export default {
 <style lang="less" scoped>
 .el-form--inline {
 	/deep/.el-form-item__content {
-		width: auto;
+		width: 180px;
 	}
 } 
 /deep/.el-form-item__label {
@@ -174,4 +174,8 @@ export default {
 	font-weight: 600;
 	padding: 0 10px;
 }
+/deep/.el-collapse-item__content {
+	padding-bottom: 0;
+}
+
 </style>

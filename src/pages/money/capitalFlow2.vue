@@ -1,6 +1,6 @@
 <template>
 	<div class="capitalFlow-page">
-			<el-form :inline="true"  ref="filterForm" label-width="80px" :model="filterForm" size="mini">
+			<el-form :inline="true"  ref="filterForm" label-width="60px" :model="filterForm" size="mini">
 				<el-form-item label="昵称:">
 					<el-input placeholder="请输入昵称" v-model="filterForm.nickName" class="input-with-select"></el-input>
 				</el-form-item>

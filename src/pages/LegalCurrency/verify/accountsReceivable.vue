@@ -1,6 +1,6 @@
 <template>
     <div class='exchangeSAC'>
-			<el-form :inline="true" label-width="90px" ref="filterForm" :model="filterForm" size="mini">
+			<el-form :inline="true" label-width="60px" ref="filterForm" :model="filterForm" size="mini">
 				<sac-input ref="phone" label="账号" v-model.trim="filterForm.phoneOrEmail"></sac-input>
 				<el-form-item label="状态">
 					<el-select class="select" v-model="filterForm.status" >

@@ -7,7 +7,7 @@
 						<el-input placeholder="请输入用户账号" v-model="filterForm.phoneOrEmail" ></el-input>
 					</el-form-item>
 					<el-form-item label="类型:" >
-						<el-select v-model="filterForm.tradeType" >
+						<el-select v-model="filterForm.advType" >
 							<el-option value="" label='所有'></el-option>
 							<el-option v-for="(item, key) in typeList" :key="key" :value="item.value" :label="item.label "></el-option>
 						</el-select>
@@ -126,12 +126,14 @@ export default {
 				startDate:'',
 				endDate:'',
 				pageNum:1,
-				pageSize:10
+				pageSize: 20,
 			},
 			selectedDate:[],
 			typeList:[
-				{label:'匹配兑出',value:1},
-				{label:'抢单兑出',value:2}
+				{label:'派单兑入',value:5},
+				{label:'派单兑出',value:6},
+				{label:'抢单兑入',value:4},
+				{label:'抢单兑出',value:3}
 			],
 			listData: {
 				total: null,
@@ -257,6 +259,13 @@ export default {
 		font-size: 14px;
 		font-weight: 600;
 		padding: 0 10px;
+	}
+	
+	/deep/.el-collapse-item__content {
+		padding-bottom: 0;
+	}
+	/deep/.el-form--inline .el-form-item__content {
+		width: 170px;
 	}
 	.price{
 		display: inline-block;

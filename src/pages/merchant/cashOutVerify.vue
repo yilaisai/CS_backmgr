@@ -32,7 +32,12 @@
 							end-placeholder="结束日期" >
 						</el-date-picker>
 					</el-form-item>
-					
+					<el-form-item label="状态:" >
+						<el-select v-model="filterForm.matchResult" >
+							<el-option value="" label='所有'></el-option>
+							<el-option v-for="(item, key) in matchResultMap" :key="key" :value="key" :label="item"></el-option>
+						</el-select>
+					</el-form-item>
 					<el-button class="btn" type="primary" @click="search()" size="mini" style="margin-left: 20px;">查询</el-button>
 				</el-form>
 			</el-collapse-item>
@@ -52,9 +57,9 @@
 				</template>
 			</el-table-column>
 			<el-table-column align="center"  label="状态" width="130">
-				<div slot-scope="scope">
-					{{scope.row.matchResult==0?'待审核':scope.row.matchResult==1?'匹配中':scope.row.matchResult==2?'匹配成功':scope.row.matchResult==3?'匹配失败':scope.row.matchResult==4?'发起中断':scope.row.matchResult==5?'IP不匹配':'审核失败'}}
-				</div>
+				<template slot-scope="scope">
+					{{matchResultMap[scope.row.matchResult]}}
+				</template>
 			</el-table-column>
 			<el-table-column align="center"  label="价格/数量/金额" >
 				<div class="price" slot-scope="scope">
@@ -116,18 +121,20 @@
 </template>
 <script>
 import {mapState} from 'vuex'
+import {matchResultMap} from '@/common/constants.js'
 export default {
 	data(){
 		return {
 			filterForm:{
 				coinName:'RMT',
-				tradeType:'',
+				advType:'',
 				apiOrderId:'',
 				phoneOrEmail:'',
 				startDate:'',
 				endDate:'',
 				pageNum:1,
 				pageSize: 20,
+				matchResult: ''
 			},
 			selectedDate:[],
 			typeList:[
@@ -145,6 +152,7 @@ export default {
 			dialogVisible3:false,
 			currentItem: {},
 			reason: "",  //审核理由
+			matchResultMap: matchResultMap
 		}
 	},
 	activated(){

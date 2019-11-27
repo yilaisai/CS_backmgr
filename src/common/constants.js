@@ -118,7 +118,16 @@ export const payTypes = {
 	3: '微信',
 	// 4: '宝转卡'
 }
-
+// 交易广告状态
+export const matchResultMap = {
+	0: '待审核',
+	1: '匹配中',
+	2: '匹配成功',
+	3: '匹配失败',
+	4: '发起中断',
+	5: 'IP不匹配',
+	6: '审核失败'
+}
 const constants = {
 	
 }

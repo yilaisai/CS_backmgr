@@ -12,13 +12,16 @@
 							<el-option v-for="(item, key) in typeList" :key="key" :value="item.value" :label="item.label "></el-option>
 						</el-select>
 					</el-form-item>
+					<el-form-item label="商户订单号:" >
+						<el-input placeholder="请输入商户订单号" v-model="filterForm.apiOrderId" ></el-input>
+					</el-form-item>
 					<!-- <el-form-item  label="币种:" >
 						<el-select v-model="filterForm.coinName" >
 								<el-option value="" label='所有'></el-option>
 								<el-option v-for="(item, key) in coinInfo" :key="key" :value="item.coinName" :label="item.coinName"></el-option>
 						</el-select>
 					</el-form-item> -->
-					<!-- <br /> -->
+					<br />
 					<el-form-item class='dateItem' label="时间:">
 						<el-date-picker
 							v-model="selectedDate"
@@ -29,9 +32,7 @@
 							end-placeholder="结束日期" >
 						</el-date-picker>
 					</el-form-item>
-					<el-form-item label="商户订单号:" >
-						<el-input placeholder="请输入商户订单号" v-model="filterForm.apiOrderId" ></el-input>
-					</el-form-item>
+					
 					<el-button class="btn" type="primary" @click="search()" size="mini" style="margin-left: 20px;">查询</el-button>
 				</el-form>
 			</el-collapse-item>

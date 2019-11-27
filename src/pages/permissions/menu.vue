@@ -243,6 +243,7 @@
 </script>
 <style lang="less">
   .menu-title {
+	  overflow: hidden;
     .sac-label {
       display: inline-block;
       width: 180px;
@@ -251,8 +252,10 @@
       margin-left: 50px;
     }
     .el-tree {
-      width: 600px;
-      margin: 0 auto;
+		flex: 1;
+		overflow-y: auto;
+		width: 600px;
+		margin: 0 auto;
       .el-tree-node__content {
         height: 30px;
       }

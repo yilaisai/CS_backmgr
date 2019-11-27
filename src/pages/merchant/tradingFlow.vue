@@ -246,7 +246,7 @@ export default {
 				2: '待放行',
 				3: '已完成',
 				4: '已取消',
-				5: '申述',
+				5: '申述中',
 				6: '申诉后完成交易',
 				7: '申诉后取消交易',
 				8: '超时取消'
@@ -281,10 +281,8 @@ export default {
 			this.appealData.proofImg = '' 
 			this.appealList=[
 				{value:data.taker_user_id,label:'商户:'+data.taker_nick_name},
-				{value:data.maker_user_id,label:'承兑商:'+data.nick_name}
+				{value:data.maker_user_id,label:'码商:'+data.nick_name}
 			]
-			console.log(data)
-			// {value:'1',label:"卖方"}
 			this.showAppeal = true
 		}, 
 		upload(response, file, fileList) {

@@ -1,4 +1,3 @@
-
 <template>
     <div class="transaction-details">
         <el-container>
@@ -84,7 +83,6 @@
 						<el-table-column prop="fee" label="手续费" align="center"></el-table-column>
 						<el-table-column prop="price" label="操作" fixed="right" align="center" width="300">
 							<template slot-scope="scope">
-								
 								<el-button type="danger" size="mini" v-if="scope.row.trade_status==1||scope.row.trade_status==2" @click="appealClick(scope.row) ">申诉</el-button>
 								<el-button type="primary" size="mini" @click.native="$router.push({path:'/merchant/merchantTradingFlowDetaile',query:{tradeId:scope.row.trade_id}})">查看详情</el-button>
 								<el-button type="danger" size="mini" v-if="(scope.row.trade_status==8||scope.row.trade_status==4)&&showActiveBtn(scope.row.create_time)" @click.native="orderActivation(scope.row)">激活订单</el-button>
@@ -232,6 +230,7 @@ export default {
 				{value:'已取消',label:"4"},
 				{value:'申述中',label:"5"},
 				{value:'申诉后完成交易',label:"6"},
+				{value:'申诉后取消交易',label:"7"},
 				{value:'超时取消',label:"8"}
 			],
 			transList:[
@@ -246,7 +245,7 @@ export default {
 				2: '待放行',
 				3: '已完成',
 				4: '已取消',
-				5: '申述',
+				5: '申述中',
 				6: '申诉后完成交易',
 				7: '申诉后取消交易',
 				8: '超时取消'
@@ -281,10 +280,8 @@ export default {
 			this.appealData.proofImg = '' 
 			this.appealList=[
 				{value:data.taker_user_id,label:'商户:'+data.taker_nick_name},
-				{value:data.maker_user_id,label:'承兑商:'+data.nick_name}
+				{value:data.maker_user_id,label:'码商:'+data.nick_name}
 			]
-			console.log(data)
-			// {value:'1',label:"卖方"}
 			this.showAppeal = true
 		}, 
 		upload(response, file, fileList) {

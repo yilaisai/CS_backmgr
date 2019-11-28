@@ -91,7 +91,7 @@
 								<el-button 
 									type="warning"
 									size="mini"
-									v-if="((scope.row.adv_type == 4 || scope.row.adv_type == 5) && (scope.row.trade_status == 3 || scope.row.trade_status == 6  || scope.row.trade_status == 7)) && scope.row.trade_type != 3"
+									v-if="(((scope.row.adv_type == 4 || scope.row.adv_type == 5) && (scope.row.trade_status == 3 || scope.row.trade_status == 6  || scope.row.trade_status == 7))||((scope.row.adv_type == 3 || scope.row.adv_type == 6) &&  scope.row.trade_status == 7 )) && scope.row.trade_type != 3"
 									@click="showPrompt(scope.row)"
 								>手动录单
 								</el-button>

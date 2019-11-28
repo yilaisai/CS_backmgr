@@ -228,7 +228,7 @@ export default {
 				{value:'已付款(待放行)',label:"2"},
 				{value:'已完成',label:"3"},
 				{value:'已取消',label:"4"},
-				{value:'申述中',label:"5"},
+				{value:'申诉中',label:"5"},
 				{value:'申诉后完成交易',label:"6"},
 				{value:'申诉后取消交易',label:"7"},
 				{value:'超时取消',label:"8"}
@@ -245,7 +245,7 @@ export default {
 				2: '待放行',
 				3: '已完成',
 				4: '已取消',
-				5: '申述中',
+				5: '申诉中',
 				6: '申诉后完成交易',
 				7: '申诉后取消交易',
 				8: '超时取消'

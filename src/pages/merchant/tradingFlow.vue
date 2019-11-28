@@ -364,10 +364,10 @@ export default {
 				this.dialogVisible = false
 				this.getList()
 				this.$notify({
-								title: '成功',
-								message: res.msg,
-								type: 'success'
-							});
+					title: '成功',
+					message: res.msg,
+					type: 'success'
+				});
 			})
 		},
 		activationLetgo(tradeId){

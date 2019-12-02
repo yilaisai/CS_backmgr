@@ -1,4 +1,3 @@
-
 <template>
     <div class="transaction-details">
         <el-container>
@@ -92,7 +91,7 @@
 								<el-button 
 									type="warning"
 									size="mini"
-									v-if="((scope.row.adv_type == 4 || scope.row.adv_type == 5) && (scope.row.trade_status == 3 || scope.row.trade_status == 6  || scope.row.trade_status == 7)) && scope.row.trade_type != 3"
+									v-if="(((scope.row.adv_type == 4 || scope.row.adv_type == 5) && (scope.row.trade_status == 3 || scope.row.trade_status == 6  || scope.row.trade_status == 7))||((scope.row.adv_type == 3 || scope.row.adv_type == 6) &&  scope.row.trade_status == 7 )) && scope.row.trade_type != 3"
 									@click="showPrompt(scope.row)"
 								>手动录单
 								</el-button>
@@ -147,7 +146,7 @@
 				 
 			</el-form>
 			<div class="btns">
-				<el-button @click="dialogVisible = false" size="mini">取 消</el-button>
+				<el-button @click="showAppeal = false" size="mini">取 消</el-button>
 				<el-button type="primary" size="mini" @click="submitAppeal">提交申诉</el-button>
 			</div>
 		</el-dialog>
@@ -229,7 +228,7 @@ export default {
 				{value:'已付款(待放行)',label:"2"},
 				{value:'已完成',label:"3"},
 				{value:'已取消',label:"4"},
-				{value:'申述中',label:"5"},
+				{value:'申诉中',label:"5"},
 				{value:'申诉后完成交易',label:"6"},
 				{value:'申诉后取消交易',label:"7"},
 				{value:'超时取消',label:"8"}
@@ -246,7 +245,7 @@ export default {
 				2: '待放行',
 				3: '已完成',
 				4: '已取消',
-				5: '申述中',
+				5: '申诉中',
 				6: '申诉后完成交易',
 				7: '申诉后取消交易',
 				8: '超时取消'
@@ -365,10 +364,10 @@ export default {
 				this.dialogVisible = false
 				this.getList()
 				this.$notify({
-								title: '成功',
-								message: res.msg,
-								type: 'success'
-							});
+					title: '成功',
+					message: res.msg,
+					type: 'success'
+				});
 			})
 		},
 		activationLetgo(tradeId){

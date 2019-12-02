@@ -61,12 +61,15 @@
 					{{matchResultMap[scope.row.matchResult]}}
 				</template>
 			</el-table-column>
-			<el-table-column align="center"  label="价格/数量/金额" >
+			<el-table-column align="center"  label="数量/金额" >
 				<div class="price" slot-scope="scope">
-					<!-- <span>{{scope.row.apiPrice}}<br /></span> -->
-					<p>价格:<span>{{scope.row.apiPrice }}</span> CNY/{{ scope.row.coinName }}</p>
 					<p>数量:<span>{{scope.row.apiStock}}</span> {{ scope.row.coinName }}</p>
 					<p>金额:<span>{{scope.row.apiAmount}}</span> CNY</p>
+				</div>
+			</el-table-column>
+			<el-table-column align="center"  label="价格" width="120">
+				<div class="price" slot-scope="scope">
+					<p><span>{{scope.row.apiPrice }}</span> CNY/{{ scope.row.coinName }}</p>
 				</div>
 			</el-table-column>
 			<!-- <el-table-column align="center" prop="apiAmount" label="金额"></el-table-column> -->

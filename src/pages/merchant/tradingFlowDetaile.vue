@@ -93,7 +93,7 @@
 						<el-input :value="payList.userName" disabled></el-input>
 					</el-form-item>
 					<el-form-item label="收款方式:" >
-						<el-input :value="payList.payType | advTypeFilter" disabled></el-input>
+						<el-input :value="payList.payType | payTypeFilter" disabled></el-input>
 					</el-form-item>
 					<el-form-item label="收款账号:" >
 						<el-input :value="payList.num" disabled></el-input>

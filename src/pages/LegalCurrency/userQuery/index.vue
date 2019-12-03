@@ -11,7 +11,7 @@
 							<el-input placeholder="请输入用户昵称" v-model="filterForm.nickName" class="input-with-select"></el-input>
 						</el-form-item>
 						<el-form-item  label="企业类型:" >
-							<el-select v-model="filterForm.company" >
+							<el-select v-model="filterForm.userEnterprise" >
 								<el-option value="" label='所有'></el-option>
 								<el-option v-for="(item, key) in companyType" :key="key" :value="item.label" :label="item.value"></el-option>
 							</el-select>
@@ -98,7 +98,7 @@ export default {
 				pageNum:1,
 				pageSize: 20,
 				startDate:'',
-				company:'',
+				userEnterprise:'',
 				endDate:'',
 				account:'',
 				nickName:'',

@@ -98,6 +98,12 @@ Vue.filter("optType", function (val) {  //保留小数位，acc为保留几位�
   case 29:
     return '申诉修改金额'
     break;
+  case 30:
+    return '资产证明转入'
+    break;
+  case 31:
+    return '资产证明转出'
+    break;
     default:
       return ''
   }

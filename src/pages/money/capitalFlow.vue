@@ -124,7 +124,7 @@ export default {
 				this.filterForm.endDate = ""
 			}
 			this.$http.post('/wallet/app/otc/backmgr/queryOtcMoneyChangeInfo',this.filterForm).then(res=>{
-				const { list ,total} = res.result;
+				const { list ,total} = res.result.pageData;
 				this.totalData = res.result.sumInfo;
 				this.listData.list = list;
 				console.log(this.listData)

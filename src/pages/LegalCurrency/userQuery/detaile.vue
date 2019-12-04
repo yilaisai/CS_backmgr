@@ -137,10 +137,10 @@
 									<p>微信</p>
 									<p>{{ Math.floor(scope.row.wxBuyRate*10000)/100 }}% </p>
 								</li>
-								<!-- <li>
+								<li>
 									<p>宝转卡</p>
 									<p>{{ Math.floor(scope.row.bbuyRate*10000)/100 }}% </p>
-								</li> -->
+								</li>
 							</ul>
 							
 						</div>
@@ -162,10 +162,10 @@
 									<p>微信</p>
 									<p>{{ Math.floor(scope.row.wxSaleRate*10000)/100 }}% </p>
 								</li>
-								<!-- <li>
+								<li>
 									<p>宝转卡</p>
 									<p>{{ Math.floor(scope.row.bsaleRate*10000)/100 }}% </p>
-								</li> -->
+								</li>
 							</ul>
 						</div>
 					</el-table-column>
@@ -185,7 +185,7 @@
 					<el-option label="银行卡" :value="1"></el-option>
 					<el-option label="支付宝" :value="2"></el-option>
 					<el-option label="微信" :value="3"></el-option>
-					<!-- <el-option label="宝转卡" :value="4"></el-option> -->
+					<el-option label="宝转卡" :value="4"></el-option>
 				</el-select>
 			</div>
 			<div class=" inputGroup ">

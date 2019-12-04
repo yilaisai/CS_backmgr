@@ -5,20 +5,20 @@
 		<!-- 表格 -->
 		<Table :list="pageData.list" :orderStatus="orderStatus" @hideDialogMR="hideDialogMR"></Table>
 		<!-- 分页器 -->
-		<div class="load-more" style="display: flex;">
-            <div class="count">
-                <!-- <span>总计：共<i>50</i>条</span> -->
-            </div>
-            <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="pageNum"
-                :page-sizes="[20,50]"
-                :page-size="pageSize"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="pageData.total*1">
-            </el-pagination>
-        </div>
+		<div class="footer">
+      <div class="total">
+        <p v-for="(item,index) in totalData" :key="index"> <span>{{item.coin_name}}</span> 数量：{{item.sumAmount}} &nbsp;&nbsp;&nbsp;&nbsp;手续费：{{ item.sumFee }}</p>
+      </div>
+				<el-pagination
+						@size-change="handleSizeChange"
+						@current-change="handleCurrentChange"
+						:current-page="pageNum"
+						:page-sizes="[20,50]"
+						:page-size="pageSize"
+						layout="total, sizes, prev, pager, next, jumper"
+						:total="pageData.total*1">
+				</el-pagination>
+		</div>
 		<!-- 手动录单弹框 -->
 		<ManualRecordDialog :showDialogMR='showDialogMR' @hideDialogMR="hideDialogMR" @getData="getData" />
 	</div>
@@ -45,7 +45,7 @@ export default {
 				{name: '审核通过', val: 4},
 			],
 			showDialogMR: false,
-			
+			totalData:[],
 		}
 	},
 	activated() {
@@ -59,6 +59,7 @@ export default {
 			this.$http.post('/wallet/backmgr/trade/queryRechargeWithdrawPage', formData).then(res => {
 				if(res.code == 200) {
 					this.pageData = res.result.pageInfo
+					this.totalData = res.result.sumInfo
 				}
 			})
 		},
@@ -103,6 +104,32 @@ export default {
                 }
             }
         }
-    }
+		}
+	.footer{
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		.total{
+			p{
+				display: inline;
+				margin-right: 20px;
+				line-height: 24px;
+				font-size: 14px;
+				color: #606266;
+				&:last-of-type{
+					margin: 0;
+				}
+				span{
+					font-weight: 600;
+					color: #409EFF;
+				}
+			}
+			
+		}
+		/deep/.el-pagination{
+			margin-top: 10px;
+		}
+	}
 }
 </style>

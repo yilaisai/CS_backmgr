@@ -4,8 +4,11 @@
 			<sac-input ref="phone" label="账号/昵称" v-model.trim="filterForm.account"></sac-input>
 			<!-- <sac-input ref="phone" label="昵称" v-model.trim="filterForm.nickName"></sac-input> -->
 			<sac-submit-form :isReset='false' @submitForm="getUserRaking()"></sac-submit-form>
+			<el-form-item>
+				<el-button type="primary" size="mini" @click="exportExcel">导出EXCEL</el-button>
+			</el-form-item>
 		</el-form>
-      
+      <!-- <p>平台账号</p> -->
 		<el-table stripe border class="ExList" size="mini" :data="ExList">
 			<el-table-column prop="phone" label="手机号"  align="center"></el-table-column>
 			<el-table-column prop="nickName" label="昵称"  align="center"></el-table-column>
@@ -150,6 +153,18 @@ export default {
 		}
 	},
 	methods: {
+		exportExcel(){
+			let param = '';
+			for(let v in this.filterForm) {
+				if(this.filterForm[v]&&v!=='pageNum'&&v!=='pageSize'){
+					param += v + '=' + this.filterForm[v] + '&';
+				}
+				
+			}
+			let baseURL = localStorage.getItem('SERVER_PATH') || SERVER_PATH
+			console.log(baseURL+'/wallet/backmgr/personalRanking/export?'+param+'token='+localStorage.getItem('wallet_token'))
+			window.open(baseURL+'/wallet/backmgr/personalRanking/export?'+param+'token='+localStorage.getItem('wallet_token'))
+		},
 		indexMethod(index) {
 			return (this.filterForm.pageNum-1)*this.filterForm.pageSize+index+1
 		},
@@ -232,18 +247,9 @@ export default {
 </script>
 <style lang="less">
 .exchangeSAC {
-	.total{
-		margin:0;
-		height: 30px;
-		line-height: 30px;
-		font-size: 14px;
-		color: #606266;
-		span{
-			font-weight: 600;
-			margin-left: 15px;
-			color: #409EFF;
-		}
-	}
+	overflow: hidden;
+	overflow-y: scroll;
+
 	/deep/.ExList{
 		flex: none;
 	}
@@ -256,6 +262,22 @@ export default {
 		display: flex;
 		justify-content: space-between;
 		margin-top: 10px;
+		align-items: center;
+		.total{
+			margin:0;
+			// height: 30px;
+			line-height: 26px;
+			font-size: 14px;
+			color: #606266;
+			span{
+				font-weight: 600;
+				margin-left: 15px;
+				color: #409EFF;
+				&:first-of-type{
+					margin-left: 0;
+				}
+			}
+		}
 		.el-pagination {
 			margin: 0;
 		}

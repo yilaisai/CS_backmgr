@@ -4,6 +4,9 @@
 			<sac-input ref="phone" label="账号" v-model.trim="filterForm.phoneOrEmail"></sac-input>
 			<sac-input ref="phone" label="昵称" v-model.trim="filterForm.nickName"></sac-input>
 			<sac-submit-form :isReset='false' @submitForm="getUserRaking()"></sac-submit-form>
+			<el-form-item>
+				<el-button type="primary" size="mini" @click="exportExcel">导出EXCEL</el-button>
+			</el-form-item>
 		</el-form>
       
 		<el-table stripe border class="ExList" size="mini" :data="ExList">
@@ -42,12 +45,17 @@
 				</template>
 			</el-table-column>
 		</el-table>
-		<sac-pagination v-show="listData.list.length>0"
-			@handleChange="getPaginationChange"
-			:total="+listData.total"
-			:page-size="filterForm.pageSize"
-			:current-page="filterForm.pageNum">
-		</sac-pagination>
+		<div class="footer">
+			<div class="total">
+				<p v-for="(item,index) in totalData" :key="index"> <span>{{item.coin_name}}</span> :可用{{item.sumAmount}} 冻结{{ item.sumFrozenAmount }}</p>
+			</div>
+			<sac-pagination v-show="listData.list.length>0"
+				@handleChange="getPaginationChange"
+				:total="+listData.total"
+				:page-size="filterForm.pageSize"
+				:current-page="filterForm.pageNum">
+			</sac-pagination>
+		</div>
 		<el-dialog title="修改用户状态" :visible.sync="dialogVisible" width="500">
 			<el-form :inline="true" label-width="90px" ref="ruleForm"  :model="ruleForm">
 			<el-form-item label="状态调整:" prop="status">
@@ -100,10 +108,22 @@
               total: null,
               list: [],
             },
-            ExList:[]
+						ExList:[],
+						totalData:[]
           };
         },
 		methods: {
+			exportExcel(){
+				let param = '';
+        for(let v in this.filterForm) {
+          if(this.filterForm[v]&&v!=='pageNum'&&v!=='pageSize'){
+            param += v + '=' + this.filterForm[v] + '&';
+          }
+        }
+        console.log(param)
+				let baseURL = localStorage.getItem('SERVER_PATH') || SERVER_PATH
+				window.open(baseURL+'/wallet/app/otc/backmgr/getUserRaking/export?'+param+'token='+localStorage.getItem('wallet_token'))
+			},
 			indexMethod(index) {
 				return   (this.filterForm.pageNum-1)*this.filterForm.pageSize+index+1
 			},
@@ -169,6 +189,7 @@
 			// 查询代理用户列表
 			getUserRaking() {
 				this.$http.post("/wallet/app/otc/backmgr/getUserRaking", this.filterForm).then((res) => {
+					this.totalData = res.result.sumInfo
 					this.listData.list = res.result.CustomerInfoExList.list;
 					this.ExList = res.result.sysCustomerInfoExList
 					this.listData.total = res.result.CustomerInfoExList.total;
@@ -184,10 +205,36 @@
     };
 </script>
 <style lang="less">
-    .exchangeSAC {
+	.exchangeSAC {
 		overflow: hidden;
-      /deep/.ExList{
-        flex: none;
+		/deep/.ExList{
+			flex: none;
+		}
+		.footer{
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+			.total{
+				p{
+					display: inline;
+					margin-right: 20px;
+					line-height: 24px;
+					font-size: 14px;
+					color: #606266;
+					&:last-of-type{
+						margin: 0;
+					}
+					span{
+						font-weight: 600;
+						color: #409EFF;
+					}
+				}
+				
+			}
+			 /deep/.el-pagination{
+        margin-top: 10px;
       }
-    }
+		}
+	}
 </style>

@@ -116,7 +116,7 @@ export const payTypes = {
 	1: '银行卡',
 	2: '支付宝',
 	3: '微信',
-	// 4: '宝转卡'
+	4: '宝转卡'
 }
 // 交易广告状态
 export const matchResultMap = {

@@ -19,7 +19,7 @@
 			<sac-coin ref="coinId" v-model="filterForm.coinId"></sac-coin>
 			<sac-select ref="tradeStatus" label="状　　态" v-model="filterForm.tradeStatus" :dataList="transferQueryStatus"></sac-select>
 			<sac-submit-form @submitForm="submitForm(1)" :isReset="false"></sac-submit-form>
-		<!-- <el-button type="primary" @click="exportExcel" size="small">导出Excel</el-button>  -->
+		  <el-button type="primary" @click="exportExcel" size="mini">导出Excel</el-button> 
 		</el-form>
 		<sac-table :data="listData.list">
 		<el-table-column align="center" prop="tradeTime" label="创建时间" min-width="153"></el-table-column>
@@ -49,12 +49,17 @@
 		</el-table-column>
 
 		</sac-table>
-		<sac-pagination v-show="listData.list.length>0"
-						@handleChange="getPaginationChange"
-						:total="+listData.total"
-						:page-size="filterForm.pageSize"
-						:current-page="filterForm.pageNum">
-		</sac-pagination>
+    <div class="footer">
+      <div class="total">
+        <p v-for="(item,index) in totalData" :key="index"> <span>{{item.coin_name}}</span> 数量：{{item.sumAmount}} &nbsp;&nbsp;&nbsp;&nbsp;手续费：{{ item.sumFee }}</p>
+      </div>
+      <sac-pagination v-show="listData.list.length>0"
+              @handleChange="getPaginationChange"
+              :total="+listData.total"
+              :page-size="filterForm.pageSize"
+              :current-page="filterForm.pageNum">
+      </sac-pagination>
+    </div>
 	</div>
 </template>
 <script>
@@ -90,6 +95,7 @@
         isShowPayTime: true,
         isShowTableCol: true,
         isShowHandle: true,
+        totalData:[]
       };
     },
     methods: {
@@ -119,11 +125,18 @@
         this.getTradeList();
       },
       exportExcel() {
+        this.filterForm.startDate = this.selectedDate && this.selectedDate[0];
+        this.filterForm.endDate = this.selectedDate && this.selectedDate[1];
+        this.filterForm.alarmType = this.alarmType.join(',');
         let param = '';
         for(let v in this.filterForm) {
-          param += v + '=' + this.filterForm[v] + '&';
+          if(this.filterForm[v]&&v!=='pageNum'&&v!=='pageSize'){
+            param += v + '=' + this.filterForm[v] + '&';
+          }
         }
-        location.href = SERVER_PATH + 'wallet/backmgr/trade/downTradeList?' + param + 'token=' + localStorage.getItem('wallet_token');
+        console.log(param)
+        let baseURL = localStorage.getItem('SERVER_PATH') || SERVER_PATH
+			  window.open(baseURL+'wallet/backmgr/trade/getTradeList/export?'+param+'token='+localStorage.getItem('wallet_token'))
       },
       getTradeList() {
         this.filterForm.startDate = this.selectedDate && this.selectedDate[0];
@@ -131,6 +144,7 @@
         this.filterForm.alarmType = this.alarmType.join(',');
         this.$http.post('wallet/backmgr/trade/getTradeList', this.filterForm)
           .then((res) => {
+            this.totalData = res.result.sumData
             const { list, total } = res.result.retMap ? res.result.retMap : res.result;
             this.listData.list = list;
             this.listData.total = total;
@@ -171,6 +185,8 @@
 </script>
 <style lang="less">
   .transfer-query {
+    overflow: hidden;
+    overflow-y: scroll;
     .el-collapse {
       border-top: none;
       border-bottom: none;
@@ -202,5 +218,31 @@
         width: 430px!important;
       }
     }
+    .footer{
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+			.total{
+				p{
+					display: inline;
+					margin-right: 20px;
+					line-height: 24px;
+					font-size: 14px;
+					color: #606266;
+					&:last-of-type{
+						margin: 0;
+					}
+					span{
+						font-weight: 600;
+						color: #409EFF;
+					}
+				}
+				
+      }
+      /deep/.el-pagination{
+        margin-top: 10px;
+      }
+		}
   }
 </style>

@@ -49,6 +49,7 @@
 				<el-form-item>
 					<el-button type="primary" @click="queryData" style="margin-left: 60px">查询</el-button>
 					<el-button type="primary" @click="clear">清空</el-button>
+					<el-button type="primary" @click="exportExcel">导出Excel</el-button>
 				</el-form-item>
 			</el-form>
 		</el-collapse-item>
@@ -62,55 +63,55 @@ export default {
 			type: Array
 		}
 	},
-    data () {
-        return {
-            pickerOptions: {
-                disabledDate(time) {
-                    return time.getTime() > Date.now();
-                },
-                shortcuts: [{
-                    text: '最近一周',
-                    onClick(picker) {
-                        const end = new Date();
-                        const start = new Date();
-                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-                        picker.$emit('pick', [start, end]);
-                    }
-                }, {
-                    text: '最近一个月',
-                    onClick(picker) {
-                        const end = new Date();
-                        const start = new Date();
-                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-                        picker.$emit('pick', [start, end]);
-                    }
-                }, {
-                    text: '最近三个月',
-                    onClick(picker) {
-                        const end = new Date();
-                        const start = new Date();
-                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-                        picker.$emit('pick', [start, end]);
-                    }
-                }, {
-                    text: '最近半年',
-                    onClick(picker) {
-                        const end = new Date();
-                        const start = new Date();
-                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 180);
-                        picker.$emit('pick', [start, end]);
-                    }
-                }, {
-                    text: '最近一年',
-                    onClick(picker) {
-                        const end = new Date();
-                        const start = new Date();
-                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
-                        picker.$emit('pick', [start, end]);
-                    }
-                }]
-            },
-            formData: {
+	data () {
+		return {
+			pickerOptions: {
+				disabledDate(time) {
+					return time.getTime() > Date.now();
+				},
+				shortcuts: [{
+					text: '最近一周',
+					onClick(picker) {
+						const end = new Date();
+						const start = new Date();
+						start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+						picker.$emit('pick', [start, end]);
+					}
+				}, {
+					text: '最近一个月',
+					onClick(picker) {
+						const end = new Date();
+						const start = new Date();
+						start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+						picker.$emit('pick', [start, end]);
+					}
+				}, {
+					text: '最近三个月',
+					onClick(picker) {
+						const end = new Date();
+						const start = new Date();
+						start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+						picker.$emit('pick', [start, end]);
+					}
+				}, {
+					text: '最近半年',
+					onClick(picker) {
+						const end = new Date();
+						const start = new Date();
+						start.setTime(start.getTime() - 3600 * 1000 * 24 * 180);
+						picker.$emit('pick', [start, end]);
+					}
+				}, {
+					text: '最近一年',
+					onClick(picker) {
+						const end = new Date();
+						const start = new Date();
+						start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
+						picker.$emit('pick', [start, end]);
+					}
+				}]
+			},
+			formData: {
 				create_time: '',
 				addr: '', //地址
 				coinName: null, //币种名称
@@ -123,10 +124,10 @@ export default {
 				status: null, //状态0-失败,1-成功,2-待审核,3-审核不通过,4-审核通过
 				txId: '' //txid
 			}
-        }
-    },
-    methods: {
-        queryData () {
+			}
+	},
+	methods: {
+		exportExcel() {
 			if(this.formData.create_time) {
 				this.formData.startDate = this.formData.create_time[0]
 				this.formData.endDate = this.formData.create_time[1]
@@ -134,10 +135,28 @@ export default {
 				this.formData.startDate = ""
 				this.formData.endDate = ""
 			}
-            this.$emit('queryData', this.formData)
-        },
-        clear () {
-            this.formData = {
+			let param = '';
+			for(let v in this.formData) {
+				if(this.formData[v]&&v!=='pageNum'&&v!=='pageSize'){
+					param += v + '=' + this.formData[v] + '&';
+				}
+			}
+			console.log(param)
+			let baseURL = localStorage.getItem('SERVER_PATH') || SERVER_PATH
+			window.open(baseURL+'/wallet/backmgr/trade/queryRechargeWithdrawPage/export?'+param+'token='+localStorage.getItem('wallet_token'))
+		},
+		queryData () {
+			if(this.formData.create_time) {
+				this.formData.startDate = this.formData.create_time[0]
+				this.formData.endDate = this.formData.create_time[1]
+			}else {
+				this.formData.startDate = ""
+				this.formData.endDate = ""
+			}
+				this.$emit('queryData', this.formData)
+		},
+		clear () {
+					this.formData = {
 				create_time: '',
 				addr: '', //地址
 				coinName: null, //币种名称
@@ -150,10 +169,10 @@ export default {
 				status: null, //状态0-失败,1-成功,2-待审核,3-审核不通过,4-审核通过
 				txId: '' //txid
 			}
-        },
-        fetchFilter () {
-            return this.filter
-        }
+		},
+		fetchFilter () {
+				return this.filter
+		}
 	},
 	computed: {
 		...mapState(['coinInfo'])

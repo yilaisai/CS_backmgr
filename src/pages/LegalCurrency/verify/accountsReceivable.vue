@@ -46,7 +46,7 @@
 						<span v-else> 当前未使用 </span>
 					</template>
 				</el-table-column>
-				<!-- <el-table-column align="center"   label="宝转卡">
+				<el-table-column align="center"   label="宝转卡">
 					<template slot-scope="scope">
 						<div class="listData" v-if="scope.row.alipayToBankList&&scope.row.alipayToBankList.length>0" style="color:#409EFF">
 							<p v-if="scope.row.alipayToBankList.length>1" class="btn" @click=" showPayNum(scope.row.alipayToBankList) "> 查看更多</p>
@@ -54,7 +54,7 @@
 						</div>
 						<span v-else> 当前未使用 </span>
 					</template>
-				</el-table-column> -->
+				</el-table-column>
 				<el-table-column align="center"  label="状态" width="90">
 					<template slot-scope="scope">
 						{{ scope.row.payAuditStatus ==1?'已审核':'待审核' }}

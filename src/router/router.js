@@ -81,6 +81,15 @@ export const appRouter = [
         component: () => import('@/pages/permissions/menu.vue'),
       },
       {
+        path: 'domainNameList',
+        name: 'domainNameList',
+        meta: {
+          title: '域名管理',
+        },
+        component: () => import('@/pages/permissions/domainNameList.vue'),
+      },
+      
+      {
         path: 'role',
         name: 'role',
         meta: {

@@ -223,9 +223,9 @@ export default {
 					this.queryOtcCoinConfig()
 				}else{
 						this.$notify.error({
-						title: '提示',
-						message: res.msg
-					})
+							title: '提示',
+							message: res.msg
+						})
 				}
 				
 			})

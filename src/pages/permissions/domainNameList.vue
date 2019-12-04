@@ -10,7 +10,7 @@
 			</el-table-column>
 			<el-table-column prop="updateTime" label="上次使用时间" align="center">
 				<template slot-scope="scope">
-					{{  $fmtDate(scope.row.updateTime,'full')}}
+					{{  $fmtDate(scope.row.lastStartTime,'full')}}
 				</template>
 			</el-table-column>
 			<el-table-column  label="状态" align="center">
@@ -51,13 +51,39 @@ export default {
 			})
 		},
 		updateStatus(data){
+			let num = 0
+			this.list.forEach((e)=>{
+				if(e.status == 1){
+					num+=1
+				}
+			})
+			console.log(num==1&&data.status==1)
+			if(num==1&&data.status==1){
+				this.$confirm(`当前只有一台服务器开启中，若关闭则无服务器开启，确定关闭？`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+				}).then(() => {
+					this.update(data)
+				}).catch(()=>{
+
+				})
+			}else{
+				this.update(data)
+			}
+		},
+		update(data){
 			this.$http.post("/wallet/app/otc/backmgr/domain/updateStatus",{status:data.status==1?0:1,id:data.id}).then(res => {
 				if(res.code == 200){
+					this.$notify({
+						title: "成功",
+						message: `修改成功`,
+						type: "success"
+					});
 					this.getList()
 				}
 			})
 		},
-		
 		indexMethod(index) {
 			return   index+1
 		},

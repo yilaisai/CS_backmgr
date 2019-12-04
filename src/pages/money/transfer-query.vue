@@ -185,8 +185,7 @@
 </script>
 <style lang="less">
   .transfer-query {
-    overflow: hidden;
-    overflow-y: scroll;
+	  overflow: hidden;
     .el-collapse {
       border-top: none;
       border-bottom: none;

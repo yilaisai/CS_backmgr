@@ -11,7 +11,7 @@
 							<el-input placeholder="请输入用户昵称" v-model="filterForm.nickName" class="input-with-select"></el-input>
 						</el-form-item>
 						<el-form-item  label="企业类型:" >
-							<el-select v-model="filterForm.company" >
+							<el-select v-model="filterForm.userEnterprise" >
 								<el-option value="" label='所有'></el-option>
 								<el-option v-for="(item, key) in companyType" :key="key" :value="item.label" :label="item.value"></el-option>
 							</el-select>
@@ -41,9 +41,9 @@
 							<span v-if="scope.row.userEnterprise==1">企业号</span>
 						</div>
 					</el-table-column>
-					<el-table-column label="卖出佣金费率" align="center" width="100">
+					<!-- <el-table-column label="卖出佣金费率" align="center" width="100">
 						<template slot-scope="scope">{{ Math.floor(scope.row.firstRate*10000)/100 }}%</template>
-					</el-table-column>
+					</el-table-column> -->
 					<el-table-column prop="price" label="授权商户" width="150"></el-table-column>
 					<el-table-column prop="price" label="注册时间" width="140">
 						<div slot-scope="scope">{{ $fmtDate(scope.row.registTimeStamp,'full') }}</div>
@@ -91,40 +91,39 @@ export default {
     name:'transaction-details',
     data(){
         return{
-						dialogFormVisible:false,
+			dialogFormVisible:false,
             selectedDate: [], //已选日期
             currentPage:1,
             filterForm:{
-								pageNum:1,
-								pageSize: 20,
-								startDate:'',
-								company:'',
-								endDate:'',
-								account:'',
-								nickName:'',
-								userLevel:'',
-								userRole:'',
-						},
-						userTypeForm:{
-							userLevel:'1',
-							userEnterprise:'1',
-						},
-						advList:[
-							{value:'普通用户',label:"0"},
-							{value:'普通广告商',label:"1"},
-							{value:'高级广告商',label:"2"},
-							{value:'企业广告商',label:"3"},
-						],
-						companyType:[
-							{value:'非企业',label:"0"},
-							{value:'企业号',label:"1"},
-						],
+				pageNum:1,
+				pageSize: 20,
+				startDate:'',
+				userEnterprise:'',
+				endDate:'',
+				account:'',
+				nickName:'',
+				userLevel:'',
+				userRole:'',
+			},
+			userTypeForm:{
+				userLevel:'1',
+				userEnterprise:'1',
+			},
+			advList:[
+				{value:'普通用户',label:"0"},
+				{value:'普通广告商',label:"1"},
+				{value:'高级广告商',label:"2"},
+				{value:'企业广告商',label:"3"},
+			],
+			companyType:[
+				{value:'非企业',label:"0"},
+				{value:'企业号',label:"1"},
+			],
             listData: {
                 total: null,
                 list: [],
             },
         }
-        
     },
     methods:{
         getList(){
@@ -191,8 +190,7 @@ export default {
             this.getList()
         }, */
         download(){
-
-            location.href =`${ SERVER_PATH}/wallet/app/otc/backmgr/exportExcel?startDate=${this.filterForm.startDate}&endDate=${this.filterForm.endDate}&userId=${this.filterForm.userId}&token=${localStorage.getItem('cus_token')}`;
+            location.href =`${SERVER_PATH}/wallet/app/otc/backmgr/exportExcel?startDate=${this.filterForm.startDate}&endDate=${this.filterForm.endDate}&userId=${this.filterForm.userId}&token=${localStorage.getItem('cus_token')}`;
         }
     },
     activated(){

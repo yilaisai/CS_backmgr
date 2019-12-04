@@ -39,6 +39,7 @@
 						</el-select>
 					</el-form-item>
 					<el-button class="btn" type="primary" @click="search()" size="mini" style="margin-left: 20px;">查询</el-button>
+					<el-button type="primary" @click.native="exportExcel" size="mini" icon="el-icon-document-checked">导出Excel</el-button>
 				</el-form>
 			</el-collapse-item>
     	</el-collapse>
@@ -85,11 +86,16 @@
 			</el-table-column>
 		</el-table>
 		<div class="load-more">
-			<div></div>
+			<div class="count">
+				总数量： <span>{{sumInfo.sumApiStock}} {{$variableCoin}}</span>
+				总金额： <span>{{sumInfo.sumApiAmount}} CNY</span>
+				总手续费： <span>{{sumInfo.sumFee}} {{$variableCoin}}</span>
+			</div>
 			<sac-pagination v-show="listData.list.length>0"
 				@handleChange="getPaginationChange"
 				:total="+listData.total"
 				:page-size="filterForm.pageSize"
+				:pager-count="5"
 				:current-page="filterForm.pageNum">
 			</sac-pagination>
 		</div>
@@ -125,6 +131,7 @@
 <script>
 import {mapState} from 'vuex'
 import {matchResultMap} from '@/common/constants.js'
+import qs from 'qs'
 export default {
 	data(){
 		return {
@@ -155,7 +162,12 @@ export default {
 			dialogVisible3:false,
 			currentItem: {},
 			reason: "",  //审核理由
-			matchResultMap: matchResultMap
+			matchResultMap: matchResultMap,
+			sumInfo: {
+				sumApiStock: "--",
+				sumApiAmount: "--",
+				sumFee: "--"
+			},
 		}
 	},
 	activated(){
@@ -164,10 +176,21 @@ export default {
 	methods:{
 		getCashoutAuditList() {
 			this.$http.post('/wallet/backmgr/merchant/getCashoutAuditList', this.filterForm).then((res) => {
-				const { list, total } = res.result
+				const { list, total } = res.result.pageInfo
 				this.listData.list = list
 				this.listData.total = total
+				this.sumInfo = res.result.sumInfo
 			})
+		},
+		// 导出excel
+		exportExcel() {
+			if(this.selectedDate.length == 2 ){
+				this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00'
+				this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59'
+			}
+			this.filterForm.token = localStorage.getItem('wallet_token') || ""
+			const baseUrl = localStorage.getItem('SERVER_PATH') || window.SERVER_PATH
+			window.open(baseUrl + '/wallet/backmgr/merchant/getCashoutAuditList/export?' + qs.stringify(this.filterForm))
 		},
 		search(){
 			if(this.selectedDate.length == 2 ){
@@ -258,11 +281,12 @@ export default {
         .count {
             font-size: 14px;
             span {
-                margin-right: 20px;
+				margin-right: 20px;
+				color: #409EFF;
+                    font-weight: 600;
                 i {
                     font-style: normal;
                     color: #436bff;
-                    font-weight: 600;
                 }
             }
         }

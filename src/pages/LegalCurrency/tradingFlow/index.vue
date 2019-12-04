@@ -44,6 +44,7 @@
 						<el-form-item class='dateItem'>
 							<el-button type="primary" size="mini" @click.native="search">搜索</el-button>
 							<el-button type="primary" size="mini" @click.native="showSumMap=true">统计查询报表</el-button>
+							<el-button type="primary" @click.native="exportExcel" size="mini" icon="el-icon-document-checked">导出Excel</el-button>
 						</el-form-item>
 					</div>
 				</el-form>
@@ -51,6 +52,11 @@
 				<Table :listData="listData.list"></Table>
 			</el-main>
 			<el-footer>
+				<div class="statistics">
+					总数量： <span>{{sumInfo.sumAmount}} {{$variableCoin}}</span>
+					总金额： <span>{{sumInfo.sumMoney}} CNY</span>
+					已到账手续费： <span>{{sumInfo.sumFee}} {{$variableCoin}}</span>
+				</div>
 				<sac-pagination v-show="listData.list.length>0"
 					@handleChange="handleCurrentChange"
 					:total="+listData.total"
@@ -91,64 +97,70 @@
 import {mapState} from 'vuex'
 import { dateFormat } from "@/common/util";
 import Table from './components/table'
+import qs from 'qs'
 export default {
     name:'transaction-details',
     data(){
-			return{
-				showSumMap:false,
-				selectedDate: [], //已选日期
-				currentPage:1,
-				filterForm:{
-					pageNum:1,
-					pageSize: 20,
-					startDate:'',
-					endDate:'',
-					coinName:'',
-					tradeStatus:'',
-					trans:'',
-					recdId: "",
-					account: ""
-				},
-				tradeTypeList:[
-					{value:'全部',label:""},
-					{value:'C2C',label:"0"},
-					{value:'派单',label:"1"},
-					{value:'抢单',label:"2"}
-				],
-				statusList:[
-					{value:'全部',label:""},
-					{value:'未付款',label:"1"},
-					{value:'已付款(待放行)',label:"2"},
-					{value:'已完成',label:"3"},
-					{value:'已取消',label:"4"},
-					{value:'申述中',label:"5"},
-				],
-				transList:[
-					{value:'所有',label:""},
-					{value:'购买',label:"1"},
-					{value:'出售',label:"0"},
-				],
-				dateList:[
-					{value:'今天',label:"1"},
-					{value:'一周',label:"2"},
-					{value:'一个月',label:"3"},
-					{value:'三个月',label:"4"},
-				],
-				listData: {
-					total: null,
-					list: [],
-				},
-				sumMap:{
-					applealCount: 0,
-					applealMount:0,
-					finishCount: 0,
-					finishMount: 0,
-					payedCount: 0,
-					payedMount: 0,
-					waitPayCount: 0,
-					waitPayMount: 0,
-				}
+		return{
+			showSumMap:false,
+			selectedDate: [], //已选日期
+			currentPage:1,
+			filterForm:{
+				pageNum:1,
+				pageSize: 20,
+				startDate:'',
+				endDate:'',
+				coinName:'',
+				tradeStatus:'',
+				trans:'',
+				recdId: "",
+				account: ""
+			},
+			tradeTypeList:[
+				{value:'全部',label:""},
+				{value:'C2C',label:"0"},
+				{value:'派单',label:"1"},
+				{value:'抢单',label:"2"}
+			],
+			statusList:[
+				{value:'全部',label:""},
+				{value:'未付款',label:"1"},
+				{value:'已付款(待放行)',label:"2"},
+				{value:'已完成',label:"3"},
+				{value:'已取消',label:"4"},
+				{value:'申述中',label:"5"},
+			],
+			transList:[
+				{value:'所有',label:""},
+				{value:'购买',label:"1"},
+				{value:'出售',label:"0"},
+			],
+			dateList:[
+				{value:'今天',label:"1"},
+				{value:'一周',label:"2"},
+				{value:'一个月',label:"3"},
+				{value:'三个月',label:"4"},
+			],
+			listData: {
+				total: null,
+				list: [],
+			},
+			sumMap:{
+				applealCount: 0,
+				applealMount:0,
+				finishCount: 0,
+				finishMount: 0,
+				payedCount: 0,
+				payedMount: 0,
+				waitPayCount: 0,
+				waitPayMount: 0,
+			},
+			sumInfo: {
+				sumAmount: '--',
+				sumFee: '--',
+				sumMoney: '--'
 			}
+		}
         
     },
     methods:{
@@ -165,7 +177,20 @@ export default {
 				this.sumMap = res.result.sumMap
 				this.listData.list = list;
 				this.listData.total = total;
+				this.sumInfo = res.result.sumInfo
 			})
+		},
+		exportExcel() {
+			if(this.selectedDate && this.selectedDate.length==2){
+				this.filterForm.startDate = this.selectedDate[0]
+				this.filterForm.endDate = this.selectedDate[1]
+			}else {
+				this.filterForm.startDate = ""
+				this.filterForm.endDate = ""
+			}
+			this.filterForm.token = localStorage.getItem('wallet_token') || ""
+			const baseUrl = localStorage.getItem('SERVER_PATH') || window.SERVER_PATH
+			window.open(baseUrl + '/wallet/app/otc/backmgr/getTradeMainList/export?' + qs.stringify(this.filterForm))
 		},
 		setDateType(){
 			//获取系统当前时间
@@ -245,7 +270,29 @@ export default {
 			width: 100%;
 			display: flex;
 			flex-direction: column;
-        }
+		}
+		.el-footer {
+			display: flex;
+			height: auto !important;
+			align-items: center;
+			justify-content: space-between;
+			margin-top: 10px;
+			padding: 0;
+			.statistics {
+				display: block;
+				height: auto;
+				border: none;
+				font-size: 14px;
+				span {
+					margin-right: 10px;
+					color: #409EFF;
+					font-weight: 700;
+				}
+			}
+			.el-pagination {
+				margin: 0;
+			}
+		}
     } 
     .el-form--inline .el-form-item__label{
         width:80px !important;

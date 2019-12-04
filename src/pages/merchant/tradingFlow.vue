@@ -100,17 +100,17 @@
 				</el-table>
 			</div>
 			<el-footer>
-					<div class="statistics">
-						总数量： <span>{{sumInfo.sumTakerAmount}} {{$variableCoin}}</span>
-						总金额： <span>{{sumInfo.sumAmount}} CNY</span>
-						已到账手续费： <span>{{sumInfo.sumFee}} {{$variableCoin}}</span>
-					</div>
-					<sac-pagination v-show="listData.list.length>0"
-							@handleChange="handleCurrentChange"
-							:total="+listData.total"
-							:page-size="filterForm.pageSize"
-							:current-page="filterForm.pageNum">
-					</sac-pagination>
+				<div class="statistics">
+					总数量： <span>{{sumInfo.sumTakerAmount}} {{$variableCoin}}</span>
+					总金额： <span>{{sumInfo.sumAmount}} CNY</span>
+					已到账手续费： <span>{{sumInfo.sumFee}} {{$variableCoin}}</span>
+				</div>
+				<sac-pagination v-show="listData.list.length>0"
+					@handleChange="handleCurrentChange"
+					:total="+listData.total"
+					:page-size="filterForm.pageSize"
+					:current-page="filterForm.pageNum">
+				</sac-pagination>
 			</el-footer>
 		</el-container>
 				

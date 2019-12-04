@@ -10,6 +10,7 @@
     :current-page="currentPage"
     :page-sizes="pageSizes"
     :page-size="pageSize"
+	:pager-count="pagerCount"
     layout="total, sizes, prev, pager, next, jumper"
     :total="total">
   </el-pagination>
@@ -32,7 +33,11 @@
         type: Number,
         default: 1
       },
-      total: Number,
+	  total: Number,
+	  pagerCount: {
+		  type: Number,
+		  default: 5
+	  }
     },
     data() {
       return {

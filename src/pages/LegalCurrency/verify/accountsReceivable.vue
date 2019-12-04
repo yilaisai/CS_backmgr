@@ -254,7 +254,10 @@
       }
     };
 </script>
-<style lang="">
+<style lang="less">
+.exchangeSAC {
+	overflow: hidden;
+}
     .qr-box{
 			display: flex;
 			flex-direction: row;

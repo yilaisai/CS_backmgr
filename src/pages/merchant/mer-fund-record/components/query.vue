@@ -1,5 +1,5 @@
 <template>
-	<el-collapse>
+	<el-collapse value="filter">
 		<el-collapse-item title="查询条件" name="filter">
 			<el-form ref="form" :model="formData" label-width="50px" size="mini" inline>
 				<div>
@@ -39,10 +39,9 @@
 						:picker-options="pickerOptions">
 					</el-date-picker>
 				</el-form-item>
-				<el-form-item>
-					<el-button type="primary" @click="queryData" style="margin-left: 60px">查询</el-button>
-					<el-button type="primary" @click="clear">清空</el-button>
-				</el-form-item>
+				<el-button type="primary" @click="queryData" style="margin-left: 20px" size="mini">查询</el-button>
+				<el-button type="primary" @click="clear" size="mini">清空</el-button>
+				<el-button type="primary" @click.native="exportExcel" size="mini" icon="el-icon-document-checked">导出Excel</el-button>
 			</el-form>
 		</el-collapse-item>
     </el-collapse>
@@ -128,7 +127,17 @@ export default {
 				this.formData.endDate = ""
 			}
             this.$emit('queryData', this.formData)
-        },
+		},
+		exportExcel() {
+			if(this.formData.create_time) {
+				this.formData.startDate = this.formData.create_time[0]
+				this.formData.endDate = this.formData.create_time[1]
+			}else {
+				this.formData.startDate = ""
+				this.formData.endDate = ""
+			}
+            this.$emit('exportExcel', this.formData)
+		},
         clear () {
             this.formData = {
 				create_time: '',

@@ -53,7 +53,9 @@
 		<div>
 		<div class="footer">
 			<div class="total">
-				<p v-for="(item,index) in totalData" :key="index"> <span>{{item.coin_name}}</span> :可用资金变化{{item.sum_balance_change}} 冻结资金变化{{ item.sum_frozen_amount_change }}</p>
+				<!-- <p v-for="(item,index) in totalData" :key="index"> <span>{{item.coin_name}}</span> :可用资金变化{{item.sum_balance_change}} 冻结资金变化{{ item.sum_frozen_amount_change }}</p> -->
+				<p>可用资金变化: <span v-for="(item,index) in totalData" :key="index">{{item.sum_balance_change}} {{item.coin_name}}</span></p>
+				<p>冻结资金变化: <span v-for="(item,index) in totalData" :key="index">{{item.sum_frozen_amount_change}} {{item.coin_name}}</span></p>
 			</div>
 			<sac-pagination v-show="listData.list.length>0"
 				@handleChange="handleCurrentChange"
@@ -160,17 +162,16 @@ export default {
 		align-items: center;
 		.total{
 			p{
-				display: inline;
+				// display: inline;
 				margin-right: 20px;
 				line-height: 24px;
 				font-size: 14px;
 				color: #606266;
-				&:last-of-type{
-					margin: 0;
-				}
+				margin: 0;
 				span{
 					font-weight: 600;
 					color: #409EFF;
+					margin-right: 10px;
 				}
 			}
 			

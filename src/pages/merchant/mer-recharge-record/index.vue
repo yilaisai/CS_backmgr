@@ -1,13 +1,14 @@
 <template>
 	<div class="recharge-record">
 		<!-- 筛选条件 -->
-        <Query ref="query" @queryData='getData' :orderStatus="orderStatus"/>
+        <Query ref="query" @queryData='getData' @exportExcel="exportExcel" :orderStatus="orderStatus"/>
 		<!-- 表格 -->
 		<Table :list="pageData.list" :orderStatus="orderStatus" @hideDialogMR="hideDialogMR"></Table>
 		<!-- 分页器 -->
 		<div class="load-more" style="display: flex;">
             <div class="count">
-                <!-- <span>总计：共<i>50</i>条</span> -->
+                <span>数量：<i v-for="(item,index) in sumInfo" :key="index">{{item.sumAmount}} {{item.coin_name}}</i></span>
+				<span>手续费：<i v-for="(item,index) in sumInfo" :key="index">{{item.sumFee}} {{item.coin_name}}</i></span>
             </div>
             <el-pagination
                 @size-change="handleSizeChange"
@@ -15,6 +16,7 @@
                 :current-page="pageNum"
                 :page-sizes="[20,50]"
                 :page-size="pageSize"
+				:pager-count="5"
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="pageData.total*1">
             </el-pagination>
@@ -28,6 +30,7 @@
 import Query from './components/query.vue'
 import Table from './components/table.vue'
 import ManualRecordDialog from './components/manual-record-dialog'
+import qs from 'qs'
 export default {
 	data() { 
 		return {
@@ -45,7 +48,8 @@ export default {
 				{name: '审核通过', val: 4},
 			],
 			showDialogMR: false,
-			formData: {}
+			formData: {},
+			sumInfo: [],
 		}
 	},
 	activated() {
@@ -61,8 +65,17 @@ export default {
 			this.$http.post('/wallet/backmgr/merchant/trade/queryRechargeWithdrawPage', formData).then(res => {
 				if(res.code == 200) {
 					this.pageData = res.result.pageInfo
+					this.sumInfo = res.result.sumInfo
 				}
 			})
+		},
+		exportExcel(formData) {
+			formData = formData || this.formData
+			formData.pageNum = this.pageNum
+			formData.pageSize = this.pageSize
+			formData.token = localStorage.getItem('wallet_token') || ""
+			const baseUrl = localStorage.getItem('SERVER_PATH') || window.SERVER_PATH
+			window.open(baseUrl + '/wallet/backmgr/merchant/trade/queryRechargeWithdrawPage/export?' + qs.stringify(formData))
 		},
 		handleCurrentChange(val) {
 			this.pageNum = val
@@ -105,8 +118,10 @@ export default {
             span {
                 margin-right: 20px;
                 i {
+					display: inline-block;
+					margin-right: 10px;
                     font-style: normal;
-                    color: #436bff;
+                    color: #409EFF;
                     font-weight: 600;
                 }
             }

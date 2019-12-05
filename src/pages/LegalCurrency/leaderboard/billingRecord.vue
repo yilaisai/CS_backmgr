@@ -167,7 +167,7 @@ export default {
 						return '解冻金额'
 					break;
 					case 20:
-						return '钱包转账到法币'
+						return '法币转账到钱包'
 					break;
 					case 21:
 						return '一级折扣'

@@ -45,8 +45,8 @@
 			<el-table-column label="冻结资金余额" prop="frozenAmount" width="120" align="center"></el-table-column>
 			<el-table-column label="资产证明变化" prop="assetCertificationChange" width="120" align="center">
 				<template slot-scope="scope">
-							<span >{{ scope.row.assetCertificationChange>0?'+':'' }}{{scope.row.assetCertificationChange}}</span>
-					</template>
+					<span >{{ scope.row.assetCertificationChange>0?'+':'' }}{{scope.row.assetCertificationChange}}</span>
+				</template>
 			</el-table-column>
 			<el-table-column label="资产证明余额" prop="assetCertification" width="120" align="center"></el-table-column>
 		</el-table>

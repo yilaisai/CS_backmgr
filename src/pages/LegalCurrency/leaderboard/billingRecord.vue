@@ -15,34 +15,42 @@
 					
 					<el-table-column prop="phone" label="手机号"></el-table-column>
 					<el-table-column prop="nickName" label="昵称"></el-table-column>
-					<el-table-column prop="amount"  :label="'可用（'+coinName+')'"></el-table-column>
-					<el-table-column prop="frozenAmount"  :label="'冻结（'+coinName+')'"></el-table-column>
+					<el-table-column prop="amount"  :label="'可用('+coinName+')'"></el-table-column>
+					<el-table-column prop="frozenAmount"  :label="'冻结('+coinName+')'"></el-table-column>
+					<el-table-column prop="assetCertification"  :label="'资产证明余额('+coinName+')'"></el-table-column>
+					
 				</el-table>
 			</div>
 			<h3>流水明细</h3>
 			<el-table stripe border   :data="listData.list"  >
-				<el-table-column prop="updateTime" label="时间">
+				<el-table-column   width="160" align="center" prop="updateTime" label="时间">
 					<template slot-scope="scope">
 						{{  $fmtDate(scope.row.updateTime,'full')}}
 					</template>
 				</el-table-column>
-				<el-table-column prop="optType" label="类型">
+				<el-table-column    align="center" prop="optType" label="类型">
 					<div slot-scope="scope">
 						{{optType(scope.row)}}
 					</div>
 				</el-table-column>
-				<el-table-column  :label="'可用资金变化（'+coinName+'）'">
+				<el-table-column   align="center" :label="'可用资金变化('+coinName+')'">
 					<div slot-scope="scope">
 						{{ type==1?(scope.row.balanceChangeAmount>0?'+'+scope.row.balanceChangeAmount:scope.row.balanceChangeAmount):(scope.row.balanceChange>0?'+'+scope.row.balanceChange:scope.row.balanceChange) }}
 					</div>
 				</el-table-column>
-				<el-table-column prop="balance"  :label="'可用余额('+coinName+'）'"></el-table-column>
-				<el-table-column prop="frozenChangeAmount"  :label="'冻结资金变化（'+coinName+'）'">
+				<el-table-column   align="center" prop="balance"  :label="'可用余额('+coinName+')'"></el-table-column>
+				<el-table-column   align="center" prop="frozenChangeAmount"  :label="'冻结资金变化('+coinName+')'">
 					<div slot-scope="scope">
 						{{ type==1?scope.row.frozenChangeAmount:scope.row.frozenAmountChange }}
 					</div>
 				</el-table-column>
-				<el-table-column prop="frozenAmount"  :label="'冻结（'+coinName+'）'"></el-table-column>
+				<el-table-column   align="center" prop="frozenAmount"  :label="'冻结('+coinName+')'"></el-table-column>
+				<el-table-column   align="center" prop="assetCertificationChange"  :label="'资产证明变化('+coinName+')'">
+					<template slot-scope="scope">
+						<span >{{ scope.row.assetCertificationChange>0?'+':'' }}{{scope.row.assetCertificationChange}}</span>
+					</template>
+				</el-table-column>
+				<el-table-column  align="center" prop="assetCertification"  :label="'资产证明余额('+coinName+')'"></el-table-column>
 			
 			</el-table>
 			<sac-pagination v-show="listData.list.length>0"
@@ -80,6 +88,9 @@ export default {
 			titleTable:[{
 				phoen:'',
 				nickName:'',
+				amount:'',
+				frozenAmount:'',
+				assetCertification:''
 			}]
 		}
 	},
@@ -111,6 +122,8 @@ export default {
 					this.listData.list = res.result.coinChangeRecd.list
 					this.titleTable[0].amount = res.result.userCoinAddr.amount
 					this.titleTable[0].frozenAmount = res.result.userCoinAddr.frozenAmount
+					this.titleTable[0].assetCertification = res.result.userCoinAddr.assetCertification
+					console.log(this.titleTable)
 				}
 			})
 		},
@@ -182,6 +195,12 @@ export default {
 					break;
 					case 29:
 						return '申诉修改金额'
+						break;
+					case 30:
+						return '资产证明转入'
+						break;
+					case 31:
+						return '资产证明转出'
 						break;
 					default:
 						return 'null'

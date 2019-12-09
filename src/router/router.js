@@ -314,7 +314,7 @@ export const appRouter = [
 			  path: 'cashOutVerify',
 			  name: 'cashOutVerify',
 			  meta: {
-				  title: '广告交易列表'
+				  title: '交易广告列表'
 			  },
 			  component: () => import('@/pages/merchant/cashOutVerify.vue')
       },

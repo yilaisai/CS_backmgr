@@ -14,7 +14,7 @@
 				<span>{{nickName}}</span>
 			</el-table-column>
 			<el-table-column label="企业类型" width="100" align="center">
-				<span >{{userEnterprise ==1?'非企业账号':'企业账号'}}</span>
+				<span >{{userEnterprise ==0?'非企业账号':'企业账号'}}</span>
 			</el-table-column>
       <el-table-column prop="coinName" label="支付方式" width="150" align="center">
 				<span slot-scope="scope" >{{scope.row.payType==1?'银行卡':scope.row.payType==2?'支付宝':scope.row.payType==3?'微信支付':'宝转卡'}}</span>

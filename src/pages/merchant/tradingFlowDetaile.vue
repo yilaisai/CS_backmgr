@@ -25,7 +25,7 @@
 					</el-form-item>
 				</el-form>
 				<h3>交易方</h3>
-				<el-form :inline="true" :model="detaileData" class="demo-form-inline" size="small">
+				<el-form :inline="true" :model="detaileData" label-width="120px" class="demo-form-inline" size="small">
 					<el-form-item label="商户账户:">
 						<el-input v-model="detaileData.takerPhone"  disabled></el-input>
 					</el-form-item>
@@ -35,8 +35,8 @@
 					<el-form-item label="商户appid:">
 						<el-input v-model="detaileData.appId"  disabled></el-input>
 					</el-form-item>
-					<el-form-item label="商户user_id:">
-						<el-input :value="detaileData.takerUserId" disabled></el-input>
+					<el-form-item label="商户apiUserId:">
+						<el-input :value="detaileData.apiUserId" disabled></el-input>
 					</el-form-item>
 					<el-form-item label="商户订单号:">
 						<el-input v-model="detaileData.apiTradeId" disabled></el-input>
@@ -211,7 +211,7 @@ export default {
 			margin-bottom: 10px;
 			/deep/.el-form-item{
 				
-				width: 300px;
+				// width: 300px;
 				.el-input__inner{
 					// border: none;
 				}

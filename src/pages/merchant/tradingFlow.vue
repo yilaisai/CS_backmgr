@@ -310,7 +310,12 @@ export default {
 			}
 			this.$http.post('/wallet/backmgr/merchant/trade/list',this.filterForm).then(res=>{
 				const { list ,total} = res.result.pageData;
-				this.sumInfo = res.result.sumInfo
+				if(list.length<1){
+					this.sumInfo = {sumApiStock: "0",sumApiAmount: "0",sumFee: "0"}
+				}else{
+					this.sumInfo = res.result.sumInfo
+				}
+				
 				this.listData.list = list;
 				this.listData.total = total;
 			})

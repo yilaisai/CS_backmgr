@@ -39,7 +39,7 @@
 							<template slot="append">{{filterForm.coinName}}</template>
 						</el-input>
 					</el-form-item>
-					<el-form-item label="全局保证金额度:">
+					<el-form-item label="全局资产证明额度:">
 					 	<el-input placeholder="请输入保证金额度" v-model="quota.assetCertification" class="selectInputBox">
 							<el-select  v-model="quota.payType"  class="selectPayType" slot="prepend" @change="assetCertificationChange" placeholder="请选择">
 								<el-option v-for="(item,index) in OtcPayList" :key="index" :label="item.description" :value="item.value"></el-option>

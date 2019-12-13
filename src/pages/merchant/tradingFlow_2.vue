@@ -168,7 +168,6 @@
     </div>
 </template>
 <script>
-import { payTypes } from "@/common/constants"
 import { mapState } from 'vuex'
 import qs from 'qs'
 export default {
@@ -266,7 +265,11 @@ export default {
 				sumFee: "--"
 			},
 			statistics:{},
-			payTypes,
+			payTypes: {
+				1: '银行卡',
+				2: '支付宝',
+				3: '微信',
+			},
 			server_path:'',
 			token:localStorage.getItem('wallet_token')
 		}
@@ -308,7 +311,7 @@ export default {
 				this.filterForm.startDate = ""
 				this.filterForm.endDate = ""
 			}
-			this.$http.post('/wallet/backmgr/merchant/trade/atobTradeList',this.filterForm).then(res=>{
+			this.$http.post('/wallet/backmgr/merchant/trade/list',this.filterForm).then(res=>{
 				const { list ,total} = res.result.pageData;
 				if(list.length<1){
 					this.sumInfo = {sumApiStock: "0",sumApiAmount: "0",sumFee: "0"}
@@ -334,7 +337,7 @@ export default {
 			}
 			this.filterForm.token = localStorage.getItem('wallet_token') || ""
 			const baseUrl = localStorage.getItem('SERVER_PATH') || window.SERVER_PATH
-			window.open(baseUrl + '/wallet/backmgr/merchant/trade/atobTradeList/export?' + qs.stringify(this.filterForm))
+			window.open(baseUrl + '/wallet/backmgr/merchant/trade/list/export?' + qs.stringify(this.filterForm))
 		},
 		showPrompt(selectItem){
 			this.selectItem = selectItem

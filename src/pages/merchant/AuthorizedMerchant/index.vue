@@ -29,9 +29,13 @@
 		</el-form>
 		<el-table :data="list" height="auto" border size="mini" style="min-width: 100%" :show-overflow-tooltip='true' >
 			<el-table-column prop="groupName" label="分组名" align="center" width="90"></el-table-column>
-			<el-table-column prop="list1" label="商户列表" align="center"></el-table-column>
-			<el-table-column prop="list2" label="码商列表" align="center"></el-table-column>
-			<el-table-column prop="createDate" label="创建时间" width="160" align="center"></el-table-column>
+			<el-table-column prop="merchentNameList" label="商户列表" align="center"></el-table-column>
+			<el-table-column prop="userNameList" label="码商列表" align="center"></el-table-column>
+			<el-table-column  label="创建时间" width="160" align="center">
+				<template slot-scope="scope">
+					{{ $fmtDate(scope.row.createTime,'full') }}
+				</template>
+			</el-table-column>
 			<el-table-column prop="date" label="操作" fixed="right" width="110" align="center">
 				<template slot-scope="scope">
 					<el-button size="mini" type="text" @click="$router.push('/merchant/AuthorizedMerchantInfo')"> 编辑 </el-button>
@@ -42,11 +46,11 @@
 		 <el-pagination
 					@size-change="handleSizeChange"
 					@current-change="handleCurrentChange"
-					:current-page="pageData.pageNum"
+					:current-page="formData.pageNum"
 					:page-sizes="[20,50]"
-					:page-size="pageData.pageSize"
+					:page-size="formData.pageSize"
 					layout="total, sizes, prev, pager, next, jumper"
-					:total="pageData.total*1">
+					:total="total*1">
 			</el-pagination>
 	</div>
 </template>
@@ -60,7 +64,9 @@ export default {
 			formData:{
 				create_time:'',
 				groupName:'',
-				name:''
+				name:'',
+				pageNum:1,
+				pageSzie:20,
 			},
 			pageData:{
 				pageNum:1,
@@ -77,7 +83,7 @@ export default {
 		}
 	},
 	mounted(){
-
+		this.getData()
 	},
 	methods:{
 		handleCurrentChange(val) {
@@ -87,6 +93,12 @@ export default {
 		handleSizeChange(val) {
 			this.pageSize = val
 			// this.getData()
+		},
+		getData(){
+			this.$http.post('/wallet/app/otc/backmgr/checkMerchantGroupRecd', this.formData).then(res => {
+				this.list = res.result.list
+				this.total = res.result.total
+			})
 		},
 	},
 	watch:{

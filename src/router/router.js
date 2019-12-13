@@ -155,6 +155,15 @@ export const appRouter = [
         component:() => import('@/pages/LegalCurrency/tradingFlow/index.vue'),
       },
       {
+        path: 'assetCertification',
+        name:'assetCertification',
+        meta: {
+          title: '资产证明管理',
+        },
+        component:() => import('@/pages/LegalCurrency/assetCertification'),
+      },
+      
+      {
         path: 'accountsReceivable',
         name:'accountsReceivable',
         meta: {
@@ -334,7 +343,24 @@ export const appRouter = [
 				  title: '商户交易流水详情'
 			  },
 			  component: () => import('@/pages/merchant/tradingFlowDetaile.vue')
-      }
+      },
+      {
+			  path: 'AuthorizedMerchant',
+			  name: 'AuthorizedMerchant',
+			  meta: {
+				  title: '商户分组授权'
+			  },
+			  component: () => import('@/pages/merchant/AuthorizedMerchant/index.vue')
+      },
+      {
+			  path: 'AuthorizedMerchantInfo',
+			  name: 'AuthorizedMerchantInfo',
+			  meta: {
+				  title: '授权分组信息'
+			  },
+			  component: () => import('@/pages/merchant/AuthorizedMerchant/info.vue')
+      },
+      
     ]
   },
   {

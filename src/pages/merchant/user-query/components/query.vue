@@ -41,55 +41,57 @@ export default {
 			type: Array
 		}
 	},
-    data () {
-        return {
-            pickerOptions: {
-                disabledDate(time) {
-                    return time.getTime() > Date.now();
-                },
-                shortcuts: [{
-                    text: '最近一周',
-                    onClick(picker) {
-                        const end = new Date();
-                        const start = new Date();
-                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-                        picker.$emit('pick', [start, end]);
-                    }
-                }, {
-                    text: '最近一个月',
-                    onClick(picker) {
-                        const end = new Date();
-                        const start = new Date();
-                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-                        picker.$emit('pick', [start, end]);
-                    }
-                }, {
-                    text: '最近三个月',
-                    onClick(picker) {
-                        const end = new Date();
-                        const start = new Date();
-                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-                        picker.$emit('pick', [start, end]);
-                    }
-                }, {
-                    text: '最近半年',
-                    onClick(picker) {
-                        const end = new Date();
-                        const start = new Date();
-                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 180);
-                        picker.$emit('pick', [start, end]);
-                    }
-                }, {
-                    text: '最近一年',
-                    onClick(picker) {
-                        const end = new Date();
-                        const start = new Date();
-                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
-                        picker.$emit('pick', [start, end]);
-                    }
-                }]
-            },
-            formData: {
+	data () {
+		return {
+			pickerOptions: {
+				disabledDate(time) {
+						return time.getTime() > Date.now();
+				},
+				shortcuts: [
+					{
+						text: '最近一周',
+						onClick(picker) {
+							const end = new Date();
+							const start = new Date();
+							start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+							picker.$emit('pick', [start, end]);
+						}
+					}, {
+						text: '最近一个月',
+						onClick(picker) {
+								const end = new Date();
+								const start = new Date();
+								start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+								picker.$emit('pick', [start, end]);
+						}
+					}, {
+						text: '最近三个月',
+						onClick(picker) {
+								const end = new Date();
+								const start = new Date();
+								start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+								picker.$emit('pick', [start, end]);
+						}
+					}, {
+						text: '最近半年',
+						onClick(picker) {
+								const end = new Date();
+								const start = new Date();
+								start.setTime(start.getTime() - 3600 * 1000 * 24 * 180);
+								picker.$emit('pick', [start, end]);
+						}
+					}, {
+						text: '最近一年',
+						onClick(picker) {
+								const end = new Date();
+								const start = new Date();
+								start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
+								picker.$emit('pick', [start, end]);
+						}
+					}
+				]
+			},
+			formData: {
 				create_time: '',
 				addr: '', //地址
 				coinName: null, //币种名称
@@ -102,18 +104,18 @@ export default {
 				status: null, //状态0-失败,1-成功,2-待审核,3-审核不通过,4-审核通过
 				txId: '' //txid
 			}
-        }
-    },
-    methods: {
-        queryData () {
+		}
+	},
+	methods: {
+		queryData () {
 			if(this.formData.create_time) {
 				this.formData.startDate = this.formData.create_time[0]
 				this.formData.endDate = this.formData.create_time[1]
 			}
-            this.$emit('queryData', this.formData)
-        },
-        clear () {
-            this.formData = {
+						this.$emit('queryData', this.formData)
+				},
+				clear () {
+						this.formData = {
 				create_time: '',
 				addr: '', //地址
 				coinName: null, //币种名称
@@ -126,10 +128,10 @@ export default {
 				status: null, //状态0-失败,1-成功,2-待审核,3-审核不通过,4-审核通过
 				txId: '' //txid
 			}
-        },
-        fetchFilter () {
-            return this.filter
-        }
+		},
+		fetchFilter () {
+			return this.filter
+		}
 	},
 	computed:{
 		...mapState(['coinInfo'])

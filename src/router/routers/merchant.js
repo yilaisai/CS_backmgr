@@ -39,6 +39,12 @@ const merchant = [
 				name: 'merInitSettings',
 				meta: { title: '商户设置' },
 				component: () => import('@/pages/merchant/init-settings/index.vue')
+			},
+			{
+				path: 'merchantTradingFlow2',
+				name: 'merchantTradingFlow2',
+				meta: { title: '商户交易记录' },
+				component: () => import('@/pages/merchant/tradingFlow_2.vue')
 			}
 		]
 	}

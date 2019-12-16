@@ -57,7 +57,7 @@
 							v-model="dialogForm.auditComment">
 						</el-input>
 				<div slot="footer" class="dialog-footer">
-					<el-button @click="dialogFormVisible = false">取 消</el-button>
+					<el-button @click="dialogVisible = false">取 消</el-button>
 					<el-button type="primary" @click="updateAuditAssetCeRecdStatus(newRecdId,2) ">确 定</el-button>
 				</div>
 			</el-dialog>
@@ -114,7 +114,6 @@ export default {
 			this.dialogForm.status = status
 			this.$http.post('/wallet/app/otc/backmgr/updateAuditAssetCeRecdStatus', this.dialogForm).then(res => {
 				this.getData()
-				this.$message(res.msg)
 				this.dialogVisible = false
 				if(res.code==200){
 					this.$message.success(res.msg)

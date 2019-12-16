@@ -39,7 +39,7 @@ export default {
 	},
 	data(){
 		return {
-			showWidget:true,
+			showWidget:false,
 			addMerchantShow:false,
 			filterForm:{
         account:'',
@@ -55,7 +55,7 @@ export default {
 		}
 	},
 	mounted(){
-		this.getUserData()
+		// this.getUserData()
 	},
 	methods:{
 	

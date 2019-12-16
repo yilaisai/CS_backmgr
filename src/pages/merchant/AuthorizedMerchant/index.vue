@@ -38,7 +38,7 @@
 			</el-table-column>
 			<el-table-column prop="date" label="操作" fixed="right" width="110" align="center">
 				<template slot-scope="scope">
-					<el-button size="mini" type="text" @click="$router.push('/merchant/AuthorizedMerchantInfo')"> 编辑 </el-button>
+					<el-button size="mini" type="text" @click="$router.push({path:'/merchant/AuthorizedMerchantInfo',query:{id:scope.row.recdId,createTime:$fmtDate(scope.row.createTime,'full'),groupName:scope.row.groupName}})"> 编辑 </el-button>
 					<el-button size="mini" type="text" @click=""> 删除 </el-button>
 				</template>
 			</el-table-column>
@@ -73,7 +73,6 @@ export default {
 				pageSzie:20,
 				total:3
 			},
-			
 			total:3,
 			list:[
 				{groupName:'默认',list1:'allbet,ksc,homo,hid,jiqoo',list2:'15179818328,177939729,15792797,188397900,137979790',createDate:'2019.09.21 18:38:19'},

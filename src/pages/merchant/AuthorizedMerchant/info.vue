@@ -2,71 +2,15 @@
 	<div class="AuthorizedMerchantInfo-page">
 		<el-form ref="form" :model="formData" label-width="85px" size="mini" inline>
 			<el-form-item label="分组名称:">
-				<el-input disabled :value="'高级组'"></el-input>
+				<el-input disabled :value="groupName"></el-input>
 			</el-form-item>
 			<el-form-item label="创建时间:">
-				<el-input disabled :value="'2019.09.21 18:38:09'"></el-input>
+				<el-input disabled :value="createTime"></el-input>
 			</el-form-item>
 		</el-form>
 		<div class="main">
-			<div>
-				<div class="title">
-					<span>商户列表：</span>
-					<p>
-						<el-button size="mini" type="danger" @click=""> 一键删除 </el-button>
-						<el-button size="mini" type="primary" @click="addMerchantShow= true"> 增加商户 </el-button>
-					</p>
-				</div>
-				<el-table :data="list" height="auto" border size="mini"  @selection-change="handleSelectionChange">
-					<el-table-column type="selection" width="55" align="center"></el-table-column >
-					<el-table-column type="index" width="50" label="序号" align="center"> </el-table-column>
-					<el-table-column prop="phone" label="商户账户" align="center" ></el-table-column>
-					<el-table-column prop="groupName" label="商户昵称" align="center"></el-table-column>
-					<el-table-column prop="date" label="操作" fixed="right" width="110" align="center">
-						<template slot-scope="scope">
-							<el-button size="mini" type="text" @click=""> 删除 </el-button>
-						</template>
-					</el-table-column>
-				</el-table>
-				<el-pagination
-						@size-change="handleSizeChange"
-						@current-change="handleCurrentChange"
-						:current-page="pageData.pageNum"
-						:page-sizes="[20,50]"
-						:page-size="pageData.pageSize"
-						layout="total, sizes, prev, pager, next, jumper"
-						:total="pageData.total*1">
-				</el-pagination>
-			</div>
-			<div>
-				<div class="title">
-					<span>码商列表：</span>
-						<p>
-							<el-button size="mini" type="danger" @click=""> 一键删除 </el-button>
-							<el-button size="mini" type="primary" @click="addUserShow=true"> 增加码商 </el-button>
-						</p>
-					</div>
-					<el-table :data="list" height="auto" border size="mini" style="min-width: 100%" @selection-change="handleSelectionChange">
-						<el-table-column type="selection" width="55" align="center"></el-table-column >
-						<el-table-column type="index" width="50" label="序号" align="center"> </el-table-column>
-						<el-table-column prop="phone" label="商户账户" align="center" ></el-table-column>
-						<el-table-column prop="groupName" label="商户昵称" align="center"></el-table-column>
-						<el-table-column prop="date" label="操作" fixed="right" width="110" align="center">
-							<template slot-scope="scope">
-								<el-button size="mini" type="text" @click=""> 删除 </el-button>
-							</template>
-						</el-table-column>
-					</el-table>
-					<el-pagination
-							@size-change="handleSizeChange"
-							@current-change="handleCurrentChange"
-							:current-page="pageData.pageNum"
-							:page-sizes="[20,50]"
-							:page-size="pageData.pageSize"
-							layout="total, sizes, prev, pager, next, jumper"
-							:total="pageData.total*1">
-					</el-pagination>
-			</div>
+			<MerchantList :groupId="groupId"></MerchantList>
+			<UserList :groupId="groupId"></UserList>
 		</div>
 		<addMerchant :show="addMerchantShow" @change="addMerchantShow=false"></addMerchant>
 		<addUser :show="addUserShow" @change="addUserShow=false"></addUser>
@@ -75,10 +19,14 @@
 <script>
 import addMerchant from './components/addMerchant.vue'
 import addUser from './components/addUser.vue'
+import MerchantList from './components/merchantList.vue'
+import UserList from './components/userList.vue'
 export default {
 	components:{
 		addMerchant,
-		addUser
+		addUser,
+		MerchantList,
+		UserList
 	},
 	data(){
 		return {
@@ -89,7 +37,6 @@ export default {
 				groupName:'',
 				name:''
 			},
-			
 			pageData:{
 				pageNum:1,
 				pageSzie:20,
@@ -102,11 +49,17 @@ export default {
 				{groupName:'allbet',phone:'177939729'},
 				{groupName:'ksx',phone:'15792797'},
 				{groupName:'默认ksx',phone:'188397900'},
-			]
+			],
+			groupId:'',
+			createTime:'',
+			groupName:''
 		}
 	},
 	mounted(){
-
+		this.groupId = this.$route.query.id
+		this.createTime = this.$route.query.createTime
+		this.groupName = this.$route.query.groupName
+		console.log(this.$route.query )
 	},
 	methods:{
 		handleSelectionChange(val) {
@@ -121,6 +74,7 @@ export default {
 			this.pageSize = val
 			// this.getData()
 		},
+		// /wallet/app/otc/backmgr/checkMerchantGroupRecdInfo
 		
 	},
 	watch:{

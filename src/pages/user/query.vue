@@ -373,6 +373,9 @@
   };
 </script>
 <style lang="less" scoped>
+.query {
+	overflow: hidden;
+}
 .dateItem{
   width: 442px;
 }

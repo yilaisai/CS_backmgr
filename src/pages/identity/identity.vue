@@ -1,5 +1,5 @@
 <template>
-  	<div class="sac-home">
+  	<div class="identity-page">
 		<div class="sac-queryCondition">
 			<el-form class="filter-container" :inline="true" label-width="80px" ref="filterForm" :model="filterForm" size="mini">
 				<el-form-item label="审核状态">
@@ -130,8 +130,8 @@ export default {
 	}
 }
 </script>
-<style lang='less'>
-  .sac-home {
-
+<style lang='less' scoped>
+  .identity-page {
+	  overflow: hidden;
   }
 </style>

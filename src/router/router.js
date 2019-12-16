@@ -332,7 +332,7 @@ export const appRouter = [
 			  path: 'merchantTradingFlow',
 			  name: 'merchantTradingFlow',
 			  meta: {
-				  title: '商户交易流水'
+				  title: '宝转卡流水'
 			  },
 			  component: () => import('@/pages/merchant/tradingFlow.vue')
       }

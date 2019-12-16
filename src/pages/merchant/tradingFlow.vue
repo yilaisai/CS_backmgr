@@ -34,12 +34,12 @@
 								</el-select>
 							</el-form-item>
 							<br />
-							<el-form-item label="支付渠道:">
+							<!-- <el-form-item label="支付渠道:">
 								<el-select v-model="filterForm.payType" >
 									<el-option value="" label="全部"></el-option>
 									<el-option v-for="(item, key) in payTypes" :key="key" :value="key" :label="item"></el-option>
 								</el-select>
-							</el-form-item>
+							</el-form-item> -->
 							<el-form-item label="交易类型:">
 								<el-select v-model="filterForm.advType" >
 									<el-option v-for="(item, key) in transList" :key="key" :value="item.label" :label="item.value"></el-option>
@@ -51,7 +51,7 @@
 									<el-option value="1" label="已超时"></el-option>
 								</el-select>
 							</el-form-item>
-							<el-button type="primary" @click.native="search" size="mini">搜索</el-button>
+							<el-button type="primary" @click.native="search" size="mini" style="margin-left: 60px">搜索</el-button>
 							<el-button type="primary" @click.native="exportExcel" size="mini" icon="el-icon-document-checked">导出Excel</el-button>
 						</el-form>
 					</el-collapse-item>

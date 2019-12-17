@@ -5,11 +5,10 @@
 		<el-dialog class="addUser-page" title="增加码商" :visible.sync="showWidget">
 			<el-form  :model="filterForm" label-width="95px" size="mini" inline>
 				<el-form-item label="账号:">
-					<el-input v-model="filterForm.account" placeholder="请输入账户或者昵称"></el-input>
+					<el-input v-model="filterForm.account" placeholder="请输入账号"></el-input>
 				</el-form-item>
-				
 				<el-form-item>
-					<el-button type="primary" @click="getUserData" style="margin-left: 20px">搜索</el-button>
+					<el-button type="primary" @click="getUserData('saerch')" style="margin-left: 20px">搜索</el-button>
 					<el-button type="primary" @click="addUser">确定增加</el-button>
 				</el-form-item>
 			</el-form>
@@ -217,7 +216,7 @@ export default {
 		},
 		show(list,groupId){
 			this.showWidget = true
-			this.merchantFormData={	name:'',pageNum: 1, pageSize: 10}
+			this.merchantFormData={account:'',}
 			this.seleList = []
 			this.checkedList = list
 			this.groupId = groupId||''

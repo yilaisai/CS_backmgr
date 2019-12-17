@@ -52,12 +52,7 @@ export default {
 		}
 	},
 	activated(){
-		if(this.$route.query.id){
-			this.groupId = this.$route.query.id+''
-			this.createTime = this.$route.query.createTime
-			this.groupName = this.$route.query.groupName
-		}
-		
+		this.groupName = ''
 	},
 	methods:{
 		handleSelectionChange(val) {

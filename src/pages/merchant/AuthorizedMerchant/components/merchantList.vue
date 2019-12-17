@@ -54,9 +54,10 @@ export default {
 		}
 	},
 	activated(){
+		this.list = []
 		setTimeout(()=>{
 			if(this.groupId!==''){
-			this.pageData.groupId = this.groupId
+				this.pageData.groupId = this.groupId
 				this.getData()
 			}
 		},100)

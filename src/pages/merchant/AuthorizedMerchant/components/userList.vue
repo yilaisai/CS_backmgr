@@ -14,7 +14,7 @@
 			<el-table-column prop="nickName" label="码商昵称" align="center"></el-table-column>
 			<el-table-column prop="date" label="操作" fixed="right" width="110" align="center">
 				<template slot-scope="scope">
-					<el-button size="mini" type="text" @click="subMerchantToGroup(scope.row.userId)"> 删除 </el-button>
+					<el-button size="mini" type="text" @click="subUserToGroup(scope.row.userId)"> 删除 </el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -26,7 +26,7 @@
 				layout="total, sizes, prev, pager, next, jumper"
 				:total="total*1">
 		</el-pagination>
-		<AddUser ref="AddUser"  @success='getData' ></AddUser>
+		<AddUser ref="AddUser" @addData="addData"  @success='getData' ></AddUser>
 	</div>
 </template>
 <script>
@@ -53,16 +53,23 @@ export default {
 			list:[]
 		}
 	},
-	mounted(){
-		
+	activated(){
 		setTimeout(()=>{
-			this.getData()
+			if(this.groupId!==''){
+			this.pageData.groupId = this.groupId
+				this.getData()
+			}
 		},100)
 		
 	},
 	methods:{
+		getList(){
+			return this.list
+		},
+		addData(list){
+			this.list=this.list.concat(list)
+		},
 		getData(){
-			this.pageData.groupId = this.groupId
 			this.$http.post('/wallet/app/otc/backmgr/checkUserGroupRecdInfo', this.pageData).then(res => {
 				this.list = res.result.list
 				this.total = res.result.total
@@ -74,21 +81,50 @@ export default {
 			this.multipleSelection.forEach(e => {
 				userIds+= e.userId + ','
 			})
-			this.subMerchantToGroup(userIds.substring(0,userIds.length-1))
+			this.subUserToGroup(userIds.substring(0,userIds.length-1))
 		},
-		subMerchantToGroup(userIds){
+		subUserToGroup(userIds){
 			console.log(userIds)
-			this.$http.post('/wallet/app/otc/backmgr/subMerchantToGroup', {
-				groupId:this.groupId,
-				userIds:userIds
-			}).then(res => {
-				if(res.code==200){
-					this.$message.success(res.msg)
-					this.getData()
+			if(this.groupId!==''){
+				this.$confirm('此操作将会将用户移出该分组，确定删除？', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning'
+				}).then(() => {
+					this.$http.post('/wallet/app/otc/backmgr/subUserToGroup', {
+						groupId:this.groupId,
+						userIds:userIds
+					}).then(res => {
+						if(res.code==200){
+							this.$message.success(res.msg)
+							this.getData()
+						}else{
+							this.$message.error(res.msg)
+						}
+					})
+				}).catch(() => {})
+				
+			}else{
+				let arr = []
+				if((userIds+'').indexOf(',')>-1){
+					arr = userIds.split(',')
 				}else{
-					this.$message.error(res.msg)
+					arr = [userIds]
 				}
-			})
+				let newList = []
+				this.list.forEach((e,i)=>{
+					let isDelete = false
+					arr.forEach((item)=>{
+						if(e.userId==item){
+							isDelete = true
+						}
+					})
+					if(!isDelete){
+						newList.push(e)
+					}
+				})
+				this.list = newList
+			}
 		},
 		handleSelectionChange(val) {
 			this.multipleSelection = val;

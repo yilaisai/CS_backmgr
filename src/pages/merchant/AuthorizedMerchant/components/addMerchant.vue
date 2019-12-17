@@ -2,7 +2,7 @@
 	<!-- <div class="addMerchant-page">
 
 	</div> -->
-		<el-dialog class="addMerchant-page" title="增加商户1" :visible.sync="showWidget">
+		<el-dialog class="addMerchant-page" title="增加商户" :visible.sync="showWidget">
 			<el-form  :model="merchantFormData" label-width="95px" size="mini" inline>
 				<el-form-item label="账户/昵称:">
 					<el-input v-model="merchantFormData.name" placeholder="请输入账户或者昵称"></el-input>
@@ -91,26 +91,32 @@ export default {
 		},
 		//
 		addMerchantToGroup(){
-			let userIds=""
+			
 			if(this.selectList.length<1){
 				this.$message.error('请选择商户')
 				return
 			}
-			this.selectList.forEach((item)=>{
-				userIds += item.userId+','
-				
-			})
-			this.$http.post('/wallet/app/otc/backmgr/addMerchantToGroup', {
-				groupId:this.groupId,
-				userIds:userIds.substring(0,userIds.length-1)
-			} ).then(res => {
-				if(res.code == 200) {
-					// this.pageData = res.result.page
-					this.showWidget = false
-					this.$message.success(res.msg)
-					this.$emit('success')
-				}
-			})
+			if(this.groupId!==''){
+				let userIds=""
+				this.selectList.forEach((item)=>{
+					userIds += item.userId+','
+				})
+				this.$http.post('/wallet/app/otc/backmgr/addMerchantToGroup', {
+					groupId:this.groupId,
+					userIds:userIds.substring(0,userIds.length-1)
+				} ).then(res => {
+					if(res.code == 200) {
+						// this.pageData = res.result.page
+						this.showWidget = false
+						this.$message.success(res.msg)
+						this.$emit('success')
+					}
+				})
+			}else{
+				this.showWidget = false
+				this.$emit('addData',this.selectList)
+			}
+			
 		},
 		getMerchantList() {
 			this.$http.post('/wallet/backmgr/merchant/list', this.merchantFormData ).then(res => {
@@ -253,23 +259,24 @@ export default {
 			width: 16px;
 			height: 16px;
 			// background: red
-			border: 2px solid #ccc;
+			border: 1px solid #ccc;
 			box-sizing: border-box;
-			border-radius: 50%;
 			&.isCheck{
 				border-color:#409EFF;
 				position: relative;
 				&::after{
 					position: absolute;
 					content: "";
-					width: 8px;
+					width: 5px;
 					height: 8px;
-					background: #409EFF;
-					border-radius: 50%;
+					// background: #409EFF;
+					border-bottom: 1px solid #409EFF;
+					border-right: 1px solid #409EFF;
+					transform: rotate(40deg);
 					left: 50%;
 					top: 50%;
-					margin-left: -4px;
-					margin-top: -4px;
+					margin-left: -3px;
+					margin-top: -6px;
 				} 
 			}
 		}

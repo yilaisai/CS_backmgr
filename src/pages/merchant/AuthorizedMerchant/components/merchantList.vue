@@ -26,7 +26,7 @@
 				layout="total, sizes, prev, pager, next, jumper"
 				:total="total*1">
 		</el-pagination>
-		<AddMerchant ref="AddMerchant"  @success='getData' ></AddMerchant>
+		<AddMerchant ref="AddMerchant" @addData="addData" @success='getData' ></AddMerchant>
 	</div>
 </template>
 <script>
@@ -53,19 +53,26 @@ export default {
 			list:[]
 		}
 	},
-	mounted(){
-		
+	activated(){
 		setTimeout(()=>{
-			this.getData()
+			if(this.groupId!==''){
+			this.pageData.groupId = this.groupId
+				this.getData()
+			}
 		},100)
-		
 	},
 	methods:{
+		getList(){
+			return this.list
+		},
 		addMerchant(){
 			this.$refs.AddMerchant.show(this.list,this.groupId)
 		}, 
+		addData(list){
+			this.list=this.list.concat(list)
+		},
 		getData(){
-			this.pageData.groupId = this.groupId
+			
 			this.$http.post('/wallet/app/otc/backmgr/checkMerchantGroupRecdInfo', this.pageData).then(res => {
 				this.list = res.result.list
 				this.total = res.result.total
@@ -79,18 +86,47 @@ export default {
 			this.subMerchantToGroup(userIds.substring(0,userIds.length-1))
 		},
 		subMerchantToGroup(userIds){
-			console.log(userIds)
-			this.$http.post('/wallet/app/otc/backmgr/subMerchantToGroup', {
-				groupId:this.groupId,
-				userIds:userIds
-			}).then(res => {
-				if(res.code==200){
-					this.$message.success(res.msg)
-					this.getData()
+			
+			if(this.groupId!==''){
+				this.$confirm('此操作将会将用户移出该分组，确定删除？', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning'
+				}).then(() => {
+					this.$http.post('/wallet/app/otc/backmgr/subMerchantToGroup', {
+						groupId:this.groupId,
+						userIds:userIds
+					}).then(res => {
+						if(res.code==200){
+							this.$message.success(res.msg)
+							this.getData()
+						}else{
+							this.$message.error(res.msg)
+						}
+					})
+				}).catch(() => {})
+			}else{
+				let arr = []
+				if((userIds+'').indexOf(',')>-1){
+					arr = userIds.split(',')
 				}else{
-					this.$message.error(res.msg)
+					arr = [userIds]
 				}
-			})
+				let newList = []
+				this.list.forEach((e,i)=>{
+					let isDelete = false
+					arr.forEach((item)=>{
+						if(e.userId==item){
+							isDelete = true
+						}
+					})
+					if(!isDelete){
+						newList.push(e)
+					}
+				})
+				this.list = newList
+			}
+			
 		},
 		handleSelectionChange(val) {
 			this.multipleSelection = val;

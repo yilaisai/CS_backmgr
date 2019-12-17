@@ -35,7 +35,7 @@
 				<template slot-scope="scope">
 					<el-button v-if="scope.row.auditStatus==0" size="mini" type="text" @click="updateAuditAssetCeRecdStatus(scope.row.recdId,1)"> 通过审核 </el-button>
 					<el-button v-if="scope.row.auditStatus==0" size="mini" type="text" @click="Refuse(scope.row.recdId)"> 拒绝审核 </el-button>
-					<el-button v-if="scope.row.auditStatus==1" size="mini" type="text" @click="updateAuditAssetCeRecdStatus(scope.row.recdId,3)"> 释放资产证明 </el-button>
+					<el-button v-if="scope.row.auditStatus==1&&scope.row.optType!=1" size="mini" type="text" @click="updateAuditAssetCeRecdStatus(scope.row.recdId,3)"> 释放资产证明 </el-button>
 				</template>
 			</el-table-column>
 		</el-table>

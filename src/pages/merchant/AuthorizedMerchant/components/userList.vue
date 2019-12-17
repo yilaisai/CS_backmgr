@@ -1,20 +1,20 @@
 <template>
-	<div class="merchantList-page">
+	<div class="userList-page">
 		<div class="title">
-			<span>商户列表：</span>
+			<span>码商列表：</span>
 			<p>
-				<el-button size="mini" type="danger" @click=""> 一键删除 </el-button>
-				<el-button size="mini" type="primary" @click="addMerchantShow= true"> 增加商户 </el-button>
+				<el-button size="mini" type="danger" :disabled=" multipleSelection.length==0 " @click="checkedDelete()"> 一键删除 </el-button>
+				<el-button size="mini" type="primary" @click="$refs.AddUser.show(list,groupId) "> 增加码商 </el-button>
 			</p>
 		</div>
 		<el-table :data="list" height="auto" border size="mini"  @selection-change="handleSelectionChange">
 			<el-table-column type="selection" width="55" align="center"></el-table-column >
 			<el-table-column type="index" width="50" label="序号" align="center"> </el-table-column>
-			<el-table-column prop="phone" label="商户账户" align="center" ></el-table-column>
-			<el-table-column prop="groupName" label="商户昵称" align="center"></el-table-column>
+			<el-table-column prop="phone" label="码商账户" align="center" ></el-table-column>
+			<el-table-column prop="nickName" label="码商昵称" align="center"></el-table-column>
 			<el-table-column prop="date" label="操作" fixed="right" width="110" align="center">
 				<template slot-scope="scope">
-					<el-button size="mini" type="text" @click=""> 删除 </el-button>
+					<el-button size="mini" type="text" @click="subMerchantToGroup(scope.row.userId)"> 删除 </el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -22,50 +22,85 @@
 				@size-change="handleSizeChange"
 				@current-change="handleCurrentChange"
 				:current-page="pageData.pageNum"
-				:page-sizes="[20,50]"
 				:page-size="pageData.pageSize"
 				layout="total, sizes, prev, pager, next, jumper"
-				:total="pageData.total*1">
+				:total="total*1">
 		</el-pagination>
+		<AddUser ref="AddUser"  @success='getData' ></AddUser>
 	</div>
 </template>
 <script>
+import AddUser from './addUser.vue'
 export default {
 	components:{
-
+		AddUser
+	},
+	props:{
+		groupId:{
+			type:String,
+			default:""
+		}
 	},
 	data(){
 		return {
 			pageData:{
+				groupId:'',
 				pageNum:1,
-				pageSzie:20,
-				total:3
+				pageSize:20,
 			},
 			multipleSelection:[],
 			total:3,
-			list:[
-				{groupName:'默认',phone:'15179818328'},
-				{groupName:'allbet',phone:'177939729'},
-				{groupName:'ksx',phone:'15792797'},
-				{groupName:'默认ksx',phone:'188397900'},
-			]
+			list:[]
 		}
 	},
 	mounted(){
-
+		
+		setTimeout(()=>{
+			this.getData()
+		},100)
+		
 	},
 	methods:{
+		getData(){
+			this.pageData.groupId = this.groupId
+			this.$http.post('/wallet/app/otc/backmgr/checkUserGroupRecdInfo', this.pageData).then(res => {
+				this.list = res.result.list
+				this.total = res.result.total
+			})
+		},
+		
+		checkedDelete(){
+			let userIds=""
+			this.multipleSelection.forEach(e => {
+				userIds+= e.userId + ','
+			})
+			this.subMerchantToGroup(userIds.substring(0,userIds.length-1))
+		},
+		subMerchantToGroup(userIds){
+			console.log(userIds)
+			this.$http.post('/wallet/app/otc/backmgr/subMerchantToGroup', {
+				groupId:this.groupId,
+				userIds:userIds
+			}).then(res => {
+				if(res.code==200){
+					this.$message.success(res.msg)
+					this.getData()
+				}else{
+					this.$message.error(res.msg)
+				}
+			})
+		},
 		handleSelectionChange(val) {
 			this.multipleSelection = val;
 			console.log(this.multipleSelection)
 		},
 		handleCurrentChange(val) {
-			this.pageNum = val
-			// this.getData()
+			this.pageData.pageNum = val
+			this.getData()
 		},
 		handleSizeChange(val) {
-			this.pageSize = val
-			// this.getData()
+			this.pageData.pageSize = val
+			this.getData()
 		},
 	},
 	watch:{
@@ -77,12 +112,12 @@ export default {
 	}
 </script>
 <style lang="less" scoped>
-.merchantList-page{
+.userList-page{
 	width: 100%;
 	height: 100%;
 	display: flex;
 	flex-direction: column;
-		&>.title{
+	&>.title{
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;

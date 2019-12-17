@@ -4,7 +4,7 @@
 			<span>商户列表：</span>
 			<p>
 				<el-button size="mini" type="danger" :disabled=" multipleSelection.length==0 " @click="checkedDelete()"> 一键删除 </el-button>
-				<el-button size="mini" type="primary" @click="addMerchantShow= true"> 增加商户 </el-button>
+				<el-button size="mini" type="primary" @click="addMerchant "> 增加商户 </el-button>
 			</p>
 		</div>
 		<el-table :data="list" height="auto" border size="mini"  @selection-change="handleSelectionChange">
@@ -26,7 +26,7 @@
 				layout="total, sizes, prev, pager, next, jumper"
 				:total="total*1">
 		</el-pagination>
-		<AddMerchant :show="addMerchantShow" @change="addMerchantShow=false"></AddMerchant>
+		<AddMerchant ref="AddMerchant"  @success='getData' ></AddMerchant>
 	</div>
 </template>
 <script>
@@ -43,11 +43,10 @@ export default {
 	},
 	data(){
 		return {
-			addMerchantShow:false,
 			pageData:{
 				groupId:'',
 				pageNum:1,
-				pageSize:10,
+				pageSize:20,
 			},
 			multipleSelection:[],
 			total:3,
@@ -62,6 +61,9 @@ export default {
 		
 	},
 	methods:{
+		addMerchant(){
+			this.$refs.AddMerchant.show(this.list,this.groupId)
+		}, 
 		getData(){
 			this.pageData.groupId = this.groupId
 			this.$http.post('/wallet/app/otc/backmgr/checkMerchantGroupRecdInfo', this.pageData).then(res => {

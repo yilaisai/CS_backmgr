@@ -32,10 +32,6 @@ export default {
 
 	},
 	props:{
-		show:{
-			type:Boolean,
-			default:false,
-		}
 	},
 	data(){
 		return {
@@ -185,16 +181,17 @@ export default {
 					// r.push(array[i]);
 			}
 			return r;
-		}
+		},
+		show(list,groupId){
+			this.showWidget = true
+			this.merchantFormData={	name:'',pageNum: 1, pageSize: 10}
+			this.selectList = []
+			this.selectList = this.selectList.concat(list)
+			this.groupId = groupId||''
+			this.getUserData()
+		},
 	},
 	watch:{
-		show(newVal, oldVal){
-			if(newVal){
-				this.showWidget = true
-				this.merchantFormData={	name:'',pageNum: 1, pageSize: 10}
-				this.getUserData()
-			}
-		},
 		showWidget(newVal, oldVal){
 			if(!newVal){
 				this.$emit('change')

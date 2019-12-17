@@ -12,25 +12,21 @@
 			<MerchantList :groupId="groupId"></MerchantList>
 			<UserList :groupId="groupId"></UserList>
 		</div>
-		<addMerchant :show="addMerchantShow" @change="addMerchantShow=false"></addMerchant>
 		<addUser :show="addUserShow" @change="addUserShow=false"></addUser>
 	</div>
 </template>
 <script>
-import addMerchant from './components/addMerchant.vue'
 import addUser from './components/addUser.vue'
 import MerchantList from './components/merchantList.vue'
 import UserList from './components/userList.vue'
 export default {
 	components:{
-		addMerchant,
 		addUser,
 		MerchantList,
 		UserList
 	},
 	data(){
 		return {
-			addMerchantShow:false,
 			addUserShow:false,
 			formData:{
 				create_time:'',
@@ -55,11 +51,11 @@ export default {
 			groupName:''
 		}
 	},
-	mounted(){
-		this.groupId = this.$route.query.id
+	activated(){
+		this.groupId = this.$route.query.id+''
 		this.createTime = this.$route.query.createTime
 		this.groupName = this.$route.query.groupName
-		console.log(this.$route.query )
+		// console.log(this.$route.query )
 	},
 	methods:{
 		handleSelectionChange(val) {

@@ -217,7 +217,7 @@ export default {
 		show(list,groupId){
 			this.showWidget = true
 			this.merchantFormData={account:'',}
-			this.seleList = []
+			this.selectList = []
 			this.checkedList = list
 			this.groupId = groupId||''
 			this.getUserData()

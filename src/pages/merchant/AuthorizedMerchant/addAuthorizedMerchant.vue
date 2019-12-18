@@ -70,7 +70,7 @@ export default {
 		
 		addGroup(){
 			if(this.groupName.trim()==''){
-				this.$message.error('请书去分组名称')
+				this.$message.error('请输入分组名称')
 				return
 			}else if(this.$refs.MerchantList.getList().length<1){
 				this.$message.error('请添加商户')

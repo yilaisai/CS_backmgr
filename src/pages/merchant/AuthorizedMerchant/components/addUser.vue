@@ -20,7 +20,7 @@
 				<el-table-column  width="55"  align="center">
 					
 					<div slot-scope="scope" class="checkBox"  @click=" itemClick(scope.row) " >
-						<div v-if="scope.row.hasItem">已选</div>
+						<div v-if="scope.row.hasItem || scope.row.inGroup == 1">已选</div>
 						<div v-else class="check" :class=" scope.row.check ? 'isCheck' : '' "></div>
 					</div>
 					</el-table-column >
@@ -39,7 +39,8 @@ export default {
 			showWidget:false,
 			addMerchantShow:false,
 			filterForm:{
-        account:'',
+				account:'',
+				groupId:'',
       },
 			merchantPageData:{
 				list:[],
@@ -86,7 +87,9 @@ export default {
 			
 		},
 		getUserData(saerch){
-      this.$http.post('/wallet/invite/backmgr/findInviteChild',this.filterForm).then(res=>{
+			this.filterForm.groupId = this.groupId
+			// this.$http.post('/wallet/invite/backmgr/findInviteChild',this.filterForm).then(res=>{
+      this.$http.post('/wallet/invite/backmgr/findInviteChildByGroup',this.filterForm).then(res=>{
         let list=[]
         if(saerch=='saerch'&&res.result.userId){
 						list = [res.result]
@@ -114,8 +117,9 @@ export default {
       })
 		},
 		load(tree, treeNode, resolve) {
-      let inviteCode = tree.inviteCode
-      this.$http.post('/wallet/invite/backmgr/findInviteChild',{inviteCode:inviteCode}).then(res=>{
+			let inviteCode = tree.inviteCode
+			// this.$http.post('/wallet/invite/backmgr/findInviteChild',{inviteCode:inviteCode,groupId:this.groupId}).then(res=>{
+      this.$http.post('/wallet/invite/backmgr/findInviteChildByGroup',{inviteCode:inviteCode,groupId:this.groupId}).then(res=>{
         let { list } = res.result;
         list.forEach(element => {
           if(element.childNum>0){
@@ -137,7 +141,10 @@ export default {
       
 		},
 		mergeArray(list){
-			console.log(list)
+			// console.log(list)
+			if(this.groupId!==''){
+				return
+			}
 			list.forEach(element => {
 				if(this.checkedList.length>0){
 					this.checkedList.forEach((item)=>{
@@ -145,27 +152,6 @@ export default {
 							this.$set(element,'hasItem',true)
 						}
 					})
-				}
-			})
-		},
-		getUserList() {
-			console.log(this.merchantFormData)
-			this.$http.post('/wallet/backmgr/merchant/list', this.merchantFormData ).then(res => {
-				if(res.code == 200) {
-					// this.pageData = res.result.page
-					this.merchantPageData = res.result.page
-					for (let i = 0 ; i < this.merchantPageData.list.length; i++) {
-						if(this.selectList.length>0){
-							let hasItem = false
-							for (let j = 0 ; j < this.selectList.length; j++ ){
-								if(this.merchantPageData.list[i].userId==this.selectList[j].userId){
-									hasItem = true
-								}
-							}
-							this.$set(this.merchantPageData.list[i],'check',hasItem)
-						}	
-						// r.push(array[i]);
-				}
 				}
 			})
 		},

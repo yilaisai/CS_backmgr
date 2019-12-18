@@ -5,7 +5,7 @@
 				<el-input v-model="formData.groupName" placeholder="分组名称"></el-input>
 			</el-form-item>
 			<el-form-item label="账户/昵称:">
-				<el-input v-model="formData.name" placeholder="请输入账户或者昵称"></el-input>
+				<el-input v-model="formData.phone" placeholder="请输入账户或者昵称"></el-input>
 			</el-form-item>
 			<el-form-item label="时间：" class="time">
 				<el-date-picker
@@ -63,8 +63,10 @@ export default {
 		return {
 			formData:{
 				create_time:'',
+				startDate:'',
+				endDate:'',
 				groupName:'',
-				name:'',
+				phone:'',
 				pageNum:1,
 				pageSzie:20,
 			},
@@ -90,6 +92,14 @@ export default {
 			// this.getData()
 		},
 		getData(){
+			if (this.formData.create_time){
+				this.formData.startDate = this.formData.create_time[0] + ' 00:00:00'
+				this.formData.endDate = this.formData.create_time[1] + ' 23:59:59'
+			}else{
+				this.formData.startDate = ''
+				this.formData.endDate =''
+			}
+			
 			this.$http.post('/wallet/app/otc/backmgr/checkMerchantGroupRecd', this.formData).then(res => {
 				this.list = res.result.list
 				this.total = res.result.total

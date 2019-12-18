@@ -21,7 +21,7 @@
 						<el-table-column  width="55" label="全选" align="center">
 						<div slot-scope="scope" class="checkBox"  @click=" itemClick(scope.row) " >
 							<!-- <el-button size="mini" type="text" @click=""> 删除 </el-button> -->
-							<div v-if="scope.row.hasItem">已选</div>
+							<div v-if="scope.row.hasItem || scope.row.inGroup==1 ">已选</div>
 							<div v-else class="check" :class=" scope.row.check ? 'isCheck' : '' "></div>
 						</div>
 					</el-table-column >
@@ -57,6 +57,7 @@ export default {
 			addMerchantShow:false,
 			merchantFormData: {
 				name:'',
+				groupId:'',
 				pageNum: 1, //页码
 				pageSize: 10, //页数
 			},
@@ -119,7 +120,9 @@ export default {
 			
 		},
 		getMerchantList() {
-			this.$http.post('/wallet/backmgr/merchant/list', this.merchantFormData ).then(res => {
+			this.merchantFormData.groupId = this.groupId
+			// this.$http.post('/wallet/backmgr/merchant/list', this.merchantFormData ).then(res => {
+			this.$http.post('/wallet/app/otc/backmgr/listByGroup', this.merchantFormData ).then(res => {
 				if(res.code == 200) {
 					// this.pageData = res.result.page
 					this.merchantPageData = res.result.page
@@ -133,7 +136,7 @@ export default {
 								}
 							}
 						}	
-						if(this.checkedList.length>0){
+						if(this.checkedList.length>0&&this.groupId==''){
 							for (let j = 0 ; j < this.checkedList.length; j++ ){
 								if(this.merchantPageData.list[i].userId==this.checkedList[j].userId){
 									hasItem = true
@@ -208,9 +211,7 @@ export default {
 					}	else{
 						this.selectList.push(this.multipleSelection[i])
 					}	
-					// r.push(array[i]);
 			}
-			return r;
 		},
 		show(list,groupId){
 			this.showWidget = true

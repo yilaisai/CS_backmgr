@@ -10,7 +10,9 @@
 		<el-table :data="list" height="auto" border size="mini"  @selection-change="handleSelectionChange">
 			<el-table-column type="selection" width="55" align="center"></el-table-column >
 			<el-table-column type="index" width="50" label="序号" align="center"> </el-table-column>
-			<el-table-column prop="phone" label="码商账户" align="center" ></el-table-column>
+			<el-table-column prop="phone" label="码商账户" align="center" >
+				<template slot-scope="scope">{{ scope.row.phone || scope.row.account }}</template>
+			</el-table-column>
 			<el-table-column prop="nickName" label="码商昵称" align="center"></el-table-column>
 			<el-table-column prop="date" label="操作" fixed="right" width="110" align="center">
 				<template slot-scope="scope">

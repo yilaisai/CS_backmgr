@@ -2,7 +2,7 @@
 	<div class="AuthorizedMerchantInfo-page">
 		<el-form ref="form"  label-width="85px" size="mini" inline>
 			<el-form-item label="分组名称:">
-				<el-input  v-model="groupName"></el-input>
+				<el-input maxlength="10" v-model="groupName"></el-input>
 			</el-form-item>
 			<el-form-item>
 				<el-button  type="primary" size="mini" @click="addGroup">新增分组</el-button>

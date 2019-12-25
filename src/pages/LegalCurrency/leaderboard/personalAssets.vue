@@ -46,6 +46,7 @@
 						<el-table-column prop="coinName" label="币种" align="center"></el-table-column>
 						<el-table-column prop="amount" label="可用" align="center"></el-table-column>
 						<el-table-column prop="frozenAmount"  label="冻结" align="center"></el-table-column>
+						<el-table-column prop="assetCertification"  label="资产证明" align="center"></el-table-column>
 						<el-table-column prop="registTime"  label="操作" align="center">
 							<template slot-scope="scope">
 								<el-button size="mini" @click="$router.push({path:'/LegalCurrency/billingRecord',query:{nickName:customerInfo[0].nickName,phone:customerInfo[0].phone,userId:userId,type:2,coinName:scope.row.coinName,list:otcList}})" >查看详情</el-button>

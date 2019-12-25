@@ -9,6 +9,11 @@
 			<el-form-item label="账户/昵称:">
 				<el-input v-model="formData.phone" placeholder="请输入账户或者昵称"></el-input>
 			</el-form-item>
+			<el-select v-model="formData.optType" >
+					<el-option value="" label="全部"></el-option>
+					<el-option value="1" label="充值资产证明"></el-option>
+					<el-option value="2" label="申请取出"></el-option>
+				</el-select>
 			<el-form-item>
 				<el-button type="primary" @click="getData" style="margin-left: 20px">查询</el-button>
 			</el-form-item>
@@ -78,6 +83,7 @@ export default {
 			dialogVisible:false,
 			list:[],
 			formData:{
+				optType:'',
 				phone:'',
 				pageSize:20,
 				pageNum:1,
@@ -156,6 +162,15 @@ export default {
 		.nickName{
 			p{
 				margin: 0;
+			}
+		}
+		/deep/.el-select{
+			height: 28px;
+			.el-input__inner{
+				height: 28px;
+			}
+			.el-input__icon{
+				line-height: 28px;
 			}
 		}
 }

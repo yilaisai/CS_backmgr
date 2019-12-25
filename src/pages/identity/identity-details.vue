@@ -13,7 +13,7 @@
         <el-button class="success-btn" type="success" :disabled="details.antiMoneyAudit == 1" size="small"
                    @click.native="modifyState('success')">通过审核
         </el-button>
-        <el-button size="small" type="primary" @click.native="fixContent">修改</el-button>
+        <el-button size="small" type="primary" @click="fixContent">修改</el-button>
       </el-col>
     </el-row>
     <div class="content">

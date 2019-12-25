@@ -770,6 +770,7 @@ export const appRouter = [
         name: 'identityModify',
         meta: {
           title: '身份信息修改',
+          noTab:true
         },
         component: () => import('@/pages/identity/identity-modify.vue'),
       },

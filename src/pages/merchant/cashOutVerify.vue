@@ -73,15 +73,21 @@
 					<p><span>{{scope.row.apiPrice }}</span> CNY/{{ scope.row.coinName }}</p>
 				</div>
 			</el-table-column>
+			<el-table-column prop="api_user_id" label="appUserId/收银台ip" align="center">
+				<div slot-scope="scope">
+					<span>{{scope.row.apiUserId}}</span><br />
+					<span>{{scope.row.apiIp}}</span>
+				</div>
+			</el-table-column>
 			<!-- <el-table-column align="center" prop="apiAmount" label="金额"></el-table-column> -->
 			<el-table-column align="center" prop="coinName" width="80" label="币种"></el-table-column>
 			<el-table-column align="center" prop="fee" label="手续费"></el-table-column>
 			<!-- <el-table-column align="center" prop="auditUserName" label="操作人"></el-table-column> -->
-			<el-table-column align="center" label="操作" fixed="right" >
+			<el-table-column align="center" label="操作" fixed="right">
 				<template slot-scope="scope">
-					<el-button type="text" v-show="scope.row.advType==4||scope.row.advType==5" @click="showIP(scope.row)">查看</el-button>
-					<el-button v-show="scope.row.matchResult==0&&(scope.row.advType==3||scope.row.advType==6)" size="mini" type="text" @click="open(scope.row)">审核</el-button>
-					<el-button v-show="scope.row.matchResult==1" size="mini" type="text" @click="close(scope.row)">取消订单</el-button>
+					<!-- <el-button type="text" v-show="scope.row.advType==4||scope.row.advType==5" @click="showIP(scope.row)">查看</el-button> -->
+					<el-button :disabled=" !(scope.row.matchResult == 0 && (scope.row.advType==3||scope.row.advType==6))" size="mini" type="text" @click="open(scope.row)">审核</el-button>
+					<el-button :disabled="scope.row.matchResult != 1" size="mini" type="text" @click="close(scope.row)">取消订单</el-button>
 				</template>
 			</el-table-column>
 		</el-table>

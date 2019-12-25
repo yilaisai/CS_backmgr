@@ -5,7 +5,7 @@
 				<el-input v-model="formData.groupName" placeholder="分组名称"></el-input>
 			</el-form-item>
 			<el-form-item label="账户/昵称:">
-				<el-input v-model="formData.name" placeholder="请输入账户或者昵称"></el-input>
+				<el-input v-model="formData.phone" placeholder="请输入账户或者昵称"></el-input>
 			</el-form-item>
 			<el-form-item label="时间：" class="time">
 				<el-date-picker
@@ -23,8 +23,8 @@
 				</el-date-picker>
 			</el-form-item>
 			<el-form-item>
-				<el-button type="primary" @click="" style="margin-left: 20px">查询</el-button>
-				<el-button type="primary" @click="">新建</el-button>
+				<el-button type="primary" @click="getData" style="margin-left: 20px">查询</el-button>
+				<el-button type="primary" @click="$router.push('/merchant/addAuthorizedMerchant')">新建组</el-button>
 			</el-form-item>
 		</el-form>
 		<el-table :data="list" height="auto" border size="mini" style="min-width: 100%" :show-overflow-tooltip='true' >
@@ -38,8 +38,8 @@
 			</el-table-column>
 			<el-table-column prop="date" label="操作" fixed="right" width="110" align="center">
 				<template slot-scope="scope">
-					<el-button size="mini" type="text" @click="$router.push('/merchant/AuthorizedMerchantInfo')"> 编辑 </el-button>
-					<el-button size="mini" type="text" @click=""> 删除 </el-button>
+					<el-button size="mini" type="text" @click="$router.push({path:'/merchant/AuthorizedMerchantInfo',query:{id:scope.row.recdId,createTime:$fmtDate(scope.row.createTime,'full'),groupName:scope.row.groupName}})"> 编辑 </el-button>
+					<el-button size="mini" type="text" @click="subGroup(scope.row.recdId)"> 删除 </el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -63,8 +63,10 @@ export default {
 		return {
 			formData:{
 				create_time:'',
+				startDate:'',
+				endDate:'',
 				groupName:'',
-				name:'',
+				phone:'',
 				pageNum:1,
 				pageSzie:20,
 			},
@@ -73,16 +75,11 @@ export default {
 				pageSzie:20,
 				total:3
 			},
-			
 			total:3,
-			list:[
-				{groupName:'默认',list1:'allbet,ksc,homo,hid,jiqoo',list2:'15179818328,177939729,15792797,188397900,137979790',createDate:'2019.09.21 18:38:19'},
-				{groupName:'普通组',list1:'bxj',list2:'15179818328,177939729,15792797,188397900,137979790',createDate:'2019.09.21 18:38:19'},
-				{groupName:'高级组',list1:'buc,hiqi',list2:'15179818328,177939729,15792797,188397900,137979790',createDate:'2019.09.21 18:38:19'}
-			]
+			list:[]
 		}
 	},
-	mounted(){
+	activated(){
 		this.getData()
 	},
 	methods:{
@@ -95,11 +92,34 @@ export default {
 			// this.getData()
 		},
 		getData(){
+			if (this.formData.create_time){
+				this.formData.startDate = this.formData.create_time[0] + ' 00:00:00'
+				this.formData.endDate = this.formData.create_time[1] + ' 23:59:59'
+			}else{
+				this.formData.startDate = ''
+				this.formData.endDate =''
+			}
+			
 			this.$http.post('/wallet/app/otc/backmgr/checkMerchantGroupRecd', this.formData).then(res => {
 				this.list = res.result.list
 				this.total = res.result.total
 			})
 		},
+		subGroup(groupId){
+			this.$confirm('确定要删除该分组？', '提示', {
+				confirmButtonText: '确定',
+				cancelButtonText: '取消',
+				type: 'warning'
+			}).then(() => {
+				this.$http.post('/wallet/app/otc/backmgr/subGroup', {groupId:groupId}).then(res => {
+					this.getData()
+						this.$message({
+							type: 'success',
+							message: res.msg
+					});
+				})
+			}).catch(() => {})
+		}
 	},
 	watch:{
 

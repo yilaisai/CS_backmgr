@@ -2,9 +2,10 @@
     <div class="tags" >
         <ul>
             <li class="tags-li" v-for="(item,index) in tagsList" :class="{'active': isActive(item.routePath)}" :key="index">
-                <router-link :to="item.path" class="tags-li-title">
-                    {{item.title}}
-                </router-link>
+                <!-- <router-link :to="item.path" class="tags-li-title">
+                    {{item.path}}
+                </router-link> -->
+                <span @click=" goPage(item) ">{{item.title}}</span>
                 <span class="tags-li-icon" @click="closeTags(index)"><i class="el-icon-close"></i></span>
             </li>
         </ul>
@@ -33,10 +34,15 @@
             isActive(path) {
                 return path === this.$route.path;
             },
+            goPage(item){
+                // console.log(item)
+                this.$router.push(item.path)
+            },
             // 关闭单个标签
             closeTags(index) {
                 const delItem = this.tagsList.splice(index, 1)[0];
                 const item = this.tagsList[index] ? this.tagsList[index] : this.tagsList[index - 1];
+                
                 if (item) {
                     delItem.path === this.$route.fullPath && this.$router.push(item.path);
                 }else{
@@ -58,8 +64,10 @@
             // 设置标签
             setTags(route){
                 const isExist = this.tagsList.some(item => {
+                    
 					return item.path === route.fullPath
                 })
+                
                 if(!isExist){
 					this.tagsList.forEach((val, idx) => {
 						if(val.routePath == route.path) {
@@ -68,7 +76,10 @@
 					})
                     if(this.tagsList.length >= 8){
                         this.tagsList.shift();
-					}
+                    }
+                    if(route.meta.noTab){
+                        return
+                    }
                     this.tagsList.push({
                         title: route.meta.title,
 						path: route.fullPath,

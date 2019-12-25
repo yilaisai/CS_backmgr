@@ -62,11 +62,11 @@
 		<h3>返佣设置</h3>
 		<el-tabs type="border-card">
 				<el-form label-width="160px" ref="filterForm" size="mini">
-					<el-form-item label="全局最大卖币返佣比例:">
+					<el-form-item label="全局最大买币返佣比例:">
 					<el-input placeholder="未设置默认0.7%" v-model="rateDetaile.totalBuyRate" ><template slot="append">%</template></el-input>
 					<span>设置后三级返佣比例之和不可超过该值</span>
 				</el-form-item>
-				<el-form-item label="全局最大买币返佣比例:">
+				<el-form-item label="全局最大卖币返佣比例:">
 					<el-input placeholder="未设置默认0.2%" v-model="rateDetaile.totalSaleRate" ><template slot="append">%</template></el-input>
 					<span>设置后三级返佣比例之和不可超过该值</span>
 				</el-form-item>

@@ -360,6 +360,14 @@ export const appRouter = [
 			  },
 			  component: () => import('@/pages/merchant/AuthorizedMerchant/info.vue')
       },
+      {
+			  path: 'addAuthorizedMerchant',
+			  name: 'addAuthorizedMerchant',
+			  meta: {
+				  title: '新增授权分组'
+			  },
+			  component: () => import('@/pages/merchant/AuthorizedMerchant/addAuthorizedMerchant.vue')
+      },
       
     ]
   },
@@ -762,6 +770,7 @@ export const appRouter = [
         name: 'identityModify',
         meta: {
           title: '身份信息修改',
+          noTab:true
         },
         component: () => import('@/pages/identity/identity-modify.vue'),
       },

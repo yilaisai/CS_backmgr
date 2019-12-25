@@ -5,12 +5,11 @@
 		<el-dialog class="addUser-page" title="增加码商" :visible.sync="showWidget">
 			<el-form  :model="filterForm" label-width="95px" size="mini" inline>
 				<el-form-item label="账号:">
-					<el-input v-model="filterForm.account" placeholder="请输入账户或者昵称"></el-input>
+					<el-input v-model="filterForm.account" placeholder="请输入账号"></el-input>
 				</el-form-item>
-				
 				<el-form-item>
-					<el-button type="primary" @click="getMerchantList" style="margin-left: 20px">搜索</el-button>
-					<el-button type="primary" @click="">确定增加</el-button>
+					<el-button type="primary" @click="getUserData('saerch')" style="margin-left: 20px">搜索</el-button>
+					<el-button type="primary" @click="addUser">确定增加</el-button>
 				</el-form-item>
 			</el-form>
 			<el-table :data="userData" height="420px" style="width: 100%;height:100%;" row-key="inviteCode" border lazy :load="load" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" size="mini">
@@ -19,9 +18,11 @@
 				<el-table-column prop="userId" label="ID" align="center" width="140"></el-table-column>
 				<el-table-column align="center" prop="account" label="账号" width="180"> </el-table-column>
 				<el-table-column  width="55"  align="center">
-						<div slot-scope="scope" class="checkBox"  @click=" itemClick(scope.row) " >
-							<div class="check" :class=" scope.row.check ? 'isCheck' : '' "></div>
-						</div>
+					
+					<div slot-scope="scope" class="checkBox"  @click=" itemClick(scope.row) " >
+						<div v-if="scope.row.hasItem || scope.row.inGroup == 1">已选</div>
+						<div v-else class="check" :class=" scope.row.check ? 'isCheck' : '' "></div>
+					</div>
 					</el-table-column >
 			</el-table>
 		</el-dialog>
@@ -32,17 +33,14 @@ export default {
 
 	},
 	props:{
-		show:{
-			type:Boolean,
-			default:false,
-		}
 	},
 	data(){
 		return {
-			showWidget:true,
+			showWidget:false,
 			addMerchantShow:false,
 			filterForm:{
-        account:'',
+				account:'',
+				groupId:'',
       },
 			merchantPageData:{
 				list:[],
@@ -50,22 +48,56 @@ export default {
 			},
 			multipleSelection:[],
 			selectList:[],
+			checkedList:[],
 			isSelectAll:false,
-			userData:[]
+			userData:[],
+			groupId:''
 		}
 	},
 	mounted(){
-		this.getUserData()
+		// this.getUserData()
 	},
 	methods:{
-	
+		addUser(){
+			if(this.selectList.length<1){
+				this.$message.error('请选择码商')
+				return
+			}
+			if(this.groupId!==''){
+				let userIds=""
+				this.selectList.forEach((item)=>{
+					userIds += item.userId+','
+					
+				})
+				this.$http.post('/wallet/app/otc/backmgr/addUserToGroup', {
+					groupId:this.groupId,
+					userIds:userIds.substring(0,userIds.length-1)
+				} ).then(res => {
+					if(res.code == 200) {
+						// this.pageData = res.result.page
+						this.showWidget = false
+						this.$message.success(res.msg)
+						this.$emit('success')
+					}
+				})
+			}else{
+				this.showWidget = false
+				this.$emit('addData',this.selectList)
+			}
+			
+		},
 		getUserData(saerch){
-      this.$http.post('/wallet/invite/backmgr/findInviteChild',this.filterForm).then(res=>{
+			this.filterForm.groupId = this.groupId
+			// this.$http.post('/wallet/invite/backmgr/findInviteChild',this.filterForm).then(res=>{
+      this.$http.post('/wallet/invite/backmgr/findInviteChildByGroup',this.filterForm).then(res=>{
         let list=[]
         if(saerch=='saerch'&&res.result.userId){
-            list = [res.result]
+						list = [res.result]
+						this.mergeArray(list)
             if(res.result.list&&res.result.list.length>0){
-              list[0].hasChildren = true
+							list[0].hasChildren = true
+							console.log(list[0])
+							// this.mergeArray(list)
             }
         }else{
           list =res.result.list
@@ -75,8 +107,8 @@ export default {
             }else{
               element.hasChildren = false
             }
-            
-          })
+					})
+					this.mergeArray(list)
         }
         this.userData =[] 
         setTimeout(()=>{
@@ -85,8 +117,9 @@ export default {
       })
 		},
 		load(tree, treeNode, resolve) {
-      let inviteCode = tree.inviteCode
-      this.$http.post('/wallet/invite/backmgr/findInviteChild',{inviteCode:inviteCode}).then(res=>{
+			let inviteCode = tree.inviteCode
+			// this.$http.post('/wallet/invite/backmgr/findInviteChild',{inviteCode:inviteCode,groupId:this.groupId}).then(res=>{
+      this.$http.post('/wallet/invite/backmgr/findInviteChildByGroup',{inviteCode:inviteCode,groupId:this.groupId}).then(res=>{
         let { list } = res.result;
         list.forEach(element => {
           if(element.childNum>0){
@@ -94,30 +127,31 @@ export default {
           }else{
             element.hasChildren = false
           }
-          
+          if(this.checkedList.length>0){
+						this.checkedList.forEach((item)=>{
+							if(item.userId == element.userId){
+								this.$set(element,'hasItem',true)
+							}
+						})
+					}
         })
         resolve(list)
         // this.inviteData = list;
       })
       
-  	},
-		getMerchantList() {
-			this.$http.post('/wallet/backmgr/merchant/list', this.merchantFormData ).then(res => {
-				if(res.code == 200) {
-					// this.pageData = res.result.page
-					this.merchantPageData = res.result.page
-					for (let i = 0 ; i < this.merchantPageData.list.length; i++) {
-						if(this.selectList.length>0){
-							let hasItem = false
-							for (let j = 0 ; j < this.selectList.length; j++ ){
-								if(this.merchantPageData.list[i].userId==this.selectList[j].userId){
-									hasItem = true
-								}
-							}
-							this.$set(this.merchantPageData.list[i],'check',hasItem)
-						}	
-						// r.push(array[i]);
-				}
+		},
+		mergeArray(list){
+			// console.log(list)
+			if(this.groupId!==''){
+				return
+			}
+			list.forEach(element => {
+				if(this.checkedList.length>0){
+					this.checkedList.forEach((item)=>{
+						if(item.userId == element.userId){
+							this.$set(element,'hasItem',true)
+						}
+					})
 				}
 			})
 		},
@@ -166,35 +200,16 @@ export default {
 			}
 			this.isSelectAll = isSelectAll
 		},
-		mergeArray(){
-			let r = [];
-			for (let i = 0 ; i < this.multipleSelection.length; i++) {
-					if(this.selectList.length>0){
-						let hasItem = false
-						for (let j = 0 ; j < this.selectList.length; j++ ){
-							if(this.multipleSelection[i].userId==this.selectList[j].userId){
-								hasItem = true
-							}
-						}
-						if(!hasItem){
-							this.selectList.push(this.multipleSelection[i])
-						}
-					}	else{
-						this.selectList.push(this.multipleSelection[i])
-					}	
-					// r.push(array[i]);
-			}
-			return r;
-		}
+		show(list,groupId){
+			this.showWidget = true
+			this.merchantFormData={account:'',}
+			this.selectList = []
+			this.checkedList = list
+			this.groupId = groupId||''
+			this.getUserData()
+		},
 	},
 	watch:{
-		show(newVal, oldVal){
-			if(newVal){
-				this.showWidget = true
-				this.merchantFormData={	name:'',pageNum: 1, pageSize: 10}
-				this.getUserData()
-			}
-		},
 		showWidget(newVal, oldVal){
 			if(!newVal){
 				this.$emit('change')
@@ -232,23 +247,24 @@ export default {
 			width: 16px;
 			height: 16px;
 			// background: red
-			border: 2px solid #ccc;
+			border: 1px solid #ccc;
 			box-sizing: border-box;
-			border-radius: 50%;
 			&.isCheck{
 				border-color:#409EFF;
 				position: relative;
 				&::after{
 					position: absolute;
 					content: "";
-					width: 8px;
+					width: 5px;
 					height: 8px;
-					background: #409EFF;
-					border-radius: 50%;
+					// background: #409EFF;
+					border-bottom: 1px solid #409EFF;
+					border-right: 1px solid #409EFF;
+					transform: rotate(40deg);
 					left: 50%;
 					top: 50%;
-					margin-left: -4px;
-					margin-top: -4px;
+					margin-left: -3px;
+					margin-top: -6px;
 				} 
 			}
 		}

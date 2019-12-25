@@ -167,10 +167,11 @@
         this.ruleForm.antiUrl = response.result.urls[0]
       },
       goBack() {
-        this.$router.push({
-          name: 'identityDetails',
-          params: this.$route.params,
-        })
+        this.$router.go(-1)
+        // this.$router.push({
+        //   name: 'identityDetails',
+        //   params: this.$route.params,
+        // })
       },
     },
     activated() {

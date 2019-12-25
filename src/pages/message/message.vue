@@ -60,11 +60,11 @@
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
       <el-form ref="ruleForm" :model="ruleForm" label-width="140px" :rules="rules">
         <el-form-item label="消息类型:" prop="noticeType" required>
-          <el-select size="small" v-model="ruleForm.noticeType" placeholder="请选择">
+          <el-select size="small" v-model="ruleForm.noticeType" placeholder="请选择"> 
             <el-option label="系统消息" value='SystemMsg'></el-option>
             <el-option label="运营消息" value='OperationMsg'></el-option>
-            <el-option label="动账消息" value='TransferMsg'></el-option>
-            <el-option label="第三方应用更新消息" value='ThirdAppMsg'></el-option>
+            <!-- <el-option label="动账消息" value='TransferMsg'></el-option>
+            <el-option label="第三方应用更新消息" value='ThirdAppMsg'></el-option> -->
           </el-select>
         </el-form-item>
         <el-form-item label="消息标题:" required prop="title">
@@ -80,12 +80,12 @@
                       placeholder="请输入消息内容"></el-input>
           </el-col>
         </el-form-item>
-        <el-form-item label="详情信息:">
+        <!-- <el-form-item label="详情信息:">
           <el-col :span="16" style=" position: relative;">
             <el-input size="small" type="textarea" v-model="ruleForm.details" width="100%"
                       placeholder="请输入详情信息"></el-input>
           </el-col>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="应用名称:" required prop="appName" v-if="ruleForm.noticeType == 'ThirdAppMsg'">
           <el-col :span="16" style=" position: relative;">
             <el-input size="small" type="text" v-model="ruleForm.appName" width="100%"
@@ -121,12 +121,11 @@
                             :autosize="{ minRows: 2, maxRows: 4}"
                             @change="getTextareaChange('ruleForm')"
                             v-model="ruleForm.phones"></el-input>
-                  </el-input>
                 </el-form-item>
               </el-row>
             </el-col>
             <el-col :span="24">
-              <el-radio :label="3">持仓范围</el-radio>
+              <!-- <el-radio :label="3">持仓范围</el-radio> -->
               <el-row :span="24" v-if="radioValue == 3" class="positionScope">
                 <el-col :span="5.5">
                   <el-form-item prop="minAmount">
@@ -156,8 +155,7 @@
             </el-col>
           </el-radio-group>
         </el-form-item>
-        </el-form-item>
-          <el-form-item label=" ">
+        <el-form-item label=" " v-if="ruleForm.noticeType == 'SystemMsg'">
           <el-checkbox label="是否在首页展示" name="type" v-model="ruleForm.isHomeNotice"></el-checkbox>
         </el-form-item>
         <el-form-item label="应用图标:" v-if="ruleForm.noticeType != 'SystemMsg'">
@@ -210,13 +208,15 @@
         }, {
           value: 'OperationMsg',
           label: '运营消息',
-        }, {
-          value: 'TransferMsg',
-          label: '动账消息',
-        }, {
-          value: 'ThirdAppMsg',
-          label: '第三方应用更新消息',
-        }],
+        }, 
+        // {
+        //   value: 'TransferMsg',
+        //   label: '动账消息',
+        // }, {
+        //   value: 'ThirdAppMsg',
+        //   label: '第三方应用更新消息',
+        // }
+        ],
         sendStatuesList: [{
           value: '',
           label: '全部状态',
@@ -480,7 +480,7 @@
             const ruleForm = JSON.parse(JSON.stringify(this.ruleForm))
             ruleForm.timingPush = ruleForm.timingPush ? 'YES' : 'NO';
             ruleForm.pushAll = this.radioValue == 1 ? 'YES' : 'NO';
-            ruleForm.isHomeNotice = ruleForm.isHomeNotice == true ? 1 : 0;
+            ruleForm.isHomeNotice = (ruleForm.noticeType == 'SystemMsg'&&ruleForm.isHomeNotice == true) ? 1 : 0;
             if (this.ruleForm.id) {
               if (this.radioValue == 1) {
                 ruleForm.minAmount = '';

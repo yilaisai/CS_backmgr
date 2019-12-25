@@ -9,6 +9,11 @@
 			<el-form-item label="账户/昵称:">
 				<el-input v-model="formData.phone" placeholder="请输入账户或者昵称"></el-input>
 			</el-form-item>
+			<el-select v-model="formData.optType" >
+					<el-option value="" label="全部"></el-option>
+					<el-option value="1" label="充值资产证明"></el-option>
+					<el-option value="2" label="申请取出"></el-option>
+				</el-select>
 			<el-form-item>
 				<el-button type="primary" @click="getData" style="margin-left: 20px">查询</el-button>
 			</el-form-item>
@@ -35,7 +40,7 @@
 				<template slot-scope="scope">
 					<el-button v-if="scope.row.auditStatus==0" size="mini" type="text" @click="updateAuditAssetCeRecdStatus(scope.row.recdId,1)"> 通过审核 </el-button>
 					<el-button v-if="scope.row.auditStatus==0" size="mini" type="text" @click="Refuse(scope.row.recdId)"> 拒绝审核 </el-button>
-					<el-button v-if="scope.row.auditStatus==1" size="mini" type="text" @click="updateAuditAssetCeRecdStatus(scope.row.recdId,3)"> 释放资产证明 </el-button>
+					<el-button v-if="scope.row.auditStatus==1&&scope.row.optType!=1" size="mini" type="text" @click="updateAuditAssetCeRecdStatus(scope.row.recdId,3)"> 释放资产证明 </el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -57,7 +62,7 @@
 							v-model="dialogForm.auditComment">
 						</el-input>
 				<div slot="footer" class="dialog-footer">
-					<el-button @click="dialogFormVisible = false">取 消</el-button>
+					<el-button @click="dialogVisible = false">取 消</el-button>
 					<el-button type="primary" @click="updateAuditAssetCeRecdStatus(newRecdId,2) ">确 定</el-button>
 				</div>
 			</el-dialog>
@@ -78,6 +83,7 @@ export default {
 			dialogVisible:false,
 			list:[],
 			formData:{
+				optType:'',
 				phone:'',
 				pageSize:20,
 				pageNum:1,
@@ -114,7 +120,6 @@ export default {
 			this.dialogForm.status = status
 			this.$http.post('/wallet/app/otc/backmgr/updateAuditAssetCeRecdStatus', this.dialogForm).then(res => {
 				this.getData()
-				this.$message(res.msg)
 				this.dialogVisible = false
 				if(res.code==200){
 					this.$message.success(res.msg)
@@ -157,6 +162,15 @@ export default {
 		.nickName{
 			p{
 				margin: 0;
+			}
+		}
+		/deep/.el-select{
+			height: 28px;
+			.el-input__inner{
+				height: 28px;
+			}
+			.el-input__icon{
+				line-height: 28px;
 			}
 		}
 }

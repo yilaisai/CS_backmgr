@@ -91,19 +91,25 @@
 						</el-switch>
 					</el-form-item>
 					<br>
-					<el-form-item  :label="'派单兑入最小额度(' + filterForm.coinName + ')：'">
+					<el-form-item  :label="'派单兑入范围(' + filterForm.coinName + ')：'">
+						<span>【{{MatchConfig.matchMin}}】 ~ 【{{MatchConfig.matchMax}}】</span>
+					</el-form-item>
+					<el-form-item  :label="'派单兑出范围(' + filterForm.coinName + ')：'">
+						<span>【{{MatchConfig.cashoutMin}}】 ~ 【{{MatchConfig.cashoutMax}}】</span>
+					</el-form-item>
+					<!-- <el-form-item  :label="'派单兑入最小额度(' + filterForm.coinName + ')：'">
 						<el-input v-model=" MatchConfig.matchMin" disabled ></el-input>
 					</el-form-item>
 					<el-form-item :label="'派单兑入最大额度(' + filterForm.coinName + ')：'" >
 						<el-input v-model=" MatchConfig.matchMax" disabled></el-input>
-					</el-form-item>
-					<br>
+					</el-form-item> -->
+					<!-- <br>
 						<el-form-item :label="'派单兑出最小额度(' + filterForm.coinName + ')：'">
 						<el-input v-model=" MatchConfig.cashoutMin" disabled></el-input>
 					</el-form-item>
 					<el-form-item :label="'派单兑出最大额度(' + filterForm.coinName + ')：'">
 						<el-input v-model=" MatchConfig.cashoutMax" disabled></el-input>
-					</el-form-item>
+					</el-form-item> -->
 				</el-form>
 			</div>
 			<div>
@@ -444,7 +450,7 @@ export default {
 		width: 100%;
 		box-sizing: border-box;
 		overflow: hidden;
-		overflow-y: scroll;
+		overflow-y: auto;
 		-webkit-overflow-scrolling: touch;
 		background: #F6F9FC;
 		padding: 10px;

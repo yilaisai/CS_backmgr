@@ -10,14 +10,20 @@
 			<el-table-column prop="appId" label="appid" align="center" width="90"></el-table-column>
 			<el-table-column prop="phone" label="账号" align="center"></el-table-column>
 			<el-table-column prop="name" label="昵称" align="center"></el-table-column>
-			<el-table-column prop="feeRate" label="手续费" align="center"></el-table-column>
-			<el-table-column label="直推人账户/费率" align="center" width="110">
+			<el-table-column prop="feeRate" label="兑入手续费" align="center" width="300">
+				<template class="scope" slot-scope="scope">
+					<span v-for="(item, index) in scope.row.merchantFeeList" :key="index">{{item.payTypeName}}: {{Math.floor(item.inFee*10000)/100}}% </span>
+				</template>
+			</el-table-column>
+			<!-- <el-table-column label="直推人账户/费率" align="center" width="110">
 				<template class="scope" slot-scope="scope"><span v-if="scope.row.firstPhone">{{ scope.row.firstPhone }} /</span> {{ scope.row.firstRateIn }}</template>
 			</el-table-column>
-			<el-table-column prop="secRateIn" label="间推人账户" width="110" align="center"></el-table-column>
-			<el-table-column prop="amount" label="商户余额" width="140" align="center"></el-table-column>
-			<el-table-column prop="to_addr" label="累计充值额（CNY）" width="140" align="center"></el-table-column>
-			<el-table-column prop="id" label="累计提现额（CNY）" width="140" align="center"></el-table-column>
+			<el-table-column prop="secRateIn" label="间推人账户" width="110" align="center"></el-table-column> -->
+			<el-table-column prop="balance" label="商户余额" width="140" align="center"></el-table-column>
+			<el-table-column prop="inBalance" :label="'累计兑入（'+ $variableCoin +'）'" width="140" align="center"></el-table-column>
+			<el-table-column prop="outBalance" :label="'累计兑出（'+ $variableCoin +'）'" width="140" align="center"></el-table-column>
+			<!-- <el-table-column prop="to_addr" label="累计充值额（CNY）" width="140" align="center"></el-table-column> -->
+			<!-- <el-table-column prop="id" label="累计提现额（CNY）" width="140" align="center"></el-table-column> -->
 			<el-table-column prop="createDate" label="创建时间" width="160" align="center"></el-table-column>
 			<el-table-column prop="date" label="操作" fixed="right" width="110" align="center">
 				<template slot-scope="scope">

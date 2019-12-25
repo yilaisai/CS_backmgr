@@ -79,6 +79,12 @@
 								<span>{{scope.row.taker_amount}}</span>
 							</div>
 						</el-table-column>
+						<el-table-column prop="api_user_id" label="appUserId/收银台ip" align="center">
+							<div slot-scope="scope">
+								<span>{{scope.row.api_user_id}}</span><br />
+								<span>{{scope.row.api_ip}}</span>
+							</div>
+						</el-table-column>
 						<el-table-column prop="amount" label="金额" align="center"></el-table-column>
 						<el-table-column prop="fee" label="手续费" align="center"></el-table-column>
 						<el-table-column prop="price" label="操作" fixed="right" align="center" width="300">

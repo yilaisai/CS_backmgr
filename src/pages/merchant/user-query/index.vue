@@ -53,7 +53,8 @@ export default {
 			formData = formData || {}
 			formData.pageNum = this.pageNum
 			formData.pageSize = this.pageSize
-			this.$http.post('/wallet/backmgr/merchant/list', formData).then(res => {
+			formData.coinName = this.$variableCoin
+			this.$http.post('/wallet/backmgr/merchant/merchantList', formData).then(res => {
 				if(res.code == 200) {
 					this.pageData = res.result.page
 				}

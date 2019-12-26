@@ -1,8 +1,3 @@
-/**
-*  Created by   阿紫
-*  On  2018/8/21
-*  Content
-*/
 <template>
   <div class='identity-modify'>
     <el-row style="margin-bottom: 30px;">

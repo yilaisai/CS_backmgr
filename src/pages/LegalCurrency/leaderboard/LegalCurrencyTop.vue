@@ -47,7 +47,7 @@
 		</el-table>
 		<div class="footer">
 			<div class="total">
-				<p v-for="(item,index) in totalData" :key="index"> <span>{{item.coin_name}}</span> :可用{{item.sumAmount}} 冻结{{ item.sumFrozenAmount }}</p>
+				<p v-for="(item,index) in totalData" :key="index"> <span class="coinName">{{item.coin_name}}</span> :可用{{item.sumAmount}} <span v-show="item.coin_name!=='RMT'">冻结{{ item.sumFrozenAmount }}</span></p>
 			</div>
 			<sac-pagination v-show="listData.list.length>0"
 				@handleChange="getPaginationChange"
@@ -225,7 +225,7 @@
 					&:last-of-type{
 						margin: 0;
 					}
-					span{
+					span.coinName{
 						font-weight: 600;
 						color: #409EFF;
 					}

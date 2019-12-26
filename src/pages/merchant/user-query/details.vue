@@ -110,6 +110,16 @@
 					<el-button type="primary" plain size="mini" @click="showDialog('secRate')">修改</el-button>
 				</li>
 				<li>
+					<label>兑入额度范围（{{$variableCoin}}）:</label>
+					<span>【{{pageData.coinInfo.minIn}}】 ~ 【{{pageData.coinInfo.maxIn}}】</span>
+					<el-button type="primary" plain size="mini" @click="showDialog('duiRu')">修改</el-button>
+				</li>
+				<li>
+					<label>兑出额度范围（{{$variableCoin}}）:</label>
+					<span>【{{pageData.coinInfo.minOut}}】 ~ 【{{pageData.coinInfo.maxOut}}】</span>
+					<el-button type="primary" plain size="mini" @click="showDialog('duiChu')">修改</el-button>
+				</li>
+				<!-- <li>
 					<label>最小兑入额度（{{$variableCoin}}）:</label>
 					<span>{{pageData.coinInfo.minIn}}</span>
 					<el-button type="primary" plain size="mini" @click="showDialog('duiRu')">修改</el-button>
@@ -128,7 +138,7 @@
 					<label>最大兑出额度({{$variableCoin}}):</label>
 					<span>{{pageData.coinInfo.maxOut}}</span>
 					<el-button type="primary" plain size="mini" @click="showDialog('duiChu')">修改</el-button>
-				</li>
+				</li> -->
 			</ul>
 		</div>
 

@@ -1,7 +1,7 @@
 
 var SERVER_PATH = '',
 	SERVER_PATH2 = ''
-if(window.location.href.indexOf('https://admin.num22.org') >= 0) {
+if(window.location.href.indexOf('admin.num22.org') >= 0) {
 	//num22  正式环境
 	SERVER_PATH = 'https://apimly.num22.org/'
 	SERVER_PATH2 = 'https://api.num22.org/'

@@ -25,10 +25,10 @@
 					<el-form-item class='dateItem' label="时间:">
 						<el-date-picker
 							v-model="selectedDate"
-							type="daterange"
+							type="datetimerange"
+							value-format="yyyy-MM-dd HH:mm:ss"
 							range-separator="至"
 							start-placeholder="开始日期"
-							format="yyyy-MM-dd "
 							end-placeholder="结束日期" >
 						</el-date-picker>
 					</el-form-item>
@@ -137,6 +137,7 @@
 <script>
 import {mapState} from 'vuex'
 import {matchResultMap} from '@/common/constants.js'
+import {getTodayTime} from '@/common/util'
 import qs from 'qs'
 export default {
 	data(){
@@ -177,10 +178,18 @@ export default {
 		}
 	},
 	activated(){
+		this.selectedDate = getTodayTime()
 		this.getCashoutAuditList()
 	},
 	methods:{
 		getCashoutAuditList() {
+			if(this.selectedDate && this.selectedDate.length == 2 ){
+				this.filterForm.startDate = this.selectedDate[0]
+				this.filterForm.endDate = this.selectedDate[1]
+			}else {
+				this.filterForm.startDate = null
+				this.filterForm.endDate = null
+			}
 			this.$http.post('/wallet/backmgr/merchant/getCashoutAuditList', this.filterForm).then((res) => {
 				const { list, total } = res.result.pageInfo
 				this.listData.list = list
@@ -204,10 +213,6 @@ export default {
 			window.open(baseUrl + '/wallet/backmgr/merchant/getCashoutAuditList/export?' + qs.stringify(this.filterForm))
 		},
 		search(){
-			if(this.selectedDate.length == 2 ){
-				this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00'
-				this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59'
-			}
 			this.filterForm.pageNum = 1
 			this.getCashoutAuditList()
 		},
@@ -267,9 +272,6 @@ export default {
 			})
 			
 		}
-	},
-	watch:{
-
 	},
 	computed:{
 		...mapState(['coinInfo'])

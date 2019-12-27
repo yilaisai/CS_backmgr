@@ -69,6 +69,7 @@
 </template>
 <script>
 import {mapState} from 'vuex'
+import {getTodayTime} from '@/common/util'
 export default {
 	data(){
 		return {
@@ -88,6 +89,7 @@ export default {
 		}
 	},
 	activated(){
+		this.selectedDate = getTodayTime()
 		this.getList()
 	},
 	methods:{

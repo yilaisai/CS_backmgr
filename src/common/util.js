@@ -107,3 +107,23 @@ export function typeValidate(obj) {
     throw new CustomError('Invalid test type');
   };
 }
+
+//获取当天的时间区间  YYYY-MM-DD HH:mm:ss
+export function getTodayTime() {
+	const nowTime = new Date()
+	const dateObj = {
+		'YYYY': nowTime.getFullYear(),
+		'MM': (nowTime.getMonth() + 1) < 10 ? ('0' + (nowTime.getMonth() + 1)) : (nowTime.getMonth() + 1),
+		'DD': nowTime.getDate() < 10 ? ('0' + nowTime.getDate()) : nowTime.getDate(),
+		'h+': nowTime.getHours() % 12 === 0 ? 12 : nowTime.getHours() % 12,
+		'HH': nowTime.getHours(),
+		'mm': nowTime.getMinutes() < 10 ? ('0' + nowTime.getMinutes()) : nowTime.getMinutes(),
+		'ss': nowTime.getSeconds() < 10 ? ('0' + nowTime.getSeconds()) : nowTime.getSeconds(),
+		'q+': Math.floor((nowTime.getMonth() + 3) / 3),
+		S: nowTime.getMilliseconds(),
+	}
+	
+	const startTime = dateObj['YYYY'] + '-' + dateObj['MM'] + '-' + dateObj['DD'] + ' 00:00:00'
+	const endTime = dateObj['YYYY'] + '-' + dateObj['MM'] + '-' + dateObj['DD'] + ' ' + dateObj['HH'] + ':' + dateObj['mm'] + ':' + dateObj['ss']
+	return [startTime, endTime]
+}

@@ -48,6 +48,7 @@
 </template>
 <script>
 import {mapState} from 'vuex'
+import {getTodayTime} from '@/common/util'
 export default {
 	props: {
 		orderStatus: {
@@ -116,7 +117,11 @@ export default {
 				txId: '' //txid
 			}
         }
-    },
+	},
+	activated() {
+		this.formData.create_time = getTodayTime()
+		this.queryData()
+	},
     methods: {
         queryData () {
 			if(this.formData.create_time) {

@@ -66,7 +66,7 @@ export default {
 		}
 	},
 	activated() {
-		this.getData()
+		// this.getData()
 	},
 	methods: {
 		getData(formData) {

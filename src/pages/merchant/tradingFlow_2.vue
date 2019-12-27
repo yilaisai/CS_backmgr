@@ -176,6 +176,7 @@
 <script>
 import { mapState } from 'vuex'
 import qs from 'qs'
+import {getTodayTime} from '@/common/util'
 export default {
 	name:'transaction-details',
 	data(){
@@ -294,8 +295,8 @@ export default {
 			this.showAppeal = true
 		}, 
 		upload(response, file, fileList) {
-        this.appealData.proofImg = response.result.urls[0]
-      },
+        	this.appealData.proofImg = response.result.urls[0]
+      	},
 		submitAppeal(){
 			this.$http.post('/wallet/app/otc/backmgr/submitAppeal',this.appealData).then(res=>{
 				if(res.code==200){
@@ -498,10 +499,6 @@ export default {
             this.filterForm.pageNum=currentPage
             this.getList()
         },
-        /* handleCurrentChange(val) {
-            this.filterForm.pageNum=val
-            this.getList()
-        }, */
         download(){
             location.href =`${ SERVER_PATH}/wallet/app/otc/backmgr/exportExcel?startDate=${this.filterForm.startDate}&endDate=${this.filterForm.endDate}&userId=${this.filterForm.userId}&token=${localStorage.getItem('cus_token')}`;
         }
@@ -511,7 +508,8 @@ export default {
 	},
 	activated(){
 		this.server_path =  localStorage.getItem('SERVER_PATH') || SERVER_PATH
-			this.getList()
+		this.selectedDate = getTodayTime()
+		this.getList()
 	}
 }
 </script>

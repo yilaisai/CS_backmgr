@@ -76,7 +76,9 @@
 						<el-input :value=" '直接 0'+detaileData.coinName+', 间接 0'+detaileData.coinName  " disabled></el-input>
 					</el-form-item>
 					<el-form-item label="承兑商方折扣:" class="big">
-						<el-input :value=" '承兑商'+detaileData.makerCommission+detaileData.coinName+', 直接'+detaileData.makerFirstCommission+detaileData.coinName+', 间接'+detaileData.makerSecondaryCommission+detaileData.coinName  " disabled></el-input>
+						<el-input class="hasBtn" :value=" '承兑商'+detaileData.makerCommission+detaileData.coinName+', 直接'+detaileData.makerFirstCommission+detaileData.coinName+', 间接'+detaileData.makerSecondaryCommission+detaileData.coinName  " disabled>
+							<el-button slot="append" @click=" discountDetaile ">查看详情</el-button>
+						</el-input>
 					</el-form-item>
 					<el-form-item label="平台盈利:">
 						<el-input
@@ -129,6 +131,24 @@
 				</el-form>
 			</div>
 		</div>
+		<el-dialog title="折扣详情" :visible.sync="dialogVisible" width="800px">
+			<el-table  border  size="mini" :data="detaileList">
+				<el-table-column prop="phone" label="手机号" align="center"></el-table-column>
+				<el-table-column prop="nickName" label="昵称" align="center"></el-table-column>
+				<el-table-column prop="rate" label="返佣比例" align="center">
+					<template slot-scope="scope">
+						{{  Math.floor(scope.row.rate*10000)/100}}%
+					</template>
+				</el-table-column>
+				<el-table-column prop="amount"  label="返佣" align="center"></el-table-column>
+				<el-table-column prop="createTimestamp" label="时间" align="center">
+					<template slot-scope="scope">
+						{{  $fmtDate(scope.row.createTimestamp,'full')}}
+					</template>
+				</el-table-column>
+				
+			</el-table>
+		</el-dialog>
 	</div>
 </template>
 <script>
@@ -154,7 +174,9 @@ export default {
 				3: '微信',
 				4: '宝转卡'
 			},
-			payList: {}
+			payList: {},
+			dialogVisible:false,
+			detailelist:[]
 		}
 	},
 	activated(){
@@ -164,6 +186,21 @@ export default {
 		
 	},
 	methods:{
+		discountDetaile(){
+			this.dialogVisible = true
+			this.getInviteRewardCoinChange()
+		},
+		
+		getInviteRewardCoinChange(){
+			this.$http.post('/wallet/invite/backmgr/getInviteRewardCoinChange',{
+				recdId: this.detaileData.tradeId,
+				pageNum:1,
+				pageSize:1000
+			}).then(res=>{
+				this.detaileList = res.result.list
+				console.log(this.detaileList)
+			})
+		},
 		getData(tradeId){
 			this.$http.post('/wallet/backmgr/merchant/queryMerchantTradeInfo',{
 				tradeId: tradeId
@@ -220,10 +257,14 @@ export default {
 					cursor: default;
 					color: #606266;
 				}
+				
 				&.big{
 					width: 620px;
 					.el-input__inner{
 						width: 520px;
+					}
+					.hasBtn .el-input__inner{
+						width: 434px;
 					}
 				}
 				.el-form-item__label{

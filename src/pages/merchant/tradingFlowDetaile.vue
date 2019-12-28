@@ -132,7 +132,7 @@
 			</div>
 		</div>
 		<el-dialog title="折扣详情" :visible.sync="dialogVisible" width="800px">
-			<el-table  border  size="mini" :data="detaileList">
+			<el-table  border  size="mini" :data="detaile">
 				<el-table-column prop="phone" label="手机号" align="center"></el-table-column>
 				<el-table-column prop="nickName" label="昵称" align="center"></el-table-column>
 				<el-table-column prop="rate" label="返佣比例" align="center">
@@ -155,9 +155,8 @@
 export default {
 	data(){
 		return {
-			detaileData:{
-
-			},
+			detaileData:{},
+			detaile:[],
 			tradeStatus: {
 				1: '未付款',
 				2: '已付款(等待放行)',
@@ -176,7 +175,6 @@ export default {
 			},
 			payList: {},
 			dialogVisible:false,
-			detailelist:[]
 		}
 	},
 	activated(){
@@ -192,13 +190,14 @@ export default {
 		},
 		
 		getInviteRewardCoinChange(){
+			this.detaile = []
 			this.$http.post('/wallet/invite/backmgr/getInviteRewardCoinChange',{
 				recdId: this.detaileData.tradeId,
 				pageNum:1,
 				pageSize:1000
 			}).then(res=>{
-				this.detaileList = res.result.list
-				console.log(this.detaileList)
+				this.detaile = res.result.list
+				console.log(this.detaile)
 			})
 		},
 		getData(tradeId){

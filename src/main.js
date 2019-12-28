@@ -104,7 +104,13 @@ Vue.filter("optType", function (val) {  //保留小数位，acc为保留几位�
   case 31:
     return '资产证明转出'
     break;
-    default:
-      return ''
-  }
+  case 32:
+    return '系统费率'
+    break;
+  case 33:
+    return '佣金'
+    break;
+  default:
+    return val
+}
 });

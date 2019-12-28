@@ -9,12 +9,12 @@ if(window.location.href.indexOf('admin.num22.org') >= 0) {
 	SERVER_PATH2 = 'http://47.52.110.161:7036/'
 	SERVER_PATH = 'http://47.52.110.161:7036/'
 }else {//开发环境
-	// SERVER_PATH2 = 'http://47.52.110.161:7036/'
-	// SERVER_PATH = 'http://47.52.110.161:7036/'
+	SERVER_PATH2 = 'http://47.52.110.161:7036/'
+	SERVER_PATH = 'http://47.52.110.161:7036/'
 	// SERVER_PATH = 'http://192.168.120.108:7036/'
 	// SERVER_PATH2 = 'http://192.168.120.108:7036/' 
 	// SERVER_PATH = 'http://192.168.120.42:7036/'  //林威
-	SERVER_PATH2 = 'http://192.168.120.42:7036/' 
-	SERVER_PATH = 'http://192.168.120.53:7036/'  //李海
+	// SERVER_PATH2 = 'http://192.168.120.42:7036/' 
+	// SERVER_PATH = 'http://192.168.120.53:7036/'  //李海
 	// SERVER_PATH = 'https://api.num22.org/'
 }

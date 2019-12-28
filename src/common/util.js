@@ -124,6 +124,7 @@ export function getTodayTime() {
 	}
 	
 	const startTime = dateObj['YYYY'] + '-' + dateObj['MM'] + '-' + dateObj['DD'] + ' 00:00:00'
-	const endTime = dateObj['YYYY'] + '-' + dateObj['MM'] + '-' + dateObj['DD'] + ' ' + dateObj['HH'] + ':' + dateObj['mm'] + ':' + dateObj['ss']
+	// const endTime = dateObj['YYYY'] + '-' + dateObj['MM'] + '-' + dateObj['DD'] + ' ' + dateObj['HH'] + ':' + dateObj['mm'] + ':' + dateObj['ss']
+	const endTime = dateObj['YYYY'] + '-' + dateObj['MM'] + '-' + dateObj['DD'] + ' 23:59:59'
 	return [startTime, endTime]
 }

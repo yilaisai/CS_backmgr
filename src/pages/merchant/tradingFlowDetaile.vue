@@ -83,8 +83,10 @@
 					<el-form-item label="平台盈利:">
 						<el-input
 							v-if="detaileData.tradeStatus == 3 || detaileData.tradeStatus == 6"
-							:value=" Math.floor(detaileData.fee*10000 -(detaileData.makerCommission*10000+detaileData.makerFirstCommission*10000+detaileData.makerSecondaryCommission*10000))/10000+detaileData.coinName  "
+							:value=" detaileData.sysEarn   "
 							disabled>
+							<el-button slot="append" >{{detaileData.coinName}}</el-button>
+							
 						</el-input>
 						<el-input v-else value="--" disabled></el-input>
 					</el-form-item>
@@ -181,7 +183,6 @@ export default {
 		this.getData(this.$route.query.tradeId)
 	},
 	mounted(){
-		
 	},
 	methods:{
 		discountDetaile(){

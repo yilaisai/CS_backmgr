@@ -128,6 +128,9 @@ export const matchResultMap = {
 	5: 'IP不匹配',
 	6: '审核失败'
 }
-const constants = {
-	
+// 用户类型  1-普通用户  20-商户  100-系统用户
+export const userTypes = {
+	'1': '普通用户',
+	'20': '商户',
+	'100': '系统用户'
 }

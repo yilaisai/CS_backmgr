@@ -12,6 +12,9 @@
 		<el-table stripe border class="ExList" size="mini" :data="ExList">
 			<el-table-column prop="phone" label="手机号" align="center"></el-table-column>
 			<el-table-column prop="nickName" label="昵称" align="center"></el-table-column>
+			<el-table-column label="用户类型" align="center">
+				<template slot-scope="scope">{{scope.row.userType | userTypesFilter}}</template>
+			</el-table-column>
 			<el-table-column prop="usdtAmount" :label="$variableCoin" align="center"></el-table-column>
 			<el-table-column prop="btcAmount"  label="BTC" align="center"></el-table-column>
 			<el-table-column prop="registTime" label="时间" align="center">
@@ -30,6 +33,9 @@
 			<el-table-column type="index" label="序号" :index="indexMethod" align="center"></el-table-column>
 			<el-table-column prop="phone" label="手机号" align="center"></el-table-column>
 			<el-table-column prop="nickName" label="昵称" align="center"></el-table-column>
+			<el-table-column label="用户类型" align="center">
+				<template slot-scope="scope">{{scope.row.userType | userTypesFilter}}</template>
+			</el-table-column>
 			<el-table-column prop="usdtAmount" sortable='custom' :label="$variableCoin" align="center"></el-table-column>
 			<el-table-column prop="btcAmount" sortable ='custom' label="BTC" align="center"></el-table-column>
 			<el-table-column prop="userStatusName"  label="状态" align="center"></el-table-column>

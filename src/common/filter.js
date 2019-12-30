@@ -1,10 +1,5 @@
-/**
- *  Created by   阿紫
- *  On  2018/8/8
- *  Content
- */
-
 import Vue from "vue";
+import {userTypes} from './constants'
 
 export const convertTransactionType = (value) => {
   switch (value) {
@@ -79,4 +74,15 @@ export const payTypeFilter = (value) => {
       return '宝转卡';
   }
 };
-Vue.filter('payTypeFilter', payTypeFilter);
+Vue.filter('payTypeFilter', payTypeFilter)
+
+export const userTypesFilter = (value) => {
+	let v = '' 
+	for(let i in userTypes) {
+		if(i == value) {
+			v = userTypes[i]
+		}
+	}
+	return v
+}
+Vue.filter('userTypesFilter', userTypesFilter)

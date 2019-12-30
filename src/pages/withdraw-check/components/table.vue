@@ -10,10 +10,13 @@
             <el-table-column prop="create_time" label="时间" width="140" align="center"></el-table-column>
             <el-table-column prop="phone" label="账号" width="100" align="center"></el-table-column>
             <el-table-column prop="nickName" label="昵称" width="90" align="center"></el-table-column>
+			<el-table-column label="用户类型" align="center">
+				<template slot-scope="scope">{{scope.row.user_type | userTypesFilter}}</template>
+			</el-table-column>
             <el-table-column prop="coin_name" label="币种" width="60" align="center"></el-table-column>
             <el-table-column prop="amount" label="数量"  align="center"></el-table-column>
             <el-table-column prop="fee" label="手续费(BTC)" width="100" align="center"></el-table-column>
-            <el-table-column prop="status" label="状态"  align="center">
+            <el-table-column prop="status" label="状态" align="center">
                 <template slot-scope="scope">
                     <span>{{scope.row.status | recdStatusMap}}</span>
                 </template>

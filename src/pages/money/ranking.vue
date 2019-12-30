@@ -46,6 +46,9 @@
 			<el-table-column align="center" type="index" label="序号" :index="indexMethod"></el-table-column>
 			<el-table-column prop="phone" label="手机号" align="center"></el-table-column>
 			<el-table-column prop="nick_name" label="昵称"  align="center"></el-table-column>
+			<el-table-column prop="nick_name" label="用户类型" align="center">
+				<template slot-scope="scope">{{scope.row.user_type | userTypesFilter}}</template>
+			</el-table-column>
 			<el-table-column prop="rmtAmount" sortable='custom' :label="$variableCoin">
 				<div class="scope" slot-scope="scope">
 					<p>可用:{{ scope.row.rmtAmount }}</p>

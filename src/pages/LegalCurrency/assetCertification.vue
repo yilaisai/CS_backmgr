@@ -15,7 +15,7 @@
 					<el-option value="2" label="申请取出"></el-option>
 				</el-select>
 			<el-form-item>
-				<el-button type="primary" @click="getData" style="margin-left: 20px">查询</el-button>
+				<el-button type="primary" @click="getData('init')" style="margin-left: 20px">查询</el-button>
 			</el-form-item>
 		</el-form>
 		<el-table :data="list" height="auto" border size="mini" style="min-width: 100%" :show-overflow-tooltip='true' >
@@ -105,7 +105,10 @@ export default {
 		this.getData()
 	},
 	methods:{
-		getData() {
+		getData(type) {
+			if(type == 'init') {
+				this.formData.pageNum = 1
+			}
 			this.$http.post('/wallet/app/otc/backmgr/checkAuditAssetCeRecd', this.formData).then(res => {
 				this.list = res.result.list
 				this.total = res.result.total
@@ -130,11 +133,11 @@ export default {
 		},
 		handleCurrentChange(val) {
 			this.formData.pageNum = val
-			// this.getData()
+			this.getData()
 		},
 		handleSizeChange(val) {
 			this.formData.pageSize = val
-			// this.getData()
+			this.getData()
 		},
 	},
 	watch:{

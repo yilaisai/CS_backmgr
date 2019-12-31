@@ -17,13 +17,13 @@
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="币种：">
-                    <el-select v-model="filter.coinName" clearable style="width: 185px">
+                    <el-select v-model="filter.coinName" clearable>
                         <el-option :value="null" label="全部"></el-option>
                         <el-option v-for="(item, key) in coins" :key="key" :value="item.coinName" :label="item.coinName"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="订单状态：">
-                    <el-select v-model="filter.recdStatus" placeholder="选择订单状态" clearable style="width: 185px">
+                    <el-select v-model="filter.recdStatus" placeholder="选择订单状态" clearable>
                         <el-option :value="null" label="全部"></el-option>
                         <el-option v-for="(item, key) in recdStatus" :key="key" :value="key" :label="item"></el-option>
                     </el-select>
@@ -37,15 +37,20 @@
                 <el-form-item label="账号：">
                     <el-input v-model="filter.name" placeholder="搜索账号"></el-input>
                 </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="queryData" style="margin-left: 60px">查询</el-button>
-                    <el-button type="primary" @click="clear">清空</el-button>
-                </el-form-item>
+				<el-form-item label="用户类型：">
+					<el-select v-model="filter.userType" placeholder="选择订单状态" clearable>
+						<el-option :value="null" label="全部"></el-option>
+						<el-option v-for="(item, key) in userTypes" :key="key" :value="key" :label="item"></el-option>
+					</el-select>
+				</el-form-item>
+				<el-button type="primary" @click="queryData" style="margin-left: 60px" size="mini">查询</el-button>
+				<el-button type="primary" @click="clear" size="mini">清空</el-button>
             </el-form>
         </el-collapse-item>
     </el-collapse>
 </template>
 <script>
+import {userTypes} from '@/common/constants'
 export default {
     props: {
         coins: {
@@ -123,7 +128,8 @@ export default {
                     }
                 }]
             },
-            filter: {}
+			filter: {},
+			userTypes
         }
     },
     methods: {
@@ -140,8 +146,14 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+/deep/.el-form-item__content {
+	width: 170px;
+}
 /deep/.dataSelect  .el-form-item__content{
-    width: 350px;
+	width: 436px;
+	.el-date-editor {
+		width: 100%;
+	}
 }
 /deep/.el-form-item__label {
 	padding: 0;

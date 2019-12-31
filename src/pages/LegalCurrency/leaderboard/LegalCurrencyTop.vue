@@ -1,17 +1,26 @@
 <template>
     <div class='exchangeSAC'>
-		<el-form :inline="true" label-width="90px" ref="filterForm" :model="filterForm">
+		<el-form :inline="true" label-width="90px" ref="filterForm" :model="filterForm" size="mini">
 			<sac-input ref="phone" label="账号" v-model.trim="filterForm.phoneOrEmail"></sac-input>
 			<sac-input ref="phone" label="昵称" v-model.trim="filterForm.nickName"></sac-input>
+			<el-form-item label="用户类型：">
+				<el-select v-model="filterForm.userType" placeholder="选择订单状态" clearable style="width: 178px">
+					<el-option :value="null" label="全部"></el-option>
+					<el-option v-for="(item, key) in userTypes" :key="key" :value="key" :label="item"></el-option>
+				</el-select>
+			</el-form-item>
 			<sac-submit-form :isReset='false' @submitForm="getUserRaking()"></sac-submit-form>
 			<el-form-item>
 				<el-button type="primary" size="mini" @click="exportExcel">导出EXCEL</el-button>
 			</el-form-item>
 		</el-form>
       
-		<el-table stripe border class="ExList" size="mini" :data="ExList">
+		<!-- <el-table stripe border class="ExList" size="mini" :data="ExList">
 			<el-table-column prop="phone" label="手机号" align="center"></el-table-column>
 			<el-table-column prop="nickName" label="昵称" align="center"></el-table-column>
+			<el-table-column label="用户类型" align="center">
+				<template slot-scope="scope">{{scope.row.userType | userTypesFilter}}</template>
+			</el-table-column>
 			<el-table-column prop="usdtAmount" :label="$variableCoin" align="center"></el-table-column>
 			<el-table-column prop="btcAmount"  label="BTC" align="center"></el-table-column>
 			<el-table-column prop="registTime" label="时间" align="center">
@@ -24,12 +33,15 @@
 					<el-button size="mini" @click="$router.push({path:'/LegalCurrency/personalAssets',query:{userId:scope.row.userId}})" type="primary">详情</el-button>
 				</template>
 			</el-table-column>
-		</el-table>
+		</el-table> -->
 
 		<el-table stripe border height="100%" size="mini" :default-sort = "{prop: 'usdtAmount', order: 'descending'}" :data="listData.list" @sort-change='sortChange'>
 			<el-table-column type="index" label="序号" :index="indexMethod" align="center"></el-table-column>
 			<el-table-column prop="phone" label="手机号" align="center"></el-table-column>
 			<el-table-column prop="nickName" label="昵称" align="center"></el-table-column>
+			<el-table-column label="用户类型" align="center">
+				<template slot-scope="scope">{{scope.row.userType | userTypesFilter}}</template>
+			</el-table-column>
 			<el-table-column prop="usdtAmount" sortable='custom' :label="$variableCoin" align="center"></el-table-column>
 			<el-table-column prop="btcAmount" sortable ='custom' label="BTC" align="center"></el-table-column>
 			<el-table-column prop="userStatusName"  label="状态" align="center"></el-table-column>
@@ -72,45 +84,48 @@
     </div>
 </template>
 <script>
+import {userTypes} from '@/common/constants'
     export default {
         name: "exchangeSAC",
         data() {
             return {
-              dialogVisible:false,
-              ruleForm:{
-                userId:'',
-                reason:'',
-                status:0
-              },
-              ruleState:[
-                {
-                    label:'正常状态',
-                    value:0
-                },
-                {
-                    label:'24小时冻结',
-                    value:1
-                },
-                {
-                    label:'永远冻结',
-                    value:2
-                }
-            ],
-            filterForm: {
-              nickName: '',
-              phoneOrEmail: '',
-              pageNum: 1,
-              pageSize: 20,
-              order:'desc'//和asc
-            },
-            coinType:'BTC',
-            listData: {
-              total: null,
-              list: [],
-            },
-						ExList:[],
-						totalData:[]
-          };
+				dialogVisible:false,
+				ruleForm:{
+					userId:'',
+					reason:'',
+					status:0
+				},
+				ruleState:[
+					{
+						label:'正常状态',
+						value:0
+					},
+					{
+						label:'24小时冻结',
+						value:1
+					},
+					{
+						label:'永远冻结',
+						value:2
+					}
+				],
+				filterForm: {
+					nickName: '',
+					phoneOrEmail: '',
+					pageNum: 1,
+					pageSize: 20,
+					userType: null,
+					order:'desc'//和asc
+				},
+				coinType:'BTC',
+				listData: {
+					total: null,
+					list: [],
+				},
+				ExList:[],
+				totalData:[],
+				userTypes
+			};
         },
 		methods: {
 			exportExcel(){

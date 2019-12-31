@@ -18,13 +18,13 @@
 						<el-input v-model="formData.txId" placeholder="搜索TXID"></el-input>
 					</el-form-item>
 					<el-form-item label="币种：">
-						<el-select v-model="formData.coinName" placeholder="选择类型" clearable style="width: 185px">
+						<el-select v-model="formData.coinName" placeholder="选择类型" clearable style="width: 178px">
 							<el-option :value="null" label="全部"></el-option>
 							<el-option v-for="(item, key) in coinInfo" :key="key" :value="item.coinName" :label="item.coinName"></el-option>
 						</el-select>
 					</el-form-item>
 					<el-form-item label="订单状态：">
-						<el-select v-model="formData.status" placeholder="选择订单状态" clearable style="width: 185px">
+						<el-select v-model="formData.status" placeholder="选择订单状态" clearable style="width: 178px">
 							<el-option :value="null" label="全部"></el-option>
 							<el-option v-for="(item, key) in orderStatus" :key="key" :value="item.val" :label="item.name"></el-option>
 						</el-select>
@@ -37,6 +37,7 @@
 						type="datetimerange"
 						align="right"
 						width="auto"
+						style="width: 456px"
 						value-format="yyyy-MM-dd HH:mm:ss"
 						unlink-panels
 						range-separator="至"
@@ -45,7 +46,12 @@
 						:picker-options="pickerOptions">
 					</el-date-picker>
 				</el-form-item>
-				
+				<el-form-item label="用户类型：">
+					<el-select v-model="formData.userType" placeholder="选择订单状态" clearable style="width: 178px">
+						<el-option :value="null" label="全部"></el-option>
+						<el-option v-for="(item, key) in userTypes" :key="key" :value="key" :label="item"></el-option>
+					</el-select>
+				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" @click="queryData" style="margin-left: 60px">查询</el-button>
 					<el-button type="primary" @click="clear">清空</el-button>
@@ -57,6 +63,7 @@
 </template>
 <script>
 import {mapState} from 'vuex'
+import {userTypes} from '@/common/constants'
 export default {
 	props: {
 		orderStatus: {
@@ -122,9 +129,11 @@ export default {
 				pageNum: '', //页码
 				pageSize: '', //页数
 				status: null, //状态0-失败,1-成功,2-待审核,3-审核不通过,4-审核通过
-				txId: '' //txid
-			}
-			}
+				txId: '', //txid
+				userType: null
+			},
+			userTypes: userTypes
+		}
 	},
 	methods: {
 		exportExcel() {

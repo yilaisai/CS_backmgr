@@ -18,6 +18,9 @@
 					<span>{{scope.row.phone + ' | ' + scope.row.nickName}}</span>
 				</template>
 			</el-table-column>
+			<el-table-column label="用户类型" align="center">
+				<template slot-scope="scope">{{scope.row.userType | userTypesFilter}}</template>
+			</el-table-column>
 			<el-table-column prop="coin_name" label="币种" align="center"></el-table-column>
 			<el-table-column prop="amount" label="数量"></el-table-column>
 			<el-table-column prop="fee" label="手续费"></el-table-column>

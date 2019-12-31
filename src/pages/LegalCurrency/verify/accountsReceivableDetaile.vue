@@ -16,11 +16,10 @@
 			<el-table-column label="企业类型" width="100" align="center">
 				<span >{{userEnterprise ==0?'非企业账号':'企业账号'}}</span>
 			</el-table-column>
-      <el-table-column prop="coinName" label="支付方式" width="150" align="center">
+      <el-table-column prop="coinName" label="支付方式" width="90" align="center">
 				<span slot-scope="scope" >{{scope.row.payType==1?'银行卡':scope.row.payType==2?'支付宝':scope.row.payType==3?'微信支付':'宝转卡'}}</span>
 			</el-table-column>
-			<el-table-column prop="userName" label="姓名" align="center">
-			</el-table-column>
+			<el-table-column prop="userName" label="姓名" align="center"></el-table-column>
 			<el-table-column  label="账户/银行卡信息" align="center">
 				<template slot-scope="scope">
 						<p v-if="scope.row.payType==1||scope.row.payType==4">{{scope.row.bankName}}</p>
@@ -45,6 +44,15 @@
 						</div>
 				</template>
 			</el-table-column>
+			<el-table-column prop="analysisQrCode" label="QrCode" align="center"  width="100"> 
+				<template slot-scope="scope">
+						<p v-if="scope.row.payType==1||scope.row.payType==4">无</p>
+						<div v-else>
+							<p  @click="verify(scope.row.analysisQrCode)"  style="color:#409EFF;cursor: pointer;user-select:none;" v-if="scope.row.analysisQrCode"><img style="width:20px;position: relative; top: 5px; margin-right: 3px;" src="../../../assets/QR_code.png" alt="">验证二维码</p>
+							<el-button v-else @click="getAnalysisQrCode(scope.row)" type="text" size="mini">识别二维码</el-button>
+						</div>
+				</template>
+			</el-table-column>
 			<el-table-column fixed="right" label="操作" width="100" align="center">
 				<template slot-scope="scope">
 					<el-button @click="updateAuditPayStatus(scope.row,1)" type="text" size="mini">通过</el-button>
@@ -64,7 +72,7 @@
 			<el-table-column label="企业类型" width="100" align="center">
 				<span >{{userEnterprise ==0?'非企业账号':'企业账号'}}</span>
 			</el-table-column>
-      <el-table-column prop="coinName" label="支付方式" width="150" align="center">
+      <el-table-column prop="coinName" label="支付方式" width="90" align="center">
 				<span slot-scope="scope" >{{scope.row.payType==1?'银行卡':scope.row.payType==2?'支付宝':scope.row.payType==3?'微信支付':'宝转卡'}}</span>
 			</el-table-column>
 			<el-table-column prop="userName" label="姓名" align="center"></el-table-column>
@@ -93,6 +101,15 @@
 						</div>
 				</template>
 			</el-table-column>
+			<el-table-column prop="analysisQrCode" label="QrCode" align="center" width="100">
+				<template slot-scope="scope">
+						<p v-if="scope.row.payType==1||scope.row.payType==4">无</p>
+						<div v-else>
+							<p  @click="verify(scope.row.analysisQrCode)"  style="color:#409EFF;cursor: pointer;user-select:none;" v-if="scope.row.analysisQrCode"><img style="width:20px;position: relative; top: 5px; margin-right: 3px;" src="../../../assets/QR_code.png" alt="">验证二维码</p>
+							<p v-else>识别错误</p>
+						</div>
+				</template>
+			</el-table-column>
 			<el-table-column prop="isShow" label="状态" width="80" align="center">
 				<span slot-scope="scope" >{{scope.row.isShow==1?'使用中':'已审核'}}</span>
 			</el-table-column>
@@ -118,22 +135,28 @@
 				<el-button type="success" @click="updateAuditPayStatus(obj,2)">确认</el-button>
 			</span>
 		</el-dialog>
-		<el-dialog title="收款码" :visible.sync="imgShow" width="500px">
-				<div style="padding-left:20px"><img style="width:100%;vertical-align: text-top;" :src="imgurl" alt="">
+		<el-dialog title="验证收款码" :visible.sync="qrcodeShow" width="500px">
+				<div style="padding-left:20px;width:100%;">
+					<vue-qr :text="analysisQrCode" :margin="0" colorDark="#000" colorLight="#fff"  :size="420"></vue-qr>
+
 				</div>
 		</el-dialog>
-		<el-dialog title="收款码" :visible.sync="imgShow" width="500px">
+		<el-dialog title="收款码2" :visible.sync="imgShow" width="500px">
 				<div style="padding-left:20px"><img style="width:100%;vertical-align: text-top;" :src="imgurl" alt="">
 				</div>
 		</el-dialog>
   </div>
 </template>
 <script>
+
+	import vueQr from 'vue-qr'
   export default {
-    name: 'accountsReceivableDetaile',
+		name: 'accountsReceivableDetaile',
+		components:{vueQr},
     data() {
       return {
 				imgurl:'',
+				qrcodeShow:false,
 				imgShow:false,
         detais: {},
 				tableData: [],
@@ -146,10 +169,15 @@
 				nickName:'',
 				obj:{},
 				cardindex:'',
-				payId:''
+				payId:'',
+				analysisQrCode:''
       };
     },
     methods: {
+			verify(analysisQrCode){
+				this.analysisQrCode = analysisQrCode
+				this.qrcodeShow = true
+			},
 			imgClick(imgurl){
 				this.imgurl = imgurl
 				this.imgShow = true
@@ -197,7 +225,6 @@
 				})
 			},
 			updateAuditPayStatus(data,state){
-				console.log(data)
 				this.$http.post("/wallet/app/otc/backmgr/updateAuditPayStatus", {
 					userId:data.userId,
 					recdId:data.recdId,
@@ -209,9 +236,18 @@
 					this.showRemark=false
 					this.getDetail()
 				})
-			}
+			},
+			getAnalysisQrCode(data){
+					this.$http.post("/wallet/app/otc/backmgr/getAnalysisQrCode", {
+						recdId:data.recdId,
+					}).then((res) => {
+						this.$message('操作成功');
+						this.showRemark=false
+						this.getDetail()
+					})
+			},
 			
-    },
+		},
     activated() {
 			this.nickName = this.$route.query.nickName
 			this.phone = this.$route.query.phone
@@ -232,6 +268,10 @@
 	.qrcode{
 		width: 100%;
 		text-align: center;
+		display: flex;
+		flex-direction: column;
+		// justify-content: space-between;
+		align-items: center;
 		img{
 			width: 50px;
 		}

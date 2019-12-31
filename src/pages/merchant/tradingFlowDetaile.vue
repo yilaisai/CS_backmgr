@@ -75,7 +75,7 @@
 					<el-form-item label="商户方奖励:" class="big">
 						<el-input :value=" '直接 0'+detaileData.coinName+', 间接 0'+detaileData.coinName  " disabled></el-input>
 					</el-form-item>
-					<el-form-item label="承兑商方折扣:" class="big">
+					<el-form-item label="承兑商方折扣:" >
 						<!-- <el-input class="hasBtn" :value=" '承兑商'+detaileData.makerCommission+detaileData.coinName+', 直接'+detaileData.makerFirstCommission+detaileData.coinName+', 间接'+detaileData.makerSecondaryCommission+detaileData.coinName  " disabled> -->
 							<el-button  @click=" discountDetaile ">查看详情</el-button>
 						<!-- </el-input> -->

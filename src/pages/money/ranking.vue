@@ -14,8 +14,7 @@
 				<el-button type="primary" size="mini" @click="exportExcel">导出EXCEL</el-button>
 			</el-form-item>
 		</el-form>
-      <!-- <p>平台账号</p> -->
-		<el-table stripe border class="ExList" size="mini" :data="ExList">
+		<!-- <el-table stripe border class="ExList" size="mini" :data="ExList">
 			<el-table-column prop="phone" label="手机号"  align="center"></el-table-column>
 			<el-table-column prop="nickName" label="昵称"  align="center"></el-table-column>
 			<el-table-column prop="rmtAmount" :label="$variableCoin">
@@ -47,7 +46,7 @@
 					<el-button size="mini" @click="$router.push({path:'/LegalCurrency/personalAssets',query:{userId:scope.row.user_id}})" >详情</el-button>
 				</template>
 			</el-table-column>
-		</el-table>
+		</el-table> -->
 		<el-table stripe border height="100%" size="mini" :default-sort = "{prop: 'rmtAmount', order: 'descending'}" :data="listData.list" @sort-change='sortChange'>
 			<el-table-column align="center" type="index" label="序号" :index="indexMethod"></el-table-column>
 			<el-table-column prop="phone" label="手机号" align="center"></el-table-column>

@@ -1,6 +1,6 @@
 <template>
 	<div class="capitalFlow-page">
-		<el-form :inline="true"  ref="filterForm" label-width="60px" :model="filterForm" size="mini">
+		<el-form :inline="true"  ref="filterForm" label-width="85px" :model="filterForm" size="mini">
 			<!-- <el-form-item label="订单号:">
 				<el-input placeholder="请输入单号" v-model="filterForm.userId" class="input-with-select"></el-input>
 			</el-form-item> -->
@@ -13,6 +13,12 @@
 					<el-option v-for="(item, key) in coinInfo" :key="key" :value="item.coinName" :label="item.coinName"></el-option>
 				</el-select>
 			</el-form-item>
+			<el-form-item label="用户类型：">
+				<el-select v-model="filterForm.userType" placeholder="选择订单状态" clearable>
+					<el-option :value="null" label="全部"></el-option>
+					<el-option v-for="(item, key) in userTypes" :key="key" :value="key" :label="item"></el-option>
+				</el-select>
+			</el-form-item>
 			<el-form-item class='dateItem' label="时间:">
 				<el-date-picker
 					v-model="selectedDate"
@@ -20,7 +26,8 @@
 					value-format="yyyy-MM-dd HH:mm:ss"
 					range-separator="至"
 					start-placeholder="开始日期"
-					end-placeholder="结束日期" @change='filterForm.dateType=""'>
+					end-placeholder="结束日期"
+					@change='filterForm.dateType=""'>
 				</el-date-picker>
 			</el-form-item>
 			<el-form-item><el-button type="primary" @click.native="search">搜索</el-button><el-button type="primary"  @click="exportExcel">导出EXCEL</el-button></el-form-item>
@@ -73,6 +80,7 @@
 <script>
 import {mapState} from 'vuex'
 import {getTodayTime} from '@/common/util'
+import {userTypes} from '@/common/constants'
 export default {
 	data(){
 		return {
@@ -83,12 +91,14 @@ export default {
 				startDate:'',
 				endDate:'',
 				coinName:'',
+				userType: null
 			},
 			listData: {
 				total: null,
 				list: [],
 			},
-			totalData:[]
+			totalData:[],
+			userTypes
 		}
 	},
 	activated(){
@@ -155,7 +165,12 @@ export default {
 		margin: 0;
 	}
 	.dateItem{
-		width: 460px;
+		/deep/.el-form-item__content {
+			width: 380px;
+			.el-date-editor {
+				width: 100%;
+			}
+		}
 	}
 	.btn{
 		height: 39px;

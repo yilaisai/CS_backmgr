@@ -1,6 +1,6 @@
 <template>
 	<div class="capitalFlow-page">
-			<el-form :inline="true"  ref="filterForm" label-width="60px" :model="filterForm" size="mini">
+			<el-form :inline="true"  ref="filterForm" label-width="85px" :model="filterForm" size="mini">
 				<el-form-item label="昵称:">
 					<el-input placeholder="请输入昵称" v-model="filterForm.nickName" class="input-with-select"></el-input>
 				</el-form-item>
@@ -8,7 +8,7 @@
 					<el-input placeholder="请输入用户账号" v-model="filterForm.name" class="input-with-select"></el-input>
 				</el-form-item>
 				<el-form-item label="币种:">
-					<el-select v-model="filterForm.coinName" >
+					<el-select v-model="filterForm.coinName">
 						<el-option value="" label="全部"></el-option>
 						<el-option v-for="(item, key) in coinInfo" :key="key" :value="item.coinName" :label="item.coinName"></el-option>
 					</el-select>
@@ -20,10 +20,19 @@
 						value-format="yyyy-MM-dd HH:mm:ss"
 						range-separator="至"
 						start-placeholder="开始日期"
-						end-placeholder="结束日期" @change='filterForm.dateType=""'>
+						end-placeholder="结束日期"
+						@change='filterForm.dateType=""'
+						>
 					</el-date-picker>
 				</el-form-item>
-				<el-form-item><el-button type="primary" @click.native="search">搜索</el-button><el-button type="primary" size="mini" @click="exportExcel">导出EXCEL</el-button></el-form-item>
+				<el-form-item label="用户类型：">
+					<el-select v-model="filterForm.userType" placeholder="选择订单状态" clearable>
+						<el-option :value="null" label="全部"></el-option>
+						<el-option v-for="(item, key) in userTypes" :key="key" :value="key" :label="item"></el-option>
+					</el-select>
+				</el-form-item>
+				<el-button type="primary" @click.native="search" size="mini">搜索</el-button>
+				<el-button type="primary" size="mini" @click="exportExcel">导出EXCEL</el-button>
 			</el-form>
 			<el-table :data="listData.list" border height="100%" size="mini">
 				<el-table-column  label="时间" width="140" align="center">
@@ -56,6 +65,7 @@
 </template>
 <script>
 import {mapState} from 'vuex'
+import {userTypes} from '@/common/constants'
 export default {
 	data(){
 		return {
@@ -67,13 +77,15 @@ export default {
 				endDate:'',
 				coinName:'',
 				name:'',
-				nickName:''
+				nickName:'',
+				userType: null
 			},
 			listData: {
 				total: null,
 				list: [],
 			},
-			totalData:{}
+			totalData:{},
+			userTypes
 		}
 	},
 	mounted(){
@@ -134,34 +146,42 @@ export default {
 	display: flex;
 	flex-direction: column;
 	box-sizing: border-box;
-		.dateItem{
-			width: 480px;
-		}
-		.btn{
-			height: 39px;
-		}
-		.footer{
-			display: flex;
-			flex-direction: row;
-			justify-content: space-between;
-			align-items: center;
-			.total{
-				p{
-					display: inline;
-					margin-right: 20px;
-					line-height: 24px;
-					font-size: 14px;
-					color: #606266;
-					&:last-of-type{
-						margin: 0;
-					}
-					span{
-						font-weight: 600;
-						color: #409EFF;
-					}
-				}
-				
+	.dateItem{
+		/deep/.el-form-item__content {
+			width: 405px;
+			.el-date-editor {
+				width: 100%;
 			}
 		}
+	}
+	.btn{
+		height: 39px;
+	}
+	.footer{
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		.total{
+			p{
+				display: inline;
+				margin-right: 20px;
+				line-height: 24px;
+				font-size: 14px;
+				color: #606266;
+				&:last-of-type{
+					margin: 0;
+				}
+				span{
+					font-weight: 600;
+					color: #409EFF;
+				}
+			}
+			
+		}
+	}
+	/deep/.el-form-item__content {
+		width: 150px;
+	}
 }
 </style>

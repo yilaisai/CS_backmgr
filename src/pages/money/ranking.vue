@@ -1,8 +1,14 @@
 <template>
     <div class='exchangeSAC'>
-		<el-form :inline="true" label-width="90px" ref="filterForm" :model="filterForm">
+		<el-form :inline="true" label-width="90px" ref="filterForm" :model="filterForm" size="mini">
 			<sac-input ref="phone" label="账号/昵称" v-model.trim="filterForm.account"></sac-input>
 			<!-- <sac-input ref="phone" label="昵称" v-model.trim="filterForm.nickName"></sac-input> -->
+			<el-form-item label="用户类型：">
+				<el-select v-model="filterForm.userType" placeholder="选择订单状态" clearable style="width: 178px">
+					<el-option :value="null" label="全部"></el-option>
+					<el-option v-for="(item, key) in userTypes" :key="key" :value="key" :label="item"></el-option>
+				</el-select>
+			</el-form-item>
 			<sac-submit-form :isReset='false' @submitForm="getUserRaking()"></sac-submit-form>
 			<el-form-item>
 				<el-button type="primary" size="mini" @click="exportExcel">导出EXCEL</el-button>
@@ -105,6 +111,7 @@
     </div>
 </template>
 <script>
+import {userTypes} from '@/common/constants'
 export default {
 	name: "exchangeSAC",
 	data() {
@@ -137,7 +144,8 @@ export default {
 				pageSize: 20,
 				account: '',
 				coinName:'RMT',//'BTC'
-				order:'desc'//和asc
+				order:'desc',//和asc
+				userType: null
 			},
 			coinType:'BTC',
 			listData: {
@@ -153,6 +161,7 @@ export default {
 			btcFrozenAmount:0,
 			ethAmount:0,
 			ethFrozenAmount:0,
+			userTypes
 		}
 	},
 	methods: {

@@ -21,18 +21,18 @@
         @submitForm="submitForm(1)"></sac-submit-form>
     </el-form>
     <sac-table :data="listData.list">
-      <el-table-column prop="type" label="消息类型" :formatter="formatSex" width="130px"></el-table-column>
-      <el-table-column prop="sendTime" label="创建时间" width="150px"></el-table-column>
-      <el-table-column prop="title" label="标题"></el-table-column>
-      <el-table-column prop="content" label="内容"></el-table-column>
-      <el-table-column prop="details" label="详情"></el-table-column>
-      <el-table-column label="状态" width="100px">
+      <el-table-column prop="type" label="消息类型" :formatter="formatSex" width="130px" align="center"></el-table-column>
+      <el-table-column prop="sendTime" label="创建时间" width="150px" align="center"></el-table-column>
+      <el-table-column prop="title" label="标题" align="center"></el-table-column>
+      <el-table-column prop="content" label="内容" align="center"></el-table-column>
+      <el-table-column prop="details" label="详情" align="center"></el-table-column>
+      <el-table-column label="状态" width="100px" align="center">
         <template slot-scope="scope" prop="sysStatus">
           <el-tag type="success" v-if="scope.row.sendStatues ==1">已发送</el-tag>
           <el-tag type="info" v-if="scope.row.sendStatues ==0">未发送</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="240">
+      <el-table-column label="操作" width="240" align="center">
         <template slot-scope="scope" prop="sysStatus">
           <el-button type="success" v-if="scope.row.sendStatues ==1" size="small"
                      @click.native="detailList(scope.row)">查看

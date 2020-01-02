@@ -2,14 +2,25 @@
 /**
  * 格式化数字
  */
-const fmtNumber = (n) => {
-	n = n * 1
-	if(n >= 10000) {
-		return((n / 10000).toFixed(2) + "万").replace(/\.00/,'')
-	} else {
-		return n
+// const fmtNumber = (n) => {
+// 	n = n * 1
+// 	if(n >= 10000) {
+// 		return((n / 10000).toFixed(2) + "万").replace(/\.00/,'')
+// 	} else {
+// 		return n
+// 	}
+// }
+const fmtNumber = (type, val) => {
+	if(type == '%2') {
+		return Math.floor(val * 10000) / 100
 	}
+	if(type == '/4') {
+		// 15.123   0.1512
+		return Math.floor(val * 100) / 10000
+	}
+	return val
 }
+
 
 /**
  * 格式化时间

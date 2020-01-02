@@ -133,19 +133,19 @@
 							<ul class="rate">
 								<li>
 									<p>银行卡</p>
-									<p>{{ Math.floor(scope.row.cardBuyRate*10000)/100 }}% </p>
+									<p>{{ $fmtNumber('%2', scope.row.cardBuyRate) }}% </p>
 								</li>
 								<li>
 									<p>支付宝</p>
-									<p>{{ Math.floor(scope.row.abuyRate*10000)/100 }}% </p>
+									<p>{{ $fmtNumber('%2', scope.row.abuyRate) }}% </p>
 								</li>
 								<li>
 									<p>微信</p>
-									<p>{{ Math.floor(scope.row.wxBuyRate*10000)/100 }}% </p>
+									<p>{{ $fmtNumber('%2', scope.row.wxBuyRate) }}% </p>
 								</li>
 								<li>
 									<p>宝转卡</p>
-									<p>{{ Math.floor(scope.row.bbuyRate*10000)/100 }}% </p>
+									<p>{{ $fmtNumber('%2', scope.row.bbuyRate) }}% </p>
 								</li>
 							</ul>
 							
@@ -200,7 +200,6 @@
 					<template slot="append">%</template>
 				</el-input>
 			</div>
-			
 			<div class=" inputGroup ">
 				<span>卖出佣金费率：</span>
 				<el-input placeholder="请输入内容" v-model="rate" >
@@ -280,19 +279,18 @@ export default {
 	},
 	methods:{
 		setRate(e){
-			console.log(e)
 			if(e == 1){
-				this.buyRate = this.currItem.cardBuyRate * 100
-				this.rate =  this.currItem.cardSaleRate * 100
+				this.buyRate = this.$fmtNumber('%2', this.currItem.cardBuyRate)
+				this.rate = this.$fmtNumber('%2', this.currItem.cardSaleRate)
 			}else if(e == 2){
-				this.buyRate = this.currItem.abuyRate * 100
-				this.rate =  this.currItem.asaleRate * 100
+				this.buyRate = this.$fmtNumber('%2', this.currItem.abuyRate)
+				this.rate = this.$fmtNumber('%2', this.currItem.asaleRate)
 			}else if(e == 3){
-				this.buyRate = this.currItem.wxBuyRate * 100
-				this.rate =  this.currItem.wxSaleRate * 100
+				this.buyRate = this.$fmtNumber('%2', this.currItem.wxBuyRate)
+				this.rate = this.$fmtNumber('%2', this.currItem.wxSaleRate)
 			}else if(e == 4){
-				this.buyRate = this.currItem.bbuyRate * 100
-				this.rate =  this.currItem.bsaleRate * 100
+				this.buyRate = this.$fmtNumber('%2', this.currItem.bbuyRate)
+				this.rate = this.$fmtNumber('%2', this.currItem.bsaleRate)
 			}
 		},
 		selectCoin(){
@@ -320,8 +318,8 @@ export default {
 		EditRate(data){
 			this.currItem = data
 			this.payType = 1
-			this.buyRate = this.currItem.cardBuyRate * 100
-			this.rate =  this.currItem.cardSaleRate * 100
+			this.buyRate = this.$fmtNumber('%2', this.currItem.cardBuyRate)
+			this.rate =  this.$fmtNumber('%2', this.currItem.cardSaleRate)
 			this.showDialog=true
 		} ,
 		brokerage(data){
@@ -351,8 +349,8 @@ export default {
 		},
 		updateRewardRate(){
 			this.$http.post('/wallet/invite/backmgr/updateRewardRate',{
-				buyRate: Math.floor(this.buyRate*10)/1000,
-				rate: Math.floor(this.rate*10)/1000,
+				buyRate: this.$fmtNumber('/4', this.buyRate),
+				rate: this.$fmtNumber('/4', this.rate),
 				inviteeId:this.currItem.inviteeId,
 				payType:this.payType
 			}).then(res=>{
@@ -387,7 +385,6 @@ export default {
 			this.$http.post('/wallet/app/otc/backmgr/queryOtcUserDetail',this.filterForm).then(res=>{
 				if(res.code==200){
 					this.detaileData = res.result;
-
 				}
 			})
 		},

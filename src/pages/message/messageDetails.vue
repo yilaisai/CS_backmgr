@@ -10,28 +10,24 @@
         <el-button size="small" type="primary" plain @click="$router.go(-1)">返回</el-button>
       </el-col>
     </el-row>
-    <el-form :inline="true"
-             label-width="100px"
-             ref="filterForm"
-             :model="filterForm">
-      <sac-select ref="isRead" label="阅读情况" v-model="filterForm.isRead"
-                  :dataList="readList"></sac-select>
-      <sac-submit-form
-        :isReset='false'
-        @submitForm="submitForm(1)"></sac-submit-form>
+    <el-form :inline="true" label-width="100px" ref="filterForm" :model="filterForm">
+      <sac-select ref="isRead" label="阅读情况" v-model="filterForm.isRead" :dataList="readList"></sac-select>
+      <sac-submit-form :isReset='false' @submitForm="submitForm(1)"></sac-submit-form>
     </el-form>
 
     <el-table ref="multipleTable" height="100%" size="small" :data="listData.list" border>
-      <el-table-column prop="phone" label="用户"></el-table-column>
-      <el-table-column prop="isRead" label="阅读情况" :formatter="formatIsRead"></el-table-column>
-      <el-table-column prop="sendStatues" label="发送情况" :formatter="formatSendStatus"></el-table-column>
-      <el-table-column prop="sendTime" label="发送日期"></el-table-column>
+      <el-table-column prop="phone" label="用户" align="center"></el-table-column>
+      <el-table-column prop="isRead" label="阅读情况" :formatter="formatIsRead" align="center"></el-table-column>
+      <el-table-column prop="sendStatues" label="发送情况" :formatter="formatSendStatus" align="center"></el-table-column>
+      <el-table-column prop="sendTime" label="发送日期" align="center">
+		  <template slot-scope="scope">{{$fmtDate(scope.row.sendTime,'full')}}</template>
+	  </el-table-column>
     </el-table>
     <sac-pagination v-show="listData.list.length>0"
-                    @handleChange="getPaginationChange"
-                    :total="+listData.total"
-                    :page-size="filterForm.pageSize"
-                    :current-page="filterForm.pageNum">
+		@handleChange="getPaginationChange"
+		:total="+listData.total"
+		:page-size="filterForm.pageSize"
+		:current-page="filterForm.pageNum">
     </sac-pagination>
   </div>
 </template>

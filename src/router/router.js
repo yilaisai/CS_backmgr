@@ -361,6 +361,15 @@ export const appRouter = [
 			  component: () => import('@/pages/merchant/AuthorizedMerchant/info.vue')
       },
       {
+			  path: 'merchantBlacklist',
+			  name: 'merchantBlacklist',
+			  meta: {
+				  title: '商户用户黑名单'
+			  },
+			  component: () => import('@/pages/merchant/blacklist.vue')
+      },
+      
+      {
 			  path: 'addAuthorizedMerchant',
 			  name: 'addAuthorizedMerchant',
 			  meta: {

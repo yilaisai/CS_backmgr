@@ -99,7 +99,7 @@
   						<el-radio v-model="pageData.info.outType" :label="2" @change="outTypeChange">抢单</el-radio>
 					</span>
 				</li>
-				<li>
+				<!-- <li>
 					<label>直推人费率:</label>
 					<span>兑入：{{pageData.info.firstRateIn}}% 　　 兑出：{{pageData.info.firstRateOut}}%</span>
 					<el-button type="primary" plain size="mini" @click="showDialog('firstRate')">修改</el-button>
@@ -108,7 +108,7 @@
 					<label>间推人费率:</label>
 					<span>兑入：{{pageData.info.secRateIn}}% 　　 兑出：{{pageData.info.secRateOut}}%</span>
 					<el-button type="primary" plain size="mini" @click="showDialog('secRate')">修改</el-button>
-				</li>
+				</li> -->
 				<li>
 					<label>兑入额度范围（{{$variableCoin}}）:</label>
 					<span>【{{pageData.coinInfo.minIn}}】 ~ 【{{pageData.coinInfo.maxIn}}】</span>

@@ -138,7 +138,6 @@
 		<el-dialog title="验证收款码" :visible.sync="qrcodeShow" width="500px">
 				<div style="padding-left:20px;width:100%;">
 					<vue-qr :text="analysisQrCode" :margin="0" colorDark="#000" colorLight="#fff"  :size="420"></vue-qr>
-
 				</div>
 		</el-dialog>
 		<el-dialog title="收款码2" :visible.sync="imgShow" width="500px">

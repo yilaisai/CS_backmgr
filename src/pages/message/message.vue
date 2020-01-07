@@ -1,8 +1,3 @@
-/**
-*  Created by   阿紫
-*  On  2018/8/10
-*  Content 消息推送
-*/
 <template>
   <div class='message'>
     <el-col :span="22" style="text-align:right;">
@@ -22,7 +17,11 @@
     </el-form>
     <sac-table :data="listData.list">
       <el-table-column prop="type" label="消息类型" :formatter="formatSex" width="130px" align="center"></el-table-column>
-      <el-table-column prop="sendTime" label="创建时间" width="150px" align="center"></el-table-column>
+      <el-table-column prop="sendTime" label="创建时间" width="150px" align="center">
+         <div class="scope" slot-scope="scope">
+					<p>{{ $fmtDate(scope.row.createTime,'full') }}</p>
+				</div>
+      </el-table-column>
       <el-table-column prop="title" label="标题" align="center"></el-table-column>
       <el-table-column prop="content" label="内容" align="center"></el-table-column>
       <el-table-column prop="details" label="详情" align="center"></el-table-column>

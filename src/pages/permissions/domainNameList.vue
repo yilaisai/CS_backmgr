@@ -1,5 +1,10 @@
 <template>
 	<div class="domainNameList-page">
+		<ul class="tabs">
+			<li :class="payType == 4?'active':''" @click="checkedPayType(4)">宝转卡中转域名</li>
+			<li :class="payType == 3?'active':''" @click="checkedPayType(3)">微信中转域名</li>
+			<li :class="payType == 2?'active':''" @click="checkedPayType(2)">支付宝中转域名</li>
+		</ul>
 		<el-table stripe border height="100%" size="mini" :data="list" >
 			<el-table-column type="index" label="序号" :index="indexMethod" align="center"></el-table-column>
 			<el-table-column prop="domainName" label="服务器域名" align="center"></el-table-column>
@@ -25,6 +30,14 @@
 				</template>
 			</el-table-column>
 		</el-table>
+		 <el-pagination
+				@size-change="handleSizeChange"
+				@current-change="handleCurrentChange"
+				:current-page="pageNum"
+				:page-size="pageSize"
+				layout="total, sizes, prev, pager, next, jumper"
+				:total="total*1">
+		</el-pagination>
 	</div>
 </template>
 <script>
@@ -34,7 +47,11 @@ export default {
 	},
 	data(){
 		return {
-			list:[]
+			list:[],
+			payType:4,
+			pageNum:1,
+			pageSize:20,
+			total:0
 		}
 	},
 	mounted(){
@@ -43,12 +60,32 @@ export default {
 	},
 	methods:{
 		getList(){
-			this.$http.post("/wallet/app/otc/backmgr/domain/list").then(res => {
+			this.list = []
+			this.$http.post("/wallet/app/otc/backmgr/domain/list",{payType:this.payType,pageNum:this.pageNum,pageSize:this.pageSize}).then(res => {
 				if(res.code == 200){
 					console.log(res)
-					this.list = res.result.list
+					this.list = res.result.list.list
+					this.total = res.result.list.total
 				}
 			})
+		},
+		handleCurrentChange(val) {
+			this.pageNum = val
+			this.getList()
+		},
+		handleSizeChange(val) {
+			this.pageSize = val
+			this.getList()
+		},
+		checkedPayType(payType){
+			
+			if(this.payType == payType){
+				return
+			}else{
+				this.payType = payType
+				this.pageNum = 1
+				this.getList()
+			}
 		},
 		updateStatus(data){
 			let num = 0
@@ -104,6 +141,43 @@ export default {
 	}
 	.status2{
 		color: #E6A23C;
+	}
+	.tabs{
+		height: 40px;
+		line-height: 40px;
+		margin: 0;
+		display: flex;
+		flex-direction: row;
+		// justify-content: space-between;
+		align-items: center;
+		background: #F5F7FA;
+		border: 1px solid #E4E7ED;
+		padding: 0;
+		li{
+			list-style: none;
+			height: 100%;
+			padding: 0 10px;
+			border: 1px solid transparent;
+			cursor: pointer;
+			font-size: 14px;
+			&:hover{
+				color: #409EFF;
+			}
+			&.active{
+				color: #409EFF;
+				background: #fff;
+				border-right-color: #E4E7ED;
+				border-left-color: #E4E7ED;
+				border-top-color:#E4E7ED; 
+				cursor: no-drop;
+			}
+		}
+	}
+.el-pagination{
+	margin: 0;
+}
+	.el-table{
+		margin: 0;
 	}
 }
 </style>

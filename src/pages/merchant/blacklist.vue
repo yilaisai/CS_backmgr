@@ -41,7 +41,7 @@
 			width="700px">
 			<el-form ref="form"  :inline="true"  :model="formData" label-width="86px" size="mini" >
 				<el-form-item label="appId:" >
-					<el-input placeholder="请输入appId" v-model="formData.appId" ></el-input>
+					<el-input placeholder="请输入appId" v-model="formData.appId" @input="formData.appId = formData.appId.replace(/[^\d]/g,'')"></el-input>
 				</el-form-item>
 				<el-form-item label="userid:" >
 					<el-input placeholder="请输入userid" v-model="formData.appUserId" ></el-input>

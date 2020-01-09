@@ -176,7 +176,7 @@
 			verify(data){
 				console.log(data)
 				if(data.payType==2){
-					this.analysisQrCode = 'http://dev1.playmine.io/test.html?analysisQrCode='+data.analysisQrCode
+					this.analysisQrCode = 'http://devadmin.hongmo.io/test.html?analysisQrCode='+data.analysisQrCode
 				}else{
 					this.analysisQrCode = data.analysisQrCode
 				}

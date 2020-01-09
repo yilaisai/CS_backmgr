@@ -4,7 +4,7 @@
 			<el-form-item label="appid:" >
 				<el-input placeholder="请输入appid" v-model="filterForm.appid" class="input-with-select"></el-input>
 			</el-form-item>
-			<el-form-item><el-button  type="primary" size="mini" @click.native="search">查询</el-button><el-button  type="primary" size="mini" @click.native="showDialog=true">新增</el-button></el-form-item>
+			<el-form-item><el-button  type="primary" size="mini" @click.native="search">查询</el-button><el-button  type="primary" size="mini" @click.native="addItem">新增</el-button></el-form-item>
 		</el-form>
 		<el-table stripe border height="100%" size="mini" :data="list" >
 			<el-table-column prop="appId" label="appid" align="center"></el-table-column>
@@ -90,6 +90,11 @@ export default {
 		this.getList()
 	},
 	methods:{
+		addItem(){
+			this.formData={appId:'',appUserId:'',foreverOrLimited:'2',ip:''}
+			this.showDialog=true
+			
+		},
 		handleCurrentChange(val) {
 			this.filterForm.pageNum = val
 			this.getList()

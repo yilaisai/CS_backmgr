@@ -109,6 +109,17 @@
 					</el-form>
 				</el-tab-pane>
 			</el-tabs>
+			<el-tabs type="border-card">
+				<el-tab-pane label="代付设置">
+					<div class="big">
+						<label>商户代付兑出手续费比例 : 每单代付数量的</label>
+						<el-input class="inputHasText" @input="batchOutRatioFeeInput"  placeholder="未设置默认1" v-model="form.BATCHOUT_RATIO_FEE"><template slot="append">%</template> </el-input>
+						+ 每单固定<el-input class="inputHasText" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3')"   placeholder="未设置默认1" v-model="form.BATCHOUT_FIXED_FEE"><template slot="append">RMT</template></el-input>
+						<el-button type="primary" plain size="mini" @click="showDialog('daifu')">修改</el-button>
+						<p>注：新注册的商户按此配置，后期可对商户单独设置，设置过的商户修改此配置不生效。</p>
+					</div>
+				</el-tab-pane>
+			</el-tabs>
 			<el-button type="primary" class="save" @click="open">保存修改</el-button>
 		</div>
 	</div>
@@ -136,6 +147,7 @@ export default {
 				coinName: this.coinName
 			}).then(res => {
 				this.form = res.result
+				this.form.BATCHOUT_RATIO_FEE = Math.floor(this.form.BATCHOUT_RATIO_FEE*10000)/100
 				if(this.form.otcPayLists.length > 0) {
 					this.payType = this.form.otcPayLists[0].payType
 				}
@@ -154,6 +166,10 @@ export default {
 				})    
 			});
 		},
+		batchOutRatioFeeInput(){
+			this.form.BATCHOUT_RATIO_FEE =  this.form.BATCHOUT_RATIO_FEE.replace(/[^\d]/g,"") 
+		},
+		
 		save(ggCode) {
 			if(ggCode.trim() == '') {
 				this.$message({
@@ -166,6 +182,7 @@ export default {
 			this.form.inFee = (this.inFee / 100).toFixed(4)
 			this.form.outFee = (this.outFee / 100).toFixed(4)
 			this.form.payType = this.payType
+			this.form.BATCHOUT_RATIO_FEE = Math.floor(this.form.BATCHOUT_RATIO_FEE)/100
 			this.$http.post('/wallet/backmgr/merchant/trade/updateConfig', this.form).then(res => {
 				this.$notify.success({
 					title: '提示',
@@ -246,6 +263,9 @@ export default {
 		display: block;
 		width: 30%;
 		margin: 0 auto 20px;
+	}
+	.big>p{
+		color: red;
 	}
 }
 </style>

@@ -113,7 +113,6 @@ export default {
 			
             this.$http.post(`/wallet/backmgr/trade/getAuditingWithdraw`, filter)
                 .then(res => {
-					console.log(res)
                     const { code, result } = res
                     if (code === 200) {
                         this.data = result.pageInfo

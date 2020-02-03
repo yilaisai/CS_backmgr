@@ -22,12 +22,12 @@
                         <el-option v-for="(item, key) in coins" :key="key" :value="item.coinName" :label="item.coinName"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="订单状态：">
+                <!-- <el-form-item label="订单状态：">
                     <el-select v-model="filter.recdStatus" placeholder="选择订单状态" clearable>
                         <el-option :value="null" label="全部"></el-option>
                         <el-option v-for="(item, key) in recdStatus" :key="key" :value="key" :label="item"></el-option>
                     </el-select>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="地址：">
                     <el-input v-model="filter.addr" placeholder="搜索地址"></el-input>
                 </el-form-item>

@@ -9,8 +9,11 @@ if(window.location.href.indexOf('admin.num22.org') >= 0) {
 	SERVER_PATH2 = 'http://47.52.110.161:7036/'
 	SERVER_PATH = 'http://47.52.110.161:7036/'
 }else {//开发环境
-	SERVER_PATH2 = 'http://47.52.110.161:7036/'
-	SERVER_PATH = 'http://47.52.110.161:7036/'
+	// SERVER_PATH2 = 'http://47.52.110.161:7036/'
+	// SERVER_PATH = 'http://47.52.110.161:7036/'
+	SERVER_PATH2 = 'http://c28w749426.zicp.vip/'//林威远程
+	SERVER_PATH = 'http://c28w749426.zicp.vip/'
+	
 	// SERVER_PATH = 'http://192.168.120.108:7036/'
 	// SERVER_PATH2 = 'http://192.168.120.108:7036/' 
 	// SERVER_PATH = 'http://192.168.120.42:7036/'  //林威

@@ -202,6 +202,27 @@ export default {
 					case 31:
 						return '资产证明转出'
 						break;
+					case 32:
+						return '系统费率'
+						break;
+					case 33:
+						return '佣金'
+						break;
+					case 34:
+						return '批量兑出创建'
+						break;
+					case 35:
+						return '批量兑出回退'
+						break;
+					case 36:
+						return '批量兑出金额'
+						break;
+					case 37:
+						return '批量兑出手续费'
+						break;
+					case 38:
+						return '批量兑出完成'
+						break;
 					default:
 						return 'null'
 				} 

@@ -119,6 +119,12 @@
 					<span>【{{pageData.coinInfo.minOut}}】 ~ 【{{pageData.coinInfo.maxOut}}】</span>
 					<el-button type="primary" plain size="mini" @click="showDialog('duiChu')">修改</el-button>
 				</li>
+				<li class="big">
+					<label>代付兑出手续费比例 : 每单代付数量的</label>
+					<el-input class="inputHasText" disabled placeholder="未设置默认1" :value="Math.floor(pageData.info.batchOutRatioFee*10000)/100"><template slot="append">%</template> </el-input>
+					+ 每单固定<el-input class="inputHasText" disabled  placeholder="未设置默认1" v-model="pageData.info.batchOutFixedFee"><template slot="append">RMT</template></el-input>
+					<el-button type="primary" plain size="mini" @click="showDialog('daifu')">修改</el-button>
+				</li>
 				<!-- <li>
 					<label>最小兑入额度（{{$variableCoin}}）:</label>
 					<span>{{pageData.coinInfo.minIn}}</span>
@@ -142,17 +148,21 @@
 			</ul>
 		</div>
 
-		<el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="40%" :before-close="handleClose">
+		<el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="40%" >
 			<el-form ref="form" :model="formData" label-width="120px">
 				<el-form-item :label="label1">
 					<el-input type="number" v-model="formData.value1" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')">
-						<template slot="append" v-if="dialogType == 'feeRateIn' || dialogType == 'firstRate' || dialogType == 'secRate'">%</template>
+						<template slot="append" v-if="dialogType == 'feeRateIn' || dialogType == 'firstRate' || dialogType == 'secRate'|| dialogType == 'daifu'">%</template>
 					</el-input>
 				</el-form-item>
+				
 				<el-form-item :label="label2">
-					<el-input type="number" v-model="formData.value2" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')">
-						<template slot="append" v-if="dialogType == 'feeRateIn' || dialogType == 'firstRate' || dialogType == 'secRate'">%</template>
+					<el-input type="number" v-if="dialogType == 'daifu'" v-model="formData.value2" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3')">
+						<template slot="append" v-if="dialogType == 'daifu'">RMT</template>
 					</el-input>
+					<el-input v-else type="number" v-model="formData.value2" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')">
+					<template slot="append" v-if="dialogType == 'feeRateIn' || dialogType == 'firstRate' || dialogType == 'secRate'">%</template>
+				</el-input>
 				</el-form-item>
 			</el-form>
 			<span slot="footer" class="dialog-footer">
@@ -273,6 +283,12 @@ export default {
 				this.label2 = '兑出佣金费率：'
 				this.formData.value1 = this.pageData.info.secRateIn
 				this.formData.value2 = this.pageData.info.secRateOut
+			}else if(this.dialogType == 'daifu'){
+				this.dialogTitle = '修改代付兑出手续费比例'
+				this.label1 = '每单代付费率'
+				this.label2 = '每单固定金额'
+				this.formData.value1 = Math.floor(this.pageData.info.batchOutRatioFee*10000)/100
+				this.formData.value2 = this.pageData.info.batchOutFixedFee
 			}
 			this.dialogVisible = true
 		},
@@ -343,7 +359,23 @@ export default {
 				this.updateMerchantInfo(2)
 			}else if(this.dialogType == 'secRate') {
 				this.updateMerchantInfo(3)
+			}else if(this.dialogType == 'daifu'){
+				this.updateBatchOutFee()
 			}
+		},
+		
+		updateBatchOutFee(){
+			this.$http.post('/wallet/backmgr/merchant/updateBatchOutFee', {
+				batchOutRatioFee: Math.floor(this.formData.value1)/100,
+				userId: this.pageData.info.userId,
+				batchOutFixedFee: this.formData.value2
+			}).then(res => {
+				this.$notify.success({
+					title: '提示',
+					message: res.msg
+				})	
+				this.getDetails()
+			})
 		},
 		// 修改商户兑入兑出开关
 		updateMerchantSwitch(val) {
@@ -449,7 +481,22 @@ export default {
 					display: inline-block;
 					padding: 0 10px;
 				}
+				&.big{
+					width: 100%;
+				}
 			}
+		}
+	}
+	/deep/.inputHasText{
+		width: 140px;
+		height: 28px;
+		.el-input__inner{
+			height: 28px;
+			padding: 0 5px;
+			text-align: center;
+		}
+		.el-input-group__append{
+			padding: 0 5px;
 		}
 	}
 }

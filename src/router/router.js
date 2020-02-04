@@ -64,6 +64,32 @@ export const appRouter = [
     ],
   },
   {
+    path: '/batchOut',
+    name: 'batchOut',
+    redirect: '/batchOut/record',
+    meta: {
+      title: '代付管理',
+    },
+    component: Index,
+    children: [
+      {
+        path: '/batchOut/record',
+        name: 'batchOutRecord',
+        meta: {
+          title: '代付记录',
+        },
+        component: () => import('@/pages/batchOut/record.vue'),
+      },{
+        path: '/batchOut/verify',
+        name: 'batchOutVerify',
+        meta: {
+          title: '待处理申请',
+        },
+        component: () => import('@/pages/batchOut/verify.vue'),
+      },
+    ],
+  },
+  {
     path: '/permissions',
     name: 'permissions',
     redirect: '/permissions/menu',

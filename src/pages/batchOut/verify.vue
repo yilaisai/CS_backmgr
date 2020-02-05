@@ -64,8 +64,8 @@
 			</el-table-column>
 			<el-table-column align="center"  label="价格/数量" >
 				<div class="price" slot-scope="scope">
-					<p>数量:<span>{{scope.row.price}}</span> CNY/{{ scope.row.coinName }}</p>
-					<p>金额:<span>{{scope.row.amount}}</span> {{ scope.row.coinName }}</p>
+					<p>价格:<span>{{scope.row.price}}</span> CNY/{{ scope.row.coinName }}</p>
+					<p>数量:<span>{{scope.row.amount}}</span> {{ scope.row.coinName }}</p>
 				</div>
 			</el-table-column>
 			<el-table-column align="center"  label="金额" width="120">

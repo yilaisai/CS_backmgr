@@ -191,7 +191,8 @@ export default {
 				sumApiAmount: "--",
 				sumFee: "--"
             },
-            multipleSelection:[]
+            multipleSelection:[],
+            isIgnore:1
 		}
 	},
 	activated(){
@@ -274,14 +275,20 @@ export default {
             })
             if(hasConfirm){
                 this.$confirm(`你所购选订单包含已确认代付过的订单，确定再次确认？`, '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
+                    confirmButtonText: '全部确认',
+                    cancelButtonText: '过滤已确认订单',
                     type: 'warning'
                 }).then(() => {
                     this.dialogVisible2=true
+                    this.isIgnore = 2
                     this.batchOutType=''
                     this.bankStencilPlate=''
-                })
+                }).catch(() => {
+                    this.dialogVisible2=true
+                    this.isIgnore = 1
+                    this.batchOutType=''
+                    this.bankStencilPlate=''    
+                });
             }else{
                 this.dialogVisible2=true
                 this.batchOutType=''
@@ -314,7 +321,8 @@ export default {
             this.$http.post("/wallet/app/otc/backmgr/batchOut/chooseBatchOutList", {
                 batchOutType:this.batchOutType,
                 recdIdlist:recdIdlist,
-                postDataType:'Bean'
+                postDataType:'Bean',
+                isIgnore:this.isIgnore
             }).then((res) => {
                 this.dialogVisible2 = false
 				this.getCashoutAuditList()

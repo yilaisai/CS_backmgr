@@ -209,19 +209,19 @@ export default {
 						return '佣金'
 						break;
 					case 34:
-						return '批量兑出创建'
+						return '批量代付创建'
 						break;
 					case 35:
-						return '批量兑出回退'
+						return '批量代付回退'
 						break;
 					case 36:
-						return '批量兑出金额'
+						return '批量代付金额'
 						break;
 					case 37:
-						return '批量兑出手续费'
+						return '批量代付手续费'
 						break;
 					case 38:
-						return '批量兑出完成'
+						return '批量代付完成'
 						break;
 					default:
 						return 'null'

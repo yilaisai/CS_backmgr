@@ -55,11 +55,6 @@
 					<span>{{scope.row.recdId}}<br />{{$fmtDate(scope.row.createTime, 'full')}}</span>
 				</template>
 			</el-table-column>
-			<el-table-column align="center"  label="批次号" width="160">
-				<template slot-scope="scope">
-					<span>{{scope.row.batchNum}}</span>
-				</template>
-			</el-table-column>
 			<el-table-column align="center"  label="商户昵称/账户" width="130">
 				<template slot-scope="scope">
 					<span>{{scope.row.nickName}}<br />{{scope.row.phone}}</span>
@@ -104,6 +99,11 @@
 				<div class="price" slot-scope="scope">
 					<p><span>{{scope.row.bankCardId }}</span> </p>
 				</div>
+			</el-table-column>
+			<el-table-column align="center"  label="批次号" width="160">
+				<template slot-scope="scope">
+					<span>{{scope.row.batchNum}}</span>
+				</template>
 			</el-table-column>
 		</el-table>
 		<div class="load-more">

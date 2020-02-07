@@ -284,10 +284,30 @@ export default {
                     this.batchOutType=''
                     this.bankStencilPlate=''
                 }).catch(() => {
-                    this.dialogVisible2=true
-                    this.isIgnore = 1
-                    this.batchOutType=''
-                    this.bankStencilPlate=''    
+                    let arr = this.multipleSelection
+                    if(this.currentItem.length>0){
+                        arr = this.currentItem
+                    }
+                    let recdIdlist = []
+                    let hasData = false
+                    arr.forEach((item)=>{
+                        if(item.status!=4&&item.status!=6){
+                            hasData = true
+                        }
+                        // recdIdlist.push(item.recdId)
+                    })
+                    if(hasData){
+                        this.dialogVisible2=true
+                        this.isIgnore = 1
+                        this.batchOutType=''
+                        this.bankStencilPlate=''  
+                    }else{
+                        this.$message({
+                            type: 'error',
+                            message: '过滤后无可代付数据'
+                        });
+                    }
+                      
                 });
             }else{
                 this.dialogVisible2=true

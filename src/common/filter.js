@@ -182,6 +182,12 @@ Vue.filter("optType", function (val) {  //保留小数位，acc为保留几位�
 	case 38:
 	  return '批量代付完成'
 	  break;
+	case 39:
+		return '码商违规操作'
+		break;
+	case 40:
+		return '码商违规操作收入'
+		break;
 	default:
 	  return val
   }

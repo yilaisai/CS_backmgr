@@ -52,10 +52,11 @@
 					<el-table-column label="注册时间" width="140">
 						<div slot-scope="scope">{{ $fmtDate(scope.row.registTimeStamp,'full') }}</div>
 					</el-table-column>
-					<el-table-column prop="price" label="操作" fixed="right" width="190">
+					<el-table-column prop="price" label="操作" fixed="right" width="290">
 						<div class="scope" slot-scope="scope">
 							<el-button type="primary" @click.native="$router.push({path:'/LegalCurrency/userQueryDetaile',query:{userId:scope.row.userId}})" size="mini">查看详情</el-button>
 							<el-button type="warning" @click.native=" editType(scope.row)" size="mini">修改类型</el-button>
+							<el-button type="danger" @click.native=" $refs.editBalance.editBalance(scope.row.userId)" size="mini">修改余额</el-button>
 						</div>
 					</el-table-column>
 				</el-table>
@@ -87,15 +88,21 @@
 				<el-button type="primary" @click="updateOtcUserLevel">确 定</el-button>
 			</div>
 		</el-dialog>
+		<EditBalance ref="editBalance"></EditBalance>
 	</div>
 </template>
 <script>
 import { dateFormat } from "@/common/util";
+import EditBalance from './components/editBalance'
 export default {
-    name:'transaction-details',
+	name:'transaction-details',
+	components:{
+		EditBalance
+	},
     data(){
         return{
 			dialogFormVisible:false,
+			selectUserId:'',
             selectedDate: [], //已选日期
             currentPage:1,
             filterForm:{
@@ -120,8 +127,8 @@ export default {
 				{value:'企业广告商',label:"3"},
 			],
 			companyType:[
-				{value:'非企业',label:"0"},
-				{value:'企业号',label:"1"},
+				{value:'法币账户',label:"0"},
+				{value:'资产账户',label:"1"},
 			],
             listData: {
                 total: null,
@@ -144,7 +151,7 @@ export default {
 				this.listData.total = total;
 			})
 		},
-		// 
+		//
 		updateOtcUserLevel(userid){
 			this.$http.post('/wallet/app/otc/backmgr/updateOtcUserLevel',this.userTypeForm).then(res=>{
 				this.$message.success('类型修改成功')
@@ -206,6 +213,9 @@ export default {
 <style scoped lang="less">
 .userQuery-page{
 		height:100%;
+		/deep/.el-input-group__prepend{
+			width: 36px;
+		}
 	.el-container{
 			height:100%;
 			.el-main{

@@ -175,15 +175,17 @@
 							</ul>
 						</div>
 					</el-table-column>
-					<el-table-column label="操作" width="120">
+					<el-table-column label="操作" width="190">
 						<template slot-scope="scope"  >   
 							<el-button  type="text" size="mini" @click="EditRate(scope.row) ">修改佣金</el-button>
-								<el-button type="text" size="mini" @click="brokerage(scope.row)  ">迁移</el-button>
+							<el-button type="text" size="mini" @click="brokerage(scope.row)  ">迁移</el-button>
+							<el-button type="text" @click.native=" $refs.editBalance.editBalance(scope.row.inviteeId)" size="mini">修改余额</el-button>
 						</template>
 					</el-table-column>
 				</el-table>
 			</div>
 		</div>
+		<EditBalance ref="editBalance"></EditBalance>
 		<el-dialog title="修改佣金" :visible.sync="showDialog">
 			<div class=" inputGroup ">
 				<span>支付通道:</span>
@@ -239,6 +241,7 @@
 </template>
 <script>
 import {mapState} from 'vuex'
+import EditBalance from './components/editBalance'
 export default {
 	data(){
 		return {
@@ -271,6 +274,7 @@ export default {
 			MatchConfig:{}
 		}
 	},
+	components:{EditBalance},
 	activated(){
 		this.filterForm.userId = this.$route.query.userId
 		this.getData()

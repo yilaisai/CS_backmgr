@@ -133,7 +133,7 @@
                 <el-form-item label="选择代付方式:"  prop="type">
                     <el-select v-model="batchOutType" placeholder="请选择代付方式">
                         <el-option label="手动" value="MANUAL"></el-option>
-                        <el-option label="第三方" value="THIRD_ONE"></el-option>
+                        <!-- <el-option label="第三方" value="THIRD_ONE"></el-option> -->
                     </el-select>
                 </el-form-item>
                 <el-form-item v-show="batchOutType=='MANUAL'" label="选择银行模板:"  prop="type">

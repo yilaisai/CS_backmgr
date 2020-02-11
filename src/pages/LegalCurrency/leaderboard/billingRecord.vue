@@ -273,8 +273,14 @@ export default {
 					case 15:
 						return '法币转钱包'
 					break;
+					case 16:
+						return '码商违规操作'
+					break;
+					case 17:
+						return '码商违规操作收入'
+					break;
 					default:
-							return 'null'
+							return data.optType
 				} 
 			}
 		},

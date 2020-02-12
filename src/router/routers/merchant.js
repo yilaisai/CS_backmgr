@@ -45,6 +45,78 @@ const merchant = [
 				name: 'merchantTradingFlow2',
 				meta: { title: '商户交易记录' },
 				component: () => import('@/pages/merchant/tradingFlow_2.vue')
+			},
+			{
+				path: 'merchantList',
+				name: 'merchantList',
+				meta: {
+					title: '商户注册申请'
+				},
+				component: () => import('@/pages/merchant/index.vue')
+			},{
+					path: 'merchantDetaile',
+					name: 'merchantDetaile',
+					meta: {
+						title: '商户详情'
+					},
+					component: () => import('@/pages/merchant/merchantDetaile.vue')
+			},{
+					path: 'cashOutVerify',
+					name: 'cashOutVerify',
+					meta: {
+						title: '交易广告列表'
+					},
+					component: () => import('@/pages/merchant/cashOutVerify.vue')
+			},
+			
+			{
+					path: 'merchantTradingFlow',
+					name: 'merchantTradingFlow',
+					meta: {
+						title: '宝转卡流水'
+					},
+					component: () => import('@/pages/merchant/tradingFlow.vue')
+			}
+			,{
+					path: 'merchantTradingFlowDetaile',
+					name: 'merchantTradingFlowDetaile',
+					meta: {
+						title: '商户交易流水详情'
+					},
+					component: () => import('@/pages/merchant/tradingFlowDetaile.vue')
+			},
+			{
+					path: 'AuthorizedMerchant',
+					name: 'AuthorizedMerchant',
+					meta: {
+						title: '商户分组授权'
+					},
+					component: () => import('@/pages/merchant/AuthorizedMerchant/index.vue')
+			},
+			{
+					path: 'AuthorizedMerchantInfo',
+					name: 'AuthorizedMerchantInfo',
+					meta: {
+						title: '授权分组信息'
+					},
+					component: () => import('@/pages/merchant/AuthorizedMerchant/info.vue')
+			},
+			{
+					path: 'merchantBlacklist',
+					name: 'merchantBlacklist',
+					meta: {
+						title: '商户用户黑名单'
+					},
+					component: () => import('@/pages/merchant/blacklist.vue')
+			},
+			
+			{
+					path: 'addAuthorizedMerchant',
+					name: 'addAuthorizedMerchant',
+					meta: {
+						title: '新增授权分组'
+					},
+					component: () => import('@/pages/merchant/AuthorizedMerchant/addAuthorizedMerchant.vue')
 			}
 		]
 	}

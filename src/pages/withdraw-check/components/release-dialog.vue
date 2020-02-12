@@ -30,6 +30,13 @@
                     <el-input type="textarea" v-model="form.reason"></el-input>
                 </p>
             </template>
+            <el-row>
+                <el-form :model="form" label-width="85px">
+                    <el-form-item label="谷歌验证码" prop="googleCode">
+                        <el-input size="small" placeholder="请输入谷歌验证码" v-model="form.googleCode"></el-input>
+                    </el-form-item>
+                </el-form>
+            </el-row>
             <div slot="footer">
                 <el-button type="primary" size="small" @click="confirm">{{type === 'reject' ? '拒绝' : '通过'}}</el-button>
                 <el-button type="primary" size="small" @click="visible=false">取消</el-button>
@@ -75,7 +82,8 @@ export default {
                 txid: '',
                 blockAmount: '',
                 blockFee: '',
-                reason: ''
+                reason: '',
+                googleCode:''
             }
         },
         confirm () {

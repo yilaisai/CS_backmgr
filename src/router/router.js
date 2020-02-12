@@ -1106,6 +1106,25 @@ export const appRouter = [
         component: () => import('@/pages/brush-list/account.vue'),
       },
     ],
+  },
+  {
+    path: '/riskManage',
+    name: 'riskManage',
+    redirect: '/riskManage/index',
+    meta: {
+      title: '风控设置',
+    },
+    component: Index,
+    children: [
+      {
+        path: 'index',
+        name: 'index',
+        meta: {
+          title: '风控设置',
+        },
+        component: () => import('@/pages/risk-manage/index.vue'),
+      }
+    ],
   }
 ];
 

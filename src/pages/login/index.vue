@@ -30,6 +30,14 @@
               </el-form-item>
             </el-col>
           </el-row>
+          <!-- <el-row class="input-wrap">
+            <el-col :span="24">
+              <el-form-item label="" prop="googoleCode">
+                <el-input placeholder="请输入谷歌验证码" v-model="postObj.password"  clearable>
+                </el-input>
+              </el-form-item>
+            </el-col>
+          </el-row> -->
           <el-row class="input-wrap">
             <el-col :span="16">
               <el-form-item label="" prop="validateCode">
@@ -66,6 +74,7 @@
           md5Pwd: '',
           validateCode: '',
           password: '',
+          googoleCode:''
         },
         rules: {
           username: [
@@ -77,6 +86,9 @@
           validateCode: [
             { required: true, message: '请输入验证码', trigger: 'blur' },
           ],
+          googoleCode: [
+            { required: true, message: '请输入谷歌验证码', trigger: 'blur' },
+          ]
         },
         SERVER_PATH: '',
       };

@@ -28,13 +28,21 @@
 					<label>邮箱:</label>
 					<span>{{pageData.info.email}}</span>
 				</li>
-				<li>
+				<!-- <li>
 					<label>直推人:</label>
 					<span>{{pageData.info.firstPhone}}</span>
 				</li>
 				<li>
 					<label>间推人:</label>
 					<span>{{pageData.info.secPhone}}</span>
+				</li> -->
+				<li>
+					<label>商户编号:</label>
+					<span>300625</span>
+				</li>
+				<li>
+					<label>商户代码:</label>
+					<span>KSC</span>
 				</li>
 				<li>
 					<label>上次登录时间:</label>
@@ -147,7 +155,30 @@
 				</li> -->
 			</ul>
 		</div>
-
+		<div class="setCheckstand">
+			<el-form ref="setForm" :model="formData" label-width="160px">
+				<el-form-item label="收银台样式：">
+					<el-select v-model="checkStandType" placeholder="请选择">
+						<el-option
+						v-for="item in options"
+						:key="item.payType"
+						:label="item.description"
+						:value="item.payType">
+						</el-option>
+					</el-select>
+				</el-form-item>
+				<el-form-item label="商户收银台支付入口：">
+					<ul>
+						<li v-for="(type,index) in setting" :key="index" >
+							<el-switch
+							v-model="type.value"
+							:inactive-text="type.text">
+							</el-switch>
+						</li>
+					</ul>
+				</el-form-item>
+			</el-form>
+		</div>
 		<el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="40%" >
 			<el-form ref="form" :model="formData" label-width="120px">
 				<el-form-item :label="label1">
@@ -194,7 +225,26 @@ export default {
 			label1: "",
 			label2: "",
 			dialogTitle: "修改",
-			payType: 1
+			payType: 1,
+			options:[],             //收银台设置下拉
+			checkStandType:'',      //收银台设置方式
+			setting:[{
+				value:true,
+				text:'银行卡：'
+			},{
+				value:false,
+				text:'微信：'
+			},{
+				value:false,
+				text:'支付宝个码'
+			},{
+				value:false,
+				text:'支付宝转账码'
+			},{
+				value:false,
+				text:'宝转卡'
+			}],
+
 		}
 	},
 	activated() {
@@ -431,6 +481,7 @@ export default {
 
 <style lang="less" scoped>
 .details{
+	overflow:auto;
 	.title {
 		h3 {
 			font-size: 14px;
@@ -483,6 +534,26 @@ export default {
 				}
 				&.big{
 					width: 100%;
+				}
+			}
+		}
+	}
+	.setCheckstand {
+		flex-wrap: wrap;
+		box-shadow: 0 0 2px #999;
+		padding: 10px;
+		margin-top: 20px;
+		ul {
+			padding:0;
+    		margin: 0;
+			li {
+				list-style: none;
+				/deep/ .el-switch {
+					.el-switch__label--left  {
+						width:100px;
+						text-align: right;
+					}
+					
 				}
 			}
 		}

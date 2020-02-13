@@ -106,6 +106,7 @@
               validateCode: this.postObj.validateCode,
               version: '1.0.0',
               plat: 'web',
+              secret:this.postObj.googoleCode
             };
             this.$http.post('wallet/backmgr/sysuser/open/sysUserLogin', postObj).then((res) => {
               const { token, userName, roleName, menuUrls } = res.result;

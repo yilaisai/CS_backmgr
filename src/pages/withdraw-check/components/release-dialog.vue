@@ -87,10 +87,12 @@ export default {
             }
         },
         confirm () {
-            const params = {
-                recdId: this.item.recdId
-            }
             const form = this.form
+            const params = {
+                recdId: this.item.recdId,
+                secret: form.googleCode
+            }
+            
             if (this.type === 'auto') {
 				params.tradeStatus = '4'
 				params.tradeId = this.item.id

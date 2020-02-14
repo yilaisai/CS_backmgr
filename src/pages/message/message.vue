@@ -68,14 +68,14 @@
         </el-form-item>
         <el-form-item label="消息标题:" required prop="title">
           <el-col :span="16" style=" position: relative;">
-            <span class="tips tips_input">{{ruleForm.title.length}}/15</span>
-            <el-input size="small" v-model="ruleForm.title" maxlength="15" placeholder="请输入消息标题"></el-input>
+            <span class="tips tips_input">{{ruleForm.title.length}}/30</span>
+            <el-input size="small" v-model="ruleForm.title" maxlength="30" placeholder="请输入消息标题"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="消息内容:" required prop="content">
           <el-col :span="16" style=" position: relative;">
-            <span class="tips tips_textarea">{{ruleForm.content.length}}/50</span>
-            <el-input size="small" type="textarea" v-model="ruleForm.content" width="100%" maxlength="50"
+            <span class="tips tips_textarea">{{ruleForm.content.length}}/5000</span>
+            <el-input size="small" type="textarea" v-model="ruleForm.content" width="100%" maxlength="5000"
                       placeholder="请输入消息内容"></el-input>
           </el-col>
         </el-form-item>

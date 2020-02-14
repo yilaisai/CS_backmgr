@@ -8,9 +8,9 @@
 				<el-tab-pane label="支付通道设置">
 					<el-form ref="form" :model="form" :inline="true" label-width="155px" size="small">
 						<el-form-item label="支付方式：">
-							<el-select v-model="payType" placeholder="请选择">
+							<el-select v-model="form.payType" placeholder="请选择">
 								<el-option
-									v-for="item in form.otcPayLists"
+									v-for="item in otcPayLists"
 									:key="item.payType"
 									:label="item.description"
 									:value="item.payType">
@@ -19,22 +19,24 @@
 						</el-form-item>
                         <br/>
                         <el-form-item label="笔数限制：">
-                            <el-input type="number" v-model.trim="form.limitNum" min="0"></el-input>
+                            <el-input type="number" v-model.trim="form.ckLimitNum" min="0"></el-input>
                         </el-form-item>
                         <br/>
                         <el-form-item label="金额限制：">
                             <el-col class="line" :span="11">
-                                <el-input type="number" v-model.trim="form.limit_MIN" min="0"></el-input>
+                                <el-input type="number" v-model.trim="form.ckLimitMin" min="0"></el-input>
                             </el-col>
                             <el-col class="line" :span="2" style="text-align: center;">~</el-col>
                             <el-col class="line" :span="11">
-                                <el-input type="number" v-model.trim="form.limit_MAX" :min="form.limit_MIN"></el-input>
+                                <el-input type="number" v-model.trim="form.ckLimitMax" :min="form.ckLimitMin"></el-input>
                             </el-col>
                         </el-form-item>
 					</el-form>
 				</el-tab-pane>
 			</el-tabs>
         </div>
+
+        <el-button type="primary" class="save" @click="save">保存修改</el-button>
     </div>
 </template>
 
@@ -42,27 +44,51 @@
     export default {
         data() {
             return {
+                otcPayLists: [],
                 form: {
-                    otcPayLists: [],
-                    limitNum:'',
-                    limit_MIN:0,
-                    limit_MAX:1
+                    payType:'',
+                    ckLimitNum:'',
+                    ckLimitMin:'',
+                    ckLimitMax:'',
+                    isUseCheckout:'', 
                 },
-                payType:""
             }
         },
         activated() {
             this.getData()
         },
+        computed:{
+            payType() {
+                return this.form.payType
+            }
+        },
         methods: {
             getData() {
-                // this.$http.post('/wallet/app/otc/backmgr/getPayList').then(res => {
-                //     this.form = res.result
-                //     this.form.BATCHOUT_RATIO_FEE = Math.floor(this.form.BATCHOUT_RATIO_FEE*10000)/100
-                //     if(this.form.otcPayLists.length > 0) {
-                //         this.payType = this.form.otcPayLists[0].payType
-                //     }
-                // })
+                this.$http.post('/wallet/app/otc/backmgr/getPayList').then(res => {
+                    this.otcPayLists = res.result
+                    this.form.payType = this.form.payType || this.otcPayLists[0].payType
+                })
+            },
+            save() {
+                this.$http.post('/wallet/app/otc/backmgr/modifyPayList',this.form).then(res => {
+                    this.$notify.success({
+                        title: '提示',
+                        message: res.msg
+                    })	
+                    this.getData()
+                })
+            }
+        },
+        watch:{
+            payType(newVal, oldVal) {
+                this.otcPayLists.forEach((el,index)=> {
+                    if (newVal === el.payType) {
+                        this.form.ckLimitNum = this.otcPayLists[index].ckLimitNum
+                        this.form.ckLimitMin = this.otcPayLists[index].ckLimitMin
+                        this.form.ckLimitMax = this.otcPayLists[index].ckLimitMax
+                        this.form.isUseCheckout = this.otcPayLists[index].isUseCheckout
+                    }
+                })
             }
         }
     }
@@ -70,9 +96,11 @@
 
 <style lang="less" scoped>
     .risk-manage {
-        
-        
-        
+        .save {
+            display: block;
+            width: 30%;
+            margin: 20px auto;
+        }
     }
     /deep/ .el-form-item {
         .el-form-item__content {

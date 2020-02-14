@@ -158,7 +158,7 @@
 		<div class="setCheckstand">
 			<el-form ref="setForm" :model="formData" label-width="160px">
 				<el-form-item label="收银台样式：">
-					<el-select v-model="checkStandType" placeholder="请选择">
+					<el-select v-model="checkStandType" placeholder="请选择" style="width:200px">
 						<el-option
 						v-for="item in options"
 						:key="item.payType"
@@ -169,10 +169,11 @@
 				</el-form-item>
 				<el-form-item label="商户收银台支付入口：">
 					<ul>
-						<li v-for="(type,index) in setting" :key="index" >
+						<li v-for="(name,index) in setting" :key="index" >
 							<el-switch
-							v-model="type.value"
-							:inactive-text="type.text">
+							v-model="name.type"
+							:inactive-text="name.desc"
+							@change="changeSwitch(name)">
 							</el-switch>
 						</li>
 					</ul>
@@ -228,22 +229,7 @@ export default {
 			payType: 1,
 			options:[],             //收银台设置下拉
 			checkStandType:'',      //收银台设置方式
-			setting:[{
-				value:true,
-				text:'银行卡：'
-			},{
-				value:false,
-				text:'微信：'
-			},{
-				value:false,
-				text:'支付宝个码'
-			},{
-				value:false,
-				text:'支付宝转账码'
-			},{
-				value:false,
-				text:'宝转卡'
-			}],
+			setting:[],
 
 		}
 	},
@@ -256,6 +242,15 @@ export default {
 				userId: this.$route.query.id
 			}).then(res => {
 				this.pageData = res.result
+				this.setting = []
+				this.pageData.payListMap.forEach(el => {
+					for (var i in el) {
+						this.setting.push({
+							'desc':i,
+							'type':!!el[i]
+						})
+					}
+				});
 			})
 		},
 		updateMerchantExchangeType(postData) {
@@ -440,6 +435,21 @@ export default {
 				this.getDetails()
 			})
 		},
+
+		//收银台支付入口开关
+		changeSwitch(name) {
+			this.$http.post('/wallet/backmgr/merchant/updateMerchantInSwitch',{
+				inSwitch: name.type?1:0,
+				typeName: name.desc,
+				userId:this.$route.query.id
+			}).then(res => {
+				this.$notify.success({
+					title: '提示',
+					message: res.msg
+				})	
+				this.getDetails()
+			})
+		}
 	},
 	computed: {
 		inFee() {
@@ -473,9 +483,6 @@ export default {
 			return payTypeName
 		}
 	},
-	activated() {
-		this.getDetails()
-	}
 }
 </script>
 
@@ -553,7 +560,9 @@ export default {
 						width:100px;
 						text-align: right;
 					}
-					
+					.el-switch__label.is-active {
+						color:#000;
+					}
 				}
 			}
 		}

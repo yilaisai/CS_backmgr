@@ -207,6 +207,11 @@
                         <el-input type="textarea" v-model="ruleForm.appealRemark" placeholder="请输入备注信息"></el-input>
                     </el-form-item>
                 </div>
+                <div v-if="ruleForm.appealResult == 2">
+                    <el-form-item label="谷歌验证码" prop="googleCode"  class="judgment-box">
+                        <el-input  v-model="ruleForm.googleCode" placeholder="请输入谷歌验证码"></el-input>
+                    </el-form-item>
+                </div>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
@@ -260,7 +265,8 @@ export default {
                 appealResult:1,    //判断输赢
                 buyerResult:0,     //处理买方
                 salerResult:0,     //处理卖方
-                appealRemark:''     //备注
+                appealRemark:'',   //备注
+                googleCode:'',     //谷歌验证码 
             },
             rules: {
                 appealRemark: [

@@ -474,7 +474,11 @@
         }
       },
       determine() {
+
+        console.log(this.pushMessage)
+        if(this.pushMessage){return}
         this.pushMessage = true
+        console.log(this.pushMessage)
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
             const ruleForm = JSON.parse(JSON.stringify(this.ruleForm))
@@ -503,10 +507,15 @@
                   type: 'success'
                 });
                 this.dialogFormVisible = false;
-                this.pushMessage = false;
+                setTimeout(()=>{
+                  this.pushMessage = false;
+                },1000)
+                
                 this.getNoticeInfoList();
               }).catch(() => {
-                this.pushMessage = false;
+                setTimeout(()=>{
+                  this.pushMessage = false;
+                },1000)
               })
             } else {
               this.$http.post("wallet/backmgr/noticeInfo/createNoticeInfo", ruleForm).then((res) => {
@@ -516,15 +525,21 @@
                   type: 'success'
                 });
                 this.dialogFormVisible = false;
-                this.pushMessage = false;
+                setTimeout(()=>{
+                  this.pushMessage = false;
+                },1000)
                 this.getNoticeInfoList();
               }).catch(() => {
-                this.pushMessage = false;
+                setTimeout(()=>{
+                  this.pushMessage = false;
+                },1000)
               })
             }
           } else {
             console.log('error submit!!');
-            this.pushMessage = false
+            setTimeout(()=>{
+                  this.pushMessage = false;
+                },1000)
             return false;
           }
         });

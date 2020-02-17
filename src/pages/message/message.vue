@@ -360,10 +360,11 @@
       },
       modification(itemData) {
         this.dialogTitle = '修改推送规则';
-        this.dialogFormVisible = true;
         this.resetForm();
         this.getSampleCoinInfo();
-        this.ruleForm = JSON.parse(JSON.stringify(itemData));
+        itemData = JSON.parse(JSON.stringify(itemData));
+        itemData.sendTime = ''
+        this.ruleForm = itemData
         this.ruleForm.timingPush = this.ruleForm.timingPush == 0 ? false : true;
         if (this.ruleForm.pushAll == 1) {
           this.radioValue = 1;
@@ -388,6 +389,12 @@
             this.ruleForm.noticeType = 'ThirdAppMsg';
             break;
         }
+        this.$http.post("/wallet/app/info/open/queryNoticeById", {id:itemData.id}).then((res) => {
+          if(res.code == 200){
+            this.ruleForm.content = res.result.info.content
+          }
+        })
+        this.dialogFormVisible = true;
       },
       addMessage() {
         this.radioValue = null;

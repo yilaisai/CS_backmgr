@@ -32,8 +32,8 @@
             </template>
             <el-row>
                 <el-form :model="form" label-width="85px">
-                    <el-form-item label="谷歌验证码" prop="googleCode">
-                        <el-input size="small" placeholder="请输入谷歌验证码" v-model="form.googleCode"></el-input>
+                    <el-form-item label="谷歌验证码" prop="secret">
+                        <el-input size="small" placeholder="请输入谷歌验证码" v-model="form.secret"></el-input>
                     </el-form-item>
                 </el-form>
             </el-row>
@@ -55,7 +55,8 @@ export default {
                 txid: '',
                 blockAmount: '',
                 blockFee: '',
-                reason: ''
+                reason: '',
+                secret:''
             }
         }
     },
@@ -92,11 +93,18 @@ export default {
                 recdId: this.item.recdId,
                 secret: form.googleCode
             }
-            
+            if (!this.form.secret) {
+                this.$notify.error({
+                    title: '提示',
+                    message: '请输入谷歌验证码'
+                })
+                return
+            }
             if (this.type === 'auto') {
 				params.tradeStatus = '4'
 				params.tradeId = this.item.id
-				params.sysRemark = form.remark
+                params.sysRemark = form.remark
+                params.secret = form.secret
 				
                 this.$http.post('/wallet/backmgr/trade/auditTrade', params).then(res => {
 					if(res.code == 200) {
@@ -116,6 +124,7 @@ export default {
             } else if (this.type === 'manual') {
 				params.txId = form.txId
                 params.orderId = this.item.id
+                params.secret = form.secret
                 this.$http.post('/wallet/backmgr/trade/updateWithdrawSuccess', params).then((res) => {
 					if(res.code == 200) {
 						this.$notify.success({
@@ -134,7 +143,8 @@ export default {
             } else if (this.type === 'reject') {
                 params.tradeStatus = '3'
 				params.sysRemark = form.reason
-				params.tradeId = this.item.id
+                params.tradeId = this.item.id
+                params.secret = form.secret
                 this.$http.post('/wallet/backmgr/trade/auditTrade', params).then(res => {
 					if(res.code == 200) {
 						this.$notify.success({

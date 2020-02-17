@@ -180,7 +180,7 @@
             </div>
         </div>
         <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="470">
-            <el-form :inline="true" label-width="90px" ref="ruleForm"  :model="ruleForm" :rules="rules">
+            <el-form :inline="true" label-width="100px" ref="ruleForm"  :model="ruleForm" :rules="rules">
                 <div>
                     <el-form-item label="判断输赢:" prop="appealResult" class="judgment-box">
                         <el-select v-model="ruleForm.appealResult">
@@ -208,8 +208,8 @@
                     </el-form-item>
                 </div>
                 <div v-if="ruleForm.appealResult == 2">
-                    <el-form-item label="谷歌验证码" prop="googleCode"  class="judgment-box">
-                        <el-input  v-model="ruleForm.googleCode" placeholder="请输入谷歌验证码"></el-input>
+                    <el-form-item label="谷歌验证码" prop="secret"  class="judgment-box">
+                        <el-input  v-model="ruleForm.secret" placeholder="请输入谷歌验证码"></el-input>
                     </el-form-item>
                 </div>
             </el-form>
@@ -266,7 +266,7 @@ export default {
                 buyerResult:0,     //处理买方
                 salerResult:0,     //处理卖方
                 appealRemark:'',   //备注
-                googleCode:'',     //谷歌验证码 
+                secret:'',     //谷歌验证码 
             },
             rules: {
                 appealRemark: [
@@ -446,6 +446,13 @@ export default {
         },
         dialogConfirm(){
             this.ruleForm.appealId=this.appealId;
+            if (this.ruleForm.appealResult == 2 &&  !this.ruleForm.secret) {
+                this.$notify.error({
+                    title: '提示',
+                    message: '请输入谷歌验证码'
+                })
+                return
+            }
             this.$http.post('/wallet/app/otc/backmgr/adjustAppeal',this.ruleForm).then(res2=>{
                 this.$notify({
                     title: "成功",

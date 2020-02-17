@@ -30,14 +30,14 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <!-- <el-row class="input-wrap">
+          <el-row class="input-wrap">
             <el-col :span="24">
-              <el-form-item label="" prop="googoleCode">
-                <el-input placeholder="请输入谷歌验证码" v-model="postObj.password"  clearable>
+              <el-form-item label="" prop="secret">
+                <el-input placeholder="请输入谷歌验证码" v-model="postObj.secret"  clearable>
                 </el-input>
               </el-form-item>
             </el-col>
-          </el-row> -->
+          </el-row>
           <el-row class="input-wrap">
             <el-col :span="16">
               <el-form-item label="" prop="validateCode">
@@ -74,7 +74,7 @@
           md5Pwd: '',
           validateCode: '',
           password: '',
-          googoleCode:''
+          secret:''
         },
         rules: {
           username: [
@@ -86,7 +86,7 @@
           validateCode: [
             { required: true, message: '请输入验证码', trigger: 'blur' },
           ],
-          googoleCode: [
+          secret: [
             { required: true, message: '请输入谷歌验证码', trigger: 'blur' },
           ]
         },
@@ -106,7 +106,7 @@
               validateCode: this.postObj.validateCode,
               version: '1.0.0',
               plat: 'web',
-              secret:this.postObj.googoleCode
+              secret:this.postObj.secret
             };
             this.$http.post('wallet/backmgr/sysuser/open/sysUserLogin', postObj).then((res) => {
               const { token, userName, roleName, menuUrls } = res.result;

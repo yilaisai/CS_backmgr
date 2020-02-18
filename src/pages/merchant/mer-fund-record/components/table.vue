@@ -14,7 +14,7 @@
 			style="min-width: 100%">
 			<el-table-column prop="create_time" label="时间" width="140"></el-table-column>
 			<el-table-column prop="phone" label="账号" width="140" align="center"></el-table-column>
-			<el-table-column prop="nick_name" label="昵称" align="center"></el-table-column>
+			<el-table-column prop="nick_name" label="用户编号" align="center"></el-table-column>
 			<el-table-column prop="coin_name" label="币种" align="center"></el-table-column>
 			<el-table-column prop="type_name" label="描述" align="center"></el-table-column>
 			<el-table-column prop="balance_change" label="可用资金变化" align="center"></el-table-column>

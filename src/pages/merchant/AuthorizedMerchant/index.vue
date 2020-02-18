@@ -4,8 +4,8 @@
 			<el-form-item label="分组名称:">
 				<el-input v-model="formData.groupName" placeholder="分组名称"></el-input>
 			</el-form-item>
-			<el-form-item label="账户/昵称:">
-				<el-input v-model="formData.phone" placeholder="请输入账户或者昵称"></el-input>
+			<el-form-item label="账户/用户编号:">
+				<el-input v-model="formData.phone" placeholder="请输入账户或者用户编号"></el-input>
 			</el-form-item>
 			<el-form-item label="时间：" class="time">
 				<el-date-picker

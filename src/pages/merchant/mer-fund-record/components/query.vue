@@ -1,12 +1,12 @@
 <template>
 	<el-collapse value="filter">
 		<el-collapse-item title="查询条件" name="filter">
-			<el-form ref="form" :model="formData" label-width="50px" size="mini" inline>
+			<el-form ref="form" :model="formData" label-width="105px" size="mini" inline>
 				<div>
 					<el-form-item label="账号：">
 						<el-input v-model="formData.name" placeholder="账号"></el-input>
 					</el-form-item>
-					<el-form-item label="昵称：">
+					<el-form-item label="用户编号：">
 						<el-input v-model="formData.nickName" placeholder="搜索地址"></el-input>
 					</el-form-item>
 					<el-form-item label="币种：">

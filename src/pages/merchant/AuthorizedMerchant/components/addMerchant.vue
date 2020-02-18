@@ -3,9 +3,9 @@
 
 	</div> -->
 		<el-dialog class="addMerchant-page" title="增加商户" :visible.sync="showWidget">
-			<el-form  :model="merchantFormData" label-width="95px" size="mini" inline>
-				<el-form-item label="账户/昵称:">
-					<el-input v-model="merchantFormData.name" placeholder="请输入账户或者昵称"></el-input>
+			<el-form  :model="merchantFormData" label-width="105px" size="mini" inline>
+				<el-form-item label="账户/用户编号:">
+					<el-input v-model="merchantFormData.name" placeholder="请输入账户或者用户编号"></el-input>
 				</el-form-item>
 				
 				<el-form-item>
@@ -17,7 +17,7 @@
 					<!-- <el-table-column type="selection" width="55" align="center"></el-table-column > -->
 				
 					<el-table-column prop="phone" label="账号" align="center" ></el-table-column>
-					<el-table-column prop="name" label="昵称" align="center"></el-table-column>
+					<el-table-column prop="name" label="用户编号" align="center"></el-table-column>
 						<el-table-column  width="55" label="全选" align="center">
 						<div slot-scope="scope" class="checkBox"  @click=" itemClick(scope.row) " >
 							<!-- <el-button size="mini" type="text" @click=""> 删除 </el-button> -->

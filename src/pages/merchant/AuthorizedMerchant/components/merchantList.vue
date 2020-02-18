@@ -11,7 +11,7 @@
 			<el-table-column type="selection" width="55" align="center"></el-table-column >
 			<el-table-column type="index" width="50" label="序号" align="center"> </el-table-column>
 			<el-table-column prop="phone" label="商户账户" align="center" ></el-table-column>
-			<el-table-column prop="nickName" label="商户昵称" align="center">
+			<el-table-column prop="nickName" label="商户用户编号" align="center">
 				<template slot-scope="scope">{{ scope.row.nickName || scope.row.name }}</template>
 			</el-table-column>
 			<el-table-column prop="date" label="操作" fixed="right" width="110" align="center">

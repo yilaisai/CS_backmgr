@@ -19,8 +19,8 @@
       <el-form-item label="账号:" >
         <el-input placeholder="请输入用户账号" v-model="filterForm.phone" ></el-input>
       </el-form-item>
-      <el-form-item label="昵称:" >
-        <el-input placeholder="请输入用户昵称" v-model="filterForm.nickName" ></el-input>
+      <el-form-item label="用户编号:" >
+        <el-input placeholder="请输入用户编号" v-model="filterForm.nickName" ></el-input>
       </el-form-item>
       <el-form-item  label="用户类型:" >
          <el-select v-model="filterForm.userType" >
@@ -34,7 +34,7 @@
       <el-table-column align="center" label="序号" type="index" width="50"></el-table-column>
       <!-- <el-table-column align="center" prop="userId" label="序号" width="100"></el-table-column> -->
       <el-table-column align="center" prop="phone" label=账号 width="130"></el-table-column>
-      <el-table-column align="center" prop="nickName" label="昵称"></el-table-column>
+      <el-table-column align="center" prop="nickName" label="用户编号"></el-table-column>
       <el-table-column align="center" prop="realName" label="真实姓名"></el-table-column>
       <el-table-column align="center" prop="nickStatus" label="用户类型">
         <template slot-scope="scope">

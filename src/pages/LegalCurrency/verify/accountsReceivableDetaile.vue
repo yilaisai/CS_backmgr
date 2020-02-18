@@ -10,7 +10,7 @@
 			<el-table-column label="账号" width="100" align="center">
 				<span>{{phone}}</span>
 			</el-table-column>
-			<el-table-column label="昵称" width="150" align="center">
+			<el-table-column label="用户编号" width="150" align="center">
 				<span>{{nickName}}</span>
 			</el-table-column>
 			<el-table-column label="企业类型" width="100" align="center">
@@ -66,7 +66,7 @@
 			<el-table-column label="账号" width="100" align="center" >
 				<span>{{phone}}</span>
 			</el-table-column>
-			<el-table-column label="昵称" width="150" align="center">
+			<el-table-column label="用户编号" width="150" align="center">
 				<span>{{nickName}}</span>
 			</el-table-column>
 			<el-table-column label="企业类型" width="100" align="center">

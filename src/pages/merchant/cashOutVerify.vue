@@ -52,7 +52,7 @@
 					<span>{{scope.row.apiOrderId}}<br />{{$fmtDate(scope.row.createTime, 'full')}}</span>
 				</template>
 			</el-table-column>
-			<el-table-column align="center"  label="商户昵称/账户" width="130">
+			<el-table-column align="center"  label="商户用户编号/账户" width="130">
 				<template slot-scope="scope">
 					<span>{{scope.row.nickName}}<br />{{scope.row.phoneOrEmail}}</span>
 				</template>

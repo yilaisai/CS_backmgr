@@ -31,7 +31,7 @@
 							</div>
 						</el-form>
 						<el-table :data="listData.list" border size="mini">
-							<el-table-column label="商户名称" prop="name" align="center"></el-table-column>
+							<el-table-column label="商户用户编号" prop="name" align="center"></el-table-column>
 							<el-table-column label="手机号" prop="phone" align="center"></el-table-column>
 							<el-table-column label="邮箱" prop="email" align="center"></el-table-column>
 							<el-table-column label="手机号" prop="phone" align="center"></el-table-column>

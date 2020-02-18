@@ -7,8 +7,8 @@
 						<el-form-item label="账号:" >
 							<el-input placeholder="请输入用户账号" v-model="filterForm.account" class="input-with-select"></el-input>
 						</el-form-item>
-							<el-form-item label="昵称:" >
-							<el-input placeholder="请输入用户昵称" v-model="filterForm.nickName" class="input-with-select"></el-input>
+							<el-form-item label="用户编号:" >
+							<el-input placeholder="请输入用户编号" v-model="filterForm.nickName" class="input-with-select"></el-input>
 						</el-form-item>
 						<el-form-item  label="企业类型:" >
 							<el-select v-model="filterForm.userEnterprise" >
@@ -32,7 +32,7 @@
 					</div>
 				</el-form>
 				<el-table :data="listData.list" border size="mini" height="100%">
-					<el-table-column label="账户/昵称">
+					<el-table-column label="账户/用户编号">
 						<div class="scope" slot-scope="scope">{{scope.row.account}} -- {{scope.row.nickName}}</div>
 					</el-table-column>
 					<el-table-column  label="企业类型" align="center" width="100">

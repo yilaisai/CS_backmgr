@@ -13,7 +13,7 @@
 			size="mini"
 			style="min-width: 100%">
 			<el-table-column prop="create_time" label="发起时间" width="140"></el-table-column>
-			<el-table-column prop="nickName" label="账号|昵称" width="140">
+			<el-table-column prop="nickName" label="账号|用户编号" width="140">
 				<template slot-scope="scope">
 					<span>{{scope.row.phone + ' | ' + scope.row.nickName}}</span>
 				</template>

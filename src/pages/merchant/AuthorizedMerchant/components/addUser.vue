@@ -14,7 +14,7 @@
 			</el-form>
 			<el-table :data="userData" height="420px" style="width: 100%;height:100%;" row-key="inviteCode" border lazy :load="load" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" size="mini">
 				
-				<el-table-column prop="nickName" label="姓名"></el-table-column>
+				<el-table-column prop="nickName" label="用户编号"></el-table-column>
 				<el-table-column prop="userId" label="ID" align="center" width="140"></el-table-column>
 				<el-table-column align="center" prop="account" label="账号" width="180"> </el-table-column>
 				<el-table-column  width="55"  align="center">

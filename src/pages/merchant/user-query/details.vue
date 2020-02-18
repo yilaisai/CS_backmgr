@@ -158,12 +158,13 @@
 		<div class="setCheckstand">
 			<el-form ref="setForm" :model="formData" label-width="160px">
 				<el-form-item label="收银台样式：">
-					<el-select v-model="checkStandType" placeholder="请选择" style="width:200px">
+					<el-select v-model="checkStandType" placeholder="请选择" style="width:200px" @change="changeType">
 						<el-option
 						v-for="item in options"
-						:key="item.payType"
-						:label="item.description"
-						:value="item.payType">
+						:key="item.value"
+						:label="item.desc"
+						:value="item.value"
+						>
 						</el-option>
 					</el-select>
 				</el-form-item>
@@ -449,6 +450,11 @@ export default {
 				})	
 				this.getDetails()
 			})
+		},
+
+		//改变收银台样式
+		changeType(value) {
+			console.log(value)
 		}
 	},
 	computed: {

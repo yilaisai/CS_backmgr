@@ -1,13 +1,13 @@
 <template>
 	<div class="assetCertification-page">
-		<el-form ref="form" :model="formData" label-width="85px" size="mini" inline>
+		<el-form ref="form" :model="formData" label-width="105px" size="mini" inline>
 			<el-form-item label="状态:">
 				<el-select v-model="formData.status" >
 						<el-option :label="item.label" :value="item.value" v-for="(item,index) in stateData" :key="index"></el-option>
 				</el-select>
 			</el-form-item>
-			<el-form-item label="账户/昵称:">
-				<el-input v-model="formData.phone" placeholder="请输入账户或者昵称"></el-input>
+			<el-form-item label="账户/用户编号:">
+				<el-input v-model="formData.phone" placeholder="请输入账户或者用户编号"></el-input>
 			</el-form-item>
 			<el-select v-model="formData.optType" >
 					<el-option value="" label="全部"></el-option>
@@ -19,7 +19,7 @@
 			</el-form-item>
 		</el-form>
 		<el-table :data="list" height="auto" border size="mini" style="min-width: 100%" :show-overflow-tooltip='true' >
-			<el-table-column  label="账户/昵称" align="center" width="150">
+			<el-table-column  label="账户/用户编号" align="center" width="150">
 				<div class="nickName" slot-scope="scope"> 
 					<p>{{scope.row.phone}}</p>
 					<p>{{scope.row.nickName}}</p>

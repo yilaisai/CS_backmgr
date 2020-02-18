@@ -9,7 +9,7 @@
 							<el-input placeholder="请输入单号" v-model.trim="filterForm.recdId" class="input-with-select"></el-input>
 						</el-form-item>
 						<el-form-item label="账号:">
-							<el-input placeholder="请输入用户账户或昵称" v-model.trim="filterForm.account" class="input-with-select"></el-input>
+							<el-input placeholder="请输入用户账户或用户编号" v-model.trim="filterForm.account" class="input-with-select"></el-input>
 						</el-form-item>
 						<el-form-item label="状态:">
 							<el-select v-model="filterForm.tradeStatus" >

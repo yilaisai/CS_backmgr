@@ -5,8 +5,8 @@
 				<el-form-item label="账号:">
 					<el-input placeholder="请输入用户账号" v-model.trim="filterForm.account" clearable class="input-with-select"></el-input>
 				</el-form-item>
-				<el-form-item label="昵称:">
-					<el-input placeholder="请输入用户昵称" v-model.trim="filterForm.nickName" clearable class="input-with-select"></el-input>
+				<el-form-item label="用户编号:">
+					<el-input placeholder="请输入用户编号" v-model.trim="filterForm.nickName" clearable class="input-with-select"></el-input>
 				</el-form-item>
 				<el-form-item label="邀请码:">
 					<el-input placeholder="请输入邀请码" v-model.trim="filterForm.inviteCode" clearable class="input-with-select"></el-input>
@@ -20,7 +20,7 @@
 			<a href="javascript:;" :class="{'active' : queryType == 'parent'}" @click="tabChange('parent')">父级查询</a>
 		</div> -->
 		<el-table :data="inviteData" height="100%" style="width: 100%;height:100%;" row-key="inviteCode" border lazy :load="load" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" size="mini">
-			<el-table-column prop="nickName" label="姓名"></el-table-column>
+			<el-table-column prop="nickName" label="用户编号"></el-table-column>
 			<el-table-column prop="userId" label="ID" align="center" width="140"></el-table-column>
 			<el-table-column align="center" prop="account" label="账号" width="180"> </el-table-column>
 			<el-table-column align="center"  prop="inviteCode" label="邀请码" width="80"></el-table-column>

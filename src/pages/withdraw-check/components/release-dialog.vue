@@ -122,9 +122,10 @@ export default {
 					this.$emit('getData')
 				}).catch(e => console.warn(e))
             } else if (this.type === 'manual') {
-				params.txId = form.txId
+				params.txId = form.txid
                 params.orderId = this.item.id
                 params.secret = form.secret
+                console.log(params)
                 this.$http.post('/wallet/backmgr/trade/updateWithdrawSuccess', params).then((res) => {
 					if(res.code == 200) {
 						this.$notify.success({

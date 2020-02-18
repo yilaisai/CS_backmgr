@@ -1,8 +1,8 @@
 <template>
 	<div class="capitalFlow-page">
 			<el-form :inline="true"  ref="filterForm" label-width="85px" :model="filterForm" size="mini">
-				<el-form-item label="昵称:">
-					<el-input placeholder="请输入昵称" v-model="filterForm.nickName" class="input-with-select"></el-input>
+				<el-form-item label="用户编号:">
+					<el-input placeholder="请输入用户编号" v-model="filterForm.nickName" class="input-with-select"></el-input>
 				</el-form-item>
 				<el-form-item label="账号:">
 					<el-input placeholder="请输入用户账号" v-model="filterForm.name" class="input-with-select"></el-input>
@@ -40,7 +40,7 @@
 				</el-table-column>
 				<el-table-column prop="coinName" label="币种" align="center" ></el-table-column>
 				<el-table-column prop="phone" label="账号" align="center" ></el-table-column>
-				<el-table-column prop="nickName" label="昵称" align="center" ></el-table-column>
+				<el-table-column prop="nickName" label="用户编号" align="center" ></el-table-column>
 				<el-table-column label="用户类型" align="center">
 					<template slot-scope="scope">{{scope.row.userType | userTypesFilter}}</template>
 				</el-table-column>

@@ -9,7 +9,7 @@
 		<el-table :data="list" height="auto" border size="mini" style="min-width: 100%">
 			<el-table-column prop="appId" label="appid" align="center" width="90"></el-table-column>
 			<el-table-column prop="phone" label="账号" align="center"></el-table-column>
-			<el-table-column prop="name" label="昵称" align="center"></el-table-column>
+			<el-table-column prop="name" label="用户编号" align="center"></el-table-column>
 			<el-table-column prop="feeRate" label="兑入手续费" align="center" width="300">
 				<template class="scope" slot-scope="scope">
 					<span v-for="(item, index) in scope.row.merchantFeeList" :key="index">{{item.payTypeName}}: {{Math.floor(item.inFee*10000)/100}}% </span>

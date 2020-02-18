@@ -29,7 +29,7 @@
 					<el-form-item label="商户账户:">
 						<el-input v-model="detaileData.takerPhone"  disabled></el-input>
 					</el-form-item>
-					<el-form-item label="商户昵称:">
+					<el-form-item label="商户用户编号:">
 						<el-input v-model="detaileData.takerName"  disabled></el-input>
 					</el-form-item>
 					<el-form-item label="商户appid:">
@@ -44,7 +44,7 @@
 					<el-form-item label="承兑商账户:">
 						<el-input v-model="detaileData.makerPhone" disabled></el-input>
 					</el-form-item>
-					<el-form-item label="承兑商昵称:">
+					<el-form-item label="承兑商用户编号:">
 						<el-input v-model="detaileData.makerName" disabled></el-input>
 					</el-form-item>
 				</el-form>

@@ -2,7 +2,7 @@
     <div class='exchangeSAC'>
 		<el-form :inline="true" label-width="90px" ref="filterForm" :model="filterForm" size="mini">
 			<sac-input ref="phone" label="账号" v-model.trim="filterForm.phoneOrEmail"></sac-input>
-			<sac-input ref="phone" label="昵称" v-model.trim="filterForm.nickName"></sac-input>
+			<sac-input ref="phone" label="用户编号" v-model.trim="filterForm.nickName"></sac-input>
 			<el-form-item label="用户类型：">
 				<el-select v-model="filterForm.userType" placeholder="选择订单状态" clearable style="width: 178px">
 					<el-option :value="null" label="全部"></el-option>
@@ -38,7 +38,7 @@
 		<el-table stripe border height="100%" size="mini" :default-sort = "{prop: 'usdtAmount', order: 'descending'}" :data="listData.list" @sort-change='sortChange'>
 			<el-table-column type="index" label="序号" :index="indexMethod" align="center"></el-table-column>
 			<el-table-column prop="phone" label="手机号" align="center"></el-table-column>
-			<el-table-column prop="nickName" label="昵称" align="center"></el-table-column>
+			<el-table-column prop="nickName" label="用户编号" align="center"></el-table-column>
 			<el-table-column label="用户类型" align="center">
 				<template slot-scope="scope">{{scope.row.userType | userTypesFilter}}</template>
 			</el-table-column>

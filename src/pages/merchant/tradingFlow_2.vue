@@ -4,7 +4,7 @@
 			<div class="main">
 				<el-collapse value="filter">
 					<el-collapse-item title="查询条件" name="filter">
-						<el-form :inline="true"  ref="filterForm" :model="filterForm" size="mini" label-width="80px">
+						<el-form :inline="true"  ref="filterForm" :model="filterForm" size="mini" label-width="105px">
 							<el-form-item class='dateItem' label="时间:">
 								<el-date-picker
 									v-model="selectedDate"
@@ -19,8 +19,8 @@
 								<el-input placeholder="请输入单号" v-model.trim="filterForm.recdId" class="input-with-select"></el-input>
 							</el-form-item>
 							<br />
-							<el-form-item label="账号/昵称:">
-								<el-input placeholder="请输入用户账号或昵称" v-model.trim="filterForm.account" class="input-with-select"></el-input>
+							<el-form-item label="账号/用户编号:">
+								<el-input placeholder="请输入用户账号或用户编号" v-model.trim="filterForm.account" class="input-with-select"></el-input>
 							</el-form-item>
 							<el-form-item label="状态:">
 								<el-select v-model="filterForm.status" >
@@ -64,10 +64,10 @@
 						<el-table-column  label="商户单号/平台单号" width="180" align="center" >
 							<span slot-scope="scope">{{scope.row.api_trade_id}}<br />{{scope.row.trade_id}}</span>
 						</el-table-column>
-						<el-table-column label="商户昵称/账户" width="150" align="center" >
+						<el-table-column label="商户用户编号/账户" width="150" align="center" >
 							<span slot-scope="scope">{{scope.row.taker_nick_name}}<br />{{scope.row.taker_phone}}</span>
 						</el-table-column>
-						<el-table-column label="承兑商昵称/账户" width="150" align="center">
+						<el-table-column label="承兑商用户编号/账户" width="150" align="center">
 							<span slot-scope="scope">{{scope.row.nick_name}}<br />{{scope.row.phone}}</span>
 						</el-table-column>
 						<el-table-column prop="tradeTime" label="状态" width="120" align="center" >

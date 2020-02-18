@@ -9,7 +9,7 @@
         <el-table :data="tableData" border size="mini" style="width: 100%" height="100">
             <el-table-column prop="create_time" label="时间" width="140" align="center"></el-table-column>
             <el-table-column prop="phone" label="账号" width="100" align="center"></el-table-column>
-            <el-table-column prop="nickName" label="昵称" width="90" align="center"></el-table-column>
+            <el-table-column prop="nickName" label="用户编号" width="90" align="center"></el-table-column>
 			<el-table-column label="用户类型" align="center">
 				<template slot-scope="scope">{{scope.row.user_type | userTypesFilter}}</template>
 			</el-table-column>

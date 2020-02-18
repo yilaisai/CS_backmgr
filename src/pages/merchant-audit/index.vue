@@ -12,7 +12,7 @@
 		</div>
         <el-table :data="tableData" border style="width: 100%" height="100%" size="mini">
             <el-table-column align="center" prop="phone" label="账户" width="130px"></el-table-column>
-            <el-table-column align="center" prop="nickName" label="昵称" width="130px"></el-table-column>
+            <el-table-column align="center" prop="nickName" label="用户编号" width="130px"></el-table-column>
 			<el-table-column align="center"  label="保证金">
                 <template slot-scope="scope">
 					<span>{{scope.row.amount +" "+ scope.row.coinName}}</span>

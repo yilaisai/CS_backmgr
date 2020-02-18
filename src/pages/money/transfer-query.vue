@@ -32,9 +32,9 @@
 			</template>
 		</el-table-column>
 		<el-table-column align="center" prop="fromUserPhone" label="from账号" min-width="150"></el-table-column>
-		<el-table-column align="center" prop="fromNickName" label="from昵称" min-width="150"></el-table-column>
+		<el-table-column align="center" prop="fromNickName" label="from用户编号" min-width="150"></el-table-column>
 		<el-table-column align="center" prop="toUserPhone" label="to账号" min-width="150"></el-table-column>
-		<el-table-column align="center" prop="toNickName" label="to昵称" min-width="150"></el-table-column>
+		<el-table-column align="center" prop="toNickName" label="to用户编号" min-width="150"></el-table-column>
 		<el-table-column align="center" label="状态" min-width="110" fixed="right">
 			<template slot-scope="scope">
 			<el-tag v-if='scope.row.tradeStatus === 0' type="info" size="mini">失败</el-tag>

@@ -11,7 +11,7 @@
 			</el-form>
 			<el-table stripe border height="100%" :default-sort = "{prop: 'usdtAmount', order: 'descending'}" :data="listData.list" @sort-change='sortChange' size="mini">
 				<el-table-column align="center" prop="phone" label="账号" width="100"></el-table-column>
-				<el-table-column align="center" prop="nickName" label="昵称" width="140"></el-table-column>
+				<el-table-column align="center" prop="nickName" label="用户编号" width="140"></el-table-column>
 				<el-table-column align="center"  label="企业类型" width="90">
 					<template slot-scope="scope">
 						{{scope.row.userEnterprise ==0?'非企业账号':'企业账号' }}

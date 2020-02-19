@@ -168,7 +168,7 @@
 						</el-option>
 					</el-select>
 				</el-form-item>
-				<el-form-item label="商户收银台支付入口：">
+				<!-- <el-form-item label="商户收银台支付入口：">
 					<ul>
 						<li v-for="(name,index) in setting" :key="index" >
 							<el-switch
@@ -178,7 +178,7 @@
 							</el-switch>
 						</li>
 					</ul>
-				</el-form-item>
+				</el-form-item> -->
 			</el-form>
 		</div>
 		<el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="40%" >
@@ -218,20 +218,13 @@ export default {
 				payList: [],
 				feeList: []
 			},
-			formData: {
-				value1: '',
-				value2: '',
-			},
+
 			dialogVisible: false,
 			dialogType: "",
 			label1: "",
 			label2: "",
 			dialogTitle: "修改",
 			payType: 1,
-			options:[],             //收银台设置下拉
-			checkStandType:'',      //收银台设置方式
-			setting:[],
-
 		}
 	},
 	activated() {
@@ -436,26 +429,6 @@ export default {
 				this.getDetails()
 			})
 		},
-
-		//收银台支付入口开关
-		changeSwitch(name) {
-			this.$http.post('/wallet/backmgr/merchant/updateMerchantInSwitch',{
-				inSwitch: name.type?1:0,
-				typeName: name.desc,
-				userId:this.$route.query.id
-			}).then(res => {
-				this.$notify.success({
-					title: '提示',
-					message: res.msg
-				})	
-				this.getDetails()
-			})
-		},
-
-		//改变收银台样式
-		changeType(value) {
-			console.log(value)
-		}
 	},
 	computed: {
 		inFee() {

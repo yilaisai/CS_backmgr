@@ -38,7 +38,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row class="input-wrap">
+          <!-- <el-row class="input-wrap">
             <el-col :span="16">
               <el-form-item label="" prop="validateCode">
                 <el-input placeholder="请输入验证码" v-model="postObj.validateCode" clearable>
@@ -49,7 +49,7 @@
               <img @click="getImgCode" ref="imgcode" class="imgcode"
                    :src="SERVER_PATH +'wallet/backmgr/sysuser/open/getValidateCode'" alt="验证码">
             </el-col>
-          </el-row>
+          </el-row> -->
         </div>
       </el-form>
       <el-button type="primary"
@@ -72,7 +72,6 @@
         postObj: {
           username: '',
           md5Pwd: '',
-          validateCode: '',
           password: '',
           secret:''
         },
@@ -83,9 +82,6 @@
           password: [
             { required: true, message: '请输入密码', trigger: 'blur' },
           ],
-          validateCode: [
-            { required: true, message: '请输入验证码', trigger: 'blur' },
-          ],
           secret: [
             { required: true, message: '请输入谷歌验证码', trigger: 'blur' },
           ]
@@ -94,16 +90,13 @@
       };
     },
     methods: {
-      getImgCode() {
-        this.$refs.imgcode.src = `${SERVER_PATH}wallet/backmgr/sysuser/open/getValidateCode?${Math.random()}`;
-      },
       login() {
         this.$refs.postObj.validate((valid) => {
           if (valid) {
             const postObj = {
               username: this.postObj.username,
               md5Pwd: Md5(this.postObj.password),
-              validateCode: this.postObj.validateCode,
+              validateCode: '111',
               version: '1.0.0',
               plat: 'web',
               secret:this.postObj.secret
@@ -123,7 +116,6 @@
                 this.$router.replace('/');
               }, 500);
             }).catch((res) => {
-              this.getImgCode(); // 重新获取图片验证码
             })
           } else {
             console.log('error submit!!');
@@ -133,8 +125,6 @@
       },
     },
     mounted() {
-      this.postObj.validateCode = '';
-      this.getImgCode();
     },
     created() {
       this.SERVER_PATH = SERVER_PATH;

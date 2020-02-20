@@ -14,13 +14,13 @@ const merchant = [
 				path: 'user-query',
 				name: 'merUserQuery',
 				meta: { title: '商户查询' },
-				component: () => import('@/pages/merchant/user-query/index.vue')
+				component: () => import('@/pages/merchant/user-query/index/index.vue')
 			},
 			{
 				path: 'user-details',
 				name: 'merUserDetails',
 				meta: { title: '商户详情' },
-				component: () => import('@/pages/merchant/user-query/details.vue')
+				component: () => import('@/pages/merchant/user-query/details/index.vue')
 			},
 			{
 				path: 'recharge-record',

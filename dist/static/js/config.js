@@ -9,16 +9,10 @@ if(window.location.href.indexOf('admin.num22.org') >= 0) {
 	SERVER_PATH2 = 'https://api.icore.plus/'
 	SERVER_PATH = 'https://api.icore.plus/'
 }else {//开发环境
-<<<<<<< HEAD
 	// SERVER_PATH2 = 'http://47.52.110.161:7036/'
 	// SERVER_PATH = 'http://47.52.110.161:7036/'
 
 	// SERVER_PATH2 = 'http://c28w749426.zicp.vip/'  //林威远程
-=======
-	SERVER_PATH2 = 'http://47.52.110.161:7036/'
-	SERVER_PATH = 'http://47.52.110.161:7036/'
-	// SERVER_PATH2 = 'http://c28w749426.zicp.vip/'//林威远程
->>>>>>> 24db6f5cbd293f4ff1c2a4349e7f98d1aa2dc156
 	// SERVER_PATH = 'http://c28w749426.zicp.vip/'
 	
 	// SERVER_PATH = 'http://192.168.120.108:7036/'

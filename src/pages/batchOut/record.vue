@@ -165,7 +165,7 @@ export default {
 		}
 	},
 	activated(){
-		// this.selectedDate = getTodayTime()
+		this.selectedDate = getTodayTime()
 		this.getCashoutAuditList()
         this.baseUrl = localStorage.getItem('SERVER_PATH') || window.SERVER_PATH|| window.SERVER_PATH2
 	},

@@ -67,15 +67,15 @@
           </el-select>
         </el-form-item>
         <el-form-item label="消息标题:" required prop="title">
-          <el-col :span="16" style=" position: relative;">
-            <span class="tips tips_input">{{ruleForm.title.length}}/15</span>
-            <el-input size="small" v-model="ruleForm.title" maxlength="15" placeholder="请输入消息标题"></el-input>
+          <el-col :span="24" style=" position: relative;">
+            <span class="tips tips_input">{{ruleForm.title.length}}/30</span>
+            <el-input size="small" v-model="ruleForm.title" maxlength="30" placeholder="请输入消息标题"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="消息内容:" required prop="content">
-          <el-col :span="16" style=" position: relative;">
-            <span class="tips tips_textarea">{{ruleForm.content.length}}/50</span>
-            <el-input size="small" type="textarea" v-model="ruleForm.content" width="100%" maxlength="50"
+          <el-col :span="24" style=" position: relative;">
+            <span class="tips tips_textarea">{{ruleForm.content.length}}/5000</span>
+            <el-input size="small" type="textarea" v-model="ruleForm.content" width="100%" maxlength="5000"
                       placeholder="请输入消息内容"></el-input>
           </el-col>
         </el-form-item>
@@ -175,7 +175,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false" size="small">取 消</el-button>
-        <el-button type="primary" @click="determine" size="small">确 定</el-button>
+        <el-button type="primary" :disabled="pushMessage"  @click="determine" size="small">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -250,11 +250,11 @@
           ],
           title: [
             { required: true, message: '请输入标题', trigger: 'blur' },
-            { min: 1, max: 15, message: '长度在 1 到 15 个字符', trigger: 'blur' }
+            { min: 1, max: 30, message: '长度在 1 到 30 个字符', trigger: 'blur' }
           ],
           content: [
             { required: true, message: '请输入内容', trigger: 'blur' },
-            { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
+            { min: 1, max: 5000, message: '长度在 1 到 5000 个字符', trigger: 'blur' }
           ],
           appName: [
             { required: true, message: '请输入应用名称', trigger: 'blur' }
@@ -360,10 +360,11 @@
       },
       modification(itemData) {
         this.dialogTitle = '修改推送规则';
-        this.dialogFormVisible = true;
         this.resetForm();
         this.getSampleCoinInfo();
-        this.ruleForm = JSON.parse(JSON.stringify(itemData));
+        itemData = JSON.parse(JSON.stringify(itemData));
+        itemData.sendTime = ''
+        this.ruleForm = itemData
         this.ruleForm.timingPush = this.ruleForm.timingPush == 0 ? false : true;
         if (this.ruleForm.pushAll == 1) {
           this.radioValue = 1;
@@ -388,6 +389,12 @@
             this.ruleForm.noticeType = 'ThirdAppMsg';
             break;
         }
+        this.$http.post("/wallet/app/info/open/queryNoticeById", {id:itemData.id}).then((res) => {
+          if(res.code == 200){
+            this.ruleForm.content = res.result.info.content
+          }
+        })
+        this.dialogFormVisible = true;
       },
       addMessage() {
         this.radioValue = null;
@@ -474,6 +481,11 @@
         }
       },
       determine() {
+
+        console.log(this.pushMessage)
+        if(this.pushMessage){return}
+        this.pushMessage = true
+        console.log(this.pushMessage)
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
             const ruleForm = JSON.parse(JSON.stringify(this.ruleForm))
@@ -502,7 +514,15 @@
                   type: 'success'
                 });
                 this.dialogFormVisible = false;
+                setTimeout(()=>{
+                  this.pushMessage = false;
+                },1000)
+                
                 this.getNoticeInfoList();
+              }).catch(() => {
+                setTimeout(()=>{
+                  this.pushMessage = false;
+                },1000)
               })
             } else {
               this.$http.post("wallet/backmgr/noticeInfo/createNoticeInfo", ruleForm).then((res) => {
@@ -512,11 +532,21 @@
                   type: 'success'
                 });
                 this.dialogFormVisible = false;
+                setTimeout(()=>{
+                  this.pushMessage = false;
+                },1000)
                 this.getNoticeInfoList();
+              }).catch(() => {
+                setTimeout(()=>{
+                  this.pushMessage = false;
+                },1000)
               })
             }
           } else {
             console.log('error submit!!');
+            setTimeout(()=>{
+                  this.pushMessage = false;
+                },1000)
             return false;
           }
         });

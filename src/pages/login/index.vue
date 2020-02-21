@@ -96,7 +96,6 @@
             const postObj = {
               username: this.postObj.username,
               md5Pwd: Md5(this.postObj.password),
-              validateCode: '111',
               version: '1.0.0',
               plat: 'web',
               secret:this.postObj.secret

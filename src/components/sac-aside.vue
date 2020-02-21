@@ -101,7 +101,7 @@ export default {
       align-items: center;
       /*background: #1a2238;*/
       img {
-        width: 80px;
+        width: 120px;
       }
     }
     .el-menu-vertical-demo:not(.el-menu--collapse) {
@@ -119,6 +119,13 @@ export default {
     .el-submenu.is-active .el-submenu__title {
       background: #242c60 !important;
     }
+    .el-submenu .el-submenu .el-submenu__title{
+      background: rgb(26, 34, 56) !important;
+    }
+    .el-submenu .el-submenu.is-opened .el-submenu__title{
+      background: #242C46 !important;
+    }
+    
     .el-menu-item, .el-submenu__title {
       height: 46px;
       line-height: 46px;

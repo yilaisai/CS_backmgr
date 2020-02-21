@@ -155,7 +155,7 @@
 				</li> -->
 			</ul>
 		</div>
-		<CheckStand :pageData="pageData"></CheckStand>
+		<CheckStand :data="pageData"></CheckStand>
 		<el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="40%" >
 			<el-form ref="form" :model="formData" label-width="120px">
 				<el-form-item :label="label1">

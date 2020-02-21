@@ -133,6 +133,7 @@
         // this.defaultForm.CHECK_STAND_PAY_TYPE = newVal.info.payList.split(',')
         this.payList = newVal.payList
       }
+      
     }
   }
 </script>

@@ -8,13 +8,13 @@ const Index = () => import('@/pages/home');
 const Login = () => import('@/pages/login/index');
 
 import systemRouter from './routers/system'  //系统页面
-import brm from './routers/brm'   //资金管理
+import money from './routers/money'   //资金管理
 import merchant from './routers/merchant'  //商户服务
 import operation from './routers/operation'  //运营管理
 
 export const appRouter = [
 	...systemRouter,
-	...brm,
+	...money,
 	...merchant,
 	...operation,
   {
@@ -264,33 +264,33 @@ export const appRouter = [
       }, 
     ],
   },
-  {
-	  path: '/blockchain',
-	  name: 'blockchain',
-	  redirect: '/blockchain/withdraw-check',
-	  meta: {
-		  title: '区块链监控'
-	  },
-	  component: Index,
-	  children: [
-		  {
-			  path: 'withdraw-check',
-			  name: 'withdrawCheck',
-			  meta: {
-				  title: '提币审核'
-			  },
-			  component: () => import('@/pages/withdraw-check/index.vue')
-		  },
-		  {
-			path: 'blockchain-statistics',
-			name: 'blockchainStatistics',
-			meta: {
-				title: '区块链统计'
-			},
-			component: () => import('@/pages/blockchain-statistics/index.vue')
-		  }
-	  ]
-  },
+  // {
+	//   path: '/blockchain',
+	//   name: 'blockchain',
+	//   redirect: '/blockchain/withdraw-check',
+	//   meta: {
+	// 	  title: '区块链监控'
+	//   },
+	//   component: Index,
+	//   children: [
+	// 	  {
+	// 		  path: 'withdraw-check',
+	// 		  name: 'withdrawCheck',
+	// 		  meta: {
+	// 			  title: '提币审核'
+	// 		  },
+	// 		  component: () => import('@/pages/withdraw-check/index.vue')
+	// 	  },
+	// 	  {
+	// 		path: 'blockchain-statistics',
+	// 		name: 'blockchainStatistics',
+	// 		meta: {
+	// 			title: '区块链统计'
+	// 		},
+	// 		component: () => import('@/pages/blockchain-statistics/index.vue')
+	// 	  }
+	//   ]
+  // },
   // {
 	//   path: '/merchant',
 	//   name: 'merchant',

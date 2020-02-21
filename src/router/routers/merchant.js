@@ -44,7 +44,7 @@ const merchant = [
 				path: 'merchantTradingFlow2',
 				name: 'merchantTradingFlow2',
 				meta: { title: '商户交易记录' },
-				component: () => import('@/pages/merchant/tradingFlow_2.vue')
+				component: () => import('@/pages/merchant/tradingFlow_2/index.vue')
 			},
 			{
 				path: 'merchantList',
@@ -52,21 +52,21 @@ const merchant = [
 				meta: {
 					title: '商户注册申请'
 				},
-				component: () => import('@/pages/merchant/index.vue')
+				component: () => import('@/pages/merchant/merchantList/index.vue')
 			},{
 					path: 'merchantDetaile',
 					name: 'merchantDetaile',
 					meta: {
 						title: '商户详情'
 					},
-					component: () => import('@/pages/merchant/merchantDetaile.vue')
+					component: () => import('@/pages/merchant/merchantList/merchantDetaile/index.vue')
 			},{
 					path: 'cashOutVerify',
 					name: 'cashOutVerify',
 					meta: {
 						title: '交易广告列表'
 					},
-					component: () => import('@/pages/merchant/cashOutVerify.vue')
+					component: () => import('@/pages/merchant/cashOutVerify/index.vue')
 			},
 			
 			{
@@ -75,7 +75,7 @@ const merchant = [
 					meta: {
 						title: '宝转卡流水'
 					},
-					component: () => import('@/pages/merchant/tradingFlow.vue')
+					component: () => import('@/pages/merchant/tradingFlow/index.vue')
 			}
 			,{
 					path: 'merchantTradingFlowDetaile',
@@ -83,7 +83,7 @@ const merchant = [
 					meta: {
 						title: '商户交易流水详情'
 					},
-					component: () => import('@/pages/merchant/tradingFlowDetaile.vue')
+					component: () => import('@/pages/merchant/tradingFlow/tradingFlowDetaile/index.vue')
 			},
 			{
 					path: 'AuthorizedMerchant',
@@ -107,7 +107,7 @@ const merchant = [
 					meta: {
 						title: '商户用户黑名单'
 					},
-					component: () => import('@/pages/merchant/blacklist.vue')
+					component: () => import('@/pages/merchant/blacklist/index.vue')
 			},
 			
 			{

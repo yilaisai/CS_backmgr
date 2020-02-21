@@ -2,7 +2,7 @@
 	<div class="cashOutVerify-page">
 		<el-collapse value="filter">
 			<el-collapse-item title="查询条件" name="filter">
-				<el-form :inline="true" label-width="86px" ref="filterForm" size="mini" :model="filterForm">
+				<el-form :inline="true" label-width="105px" ref="filterForm" size="mini" :model="filterForm">
                     <el-form-item class='dateItem' label="时间:">
 						<el-date-picker
 							v-model="selectedDate"
@@ -13,8 +13,8 @@
 							end-placeholder="结束日期" >
 						</el-date-picker>
 					</el-form-item>
-					<el-form-item label="账号/昵称:" >
-						<el-input placeholder="请输入用户账号/昵称" v-model="filterForm.phoneOrNick" ></el-input>
+					<el-form-item label="账号/用户编号:" >
+						<el-input placeholder="请输入用户账号/用户编号" v-model="filterForm.phoneOrNick" ></el-input>
 					</el-form-item>
                     <el-form-item label="订单号:" >
 						<el-input placeholder="请输入订单号" v-model="filterForm.recdId" ></el-input>
@@ -55,7 +55,7 @@
 					<span>{{scope.row.recdId}}<br />{{$fmtDate(scope.row.createTime, 'full')}}</span>
 				</template>
 			</el-table-column>
-			<el-table-column align="center"  label="商户昵称/账户" width="130">
+			<el-table-column align="center"  label="商户用户编号/账户" width="130">
 				<template slot-scope="scope">
 					<span>{{scope.row.nickName}}<br />{{scope.row.phone}}</span>
 				</template>
@@ -230,7 +230,7 @@ export default {
 		flex: 1;
 	}
 	.dateItem{
-		width: 480px;
+		width: 500px;
 	}
 	.load-more {
         display: flex;

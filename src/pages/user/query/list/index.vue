@@ -122,7 +122,7 @@
   </div>
 </template>
 <script>
-  import Md5 from '../../../static/js/md5';
+  import Md5 from '../../../../../static/js/md5';
 
   export default {
     name: 'query',
@@ -280,7 +280,7 @@
 			this.getUserInfoList()
 		},
 		goDetail(userId) {
-			this.$router.push({ name: 'queryDetails', query: { userId:userId } });
+			this.$router.push({ name: 'queryDetail', query: { userId:userId } });
 		},
 		/**
 		 * 冻结/解冻 锁定/解锁 用户   optStatus  用户状态：2表示冻结，1表示锁定，0表示解冻

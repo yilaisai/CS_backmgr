@@ -1,8 +1,3 @@
-/**
-*  Created by   阿紫
-*  On  2018/8/12
-*  Content
-*/
 <template>
   <div class='query-details'>
       <el-header>

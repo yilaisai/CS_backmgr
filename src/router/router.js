@@ -11,12 +11,14 @@ import systemRouter from './routers/system'  //系统页面
 import money from './routers/money'   //资金管理
 import merchant from './routers/merchant'  //商户服务
 import operation from './routers/operation'  //运营管理
+import user from './routers/user'  //用户管理
 
 export const appRouter = [
 	...systemRouter,
 	...money,
 	...merchant,
-	...operation,
+  ...operation,
+  ...user,
   {
     path: '/',
     name: 'Index',
@@ -34,33 +36,6 @@ export const appRouter = [
         },
         component: () => import('@/pages/home/home.vue'),
       },
-    ],
-  },
-  {
-    path: '/user',
-    name: 'user',
-    redirect: '/user/query',
-    meta: {
-      title: '用户管理',
-    },
-    component: Index,
-    children: [
-      {
-        path: 'query',
-        name: 'query',
-        meta: {
-          title: '用户查询',
-        },
-        component: () => import('@/pages/user/query.vue'),
-      },
-      {
-        path: 'query-details',
-        name: 'queryDetails',
-        meta: {
-          title: '用户查询详情',
-        },
-        component: () => import('@/pages/user/query-details.vue'),
-      }
     ],
   },
   {
@@ -530,61 +505,6 @@ export const appRouter = [
         },
         component: () => import('@/pages/third-application/application-details.vue'),
       }],
-  },
-  {
-    path: '/identity',
-    name: 'identity',
-    redirect: '/identity/identity',
-    meta: {
-      title: '身份审核',
-    },
-    component: Index,
-    children: [
-      {
-		name: 'identity',
-        path: 'identity',
-        meta: {
-          title: '实名审核',
-        },
-        component: () => import('@/pages/identity/identity.vue'),
-      },
-      {
-        path: 'identity-modify',
-        name: 'identityModify',
-        meta: {
-          title: '身份信息修改',
-          noTab:true
-        },
-        component: () => import('@/pages/identity/identity-modify.vue'),
-      },
-      {
-        path: 'identity-details',
-        name: 'identityDetails',
-        meta: {
-          title: '实名审核详情',
-        },
-        component: () => import('@/pages/identity/identity-details.vue'),
-      },
-    ],
-  },
-  {
-    path: '/invite',
-    name: 'invite',
-    redirect: '/invite/invite',
-    meta: {
-      title: '邀请关系',
-    },
-    component: Index,
-    children: [
-      {
-		name: 'invite222',
-        path: 'invite',
-        meta: {
-          title: '邀请关系',
-        },
-        component: () => import('@/pages/invite/invite.vue'),
-      },
-    ],
   },
   {
     path: '/riskManage',

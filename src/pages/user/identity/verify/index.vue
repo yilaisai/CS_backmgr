@@ -100,7 +100,7 @@ export default {
 		},
 		goDetails(itemDate) {
 			this.$router.push({
-				path: '/identity/identity-details',
+				path: '/user/identityDetails',
 				query: itemDate,
 			})
 		},

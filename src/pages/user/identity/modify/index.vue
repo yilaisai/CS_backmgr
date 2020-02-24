@@ -173,7 +173,6 @@
       this.resetForm();
       this.server_path = SERVER_PATH;
       if (this.$route.params.userId) {
-        console.log(this.$route.params, 88);
         this.ruleForm.userId = this.$route.params.userId;
         this.ruleForm.realName = this.$route.params.realName;
         this.ruleForm.cardNo = this.$route.params.cardNo;

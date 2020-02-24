@@ -25,6 +25,22 @@ const brm = [
         component: () => import('@/pages/money/transfer-approval.vue'),
       },
       {
+        path: 'currency',
+        name: 'currency',
+        meta: {
+          title: '币种设置',
+        },
+        component: () => import('@/pages/money/currency.vue'),
+      },
+      {
+        path: 'currency-set',
+        name: 'currencySet',
+        meta: {
+          title: '新增修改币种',
+        },
+        component: () => import('@/pages/money/currency-set.vue'),
+      },
+      {
         path: 'capitalFlow',
         name: 'capitalFlow',
         meta: {

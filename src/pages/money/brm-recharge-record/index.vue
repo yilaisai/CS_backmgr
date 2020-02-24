@@ -1,9 +1,11 @@
 <template>
 	<div class="recharge-record">
-		<!-- 筛选条件 -->
-        <Query ref="query" @queryData='getData' :orderStatus="orderStatus"/>
-		<!-- 表格 -->
-		<Table :list="pageData.list" :orderStatus="orderStatus" @hideDialogMR="hideDialogMR"></Table>
+		<div class="main">
+			<!-- 筛选条件 -->
+			<Query ref="query" @queryData='getData' :orderStatus="orderStatus"/>
+			<!-- 表格 -->
+			<Table :list="pageData.list" :orderStatus="orderStatus" @hideDialogMR="hideDialogMR"></Table>
+		</div>
 		<!-- 分页器 -->
 		<div class="footer">
       <div class="total">
@@ -89,22 +91,29 @@ export default {
 <style lang="less" scoped>
 .recharge-record{
 	overflow: hidden;
+	
 	.load-more {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        .count {
-            font-size: 14px;
-            span {
-                margin-right: 20px;
-                i {
-                    font-style: normal;
-                    color: #436bff;
-                    font-weight: 600;
-                }
-            }
-        }
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		.count {
+				font-size: 14px;
+				span {
+						margin-right: 20px;
+						i {
+								font-style: normal;
+								color: #436bff;
+								font-weight: 600;
+						}
+				}
 		}
+	}
+	.main {
+		height:100%;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+	}
 	.footer{
 		display: flex;
 		flex-direction: row;

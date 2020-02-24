@@ -48,7 +48,7 @@
 				<template slot-scope="scope">
 						<p v-if="scope.row.payType==1||scope.row.payType==4">无</p>
 						<div v-else>
-							<p  @click="verify(scope.row)"  style="color:#409EFF;cursor: pointer;user-select:none;" v-if="scope.row.analysisQrCode"><img style="width:20px;position: relative; top: 5px; margin-right: 3px;" src="../../../assets/QR_code.png" alt="">验证二维码</p>
+							<p  @click="verify(scope.row)"  style="color:#409EFF;cursor: pointer;user-select:none;" v-if="scope.row.analysisQrCode"> <img style="width:20px;position: relative; top: 5px; margin-right: 3px;" src="../../../../assets/QR_code.png" alt=""> 验证二维码</p>
 							<el-button v-else @click="getAnalysisQrCode(scope.row)" type="text" size="mini">识别二维码</el-button>
 						</div>
 				</template>
@@ -105,7 +105,7 @@
 				<template slot-scope="scope">
 						<p v-if="scope.row.payType==1||scope.row.payType==4">无</p>
 						<div v-else>
-							<p  @click="verify(scope.row)"  style="color:#409EFF;cursor: pointer;user-select:none;" v-if="scope.row.analysisQrCode"><img style="width:20px;position: relative; top: 5px; margin-right: 3px;" src="../../../assets/QR_code.png" alt="">验证二维码</p>
+							<p  @click="verify(scope.row)"  style="color:#409EFF;cursor: pointer;user-select:none;" v-if="scope.row.analysisQrCode"><img style="width:20px;position: relative; top: 5px; margin-right: 3px;" src="../../../../assets/QR_code.png" alt="">验证二维码</p>
 							<p v-else>识别错误</p>
 						</div>
 				</template>
@@ -150,7 +150,7 @@
 
 	import vueQr from 'vue-qr'
   export default {
-		name: 'accountsReceivableDetaile',
+		name: 'paymentMethodDetaile',
 		components:{vueQr},
     data() {
       return {

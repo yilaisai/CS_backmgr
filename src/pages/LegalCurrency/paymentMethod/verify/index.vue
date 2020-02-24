@@ -123,7 +123,7 @@
 </template>
 <script>
     export default {
-        name: "exchangeSAC",
+        name: "paymentMethodVerify",
         data() {
             return {
 							showNumList:false,
@@ -204,7 +204,7 @@
 				},
 				goDetaile(scope){
 					this.$router.push({
-						name:'accountsReceivableDetaile',
+						name:'paymentMethodDetaile',
 						query:{
 							userId:scope.row.userId,
 							nickName:scope.row.nickName,

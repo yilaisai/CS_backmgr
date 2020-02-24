@@ -65,7 +65,7 @@
 </template>
 <script>
 export default {
-    name:'data-approval',
+    name:'advertisersVerify',
     data(){
         return{
             searchType:'0',

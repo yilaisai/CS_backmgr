@@ -141,7 +141,7 @@ export default {
         },
         checkDetails(itemData){
             this.$router.push({
-                name:'complaint-details',
+                name:'complaintDetails',
                 query:{
                     tradeId:itemData.tradeId,
 					appealId:itemData.appealId,

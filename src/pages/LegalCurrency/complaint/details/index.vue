@@ -1,10 +1,3 @@
-/*
- * @Author: dubbing 
- * @Date: 2018-12-13 13:45:18 
- * @Last Modified by: dubbing
- * @Content: 投诉查看详情
- * @Last Modified time: 2018-12-16 10:10:12
- */
 <template>
     <div class="complaint-details">
         <el-header>
@@ -245,7 +238,7 @@
 </template>
 <script>
 export default {
-    name:'complaint-details',
+    name:'complaintDetails',
     data(){
         return{
             appealStatus:'',

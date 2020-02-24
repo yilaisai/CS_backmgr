@@ -41,14 +41,6 @@ const brm = [
         component: () => import('@/pages/money/currency-set.vue'),
       },
       {
-        path: 'capitalFlow',
-        name: 'capitalFlow',
-        meta: {
-          title: '资金流水',
-        },
-        component: () => import('@/pages/money/capitalFlow.vue'),
-      },
-      {
         path: 'capitalFlow2',
         name: 'capitalFlow2',
         meta: {

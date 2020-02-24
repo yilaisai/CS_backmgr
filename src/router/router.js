@@ -12,6 +12,7 @@ import money from './routers/money'   //资金管理
 import merchant from './routers/merchant'  //商户服务
 import operation from './routers/operation'  //运营管理
 import user from './routers/user'  //用户管理
+import LegalCurrency from './routers/LegalCurrency'  //法币管理
 
 export const appRouter = [
 	...systemRouter,
@@ -19,6 +20,7 @@ export const appRouter = [
 	...merchant,
   ...operation,
   ...user,
+  ...LegalCurrency,
   {
     path: '/',
     name: 'Index',
@@ -74,170 +76,6 @@ export const appRouter = [
     component: Index,
     children: [
       ],
-  },
-  {
-    path: '/LegalCurrency',
-    name: 'LegalCurrency',
-    redirect: '/LegalCurrency/complaint',
-    meta: {
-      title: '法币交易',
-    },
-    component: Index,
-    children: [
-      {
-        path: 'verify',
-        name:'verify',
-        meta: {
-          title: '审核模块',
-        },
-        component:() => import('@/pages/LegalCurrency/verify/accountsReceivable.vue'),
-      },
-      {
-        path: 'LegalCurrencySetting',
-        name:'LegalCurrencySetting',
-        meta: {
-          title: '法币设置',
-        },
-        component:() => import('@/pages/LegalCurrency/LegalCurrencySetting.vue'),
-      },
-      {
-        path: 'userQuery',
-        name:'userQuery',
-        meta: {
-          title: '用户查询',
-        },
-        component:() => import('@/pages/LegalCurrency/userQuery/index.vue'),
-      },
-      {
-        path: 'userQueryDetaile',
-        name:'userQueryDetaile',
-        meta: {
-          title: '查看用户详情',
-        },
-        component:() => import('@/pages/LegalCurrency/userQuery/detaile.vue'),
-      },
-      {
-        path: 'tradingFlow',
-        name:'tradingFlow',
-        meta: {
-          title: '交易流水',
-        },
-        component:() => import('@/pages/LegalCurrency/tradingFlow/index.vue'),
-      },
-      {
-        path: 'assetCertification',
-        name:'assetCertification',
-        meta: {
-          title: '资产证明管理',
-        },
-        component:() => import('@/pages/LegalCurrency/assetCertification'),
-      },
-      
-      {
-        path: 'accountsReceivable',
-        name:'accountsReceivable',
-        meta: {
-          title: '支付方式审核',
-        },
-        component: () => import('@/pages/LegalCurrency/verify/accountsReceivable.vue'),
-      },
-      {
-        path: 'accountsReceivableDetaile',
-        name:'accountsReceivableDetaile',
-        meta: {
-          title: '支付方式-详情',
-        },
-        component: () => import('@/pages/LegalCurrency/verify/accountsReceivableDetaile.vue'),
-      },
-      {
-        path: 'complaint',
-        name:'complaint',
-        meta: {
-          title: '投诉管理',
-        },
-        component: () => import('@/pages/LegalCurrency/complaint.vue'),
-      },
-      {
-        path: 'LegalCurrencyTop',
-        name:'LegalCurrencyTop',
-        meta: {
-          title: '法币资产排名',
-        },
-        component: () => import('@/pages/LegalCurrency/leaderboard/LegalCurrencyTop.vue'),
-      },
-      {
-        path: 'personalAssets',
-        name:'personalAssets',
-        meta: {
-          title: '个人资产',
-        },
-        component: () => import('@/pages/LegalCurrency/leaderboard/personalAssets.vue'),
-      },
-      {
-        path: 'billingRecord',
-        name:'billingRecord',
-        meta: {
-          title: '账单流水',
-        },
-        component: () => import('@/pages/LegalCurrency/leaderboard/billingRecord.vue'),
-      },
-      {
-        path: 'customer-log',
-        name:'customer-log',
-        meta: {
-          title: '投诉管理-查看客服操作日志',
-        },
-        component: () => import('@/pages/LegalCurrency/customer-log.vue'),
-      },
-      {
-        path: 'complaint-details',
-        name:'complaint-details',
-        meta: {
-          title: '投诉管理-查看详情',
-        },
-        component: () => import('@/pages/LegalCurrency/complaint-details.vue'),
-      },
-      {
-        path: 'complaint-more',
-        name: 'complaint-more',
-        meta: {
-          title: '投诉管理-查看更多',
-        },
-        component: () => import('@/pages/LegalCurrency/complaint-more.vue'),
-      },
-      {
-        path: 'userProcessing',
-        name: 'userProcessing',
-        meta: {
-          title: '用户处理',
-        },
-        component: () => import('@/pages/user/user-processing.vue'),
-      },
-      {
-        path: 'user-history',
-        name: 'user-history',
-        meta: {
-          title: '用户处理-查看用户历史处理记录',
-        },
-        component: () => import('@/pages/user/user-history.vue'),
-      },
-      {
-        path: 'merchantAudit',
-        name: 'merchantAudit',
-        meta: {
-          title: '广告商审核',
-        },
-        component: () => import('@/pages/merchant-audit/index'),
-      },
-      {
-        path: 'transactionDetails',
-        name: 'transactionDetails',
-        meta: {
-          title: '交易详情',
-        },
-        component: () => import('@/pages/transaction/transaction-details.vue'),
-      }, 
-    ],
   },
   // {
 	//   path: '/blockchain',
@@ -366,14 +204,6 @@ export const appRouter = [
           title: '转账审批',
         },
         component: () => import('@/pages/money/transfer-approval.vue'),
-      },
-      {
-        path: 'capitalFlow',
-        name: 'capitalFlow',
-        meta: {
-          title: '资金流水',
-        },
-        component: () => import('@/pages/money/capitalFlow.vue'),
       },
       {
         path: 'capitalFlow2',

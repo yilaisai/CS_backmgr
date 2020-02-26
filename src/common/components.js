@@ -1,8 +1,3 @@
-/**
- *  Created by   阿紫
- *  On  2018/8/8
- *  Content
- */
 import Vue from 'vue';
 
 import SacDate from '@/components/sac-date';

@@ -79,14 +79,14 @@
 					<span>{{inFee}} %</span>
 					<el-button type="primary" plain size="mini" @click="showDialog('feeRateIn')">修改</el-button>
 				</li>
-				<li>
+				<!-- <li>
 					<label>商户兑入方式:</label>
 					<el-switch v-model="pageData.info.matchSwitch" :active-value="1" :inactive-value="0" @change="updateMerchantSwitch" style="margin-left: 10px;"></el-switch>
 					<span style="margin-left: 15px;">
 						<el-radio v-model="pageData.info.inType" :disabled="pageData.info.matchSwitch == 0" :label="1" @change="inTypeChange">派单</el-radio>
   						<el-radio v-model="pageData.info.inType" :disabled="pageData.info.matchSwitch == 0" :label="2" @change="inTypeChange">抢单</el-radio>
 					</span>
-				</li>
+				</li> -->
 				<li>
 					<label>商户兑出手续费:</label>
 					<el-select v-model="payType" placeholder="请选择" size="mini" style="width:90px">
@@ -100,13 +100,13 @@
 					<span>{{outFee}} %</span>
 					<el-button type="primary" plain size="mini" @click="showDialog('feeRateIn')">修改</el-button>
 				</li>
-				<li>
+				<!-- <li>
 					<label>商户兑出方式:</label>
 					<span>
 						<el-radio v-model="pageData.info.outType" :label="1" @change="outTypeChange">派单</el-radio>
   						<el-radio v-model="pageData.info.outType" :label="2" @change="outTypeChange">抢单</el-radio>
 					</span>
-				</li>
+				</li> -->
 				<!-- <li>
 					<label>直推人费率:</label>
 					<span>兑入：{{pageData.info.firstRateIn}}% 　　 兑出：{{pageData.info.firstRateOut}}%</span>

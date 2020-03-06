@@ -11,10 +11,10 @@
         <img src="@/assets/Proxima_logo.svg" class="left-logo">
         <p class="left-text">欢迎加入区块链<br/>现代货币运动</p>
         <img src="@/assets/login_lefg_img.png"  class="left-img">
-        <p class="left-tips">版权所有 © 2019 proxima.com 保留所有权利</p>
+        <p class="left-tips">版权所有 © 2019 acen.tech.com 保留所有权利</p>
       </div>
       <div class="right">
-        <h5 class="right-title">Proxima客服后台管理系统</h5>
+        <h5 class="right-title">AlphaPay客服后台管理系统</h5>
         <el-form :model="postObj" :rules="rules" ref="postObj"
                label-width="0px" class="demo-ruleForm">
           <div class="form">

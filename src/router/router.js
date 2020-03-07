@@ -13,6 +13,7 @@ import merchant from './routers/merchant'  //商户服务
 import operation from './routers/operation'  //运营管理
 import user from './routers/user'  //用户管理
 import LegalCurrency from './routers/LegalCurrency'  //法币管理
+import transactionFlow from './routers/transactionFlow'  //交易流水
 
 export const appRouter = [
 	...systemRouter,
@@ -21,6 +22,7 @@ export const appRouter = [
   ...operation,
   ...user,
   ...LegalCurrency,
+  ...transactionFlow,
   {
     path: '/',
     name: 'Index',

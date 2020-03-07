@@ -99,12 +99,23 @@
 			</el-tabs>
 			<el-tabs type="border-card">
 				<el-tab-pane label="全局设置">
-					<el-form ref="form" :model="form" label-width="100px" size="small">
+					<el-form ref="form" :model="form" label-width="130px" size="small">
 						<el-form-item label="提币手续费：">
 							<el-input type="number" v-model.trim="form.MERCHANT_WITHDRAW_RATE"></el-input>
 						</el-form-item>
 						<el-form-item label="转账手续费：">
 							<el-input type="number" v-model.trim="form.MERCHANT_TRADE_RATE"></el-input>
+						</el-form-item>
+						<el-form-item class="bold" label="商户兑入方式：">
+							<span style="margin-left: 15px;">
+								<el-radio v-model="inSwitch"   label="1"  @change="modifyInSwitch">派单</el-radio>
+								<el-radio v-model="inSwitch" label="2"  @change="modifyInSwitch">抢单</el-radio>
+							</span>
+						</el-form-item>
+						<el-form-item label="抢单转派单时间：">
+							<el-input v-model="rushWaitTime" placeholder="请输入时间" @blur = "modifyInSwitch " >
+								<template slot="append">S</template>
+							</el-input>
 						</el-form-item>
 					</el-form>
 				</el-tab-pane>
@@ -135,13 +146,17 @@ export default {
 			inFee: 0,
 			outFee: 0,
 			coinName: "RMT",
-			payType: ""
+			payType: "",
+			inSwitch:'1',
+			rushWaitTime:'',
 		}
 	},
 	activated() {
 		this.getData()
+		this.getInSwitch()
 	},
 	methods: {
+		
 		getData() {
 			this.$http.post('/wallet/backmgr/merchant/trade/config', {
 				coinName: this.coinName
@@ -150,6 +165,24 @@ export default {
 				this.form.BATCHOUT_RATIO_FEE = Math.floor(this.form.BATCHOUT_RATIO_FEE*10000)/100
 				if(this.form.otcPayLists.length > 0) {
 					this.payType = this.form.otcPayLists[0].payType
+				}
+			})
+		},
+		modifyInSwitch(){
+			this.$http.post('/wallet/app/otc/backmgr/modifyInSwitch', {
+				inSwitch:this.inSwitch,
+				rushWaitTime:this.rushWaitTime
+			}).then(res => {
+				if(res.code == 200){
+					this.getInSwitch()
+				}
+			})
+		},
+		getInSwitch(){
+			this.$http.post('/wallet/app/otc/backmgr/getInSwitch', {}).then(res => {
+				if(res.code == 200){
+					this.inSwitch = res.result.inSwitch+''
+					this.rushWaitTime = res.result.rushWaitTime
 				}
 			})
 		},
@@ -266,6 +299,11 @@ export default {
 	}
 	.big>p{
 		color: red;
+	}
+	/deep/.bold{
+		.el-form-item__label{
+			font-weight: 600;
+		}
 	}
 }
 </style>

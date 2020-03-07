@@ -100,13 +100,13 @@
 					<span>{{outFee}} %</span>
 					<el-button type="primary" plain size="mini" @click="showDialog('feeRateIn')">修改</el-button>
 				</li>
-				<!-- <li>
+				<li>
 					<label>商户兑出方式:</label>
 					<span>
 						<el-radio v-model="pageData.info.outType" :label="1" @change="outTypeChange">派单</el-radio>
   						<el-radio v-model="pageData.info.outType" :label="2" @change="outTypeChange">抢单</el-radio>
 					</span>
-				</li> -->
+				</li>
 				<!-- <li>
 					<label>直推人费率:</label>
 					<span>兑入：{{pageData.info.firstRateIn}}% 　　 兑出：{{pageData.info.firstRateOut}}%</span>

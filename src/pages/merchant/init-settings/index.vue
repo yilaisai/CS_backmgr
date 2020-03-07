@@ -94,7 +94,14 @@
 			<el-tabs type="border-card">
 				<el-tab-pane label="全局设置">
 					<el-form ref="form" :model="form" label-width="130px" size="small">
-						<el-form-item label="提币手续费：">
+						
+						<el-form-item v-if=" coinName == 'USDT' " label="omni提币手续费:">
+							<el-input type="number" v-model.trim="form.MERCHANT_WITHDRAW_RATE_OMNI"></el-input>
+						</el-form-item>
+						<el-form-item v-if=" coinName == 'USDT' " label="Erc20提币手续费:">
+							<el-input type="number" v-model.trim="form.MERCHANT_WITHDRAW_RATE_ERC20"></el-input>
+						</el-form-item>
+						<el-form-item v-else label="提币手续费：">
 							<el-input type="number" v-model.trim="form.MERCHANT_WITHDRAW_RATE"></el-input>
 						</el-form-item>
 						<el-form-item label="转账手续费：">

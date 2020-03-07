@@ -1,6 +1,6 @@
 <template>
 	<el-dialog
-		title="手动录单"
+		title="手动录单1"
 		:visible.sync="dialogVisible"
 		width="30%">
 		<el-form ref="form" :model="form" label-width="80px" size="mini" label-position="left">
@@ -27,12 +27,12 @@
 			</el-form-item>
 			<el-form-item label="数量">
 				<el-input v-model.trim="form.amount">
-					<template slot="append">RMT</template>
+					<template slot="append">{{this.$variableCoin}}</template>
 				</el-input>
 			</el-form-item>
 			<el-form-item label="手续费">
 				<el-input v-model.trim="form.fee">
-					<template slot="append">RMT</template>
+					<template slot="append">{{this.$variableCoin}}</template>
 				</el-input>
 			</el-form-item>
 		</el-form>
@@ -58,7 +58,7 @@ export default {
 				type: "1",
 				name: '',  //账号手机号码
 				txId: "",
-				coinName: "RMT",
+				coinName: this.$variableCoin,
 				toAddr: "",
 				fromAddr: "",
 				amount: "", //实际到账金额

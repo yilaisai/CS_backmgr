@@ -14,39 +14,6 @@
 				<el-button type="primary" size="mini" @click="exportExcel">导出EXCEL</el-button>
 			</el-form-item>
 		</el-form>
-		<!-- <el-table stripe border class="ExList" size="mini" :data="ExList">
-			<el-table-column prop="phone" label="手机号"  align="center"></el-table-column>
-			<el-table-column prop="nickName" label="昵称"  align="center"></el-table-column>
-			<el-table-column prop="rmtAmount" :label="$variableCoin">
-				<div class="scope" slot-scope="scope">
-					<p>可用:{{ scope.row.rmtAmount }}</p>
-					<p>冻结:{{ scope.row.rmtFrozenAmount }}</p>
-				</div>
-			</el-table-column>
-			<el-table-column prop="btcAmount"  label="BTC">
-				<div class="scope" slot-scope="scope">
-					<p>可用:{{ scope.row.btcAmount }}</p>
-					<p>冻结:{{ scope.row.btcFrozenAmount }}</p>
-				</div>
-			</el-table-column>
-			<el-table-column prop="ethAmount"  label="ETH">
-				<div class="scope" slot-scope="scope">
-					<p>可用:{{ scope.row.ethAmount }}</p>
-					<p>冻结:{{ scope.row.ethFrozenAmount }}</p>
-				</div>
-			</el-table-column>
-			<el-table-column prop="eosAmount"  label="EOS">
-				<div class="scope" slot-scope="scope">
-					<p>可用:{{ scope.row.eosAmount }}</p>
-					<p>冻结:{{ scope.row.eosFrozenAmount }}</p>
-				</div>
-			</el-table-column>
-			<el-table-column  label="操作" width="80px" fixed="right"  align="center">
-				<template slot-scope="scope">
-					<el-button size="mini" @click="$router.push({path:'/LegalCurrency/personalAssets',query:{userId:scope.row.user_id}})" >详情</el-button>
-				</template>
-			</el-table-column>
-		</el-table> -->
 		<el-table stripe border height="100%" size="mini" :default-sort = "{prop: 'rmtAmount', order: 'descending'}" :data="listData.list" @sort-change='sortChange'>
 			<el-table-column align="center" type="index" label="序号" :index="indexMethod"></el-table-column>
 			<el-table-column prop="phone" label="手机号" align="center"></el-table-column>
@@ -86,7 +53,7 @@
 			</el-table-column>
 		</el-table>
 		<div class="load-more">
-			<p class="total"> <span>RMT：</span> 可用{{rmtAmount}}   冻结{{rmtFrozenAmount}}    <span>BTC：</span> 可用{{btcAmount}}    冻结{{btcFrozenAmount}}      <span>ETH：</span>可用{{ethAmount}}   冻结{{ethFrozenAmount}}    <span>EOS：</span>可用{{eosAmount}}   冻结{{eosFrozenAmount}} </p>
+			<p class="total"> <span>{{this.$variableCoin}}：</span> 可用{{rmtAmount}}   冻结{{rmtFrozenAmount}}    <span>BTC：</span> 可用{{btcAmount}}    冻结{{btcFrozenAmount}}      <span>ETH：</span>可用{{ethAmount}}   冻结{{ethFrozenAmount}}    <span>EOS：</span>可用{{eosAmount}}   冻结{{eosFrozenAmount}} </p>
 			<sac-pagination v-show="listData.list.length > 0"
 				@handleChange="getPaginationChange"
 				:total="+listData.total"

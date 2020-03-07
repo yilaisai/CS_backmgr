@@ -24,150 +24,150 @@
      </div>
  </template>
 <script>
-import Table from './components/table.vue'
-import Query from './components/query.vue'
-import Columns from './components/columns'
-import ReleaseDialog from './components/release-dialog.vue'
-import ManualRecordDialog from './components/manual-record-dialog'
-import {mapState} from 'vuex'
-export default {
-    name: 'examine',
-    data () {
-        const disabled = (row) => {
-            return row.recdStatus === 3
-        }
-        return {
-            data: {
-                list: []
-            },
-            blockSumReAndWdResultDto: {},
-            loading: false,
-			showDialog: false,
-			showDialogMR: false,
-            type: 'auto',
-            item: {},
-            coins: [],
-            columns: Columns.examine,
-            selectConfig: {
-                seleteStyle: {
-                    color: '#909399'
+    import Table from './components/table.vue'
+    import Query from './components/query.vue'
+    import Columns from './components/columns'
+    import ReleaseDialog from './components/release-dialog.vue'
+    import ManualRecordDialog from './components/manual-record-dialog'
+    import {mapState} from 'vuex'
+    export default {
+        name: 'examine',
+        data () {
+            const disabled = (row) => {
+                return row.recdStatus === 3
+            }
+            return {
+                data: {
+                    list: []
                 },
-                selectIconStyle: {
-                    color: '#07c4a8'
-                }
-            },
-            tableHeight: 'calc(100% - 304px)',
-            activeNames: 'filter',
-            pageNum: 1,
-            pageSize: 20,
-            total: 0,
-        }
-    },
-    methods: {
-        handleSizeChange (size) {
-            this.pageSize = size
-            this.getData()
-        },
-        handleCurrentChange (page) {
-            this.pageNum = page
-            this.getData()
-        },
-        handleChange (active) {
-            this.tableHeight = active.length ? 'calc(100% - 304px)' : 'calc(100% - 76px)'
-        },
-        btnHandle (action, row, key) {
-            this.item = row
-            switch (action) {
-                case 'auto':
-                    this.type = 'auto'
-                    this.showDialog = true
-                    break
-                case 'manual':
-                    this.type = 'manual'
-                    this.showDialog = true
-                    break
-                case 'reject':
-                    this.type = 'reject'
-                    this.showDialog = true
-                    break
+                blockSumReAndWdResultDto: {},
+                loading: false,
+                showDialog: false,
+                showDialogMR: false,
+                type: 'auto',
+                item: {},
+                coins: [],
+                columns: Columns.examine,
+                selectConfig: {
+                    seleteStyle: {
+                        color: '#909399'
+                    },
+                    selectIconStyle: {
+                        color: '#07c4a8'
+                    }
+                },
+                tableHeight: 'calc(100% - 304px)',
+                activeNames: 'filter',
+                pageNum: 1,
+                pageSize: 20,
+                total: 0,
             }
         },
-        /**
-         * 获取提币审核列表信息
-         */
-        getData () {
-            this.data = []
-            this.loading = true
-            let filter = this.$refs.query && this.$refs.query.fetchFilter() || {}
-            if (filter.create_time) {
-                filter.beginTime = filter.create_time[0] + ' 00:00:00'
-                filter.endTime = filter.create_time[1] + ' 23:59:59'
-			}else {
-				filter.beginTime = ""
-                filter.endTime = ""
-			}
-			filter = Object.assign(filter, {
-				pageNum: this.pageNum,
-                pageSize: this.pageSize
-			})
-			
-            this.$http.post(`/wallet/backmgr/trade/getAuditingWithdraw`, filter)
-                .then(res => {
-                    const { code, result } = res
+        methods: {
+            handleSizeChange (size) {
+                this.pageSize = size
+                this.getData()
+            },
+            handleCurrentChange (page) {
+                this.pageNum = page
+                this.getData()
+            },
+            handleChange (active) {
+                this.tableHeight = active.length ? 'calc(100% - 304px)' : 'calc(100% - 76px)'
+            },
+            btnHandle (action, row, key) {
+                this.item = row
+                switch (action) {
+                    case 'auto':
+                        this.type = 'auto'
+                        this.showDialog = true
+                        break
+                    case 'manual':
+                        this.type = 'manual'
+                        this.showDialog = true
+                        break
+                    case 'reject':
+                        this.type = 'reject'
+                        this.showDialog = true
+                        break
+                }
+            },
+            /**
+            * 获取提币审核列表信息
+            */
+            getData () {
+                this.data = []
+                this.loading = true
+                let filter = this.$refs.query && this.$refs.query.fetchFilter() || {}
+                if (filter.create_time) {
+                    filter.beginTime = filter.create_time[0] + ' 00:00:00'
+                    filter.endTime = filter.create_time[1] + ' 23:59:59'
+                }else {
+                    filter.beginTime = ""
+                    filter.endTime = ""
+                }
+                filter = Object.assign(filter, {
+                    pageNum: this.pageNum,
+                    pageSize: this.pageSize
+                })
+                
+                this.$http.post(`/wallet/backmgr/trade/getAuditingWithdraw`, filter)
+                    .then(res => {
+                        const { code, result } = res
+                        if (code === 200) {
+                            this.data = result.pageInfo
+                        } else {
+                            this.$notify.error({
+                                title: '提示',
+                                message: '获取列表失败'
+                            })
+                        }
+                    })
+                    .catch(e => console.warn(e))
+                    .finally(() => {
+                        this.loading = false
+                    })
+            },
+            hideDialog (val) {
+                this.showDialog = val
+            },
+            hideDialogMR(val) {
+                this.showDialogMR = val
+            },
+            resetFilter () {
+                this.$refs.query.filter = {}
+            },
+            getCoins () {
+                this.$http
+                .get(`/wallet/block/backmgr/coin/getAllCoinInfo`)
+                .then(({ code, result }) => {
                     if (code === 200) {
-                        this.data = result.pageInfo
+                        let USDT = false
+                        this.coins = result.filter(el => {
+                            if (el.coinName === 'USDT' && el.sysStatus === 1) USDT = true
+                            return el.sysStatus === 1
+                        })
                     } else {
                         this.$notify.error({
                             title: '提示',
-                            message: '获取列表失败'
+                            message: '查询失败'
                         })
                     }
                 })
                 .catch(e => console.warn(e))
-                .finally(() => {
-                    this.loading = false
-                })
+            }
         },
-        hideDialog (val) {
-			this.showDialog = val
-		},
-		hideDialogMR(val) {
-			this.showDialogMR = val
-		},
-        resetFilter () {
-            this.$refs.query.filter = {}
+        computed: {
+            ...mapState(['coinInfo'])
         },
-        getCoins () {
-            this.$http
-            .get(`/wallet/block/backmgr/coin/getAllCoinInfo`)
-            .then(({ code, result }) => {
-                if (code === 200) {
-                    let USDT = false
-                    this.coins = result.filter(el => {
-                        if (el.coinName === 'USDT' && el.sysStatus === 1) USDT = true
-                        return el.sysStatus === 1
-                    })
-                } else {
-                    this.$notify.error({
-                        title: '提示',
-                        message: '查询失败'
-                    })
-                }
-            })
-            .catch(e => console.warn(e))
-        }
-	},
-	computed: {
-		...mapState(['coinInfo'])
-	},
-	created() {
-        this.getCoins()
-	},
-    activated() {
-        this.getData(true)
-    },
-    components: { Query, Table, ReleaseDialog, ManualRecordDialog }
-}
+        created() {
+            this.getCoins()
+        },
+        activated() {
+            this.getData(true)
+        },
+        components: { Query, Table, ReleaseDialog, ManualRecordDialog }
+    }
 </script>
 <style lang="less" scoped>
 .withdraw-check-page {

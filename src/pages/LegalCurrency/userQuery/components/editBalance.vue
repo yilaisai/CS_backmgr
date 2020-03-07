@@ -1,7 +1,7 @@
 <template>
 	<el-dialog title="修改用户余额" :visible.sync="editBalanceShow">
-			<p>当前用户资产账户余额：{{balanceData.assetsAmount}} RMT</p>
-			<p>当前用户法币账户余额：{{balanceData.otcAmount}} RMT</p>
+			<p>当前用户资产账户余额：{{balanceData.assetsAmount}} {{this.$variableCoin}}</p>
+			<p>当前用户法币账户余额：{{balanceData.otcAmount}} {{this.$variableCoin}}</p>
 			<el-form :model="balanceData">
 				<el-form-item label="修改账户类型：" label-width="110px" >
 					<el-select v-model="balanceData.otcOrWallet" placeholder="请选择账户类型">
@@ -15,7 +15,7 @@
 						<el-option label="减少" value="0"></el-option>
 						<el-option label="增加" value="1"></el-option>
 						</el-select>
-						<span slot="append" >RMT</span>
+						<span slot="append" >{{this.$variableCoin}}</span>
 					</el-input>
 				</el-form-item>
 				<el-form-item label="操作理由：" label-width="110px" >

@@ -134,7 +134,7 @@ export default {
 				tabs:0,
 				status:'',
 				batchOuttype:'',
-				coinName:'RMT',
+				coinName:this.$variableCoin,
 				recdId:'',
 				phoneOrNick:'',
 				startDate:'',

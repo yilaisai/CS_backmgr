@@ -139,8 +139,7 @@ export default {
 	},
 	activated() {
 		if(this.coinInfo[0]) {
-			// this.filterForm.coinName = this.coinInfo[0].coinName
-			this.filterForm.coinName = 'RMT'
+			this.filterForm.coinName = this.coinInfo[0].coinName
 			this.queryOtcCoinConfig()
 		}
 		this.getDefaultRate()
@@ -232,11 +231,6 @@ export default {
 		}
 	},
 	watch: {
-		coinInfo(newVal, oldVal) {
-			// this.filterForm.coinName = this.coinInfo[0].coinName
-			this.filterForm.coinName = 'RMT'
-			this.queryOtcCoinConfig()
-		}
 	},
 	computed:{
 		...mapState(['coinInfo'])

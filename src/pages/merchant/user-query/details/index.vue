@@ -130,7 +130,7 @@
 				<li class="big">
 					<label>代付兑出手续费比例 : 每单代付数量的</label>
 					<el-input class="inputHasText" disabled placeholder="未设置默认1" :value="Math.floor(pageData.info.batchOutRatioFee*10000)/100"><template slot="append">%</template> </el-input>
-					+ 每单固定<el-input class="inputHasText" disabled  placeholder="未设置默认1" v-model="pageData.info.batchOutFixedFee"><template slot="append">RMT</template></el-input>
+					+ 每单固定<el-input class="inputHasText" disabled  placeholder="未设置默认1" v-model="pageData.info.batchOutFixedFee"><template slot="append">{{this.$variableCoin}}</template></el-input>
 					<el-button type="primary" plain size="mini" @click="showDialog('daifu')">修改</el-button>
 				</li>
 				<!-- <li>
@@ -166,7 +166,7 @@
 				
 				<el-form-item :label="label2">
 					<el-input type="number" v-if="dialogType == 'daifu'" v-model="formData.value2" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3')">
-						<template slot="append" v-if="dialogType == 'daifu'">RMT</template>
+						<template slot="append" v-if="dialogType == 'daifu'">{{$variableCoin}}</template>
 					</el-input>
 					<el-input v-else type="number" v-model="formData.value2" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')">
 					<template slot="append" v-if="dialogType == 'feeRateIn' || dialogType == 'firstRate' || dialogType == 'secRate'">%</template>

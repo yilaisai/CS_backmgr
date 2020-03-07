@@ -143,7 +143,7 @@ export default {
 	data(){
 		return {
 			filterForm:{
-				coinName:'RMT',
+				coinName:this.$variableCoin,
 				advType:'',
 				apiOrderId:'',
 				phoneOrEmail:'',

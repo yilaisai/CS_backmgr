@@ -253,7 +253,7 @@ export default {
 			showDialog:false,
 			showDialog2:false,
 			filterForm:{
-				coinName:'RMT',
+				coinName:this.$variableCoin,
 				userId:'',
 			},
 			sysRushMatchSwitch:false,

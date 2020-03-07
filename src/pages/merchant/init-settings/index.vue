@@ -6,8 +6,8 @@
 				<div class="select-wrap">
 					<label>币种：</label>
 					<el-select v-model="coinName" placeholder="请选择" size="small">
-						<el-option label="RMT" value="RMT"></el-option>
 						<el-option label="USDT" value="USDT"></el-option>
+						<!-- <el-option v-for="(item, key) in coinInfo" :key="key" :value="item.coinName" :label="item.coinName"></el-option> -->
 					</el-select>
 				</div>
 			</div>
@@ -17,12 +17,6 @@
 				<li v-else><label>{{coinName}}当前兑入价格:</label><span>{{form.MERCHANT_IN_PRICE}}</span></li>
 				<li v-if="form.MERCHANT_RATE_TYPE == 1"><label>{{coinName}}当前兑出价格:</label><span>{{Math.floor(form.toRMBPrice * form.MERCHANT_OUT_PRICE_FLOAT * 1000000) / 1000000}}</span></li>
 				<li v-else><label>{{coinName}}当前兑出价格:</label><span>{{form.MERCHANT_OUT_PRICE}}</span></li>
-				<!-- <li><label>商户最小兑入:</label><span>6.93 RMT</span></li>
-				<li><label>商户最大兑入:</label><span>6.93 RMT</span></li>
-				<li><label>商户最小兑出:</label><span>6.93 RMT</span></li>
-				<li><label>商户最大兑出:</label><span>6.93 RMT</span></li>
-				<li><label>商户提币手续费:</label><span>6.93 RMT</span></li>
-				<li><label>商户转账手续费:</label><span>6.93 RMT</span></li> -->
 			</ul>
 		</div>
 		<div class="content-wrap">
@@ -125,30 +119,55 @@
 					<div class="big">
 						<label>商户代付兑出手续费比例 : 每单代付数量的</label>
 						<el-input class="inputHasText" @input="batchOutRatioFeeInput"  placeholder="未设置默认1" v-model="form.BATCHOUT_RATIO_FEE"><template slot="append">%</template> </el-input>
-						+ 每单固定<el-input class="inputHasText" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3')"   placeholder="未设置默认1" v-model="form.BATCHOUT_FIXED_FEE"><template slot="append">RMT</template></el-input>
-						<el-button type="primary" plain size="mini" @click="showDialog('daifu')">修改</el-button>
+						+ 每单固定<el-input class="inputHasText" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3')"   placeholder="未设置默认1" v-model="form.BATCHOUT_FIXED_FEE"><template slot="append">{{this.$variableCoin}}</template></el-input>
+						<!-- <el-button type="primary" plain size="mini" @click="showDialog()">修改</el-button> -->
 						<p>注：新注册的商户按此配置，后期可对商户单独设置，设置过的商户修改此配置不生效。</p>
 					</div>
 				</el-tab-pane>
 			</el-tabs>
 			<el-button type="primary" class="save" @click="open">保存修改</el-button>
 		</div>
+		<el-dialog title="修改代付兑出手续费比例" :visible.sync="dialogVisible" width="40%" >
+			<el-form ref="form"  label-width="120px">
+				<el-form-item label="每单代付费率">
+					<el-input type="number" v-model="formData.value1" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')">
+						<template slot="append" >%</template>
+					</el-input>
+				</el-form-item>
+				
+				<el-form-item label="每单固定金额">
+					<el-input type="number"  v-model="formData.value2" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3')">
+						<template slot="append" >{{coinName}}</template>
+					</el-input>
+				</el-form-item>
+			</el-form>
+			<span slot="footer" class="dialog-footer">
+				<el-button @click="dialogVisible = false" size="mini">取 消</el-button>
+				<el-button type="primary" size="mini" @click="updateBatchOutFee">确 定</el-button>
+			</span>
+		</el-dialog>
 	</div>
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
 	data() { 
 		return {
 			form: {
 				otcPayLists: []
 			},
+			dialogVisible:false,
 			inFee: 0,
 			outFee: 0,
-			coinName: "RMT",
+			coinName: this.$variableCoin,
 			payType: "",
 			inSwitch:'1',
 			rushWaitTime:'',
+			formData:{
+				value1: '',
+				value2: '',
+			}
 		}
 	},
 	activated() {
@@ -166,6 +185,19 @@ export default {
 				if(this.form.otcPayLists.length > 0) {
 					this.payType = this.form.otcPayLists[0].payType
 				}
+			})
+		},
+		updateBatchOutFee(){
+			this.$http.post('/wallet/backmgr/merchant/updateBatchOutFee', {
+				batchOutRatioFee: Math.floor(this.formData.value1)/100,
+				// userId: this.pageData.info.userId,
+				batchOutFixedFee: this.formData.value2
+			}).then(res => {
+				this.$notify.success({
+					title: '提示',
+					message: res.msg
+				})	
+				this.getDetails()
 			})
 		},
 		modifyInSwitch(){
@@ -202,7 +234,14 @@ export default {
 		batchOutRatioFeeInput(){
 			this.form.BATCHOUT_RATIO_FEE =  this.form.BATCHOUT_RATIO_FEE.replace(/[^\d]/g,"") 
 		},
-		
+		// 显示对话框
+		showDialog(type) {
+			this.dialogTitle = ''
+			this.formData.value1 = this.form.BATCHOUT_RATIO_FEE
+			this.formData.value2 = this.form.BATCHOUT_FIXED_FEE
+			this.dialogVisible = true
+			
+		},
 		save(ggCode) {
 			if(ggCode.trim() == '') {
 				this.$message({
@@ -237,6 +276,8 @@ export default {
 				}
 			})
 		}
+	},computed:{
+		...mapState(['coinInfo'])
 	}
 }
 </script>

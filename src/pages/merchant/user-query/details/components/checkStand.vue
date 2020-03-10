@@ -24,6 +24,7 @@
 							v-model="defaultForm.CHECK_STAND_PAY_TYPE"
 							:min="1"
               @change="changeSetting(5)">
+
 							<el-checkbox v-for="item in payList" :label="item.payType" :key="item.payType">{{item.description}}</el-checkbox>
 						</el-checkbox-group>
 					</el-form-item>
@@ -125,12 +126,13 @@
         this.defaultForm.CHECK_STAND_SKIN_TYPE = newVal.info.checkStandSkinType && newVal.info.checkStandSkinType.toString()
         this.defaultForm.CHECK_STAND_CHECK_TYPE = newVal.info.checkStandCheckType && newVal.info.checkStandCheckType.toString()
         this.defaultForm.CHECK_STAND_SIGN_TYPE = newVal.info.CHECK_STAND_SIGN_TYPE && newVal.info.checkStandSginType.toString()
-        let list = newVal.info.payList.split(',')
+        let list = newVal.info.payList?newVal.info.payList.split(','):[]
         this.defaultForm.CHECK_STAND_PAY_TYPE = []
         list.forEach(element => {
           this.defaultForm.CHECK_STAND_PAY_TYPE.push(Number(element))
         });
         // this.defaultForm.CHECK_STAND_PAY_TYPE = newVal.info.payList.split(',')
+        console.log(newVal)
         this.payList = newVal.payList
       }
       

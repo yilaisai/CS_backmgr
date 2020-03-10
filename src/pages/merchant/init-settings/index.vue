@@ -93,7 +93,7 @@
 			</el-tabs>
 			<el-tabs type="border-card">
 				<el-tab-pane label="全局设置">
-					<el-form ref="form" :model="form" label-width="130px" size="small">
+					<el-form ref="form" :model="form" label-width="170px" size="small">
 						
 						<el-form-item v-if=" coinName == 'USDT' " label="omni提币手续费:">
 							<el-input type="number" v-model.trim="form.MERCHANT_WITHDRAW_RATE_OMNI"></el-input>
@@ -118,20 +118,24 @@
 								<template slot="append">S</template>
 							</el-input>
 						</el-form-item>
+						<el-form-item label="商户批量兑出最大笔数：">
+							<el-input v-model="form.CASHOUT_NUM" placeholder="请输入兑出最大笔数" >
+							</el-input>
+						</el-form-item>
 					</el-form>
 				</el-tab-pane>
 			</el-tabs>
-			<el-tabs type="border-card">
+			<!-- <el-tabs type="border-card">
 				<el-tab-pane label="代付设置">
 					<div class="big">
 						<label>商户代付兑出手续费比例 : 每单代付数量的</label>
 						<el-input class="inputHasText" @input="batchOutRatioFeeInput"  placeholder="未设置默认1" v-model="form.BATCHOUT_RATIO_FEE"><template slot="append">%</template> </el-input>
 						+ 每单固定<el-input class="inputHasText" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3')"   placeholder="未设置默认1" v-model="form.BATCHOUT_FIXED_FEE"><template slot="append">{{this.$variableCoin}}</template></el-input>
-						<!-- <el-button type="primary" plain size="mini" @click="showDialog()">修改</el-button> -->
+						
 						<p>注：新注册的商户按此配置，后期可对商户单独设置，设置过的商户修改此配置不生效。</p>
 					</div>
 				</el-tab-pane>
-			</el-tabs>
+			</el-tabs> -->
 			<el-button type="primary" class="save" @click="open">保存修改</el-button>
 		</div>
 		<el-dialog title="修改代付兑出手续费比例" :visible.sync="dialogVisible" width="40%" >

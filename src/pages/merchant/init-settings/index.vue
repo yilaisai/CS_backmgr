@@ -13,9 +13,9 @@
 			</div>
 			<ul>
 				<li><label>{{coinName}}当前市价:</label><span>{{form.toRMBPrice}}</span></li>
-				<li v-if="form.MERCHANT_RATE_TYPE == 1"><label>{{coinName}}当前兑入价格:</label><span>{{Math.floor(form.toRMBPrice * form.MERCHANT_IN_PRICE_FLOAT * 1000000) / 1000000}}</span></li>
+				<li v-if="form.MERCHANT_RATE_TYPE == 1"><label>{{coinName}}当前兑入价格:</label><span>{{Math.floor((form.MERCHANT_IN_PRICE*1 + form.MERCHANT_IN_PRICE_FLOAT*1 )* 1000000) / 1000000}}</span></li>
 				<li v-else><label>{{coinName}}当前兑入价格:</label><span>{{form.MERCHANT_IN_PRICE}}</span></li>
-				<li v-if="form.MERCHANT_RATE_TYPE == 1"><label>{{coinName}}当前兑出价格:</label><span>{{Math.floor(form.toRMBPrice * form.MERCHANT_OUT_PRICE_FLOAT * 1000000) / 1000000}}</span></li>
+				<li v-if="form.MERCHANT_RATE_TYPE == 1"><label>{{coinName}}当前兑出价格:</label><span>{{Math.floor((form.MERCHANT_OUT_PRICE*1 + form.MERCHANT_OUT_PRICE_FLOAT*1) * 1000000) / 1000000}}</span></li>
 				<li v-else><label>{{coinName}}当前兑出价格:</label><span>{{form.MERCHANT_OUT_PRICE}}</span></li>
 			</ul>
 		</div>
@@ -34,13 +34,13 @@
 							<el-input v-model.trim="form.MERCHANT_COIN_NAME" :disabled="true" style="width:100px"></el-input>
 						</el-form-item>
 						<el-form-item label="兑入价格：" v-if="form.MERCHANT_RATE_TYPE == 1">
-							<el-input v-model.trim="form.toRMBPrice" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.MERCHANT_IN_PRICE_FLOAT" placeholder="输入倍数（如0.9）"></el-input>
+							<el-input v-model.trim="form.MERCHANT_IN_PRICE" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.MERCHANT_IN_PRICE_FLOAT" placeholder="输入倍数（如0.9）"></el-input>
 						</el-form-item>
 						<el-form-item label="兑入价格：" v-else>
 							<el-input v-model.trim="form.MERCHANT_IN_PRICE"></el-input>
 						</el-form-item>
 						<el-form-item label="兑出价格：" v-if="form.MERCHANT_RATE_TYPE == 1">
-							<el-input v-model.trim="form.toRMBPrice" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.MERCHANT_OUT_PRICE_FLOAT" placeholder="输入倍数（如1.1）"></el-input>
+							<el-input v-model.trim="form.MERCHANT_OUT_PRICE" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.MERCHANT_OUT_PRICE_FLOAT" placeholder="输入倍数（如1.1）"></el-input>
 						</el-form-item>
 						<el-form-item label="兑出价格：" v-else>
 							<el-input v-model.trim="form.MERCHANT_OUT_PRICE"></el-input>

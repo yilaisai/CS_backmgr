@@ -15,10 +15,10 @@ if(window.location.href.indexOf('admin.num22.org') >= 0) {
 	// SERVER_PATH2 = 'http://c28w749426.zicp.vip/'  //林威远程
 	// SERVER_PATH = 'http://c28w749426.zicp.vip/'
 	
-	// SERVER_PATH = 'http://192.168.120.108:7036/'
-	// SERVER_PATH2 = 'http://192.168.120.108:7036/' 
-	SERVER_PATH = 'http://192.168.120.42:7036/'  //林威
-	SERVER_PATH2 = 'http://192.168.120.42:7036/' 
+	SERVER_PATH = 'http://192.168.120.108:7036/'
+	SERVER_PATH2 = 'http://192.168.120.108:7036/' 
+	// SERVER_PATH = 'http://192.168.120.42:7036/'  //林威
+	// SERVER_PATH2 = 'http://192.168.120.42:7036/' 
 	// SERVER_PATH = 'http://192.168.120.53:7036/'  //李海
 	// SERVER_PATH = 'https://api.num22.org/'
 		// SERVER_PATH2 = 'https://api.icore.plus/'  //测试

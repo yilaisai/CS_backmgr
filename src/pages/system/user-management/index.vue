@@ -1,8 +1,4 @@
-/**
-*  Created by   阿紫
-*  On  2018/8/13
-*  Content 用户管理
-*/
+
 <template>
   <div class='user'>
     <el-col :span="22" style="text-align:right; margin-bottom: 30px;">
@@ -11,18 +7,20 @@
     <sac-table :data="listData">
       <el-table-column prop="name" label="用户名称"></el-table-column>
       <el-table-column prop="roleName" label="角色名称"></el-table-column>
+      <el-table-column prop="googleVerify" label="谷歌密钥"></el-table-column>
       <el-table-column prop="createTime" label="创建时间">
 		  <template slot-scope="scope">
 			  <span>{{scope.row.createTime*1 | dateFormat('YYYY-MM-DD HH:mm:ss')}}</span>
 		  </template>
 	  </el-table-column>
-      <el-table-column label="操作" width="360">
+      <el-table-column label="操作" width="400">
         <template slot-scope="scope" prop="sysStatus">
           <el-button type="primary" size="small" @click.native="changePassword(scope.row)">修改登录密码</el-button>
           <el-button type="primary" size="small" @click.native="changeRole(scope.row)">分配角色</el-button>
           <el-button :type="scope.row.sysStatus==1?'danger':'warning'" size="small"
                      @click.native="goDisable(scope.row)">{{scope.row.sysStatus==1?'禁用':'启用'}}
           </el-button>
+          <el-button type="primary" size="small" @click.native="updateSysUserGoogleSecret(scope.row)">跟换密钥</el-button>
         </template>
       </el-table-column>
     </sac-table>
@@ -135,6 +133,19 @@
         this.dialogTitle = '创建用户';
         this.dialogFormVisible = true;
         this.getSysRoleList();
+      },
+      
+      updateSysUserGoogleSecret(item){
+        this.$http.post('/wallet/backmgr/privilege/updateSysUserGoogleSecret', {
+              sysUserId:item.id
+            }).then((res) => {
+              this.$notify({
+                title: '成功',
+                message: `跟换成功`,
+                type: 'success'
+              });
+              this.getSysUserList();
+            })
       },
       submitForm() {
         this.$refs.ruleForm.validate((valid) => {

@@ -87,7 +87,7 @@
 		<el-table-column prop="sys_remark" label="备注"></el-table-column>
 		<el-table-column prop="user_remark" label="上链备注"></el-table-column>
 		<el-table-column prop="pay_time" label="打币时间" width="140"></el-table-column>
-		<el-table-column prop="tx_time" label="到账时间" width="140"></el-table-column>
+		<el-table-column prop="tx_time" label="到账时间" width="140" ></el-table-column>
 	</el-table>
 </template>
 

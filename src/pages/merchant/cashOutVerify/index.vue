@@ -6,8 +6,8 @@
 					<el-form-item label="账号:" >
 						<el-input placeholder="请输入用户账号" v-model="filterForm.phoneOrEmail" ></el-input>
 					</el-form-item>
-					<el-form-item label="类型:" >
-						<el-select v-model="filterForm.advType" >
+					<el-form-item label="类型:">
+						<el-select v-model="filterForm.advType" :disabled="tabs == 1">
 							<el-option value="" label='所有'></el-option>
 							<el-option v-for="(item, key) in typeList" :key="key" :value="item.value" :label="item.label "></el-option>
 						</el-select>
@@ -33,17 +33,23 @@
 						</el-date-picker>
 					</el-form-item>
 					<el-form-item label="状态:" >
-						<el-select v-model="filterForm.matchResult" >
+						<el-select v-model="filterForm.matchResult" :disabled="tabs == 1">
 							<el-option value="" label='所有'></el-option>
 							<el-option v-for="(item, key) in matchResultMap" :key="key" :value="key" :label="item"></el-option>
 						</el-select>
 					</el-form-item>
 					<el-button class="btn" type="primary" @click="search()" size="mini" style="margin-left: 20px;">查询</el-button>
 					<el-button type="primary" @click.native="exportExcel" size="mini" icon="el-icon-document-checked">导出Excel</el-button>
+					<el-button type="primary" @click.native="batchAudit" size="mini" :disabled="tabs != 1">批量审核</el-button>
 				</el-form>
 			</el-collapse-item>
-    	</el-collapse>
-		<el-table height="auto" size="mini" border :data="listData.list">
+		</el-collapse>
+		<el-tabs v-model="tabs" @tab-click="chooseTabs">
+				<el-tab-pane label="全部" name="0"></el-tab-pane>
+				<el-tab-pane label="兑出待审核" name="1"></el-tab-pane>
+		</el-tabs>
+		<el-table height="auto" size="mini" border :data="listData.list" @selection-change="handleSelectionChange">
+			<el-table-column type="selection" align="center" v-if="tabs == 1"></el-table-column>
 			<el-table-column align="center"  label="类型" width="80">
 				<div slot-scope="scope"> {{scope.row.advType==3?'抢单兑出':scope.row.advType==4?'抢单兑入':scope.row.advType==5?'派单兑入':scope.row.advType==6?'派单兑出':''}} </div>
 			</el-table-column>
@@ -57,7 +63,7 @@
 					<span>{{scope.row.nickName}}<br />{{scope.row.phoneOrEmail}}</span>
 				</template>
 			</el-table-column>
-			<el-table-column align="center"  label="状态" width="130">
+			<el-table-column align="center"  label="状态" width="100">
 				<template slot-scope="scope">
 					{{matchResultMap[scope.row.matchResult]}}
 				</template>
@@ -175,6 +181,8 @@ export default {
 				sumApiAmount: "--",
 				sumFee: "--"
 			},
+			tabs:0,
+			selectList:[],
 		}
 	},
 	activated(){
@@ -204,9 +212,11 @@ export default {
 		},
 		// 导出excel
 		exportExcel() {
-			if(this.selectedDate.length == 2 ){
-				this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00'
-				this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59'
+			if(this.selectedDate && this.selectedDate.length == 2 ){
+				// this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00'
+				// this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59'
+				this.filterForm.startDate = this.selectedDate[0]
+				this.filterForm.endDate = this.selectedDate[1]
 			}
 			this.filterForm.token = localStorage.getItem('wallet_token') || ""
 			const baseUrl = localStorage.getItem('SERVER_PATH') || window.SERVER_PATH
@@ -255,22 +265,63 @@ export default {
 		
 		},
 		verify(status){
-			this.$http.post('/wallet/backmgr/merchant/updateCashoutAuditStatus', {
-				recdId: this.currentItem.recdId,
-				remark: this.reason,
-				status:status
-			}).then((res) => {
-				this.dialogVisible = false
+			if (!this.currentItem.advId) {
+				//批量审核
+				let list = []
+				this.selectList.forEach(el => {
+					list.push(el.advId)
+				})
+				this.$http.post('wallet/backmgr/merchant/updateCashoutAuditStatusBatch', {
+					recdId: list.join(','),
+					remark: this.reason,
+					status:status
+				}).then( res => {
+					console.log(res)
+				}).catch( err => {
+					this.dialogVisible = false
+				})
+			} else {
+				//单笔审核
+				this.$http.post('/wallet/backmgr/merchant/updateCashoutAuditStatus', {
+					recdId: this.currentItem.recdId,
+					remark: this.reason,
+					status:status
+				}).then((res) => {
+					this.dialogVisible = false
+					this.getCashoutAuditList()
+					this.$message({
+						type: 'success',
+						message: res.msg
+					});
+				}).catch(err=>{
+					this.dialogVisible = false
+					console.log(err)
+				})
+			}
+		},
+
+		chooseTabs() {
+			if (this.tabs == 0) {
+				this.filterForm.matchResult = ''
 				this.getCashoutAuditList()
-				this.$message({
-					type: 'success',
-					message: res.msg
-				});
-			}).catch(err=>{
-				this.dialogVisible = false
-				console.log(err)
-			})
-			
+			} else {
+				this.filterForm.advType = ''
+				this.filterForm.matchResult = '0'
+				this.getCashoutAuditList()
+			}
+		},
+		handleSelectionChange(selection){
+			console.log(selection)
+			this.selectList = selection
+		},
+		//批量审核
+		batchAudit() {
+			this.currentItem = {}
+			if(!this.selectList.length) {
+				this.$message.warning('请选择待审核订单！')
+				return
+			}
+			this.dialogVisible = true
 		}
 	},
 	computed:{
@@ -281,8 +332,15 @@ export default {
 <style lang="less" scoped>
 .cashOutVerify-page{
 	overflow: hidden;
+	/deep/ .el-tabs {
+		.el-tabs__header {
+			margin:0;
+		}
+	}
+	
 	.el-table{
 		flex: 1;
+	 	margin:0;
 	}
 	.dateItem{
 		width: 436px;

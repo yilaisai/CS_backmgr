@@ -25,50 +25,54 @@
       <div class="title">待办事项</div>
       <ul>
         <li>
-          <div class="top">63条申诉待处理</div>
-          <div class="bottom">
+          <div class="top">
+            <span>{{appealIng}}条申诉待处理</span>
+          </div>
+          <div class="bottom" @click="$router.push('/LegalCurrency/complaint')">
             <span>去处理</span>
             <img src="@/assets/down_right.svg" alt="">
           </div>
         </li>
         <li>
-          <div class="top">63条申诉待处理</div>
-          <div class="bottom">
+          <div class="top">
+            <span>{{withdrawIng}}条提币审核待处理</span>
+          </div>
+          <div class="bottom" @click="$router.push('/money/withdraw-check')">
             <span>去处理</span>
             <img src="@/assets/down_right.svg" alt="">
           </div>
         </li>
         <li>
-          <div class="top">63条申诉待处理</div>
-          <div class="bottom">
+          <div class="top"><span>{{bindInfoIng}}条收款方式审核待处理</span></div>
+          <div class="bottom" @click="$router.push('/LegalCurrency/paymentMethodVerify')">
             <span>去处理</span>
             <img src="@/assets/down_right.svg" alt="">
           </div>
         </li>
         <li>
-          <div class="top">63条申诉待处理</div>
-          <div class="bottom">
+          <div class="top"><span>{{outIng}}条兑出审核待处理</span></div>
+          <div class="bottom" @click="$router.push('/merchant/cashOutVerify')">
             <span>去处理</span>
             <img src="@/assets/down_right.svg" alt="">
           </div>
         </li>
         <li>
-          <div class="top">63条申诉待处理</div>
-          <div class="bottom">
+          <div class="top"><span>{{merchantApplyIng}}条商户注册审核待处理</span></div>
+          <div class="bottom" @click="$router.push('/merchant/merchantList')">
             <span>去处理</span>
             <img src="@/assets/down_right.svg" alt="">
           </div>
         </li>
         <li>
-          <div class="top">63条申诉待处理</div>
-          <div class="bottom">
+          <div class="top"><span>{{auditIng}}条广告商审核待处理</span></div>
+          <div class="bottom" @click="$router.push('/LegalCurrency/advertisersVerify')">
             <span>去处理</span>
             <img src="@/assets/down_right.svg" alt="">
           </div>
         </li>
         <li>
-          <div class="top">63条申诉待处理</div>
-          <div class="bottom">
+          <div class="top"><span>{{auditPersonIng}}条实名审核待处理</span></div>
+          <div class="bottom" @click="$router.push('/user/identityVerify')">
             <span>去处理</span>
             <img src="@/assets/down_right.svg" alt="">
           </div>
@@ -79,33 +83,33 @@
       <div class="title">订单统计</div>
       <div class="content">
         <div class="left">
-          <div class="echart"></div>
+          <div class="echart" id="echart1"></div>
           <div class="data">
             <div class="title">今日进行中订单数</div>
             <div class="pay"> 
               <div class="pay-left">
                 <span>未付款：</span>
-                <b>9886</b>
+                <b>{{payIngOrder}}</b>
               </div>
               <div class="pay-right">
                 <span>已付款：</span>
-                <b>132132</b>
+                <b>{{payedOrder}}</b>
               </div>
             </div>
           </div>
         </div>
         <div class="right">
-          <div class="echart"></div>
+          <div class="echart" id="echart2"></div>
           <div class="data">
-            <div class="title">今日进行中订单数</div>
+            <div class="title">今日完成订单数</div>
             <div class="pay"> 
               <div class="pay-left">
-                <span>未付款：</span>
-                <b>9886</b>
+                <span>已完成：</span>
+                <b>{{finishOrder}}</b>
               </div>
               <div class="pay-right">
-                <span>已付款：</span>
-                <b>132132</b>
+                <span>已取消：</span>
+                <b>{{cancelOrder}}</b>
               </div>
             </div>
           </div>
@@ -116,64 +120,64 @@
       <div class="title">统计数据</div>
       <ul class="content">
         <li>
-          <div class="top">兑入冻结</div>
+          <div class="top">兑入</div>
           <div class="bottom">
             <div class="text">
               <div>
-                <span>当日已完成兑入 : :</span>
-                <span>6,123.4889 USDT</span>
+                <span>当日已完成兑入 :</span>
+                <span>{{sumInToday}} USDT</span>
               </div>
               <div>
-                <span>昨日已完成兑入 : :</span>
-                <span>6,123.4889 USDT</span>
+                <span>昨日已完成兑入 :</span>
+                <span>{{sumInYesterday}} USDT</span>
               </div>
             </div>
             <img src="@/assets/line1.svg" alt="">
           </div>
         </li>
         <li>
-          <div class="top">兑入冻结</div>
+          <div class="top">兑出</div>
           <div class="bottom">
             <div class="text">
               <div>
-                <span>当日已完成兑入 : :</span>
-                <span>6,123.4889 USDT</span>
+                <span>当日已完成兑出 :</span>
+                <span>{{sumOutToday}} USDT</span>
               </div>
               <div>
-                <span>昨日已完成兑入 : :</span>
-                <span>6,123.4889 USDT</span>
+                <span>昨日已完成兑出 :</span>
+                <span>{{sumInYesterday}} USDT</span>
               </div>
             </div>
             <img src="@/assets/line2.svg" alt="">
           </div>
         </li>
         <li>
-          <div class="top">兑入冻结</div>
+          <div class="top">提币</div>
           <div class="bottom">
             <div class="text">
               <div>
-                <span>当日已完成兑入 : :</span>
-                <span>6,123.4889 USDT</span>
+                <span>当日已完成提币 :</span>
+                <span>{{todayWithdrawAmount}} USDT</span>
               </div>
               <div>
-                <span>昨日已完成兑入 : :</span>
-                <span>6,123.4889 USDT</span>
+                <span>昨日已完成提币 :</span>
+                <span>{{yesterdayWithdrawAmount}} USDT</span>
               </div>
             </div>
             <img src="@/assets/line1.svg" alt="">
           </div>
         </li>
         <li>
-          <div class="top">兑入冻结</div>
+          <div class="top">充币</div>
           <div class="bottom">
             <div class="text">
               <div>
-                <span>当日已完成兑入 : :</span>
-                <span>6,123.4889 USDT</span>
+                <span>当日充币 :</span>
+                <span>{{todayRechargeAmount}} USDT</span>
               </div>
               <div>
-                <span>昨日已完成兑入 : :</span>
-                <span>6,123.4889 USDT</span>
+                <span>昨日充币 :</span>
+                <span>{{yesterdayRechargeAmount}} USDT</span>
               </div>
             </div>
             <img src="@/assets/line3.svg" alt="">
@@ -184,44 +188,32 @@
           <div class="bottom">
             <div class="text">
               <div>
-                <span>当日已完成兑入 : :</span>
-                <span>6,123.4889 USDT</span>
-              </div>
-              <div>
-                <span>昨日已完成兑入 : :</span>
-                <span>6,123.4889 USDT</span>
+                <span>当日兑入冻结 : </span>
+                <span>{{inFrozen}} USDT</span>
               </div>
             </div>
             <img src="@/assets/line1.svg" alt="">
           </div>
         </li>
         <li>
-          <div class="top">兑入冻结</div>
+          <div class="top">兑出冻结</div>
           <div class="bottom">
             <div class="text">
               <div>
-                <span>当日已完成兑入 : :</span>
-                <span>6,123.4889 USDT</span>
-              </div>
-              <div>
-                <span>昨日已完成兑入 : :</span>
-                <span>6,123.4889 USDT</span>
+                <span>当日兑出冻结 :</span>
+                <span>{{outFrozen}} USDT</span>
               </div>
             </div>
             <img src="@/assets/line2.svg" alt="">
           </div>
         </li>
         <li>
-          <div class="top">兑入冻结</div>
+          <div class="top">提币冻结</div>
           <div class="bottom">
             <div class="text">
               <div>
-                <span>当日已完成兑入 : :</span>
-                <span>6,123.4889 USDT</span>
-              </div>
-              <div>
-                <span>昨日已完成兑入 : :</span>
-                <span>6,123.4889 USDT</span>
+                <span>当日提币冻结 :</span>
+                <span>{{withdrawFrozen}} USDT</span>
               </div>
             </div>
             <img src="@/assets/line1.svg" alt="">
@@ -233,38 +225,119 @@
 </template>
 <script>
   import { dateFormat } from '@/common/util';
-
+  import echarts from "@/assets/js/echarts"
   export default {
     name: 'home',
     data() {
       return {
         user: [],
         account: [],
+        appealIng:0,
+        auditIng:0,
+        bindInfoIng:0,
+        outIng:0,
+        withdrawIng:0,
+        auditPersonIng:0,
+        merchantApplyIng:0,
+        payIngOrder:0,
+        payedOrder:0,
+        finishOrder:0,
+        cancelOrder:0,
+        sumInToday:0,
+        sumInYesterday:0,
+        sumOutToday:0,
+        sumOutYesterday:0,
+        todayWithdrawAmount:0,
+        yesterdayWithdrawAmount:0,
+        todayRechargeAmount:0,
+        yesterdayRechargeAmount:0,
+        inFrozen:0,
+        outFrozen:0,
+        withdrawFrozen:0,
       };
     },
     methods: {
       getData() {
-        this.$http.post('wallet/backmgr/user/selectSysInfo')
-          .then((res) => {
-            const { list, total, tdCount, ytdCount, onlineNum } = res.result;
-            this.account = list;
-            this.user = [{
-              date: dateFormat(new Date, 'YYYY年MM月DD日'),
-              total,
-              tdCount,
-              ytdCount,
-              onlineNum
-            }];
-          })
+        this.$http.post('/wallet/backmgr/indexInfo').then(res => {
+          let result = res.result;
+          this.appealIng = result.appealIng
+          this.auditIng = result.auditIng
+          this.bindInfoIng = result.bindInfoIng
+          this.outIng = result.outIng
+          this.withdrawIng = result.withdrawIng
+          this.auditPersonIng = result.auditPersonIng
+          this.merchantApplyIng = result.merchantApplyIng
+          this.payIngOrder = result.payIngOrder
+          this.payedOrder = result.payedOrder
+          this.finishOrder = result.finishOrder
+          this.cancelOrder = result.cancelOrder
+          this.sumInToday = result.sumInToday
+          this.sumInYesterday = result.sumInYesterday
+          this.sumOutToday = result.sumOutToday
+          this.sumInYesterday =result.sumInYesterday
+          this.todayWithdrawAmount = result.todayWithdrawAmount || 0
+          this.yesterdayWithdrawAmount = result.yesterdayWithdrawAmount || 0
+          this.todayRechargeAmount = result.todayRechargeAmount || 0
+          this.yesterdayRechargeAmount = result.yesterdayRechargeAmount || 0
+          this.inFrozen = result.inFrozen
+          this.outFrozen = result.outFrozen
+          this.withdrawFrozen = result.withdrawFrozen
+          let data1 = [{value:this.payIngOrder,name:"未付款"},{value:this.payedOrder,name:"已付款"}]
+          let data2 = [{value:this.cancelOrder,name:"已取消"},{value:this.finishOrder,name:"已完成"}]
+          this.intCanvas(data1,data2)
+        })
       },
+      intCanvas(data1,data2) {
+        let color = ['#FDBF5E','#0081FF']
+        this.drawLine('echart1',data1,color)
+        this.drawLine('echart2',data2,color)
+      },
+      drawLine(id, data, color) {
+        var myChart = echarts.init(document.getElementById(id));
+        let option = {
+          tooltip: {
+              trigger: 'item',
+              formatter: '{b}<br/>{c} ({d}%)'
+          },
+          series: [
+            {
+              name: '',
+              type: 'pie',
+              radius: ['0', '100%'],
+              hoverAnimation:false,
+              label: {
+                normal:{
+                  position:'inner',
+                  fontSize:'12',
+                },
+                emphasis: {
+                  textStyle: {
+                    fontSize: '14',
+                    fontWeight: 'bold'
+                  }
+                }
+              },
+              labelLine: {
+                normal: {
+                  show: false
+                }
+              },
+              data: data,
+              color:color
+            }
+          ],
+        }
+        myChart.setOption(option)
+      }
     },
   	activated() {
   		this.getData()
-  	}
+    },
   };
 </script>
 <style lang='less'>
   .sac-home {
+    min-width:1230px;
     background: #F1F1F1;
     overflow-y: auto;
     .table-wrap {
@@ -303,21 +376,37 @@
           flex-direction: column;
           .top {
             position: relative;
-            padding:24px 0 24px 24px;
+            height:62px;
+            padding:0 24px;
             font-size:14px;
             color:#242A38;
             background:rgba(219,231,238,0.25);
             border-bottom:1px solid #DBDEE5;
-            &::before {
-              position: absolute;
-              content:'';
-              width:6px;
-              height:6px;
-              top:31px;
-              left:12px;
-              background: #FF3D57;
-              border-radius: 50%;
+            display: flex;
+            align-items: center;
+            span {
+              position: relative;
+               &::before {
+                position: absolute;
+                content:'';
+                width:6px;
+                height:6px;
+                top:7px;
+                left:-12px;
+                background: #FF3D57;
+                border-radius: 50%;
+              }
             }
+            // &::before {
+            //   position: absolute;
+            //   content:'';
+            //   width:6px;
+            //   height:6px;
+            //   top:31px;
+            //   left:12px;
+            //   background: #FF3D57;
+            //   border-radius: 50%;
+            // }
           }
           .bottom {
             padding:14px 0;
@@ -351,16 +440,15 @@
         padding:40px 0;
         >div {
           flex:1;
-          padding:0 60px;
           height:160px;
           display: flex;
+          justify-content: center;
           .echart {
             width:160px;
             height:160px;
             margin-right:42px;
           }
           .data {
-            flex:1;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
@@ -373,7 +461,7 @@
               width:100%;
               display: flex;
               >div {
-                flex:1;
+                min-width:150px;
                 height:74px;
                 background: rgba(241,241,241,.3);
                 border-radius: 6px;

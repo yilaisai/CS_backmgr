@@ -23,35 +23,6 @@ const transactionFlow = [
 				meta: { title: '兑出流水' },
 				component: () => import('@/pages/transactionFlow/CashOut')
 			},
-			{
-				path: 'invite',
-				name: 'invite',
-				meta: { title: '邀请关系' },
-				component: () => import('@/pages/user/invite')
-			},
-			{
-				path: 'identityVerify',
-				name: 'identityVerify',
-				meta: { title: '实名审核' },
-				component: () => import('@/pages/user/identity/verify')
-			},
-      {
-        path: 'identityModify',
-        name: 'identityModify',
-        meta: {
-          title: '身份信息修改',
-          noTab:true
-        },
-        component: () => import('@/pages/user/identity/modify'),
-      },
-      {
-        path: 'identityDetails',
-        name: 'identityDetails',
-        meta: {
-          title: '实名审核详情',
-        },
-        component: () => import('@/pages/user/identity/details'),
-      },
 			
 		]
 	}

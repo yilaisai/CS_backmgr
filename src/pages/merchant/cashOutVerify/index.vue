@@ -265,18 +265,23 @@ export default {
 		
 		},
 		verify(status){
-			if (!this.currentItem.advId) {
+			if (!this.currentItem.recdId) {
 				//批量审核
 				let list = []
 				this.selectList.forEach(el => {
-					list.push(el.advId)
+					list.push(el.recdId)
 				})
 				this.$http.post('wallet/backmgr/merchant/updateCashoutAuditStatusBatch', {
-					recdId: list.join(','),
+					recdIds: list.join(','),
 					remark: this.reason,
 					status:status
 				}).then( res => {
-					console.log(res)
+					this.dialogVisible = false
+					this.getCashoutAuditList()
+					this.$message({
+						type: 'success',
+						message: res.msg
+					});
 				}).catch( err => {
 					this.dialogVisible = false
 				})

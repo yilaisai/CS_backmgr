@@ -79,97 +79,41 @@ export const appRouter = [
     children: [
       ],
   },
-  {
-    path: '/money',
-    name: 'money',
-    redirect: '/money/transfer-approval',
-    meta: {
-      title: '资金管理',
-    },
-    component: Index,
-    children: [
-      {
-        path: 'transfer-approval',
-        name: 'transferApproval',
-        meta: {
-          title: '转账审批',
-        },
-        component: () => import('@/pages/money/transfer-approval.vue'),
-      },
-      {
-        path: 'capitalFlow2',
-        name: 'capitalFlow2',
-        meta: {
-          title: '资金流水',
-        },
-        component: () => import('@/pages/money/capitalFlow2.vue'),
-      },
-      {
-        path: 'ranking',
-        name: 'ranking',
-        meta: {
-          title: '资产排行',
-        },
-        component: () => import('@/pages/money/ranking.vue'),
-      },
-      {
-        path: 'transfer-query',
-        name: 'transferQuery',
-        meta: {
-          title: '转账记录',
-        },
-        component: () => import('@/pages/money/transfer-query.vue'),
-      },
-      {
-        path: 'statements',
-        name: 'statements',
-        meta: {
-          title: '对账单',
-        },
-        component: () => import('@/pages/money/statements.vue'),
-      },
-      {
-        path: 'red-envelope',
-        name: 'red-envelope',
-        meta: {
-          title: '红包查询',
-        },
-        component: () => import('@/pages/money/red-envelope.vue'),
-      },
-      {
-        path: 'red-envelope-detail',
-        name: 'red-envelope-detail',
-        meta: {
-          title: '红包查询详情',
-        },
-        component: () => import('@/pages/money/red-envelope-detail.vue'),
-      },
-      {
-        path: 'money-monitor',
-        name: 'moneyMonitor',
-        meta: {
-          title: '资金监控',
-        },
-        component: () => import('@/pages/money/money-monitor.vue'),
-      },
-      {
-        path: 'reconciliation',
-        name: 'reconciliation',
-        meta: {
-          title: '总额对账',
-        },
-        component: () => import('@/pages/money/reconciliation.vue'),
-      },
-      {
-        path: 'getBlockChainRecd',
-        name: 'getBlockChainRecd',
-        meta: {
-          title: '链上到账审批',
-        },
-        component: () => import('@/pages/money/getBlockChainRecd.vue'),
-      },
-    ],
-  },
+  // {
+  //   path: '/money',
+  //   name: 'money',
+  //   redirect: '/money/transfer-approval',
+  //   meta: {
+  //     title: '资金管理',
+  //   },
+  //   component: Index,
+  //   children: [
+  //     {
+  //       path: 'money-monitor',
+  //       name: 'moneyMonitor',
+  //       meta: {
+  //         title: '资金监控',
+  //       },
+  //       component: () => import('@/pages/money/money-monitor.vue'),
+  //     },
+  //     {
+  //       path: 'reconciliation',
+  //       name: 'reconciliation',
+  //       meta: {
+  //         title: '总额对账',
+  //       },
+  //       component: () => import('@/pages/money/reconciliation.vue'),
+  //     },
+  //     {
+  //       path: 'getBlockChainRecd',
+  //       name: 'getBlockChainRecd',
+  //       meta: {
+  //         title: '链上到账审批',
+  //       },
+  //       component: () => import('@/pages/money/getBlockChainRecd.vue'),
+  //     },
+  //   ],
+  // },
   {
     path: '/riskManage',
     name: 'riskManage',

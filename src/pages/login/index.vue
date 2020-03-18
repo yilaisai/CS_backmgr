@@ -3,7 +3,7 @@
 
   <div class="login-page">
     <div class="content">
-      <h5 class="title">AlphaPay客服后台管理系统</h5>
+      <h5 class="title">HOMO客服后台管理系统</h5>
       <el-form :model="postObj" :rules="rules" ref="postObj"
               label-width="0px" class="demo-ruleForm">
         <div class="form">

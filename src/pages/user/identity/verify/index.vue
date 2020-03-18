@@ -126,6 +126,9 @@ export default {
 		}
 	},
 	activated() {
+		if (this.$route.query.status) {
+			this.filterForm.auditStatus = this.$route.query.status
+		}
 		this.getWaittingAuditUser();
 	}
 }

@@ -186,6 +186,10 @@ export default {
 		}
 	},
 	activated(){
+		if (this.$route.query.status) {
+			this.tabs = this.$route.query.status
+			this.chooseTabs()
+		}
 		this.selectedDate = getTodayTime()
 		this.getCashoutAuditList()
 	},

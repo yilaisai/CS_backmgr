@@ -128,7 +128,7 @@
             return {
 				showNumList:false,
 				numList:[],
-              	filterForm: {
+				filterForm: {
 					phoneOrEmail: '',
 					pageNum: 1,
 					pageSize: 20,
@@ -234,8 +234,11 @@
           console.log(data)
         }
       },
-      activated() {
-        this.getUserRaking();      // 查询代理用户列表
+      activated() {   
+				if (this.$route.query.status) {
+					this.filterForm.status = this.$route.query.status
+				}
+				this.getUserRaking(); // 查询代理用户列表
       }
     };
 </script>

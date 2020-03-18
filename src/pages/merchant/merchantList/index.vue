@@ -96,6 +96,9 @@ export default {
         
 	},
 	mounted() {
+		if (this.$route.query.status) {
+			this.filterForm.status = this.$route.query.status
+		}
 		this.getList()
 	},
     methods:{

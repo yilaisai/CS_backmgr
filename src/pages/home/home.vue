@@ -44,21 +44,21 @@
         </li>
         <li>
           <div class="top"><span>{{bindInfoIng}}条收款方式审核待处理</span></div>
-          <div class="bottom" @click="$router.push('/LegalCurrency/paymentMethodVerify')">
+          <div class="bottom" @click="$router.push({path:'/LegalCurrency/paymentMethodVerify',query: { status: '0' }})">
             <span>去处理</span>
             <img src="@/assets/down_right.svg" alt="">
           </div>
         </li>
         <li>
           <div class="top"><span>{{outIng}}条兑出审核待处理</span></div>
-          <div class="bottom" @click="$router.push('/merchant/cashOutVerify')">
+          <div class="bottom" @click="$router.push({path:'/merchant/cashOutVerify',query: { status: '1' }})">
             <span>去处理</span>
             <img src="@/assets/down_right.svg" alt="">
           </div>
         </li>
         <li>
           <div class="top"><span>{{merchantApplyIng}}条商户注册审核待处理</span></div>
-          <div class="bottom" @click="$router.push('/merchant/merchantList')">
+          <div class="bottom" @click="$router.push({path:'/merchant/merchantList',query:{status:'0'}})">
             <span>去处理</span>
             <img src="@/assets/down_right.svg" alt="">
           </div>
@@ -72,7 +72,7 @@
         </li>
         <li>
           <div class="top"><span>{{auditPersonIng}}条实名审核待处理</span></div>
-          <div class="bottom" @click="$router.push('/user/identityVerify')">
+          <div class="bottom" @click="$router.push({path:'/user/identityVerify',query:{status:'1'}})">
             <span>去处理</span>
             <img src="@/assets/down_right.svg" alt="">
           </div>

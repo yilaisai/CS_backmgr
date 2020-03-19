@@ -1,28 +1,28 @@
 <template>
-     <div class="withdraw-check-page">
-        <Query ref="query" @queryData='getData' @resetFilter="resetFilter" :coins="coinInfo"/>
-        <!-- 表格 -->
-        <Table :tableData="data.list" :btnHandle="btnHandle" @hideDialogMR="hideDialogMR"></Table>
-        <!-- 分页器 -->
-        <div class="load-more" style="display: flex;">
-            <div class="count"></div>
-            <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="pageNum"
-                :page-sizes="[20, 30, 50, 100]"
-                :page-size="pageSize"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="data.total*1">
-            </el-pagination>
-        </div>
-		<!-- 放行 -->
-        <ReleaseDialog @hideDialog="hideDialog" :showDialog="showDialog" :item="item" :type="type" @getData="getData" />
+    <div class="withdraw-check-page">
+    <Query ref="query" @queryData='getData' @resetFilter="resetFilter" :coins="coinInfo"/>
+    <!-- 表格 -->
+    <Table :tableData="data.list" :btnHandle="btnHandle" @hideDialogMR="hideDialogMR"></Table>
+    <!-- 分页器 -->
+    <div class="load-more" style="display: flex;">
+        <div class="count"></div>
+        <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="pageNum"
+            :page-sizes="[20, 30, 50, 100]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="data.total*1">
+        </el-pagination>
+    </div>
+    <!-- 放行 -->
+    <ReleaseDialog @hideDialog="hideDialog" :showDialog="showDialog" :item="item" :type="type" @getData="getData" />
 
-		<!-- 手动录单弹框 -->
-		<ManualRecordDialog :showDialogMR='showDialogMR' @hideDialogMR="hideDialogMR" />
-     </div>
- </template>
+    <!-- 手动录单弹框 -->
+    <ManualRecordDialog :showDialogMR='showDialogMR' @hideDialogMR="hideDialogMR" />
+    </div>
+</template>
 <script>
     import Table from './components/table.vue'
     import Query from './components/query.vue'

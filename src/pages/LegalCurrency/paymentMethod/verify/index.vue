@@ -132,7 +132,7 @@
 					phoneOrEmail: '',
 					pageNum: 1,
 					pageSize: 20,
-					status:'',//'BTC'
+					status:'0',//'BTC'
 					order:'desc'//和asc
 				},
 				listData: {
@@ -140,7 +140,6 @@
 					list: [],
 				},
 				stateList:[
-					{name:'全部',value:''},
 					{name:'待审核',value:'0'},
 					{name:'已审核',value:'1'}
 				],

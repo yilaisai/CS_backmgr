@@ -22,21 +22,36 @@
                 </template>
             </el-table-column>
             <el-table-column prop="from_addr" label="From地址" width="300" align="center"></el-table-column>
-            <el-table-column prop="to_addr" label="To地址" width="300" align="center"></el-table-column>
+            <el-table-column prop="to_addr" label="To地址" width="350" align="center" >
+                <template slot-scope="scope">
+                    <span class="toAdd" @click="showImg(scope.row.to_addr)">{{scope.row.to_addr}}</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="id" label="订单号"  align="center"></el-table-column>
             <el-table-column prop="user_remark" label="上链备注" width="150" align="center"></el-table-column>
             <el-table-column fixed="right" label="操作" width="280" align="center">
                 <template slot-scope="scope">
-                    <el-button @click="btnHandle('auto', scope.row)" type="success" size="mini" :disabled="scope.row.status !== 2">自动放行</el-button>
+                    <!-- <el-button @click="btnHandle('auto', scope.row)" type="success" size="mini" :disabled="scope.row.status !== 2">自动放行</el-button> -->
                     <el-button type="primary" @click="btnHandle('manual', scope.row)" size="mini" :disabled="scope.row.status !== 2">手动放行</el-button>
                     <el-button type="danger" @click="btnHandle('reject', scope.row)" size="mini" :disabled="scope.row.status !== 2">拒绝</el-button>
                 </template>
             </el-table-column>
         </el-table>
+        <el-dialog title="To地址" :visible.sync="imgShow" width="500px">
+            <div style="padding-left:20px">
+                <span class="copyAddr"
+                    v-clipboard:copy="toAddr" 
+                    v-clipboard:success="copy" 
+                    v-clipboard:error="onError"
+                >{{toAddr}} <img src="@/assets/copy.svg" alt=""></span> 
+                <img style="width:100%;vertical-align: text-top;" ref="qrcode" :src="imgUrl" alt="">
+            </div>
+		</el-dialog>
     </div>
 </template>
 
 <script>
+import QRCode from 'qrcode'
 export default {
     props: {
         tableData: {
@@ -50,10 +65,33 @@ export default {
             default: () => {}
         }
     },
+    data(){
+        return {
+            imgShow:false,
+            imgUrl:'',
+            toAddr:''
+        }
+    },
     methods: {
       handleClick(row) {
         console.log(row);
       },
+      showImg(url) {
+          this.createQrcode(url)
+          this.imgShow = true
+      },
+      createQrcode(url) {
+        this.toAddr = url
+        QRCode.toDataURL(url, { errorCorrectionLevel: 'H' }, (err, url) => {
+            this.imgUrl = url
+        })
+      },
+      copy() {
+        this.$message.success('复制成功！')
+      },
+      error() {
+        this.$message.warning('复制失败，请手动复制！')
+      }
     },
     filters: {
         recdStatusMap(val) {
@@ -82,10 +120,6 @@ export default {
             }
         }
     },
-    data() {
-      return {
-      }
-    }
   }
 </script>
 
@@ -106,12 +140,25 @@ export default {
         /deep/ .gutter {
             display: block !important;
         }
+        /deep/ .cell {
+            .toAdd {
+                cursor: pointer;
+                color:blue;
+            }
+        }
 	}
 	.table-title {
         margin-top: 20px;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-	}
+    }
+    .copyAddr {
+        margin-left:40px;
+        cursor: pointer;
+        img {
+            margin-left:5px;
+        }
+    }
 }
 </style>

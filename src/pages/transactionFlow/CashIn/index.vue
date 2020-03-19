@@ -86,7 +86,7 @@
 								<span>{{scope.row.api_ip}}</span>
 							</div>
 						</el-table-column>
-						<el-table-column prop="fee" label="手续费" align="center"></el-table-column>
+						<el-table-column prop="fee" label="手续费(USDT)" align="center"></el-table-column>
 						<el-table-column prop="price" label="操作" fixed="right" align="center" width="300">
 							<template slot-scope="scope">
 								<el-button type="danger" size="mini" v-if="scope.row.trade_status==1||scope.row.trade_status==2" @click="appealClick(scope.row) ">申诉</el-button>

@@ -36,7 +36,7 @@
             <el-main>
                 <el-table :data="listData.list" border style="width: 100%" height="100%" size="mini">
                     <el-table-column prop="tradeId" label="订单号" align="center"></el-table-column>
-                    <el-table-column prop="userId" label="用户id"  align="center" ></el-table-column>
+                    <el-table-column prop="userId" label="用户编号"  align="center" ></el-table-column>
                     <el-table-column prop="appealType" align="center" width="90" label="交易类型" >
                         <template slot-scope="scope">
                             <span>{{ scope.row.advType | advTypeFilter}}</span>

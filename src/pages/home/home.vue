@@ -44,7 +44,7 @@
         </li>
         <li>
           <div class="top"><span>{{bindInfoIng}}条收款方式审核待处理</span></div>
-          <div class="bottom" @click="$router.push({path:'/LegalCurrency/paymentMethodVerify',query: { status: '0' }})">
+          <div class="bottom" @click="$router.push('/LegalCurrency/paymentMethodVerify')">
             <span>去处理</span>
             <img src="@/assets/down_right.svg" alt="">
           </div>

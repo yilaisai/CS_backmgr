@@ -3,7 +3,7 @@
 		<div class="table-title">
         	<h4>审核列表</h4>
 			<div class="btn-wrap">
-				<el-button type="primary" size="mini" icon="el-icon-circle-plus" @click="$emit('hideDialogMR', true)">手动录单</el-button>
+				<!-- <el-button type="primary" size="mini" icon="el-icon-circle-plus" @click="$emit('hideDialogMR', true)">手动录单</el-button> -->
 			</div>
 		</div>
         <el-table :data="tableData" border size="mini" style="width: 100%" height="100">

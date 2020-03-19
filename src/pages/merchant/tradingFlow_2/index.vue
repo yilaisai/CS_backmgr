@@ -94,13 +94,13 @@
 								<el-button type="danger" size="mini" v-if="(scope.row.trade_status==8||scope.row.trade_status==4)&&showActiveBtn(scope.row.create_time)" @click.native="orderActivation(scope.row)">激活订单</el-button>
 								<el-button type="danger" size="mini" v-if="scope.row.trade_status==2&&scope.row.isActivation==1" @click.native="activationLetgo(scope.row.trade_id)">&nbsp;&nbsp;放 &nbsp;&nbsp;行&nbsp;&nbsp;</el-button>
 								<el-button type="warning" size="mini" v-if="((scope.row.adv_type == 4 || scope.row.adv_type == 5) && (scope.row.trade_status == 3 || scope.row.trade_status == 6))&&scope.row.trade_type!=3" @click="returnApi(scope.row)">异步补发</el-button>
-								<el-button 
+								<!-- <el-button 
 									type="warning"
 									size="mini"
 									v-if="(((scope.row.adv_type == 4 || scope.row.adv_type == 5) && (scope.row.trade_status == 3 || scope.row.trade_status == 6  || scope.row.trade_status == 7))||((scope.row.adv_type == 3 || scope.row.adv_type == 6) &&  scope.row.trade_status == 7 )) && scope.row.trade_type != 3"
 									@click="showPrompt(scope.row)"
 								>手动录单
-								</el-button>
+								</el-button> -->
 							</template>
 						</el-table-column>
 				</el-table>

@@ -36,14 +36,14 @@
 					<label>间推人:</label>
 					<span>{{pageData.info.secPhone}}</span>
 				</li> -->
-				<li>
+				<!-- <li>
 					<label>商户编号:</label>
 					<span>300625</span>
 				</li>
 				<li>
 					<label>商户代码:</label>
 					<span>KSC</span>
-				</li>
+				</li> -->
 				<li>
 					<label>上次登录时间:</label>
 					<span>{{pageData.info.lastLoginDate}}</span>
@@ -127,12 +127,12 @@
 					<span>【{{pageData.coinInfo.minOut}}】 ~ 【{{pageData.coinInfo.maxOut}}】</span>
 					<el-button type="primary" plain size="mini" @click="showDialog('duiChu')">修改</el-button>
 				</li>
-				<li class="big">
+				<!-- <li class="big">
 					<label>代付兑出手续费比例 : 每单代付数量的</label>
 					<el-input class="inputHasText" disabled placeholder="未设置默认1" :value="Math.floor(pageData.info.batchOutRatioFee*10000)/100"><template slot="append">%</template> </el-input>
 					+ 每单固定<el-input class="inputHasText" disabled  placeholder="未设置默认1" v-model="pageData.info.batchOutFixedFee"><template slot="append">{{this.$variableCoin}}</template></el-input>
 					<el-button type="primary" plain size="mini" @click="showDialog('daifu')">修改</el-button>
-				</li>
+				</li> -->
 				<!-- <li>
 					<label>最小兑入额度（{{$variableCoin}}）:</label>
 					<span>{{pageData.coinInfo.minIn}}</span>

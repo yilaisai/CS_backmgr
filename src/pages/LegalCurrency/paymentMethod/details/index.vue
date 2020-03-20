@@ -37,7 +37,8 @@
 			</el-table-column>
 			<el-table-column  label="收款码" width="150"  align="center">
 				<template slot-scope="scope">
-						<p v-if="scope.row.payType==1||scope.row.payType==4">无</p>
+						<!-- <p v-if="scope.row.payType==1||scope.row.payType==4">无</p> -->
+						<p v-if="!scope.row.qrcode">无</p>
 						<div v-else class="qrcode">
 							<img :src="scope.row.qrcode" alt="">
 							<el-button @click="imgClick(scope.row.qrcode)" type="text" size="mini">查看大图</el-button>
@@ -94,8 +95,9 @@
 			
 			<el-table-column  label="收款码" width="150" align="center">
 				<template slot-scope="scope">
-						<p v-if="scope.row.payType==1||scope.row.payType==4">无</p>
-						<div v-else class="qrcode">
+						<!-- <p v-if="scope.row.payType==1||scope.row.payType==4">无</p> -->
+						<p v-if="!scope.row.qrcode">无</p>
+						<div class="qrcode" v-else>
 							<img :src="scope.row.qrcode" alt="">
 							<el-button @click="imgClick(scope.row.qrcode)" type="text" size="mini">查看大图</el-button>
 						</div>

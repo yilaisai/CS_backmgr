@@ -321,8 +321,8 @@
         this.tranInFeeUnit = tranInFee.length > 1 ? '%' : '';
         this.ruleForm.tranOutFee = tranOutFee[0];
         this.tranOutFeeUnit = tranOutFee.length > 1 ? '%' : '';
-		this.ruleForm.isErc20 = this.ruleForm.isErc20 == 0 ? 'NO' : 'YES';
-		this.ruleForm.tranLimitNRealNameAmount = this.ruleForm.tranLimitNrealName;
+        this.ruleForm.isErc20 = this.ruleForm.isErc20 == 0 ? 'NO' : 'YES';
+        this.ruleForm.tranLimitNRealNameAmount = this.ruleForm.tranLimitNrealName;
         this.buttonTitle = 2;
       } else {
         this.buttonTitle = 1;
@@ -333,6 +333,7 @@
 <style lang="less">
   .currency-set {
     position: relative;
+    overflow-y:auto;
     .el-form {
       width: 1000px;
     }

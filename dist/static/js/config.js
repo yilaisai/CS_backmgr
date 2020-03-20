@@ -1,10 +1,10 @@
 
 var SERVER_PATH = '',
 	SERVER_PATH2 = ''
-if(window.location.href.indexOf('admin.num22.org') >= 0) {
+if(window.location.href.indexOf('homo.plus') >= 0) {
 	//num22  正式环境
-	SERVER_PATH = 'https://apimly.num22.org/'
-	SERVER_PATH2 = 'https://api.num22.org/'
+	SERVER_PATH = 'https://api.homo.plus'
+	SERVER_PATH2 = 'https://api.homo.plus'
 }else if( window.location.href.indexOf('admin.icoinease.com')>0 ){
 	SERVER_PATH2 = 'https://api.icoinease.com/'
 	SERVER_PATH = 'https://api.icoinease.com/'

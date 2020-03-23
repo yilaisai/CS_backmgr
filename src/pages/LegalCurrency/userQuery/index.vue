@@ -44,7 +44,7 @@
 					<!-- <el-table-column label="卖出佣金费率" align="center" width="100">
 						<template slot-scope="scope">{{ Math.floor(scope.row.firstRate*10000)/100 }}%</template>
 					</el-table-column> -->
-					<el-table-column prop="price" label="卖出佣金费" width="300">
+					<el-table-column prop="price" label="兑入佣金费" width="300">
 						<template class="scope" slot-scope="scope">
 							<span v-for="(item, index) in scope.row.inviteRateDtoList" :key="index">{{item.payTypeName}}: {{Math.floor(item.saleFee*10000)/100}}% </span>
 						</template>

@@ -21,11 +21,13 @@
 		</div> -->
 		<el-table :data="inviteData" height="100%" style="width: 100%;height:100%;" row-key="inviteCode" border lazy :load="load" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" size="mini">
 			<el-table-column prop="nickName" label="用户编号"></el-table-column>
-			<el-table-column prop="userId" label="ID" align="center" width="140"></el-table-column>
+			<el-table-column prop="userId" label="ID" align="center" width="120"></el-table-column>
+			<el-table-column prop="realName" label="姓名" align="center" width="120"></el-table-column>
 			<el-table-column align="center" prop="account" label="账号" width="180"> </el-table-column>
 			<el-table-column align="center"  prop="inviteCode" label="邀请码" width="80"></el-table-column>
-			<el-table-column align="center" label="操作" width="80">
+			<el-table-column align="center" label="操作" width="180">
 				<template slot-scope="scope"  >   
+					<el-button type="text" size="mini"  @click="$router.push({path:'/LegalCurrency/userQueryDetaile',query:{userId:scope.row.userId}})">查看佣金费率</el-button>
 					<el-button type="text" size="mini"  @click="brokerage(scope.row)">迁移</el-button>
 				</template>
 			</el-table-column>

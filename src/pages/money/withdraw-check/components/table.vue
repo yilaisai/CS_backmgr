@@ -16,6 +16,9 @@
             <el-table-column prop="coin_name" label="币种" width="60" align="center"></el-table-column>
             <el-table-column prop="amount" label="数量"  align="center"></el-table-column>
             <el-table-column prop="fee" label="手续费(USDT)" width="100" align="center"></el-table-column>
+            <el-table-column prop="realAmount" label="实际支付数量" width="100" align="center">
+                <template slot-scope="scope">{{scope.row.amount + scope.row.fee}}</template>
+            </el-table-column>
             <el-table-column prop="status" label="状态" align="center">
                 <template slot-scope="scope">
                     <span>{{scope.row.status | recdStatusMap}}</span>
@@ -89,7 +92,7 @@ export default {
       copy() {
         this.$message.success('复制成功！')
       },
-      error() {
+      onError() {
         this.$message.warning('复制失败，请手动复制！')
       }
     },

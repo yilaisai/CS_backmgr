@@ -28,16 +28,16 @@
 					<el-form-item label="企业类型:">
 						<el-input :value=" detaileData.userEnterprise==0?'非企业号':detaileData.userEnterprise==1?'企业号':''" disabled></el-input>
 					</el-form-item>
-					<el-form-item label="购买交易额:">
+					<el-form-item label="兑出交易额:">
 						<el-input :value=" detaileData.buyAmount + filterForm.coinName" disabled></el-input>
 					</el-form-item>
-					<el-form-item label="购买成交数:">
+					<el-form-item label="兑出成交数:">
 						<el-input :value=" detaileData.buyNum" disabled></el-input>
 					</el-form-item>
-					<el-form-item label="出售交易额:">
+					<el-form-item label="兑入交易额:">
 						<el-input :value=" detaileData.saleAmount + filterForm.coinName" disabled></el-input>
 					</el-form-item>
-					<el-form-item label="出售成交数:">
+					<el-form-item label="兑入成交数:">
 						<el-input :value=" detaileData.saleNum" disabled></el-input>
 					</el-form-item>
 					<div v-if="detaileData.userLevel!=0">
@@ -128,7 +128,7 @@
 					
 					<el-table-column align="center"
 						prop="reward"
-						label="买入佣金费率">
+						label="兑出佣金费率">
 						<div slot-scope="scope">
 							<ul class="rate">
 								<li>
@@ -153,7 +153,7 @@
 					</el-table-column>
 					<el-table-column align="center"
 						prop="reward"
-						label="卖出佣金费率">
+						label="兑入佣金费率">
 						<div slot-scope="scope">
 							<ul class="rate">
 								<li>
@@ -197,13 +197,13 @@
 				</el-select>
 			</div>
 			<div class=" inputGroup ">
-				<span>买入佣金费率：</span>
+				<span>兑出佣金费率：</span>
 				<el-input placeholder="请输入内容" v-model="buyRate" >
 					<template slot="append">%</template>
 				</el-input>
 			</div>
 			<div class=" inputGroup ">
-				<span>卖出佣金费率：</span>
+				<span>兑入佣金费率：</span>
 				<el-input placeholder="请输入内容" v-model="rate" >
 					<template slot="append">%</template>
 				</el-input>

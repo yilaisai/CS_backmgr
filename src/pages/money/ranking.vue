@@ -16,7 +16,7 @@
 		</el-form>
 		<el-table stripe border height="100%" size="mini" :default-sort = "{prop: 'rmtAmount', order: 'descending'}" :data="listData.list" @sort-change='sortChange'>
 			<el-table-column align="center" type="index" label="序号" :index="indexMethod"></el-table-column>
-			<el-table-column prop="phone" label="手机号" align="center"></el-table-column>
+			<el-table-column prop="phone" label="账号" align="center"></el-table-column>
 			<el-table-column prop="nick_name" label="用户编号"  align="center"></el-table-column>
 			<el-table-column prop="nick_name" label="用户类型" align="center">
 				<template slot-scope="scope">{{scope.row.user_type | userTypesFilter}}</template>

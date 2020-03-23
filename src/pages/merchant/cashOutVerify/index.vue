@@ -89,6 +89,20 @@
 			<el-table-column align="center" prop="coinName" width="80" label="币种"></el-table-column>
 			<el-table-column align="center" prop="fee" label="手续费"></el-table-column>
 			<!-- <el-table-column align="center" prop="auditUserName" label="操作人"></el-table-column> -->
+			<el-table-column align="center" prop="payType" label="付款方式"  width="80">
+				<div slot-scope="scope">
+					{{scope.row.payType == 1?"银行卡":scope.row.payType == 2?"支付宝":scope.row.payType == 1?"微信":scope.row.payType == 4?"宝转卡":scope.row.payType == 5?'支付宝':'新的支付方式'}}
+				</div>
+			</el-table-column>
+			<el-table-column align="center" prop="bankUserName" label="收款人"  width="80">
+			</el-table-column>
+			<el-table-column align="center" prop="bankCardId" label="收款账号" width="150">
+			</el-table-column>
+			<el-table-column align="center" prop="bankInfo" label="银行信息" width="150">
+				<div slot-scope="scope">
+					{{scope.row.bankName}}{{scope.row.bankBranch}}
+				</div>
+			</el-table-column>
 			<el-table-column align="center" label="操作" fixed="right">
 				<template slot-scope="scope">
 					<!-- <el-button type="text" v-show="scope.row.advType==4||scope.row.advType==5" @click="showIP(scope.row)">查看</el-button> -->

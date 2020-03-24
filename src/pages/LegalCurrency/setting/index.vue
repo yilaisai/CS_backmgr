@@ -64,11 +64,11 @@
 				<el-form label-width="160px" ref="filterForm" size="mini">
 					<el-form-item label="全局最大兑出返佣比例:">
 					<el-input placeholder="未设置默认0.7%" v-model="rateDetaile.totalBuyRate" ><template slot="append">%</template></el-input>
-					<span>设置后三级返佣比例之和不可超过该值</span>
+					<span>设置后返佣比例之和不可超过该值</span>
 				</el-form-item>
 				<el-form-item label="全局最大兑入返佣比例:">
 					<el-input placeholder="未设置默认0.2%" v-model="rateDetaile.totalSaleRate" ><template slot="append">%</template></el-input>
-					<span>设置后三级返佣比例之和不可超过该值</span>
+					<span>设置后返佣比例之和不可超过该值</span>
 				</el-form-item>
 				<br>
 				<br>
@@ -80,13 +80,13 @@
 							<el-option label="宝转卡" :value="4"></el-option>
 						</el-select>
 				</el-form-item>
-				<el-form-item label="反佣等级:">
+				<!-- <el-form-item label="反佣等级:">
 					<el-select v-model="rateDetaile.rank"  placeholder="请选择" @change="getDefaultRate">
 						<el-option label="一级反佣" :value="1"></el-option>
 						<el-option label="二级反佣" :value="2"></el-option>
 						<el-option label="三级反佣" :value="3"></el-option>
 					</el-select>
-				</el-form-item>
+				</el-form-item> -->
 				<el-form-item label="默认返佣兑入返佣比例:">
 					<el-input placeholder="未设置默认0.6%" v-model="rateDetaile.saleRate" >
 						<template slot="append">%</template>

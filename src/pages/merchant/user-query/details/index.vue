@@ -13,7 +13,7 @@
 			<div class="title"><h3>基本信息</h3></div>
 			<ul>
 				<li>
-					<label>用户名:</label>
+					<label>商户编号:</label>
 					<span>{{pageData.info.name}}</span>
 				</li>
 				<li>

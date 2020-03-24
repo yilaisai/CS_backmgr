@@ -11,7 +11,7 @@
 					<div class="select-wrap">
 						<label>币种：</label>
 						<el-select v-model="filterForm.coinName" @change="selectCoin" placeholder="请选择币种" >
-							<el-option v-for="(item,index) in coinInfo" :key = 'index' :label="item.coinName" :value="item.coinName"></el-option>
+							<el-option v-for="(item,index) in coinInfo" :key = 'index' :label="item.coinName == 'USDT'?'omni':item.coinName == 'TetherUSD'?'erc20':item.coinName" :value="item.coinName"></el-option>
 						</el-select>
 					</div>
 				</div>

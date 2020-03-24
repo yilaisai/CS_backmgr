@@ -41,7 +41,9 @@
 
         <el-table :data="tableData" border style="width: 100%" size="mini">
             <el-table-column prop="txTime" label="时间" width="140" align="center">
-				<span slot-scope="scope">{{scope.row.txTime | dateFormat}}</span>
+                <template slot-scope="scope">
+                    {{scope.row.txTime*1 | dateFormat('YYYY-MM-DD HH:mm:ss')}}
+                </template>
 			</el-table-column>
             <el-table-column prop="transTypeStr" label="转账类型" width="100" align="center">
                 <template slot-scope="scope">
@@ -93,6 +95,7 @@ import qs from 'qs'
 import SummaryBar from './components/summary-bar.vue'
 import Columns from './components/columns'
 import {fundTypes} from '@/common/constants'
+import { dateFormat } from '@/common/util';
 export default {
     name: 'monotoring',
     data () {
@@ -294,6 +297,10 @@ export default {
         datePickerChange () {
             // this.pageNum = 1
             // this.getData(true)
+        },
+        dateFormat(time){
+            console.log(dateFormat(1584606302000))
+            return dateFormat(time)
         }
     },
     filters: {

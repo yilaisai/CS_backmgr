@@ -20,7 +20,7 @@
           <el-button :type="scope.row.sysStatus==1?'danger':'warning'" size="small"
                      @click.native="goDisable(scope.row)">{{scope.row.sysStatus==1?'禁用':'启用'}}
           </el-button>
-          <el-button type="primary" size="small" @click.native="updateSysUserGoogleSecret(scope.row)">跟换密钥</el-button>
+          <el-button type="primary" size="small" @click.native="updateSysUserGoogleSecret(scope.row)">更换密钥</el-button>
         </template>
       </el-table-column>
     </sac-table>
@@ -141,7 +141,7 @@
             }).then((res) => {
               this.$notify({
                 title: '成功',
-                message: `跟换成功`,
+                message: `更换成功`,
                 type: 'success'
               });
               this.getSysUserList();

@@ -17,7 +17,7 @@
             </el-form-item>
             <el-form-item label="币种">
                 <el-select class="select" v-model="filter.coinName" @change="coinNameChange">
-                    <el-option v-for="(item, key) in coins" :key="key" :value="item.coinName" :label="item.coinName"></el-option>
+                    <el-option v-for="(item, key) in coins" :key="key" :value="item.coinName" :label="item.coinName == 'USDT'?'omni':item.coinName == 'TetherUSD'?'erc20':item.coinName"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item>
@@ -41,18 +41,20 @@
 
         <el-table :data="tableData" border style="width: 100%" size="mini">
             <el-table-column prop="txTime" label="时间" width="140" align="center">
-				<!-- <span slot-scope="scope">{{ $fmtDate(scope.row.txTime,'full') }}</span> -->
+				<span slot-scope="scope">{{scope.row.txTime | dateFormat}}</span>
 			</el-table-column>
             <el-table-column prop="transTypeStr" label="转账类型" width="100" align="center">
                 <template slot-scope="scope">
                     <span>{{scope.row.transTypeStr}}</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="coinName" label="币种" width="80" align="center"></el-table-column>
+            <el-table-column prop="coinName" label="币种" width="80" align="center">
+                <span slot-scope="scope">{{scope.row.coinName == 'USDT'?'omni':scope.row.coinName == 'TetherUSD'?'erc20':scope.row.coinName}}</span>
+            </el-table-column>
             <el-table-column prop="fromAddr" label="来源地址" align="center"></el-table-column>
             <el-table-column prop="toAddr" label="目标地址" align="center"></el-table-column>
             <el-table-column prop="blockAmount" label="到账数量" width="100" align="center"></el-table-column>
-            <el-table-column prop="blockFee" label="手续费(BTC)" width="100" align="center">
+            <el-table-column prop="blockFee" label="手续费(ETH)" width="100" align="center">
                 <template slot-scope="scope">
                     <span v-if="scope.row.transType == 0 || scope.row.transType == 4 || scope.row.transType == 8">0</span>
                     <span v-else>{{scope.row.blockFee}}</span>

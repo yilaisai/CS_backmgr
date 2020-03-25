@@ -87,6 +87,7 @@
 							</div>
 						</el-table-column>
 						<el-table-column prop="fee" label="手续费" align="center"></el-table-column>
+						<el-table-column prop="payment_name" label="付款人" align="center"></el-table-column>
 						<el-table-column prop="fee" label="付款凭证" align="center">
 							<div slot-scope="scope" class="imgBox" style="height:50px;">
 								<viewer :options="options">

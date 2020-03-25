@@ -202,6 +202,7 @@ export default {
 			}).catch(() => {})
 		},
 		load(tree, treeNode, resolve) {
+			console.log(tree,treeNode,resolve)
 			let inviteCode = tree.inviteCode
 			this.$http.post('/wallet/invite/backmgr/findInviteChild',{inviteCode:inviteCode}).then(res=>{
 				let { list } = res.result;
@@ -213,7 +214,9 @@ export default {
 				}
 				
 				})
+				console.log(list)
 				resolve(list)
+				
 			})
 		}
   	},

@@ -20,10 +20,15 @@
 				<span slot-scope="scope" >{{scope.row.payType==1?'银行卡':scope.row.payType==2?'支付宝':scope.row.payType==3?'微信支付':'宝转卡'}}</span>
 			</el-table-column>
 			<el-table-column prop="userName" label="姓名" align="center"></el-table-column>
-			<el-table-column  label="账户/银行卡信息" align="center">
+			<el-table-column  label="账户" align="center">
 				<template slot-scope="scope">
 						<p v-if="scope.row.payType==1||scope.row.payType==4">{{scope.row.bankName}}</p>
 						<p>{{ scope.row.num }}</p>
+				</template>
+			</el-table-column>
+			<el-table-column  label="银行卡信息" align="center" width="150">
+				<template slot-scope="scope">
+						<p v-if="scope.row.payType==1||scope.row.payType==4">{{scope.row.bankName}}{{scope.row.bankBranch}}</p>
 				</template>
 			</el-table-column>
 				<el-table-column  label="cardindex" align="center">
@@ -77,10 +82,14 @@
 				<span slot-scope="scope" >{{scope.row.payType==1?'银行卡':scope.row.payType==2?'支付宝':scope.row.payType==3?'微信支付':'宝转卡'}}</span>
 			</el-table-column>
 			<el-table-column prop="userName" label="姓名" align="center"></el-table-column>
-			<el-table-column  label="账户/银行卡信息" align="center">
+			<el-table-column  label="账户" align="center">
 				<template slot-scope="scope">
-						<p v-if="scope.row.payType==1||scope.row.payType==4">{{scope.row.bankName}}</p>
 						<p>{{ scope.row.num }}</p>
+				</template>
+			</el-table-column>
+			<el-table-column  label="银行卡信息" align="center" width="150">
+				<template slot-scope="scope">
+						<p v-if="scope.row.payType==1||scope.row.payType==4">{{scope.row.bankName}}{{scope.row.bankBranch}}</p>
 				</template>
 			</el-table-column>
 			<el-table-column  label="cardindex" align="center">

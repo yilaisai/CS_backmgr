@@ -118,8 +118,9 @@
 					:data="inviteList"
 					style="width: 100%;margin-bottom: 20px;"
 					row-key="inviteeId"
-					border
-					default-expand-all
+					border 
+					lazy 
+					:load="load" 
 					:tree-props="{children: 'children', hasChildren: 'hasChildren'}">
 					<el-table-column
 						prop="inviteeName"
@@ -143,10 +144,10 @@
 									<p>微信</p>
 									<p>{{ $fmtNumber('%2', scope.row.wxBuyRate) }}% </p>
 								</li>
-								<li>
+								<!-- <li>
 									<p>宝转卡</p>
 									<p>{{ $fmtNumber('%2', scope.row.bbuyRate) }}% </p>
-								</li>
+								</li> -->
 							</ul>
 							
 						</div>
@@ -168,10 +169,10 @@
 									<p>微信</p>
 									<p>{{ Math.floor(scope.row.wxSaleRate*10000)/100 }}% </p>
 								</li>
-								<li>
+								<!-- <li>
 									<p>宝转卡</p>
 									<p>{{ Math.floor(scope.row.bsaleRate*10000)/100 }}% </p>
-								</li>
+								</li> -->
 							</ul>
 						</div>
 					</el-table-column>
@@ -193,7 +194,7 @@
 					<el-option label="银行卡" :value="1"></el-option>
 					<el-option label="支付宝" :value="2"></el-option>
 					<el-option label="微信" :value="3"></el-option>
-					<el-option label="宝转卡" :value="4"></el-option>
+					<!-- <el-option label="宝转卡" :value="4"></el-option> -->
 				</el-select>
 			</div>
 			<div class=" inputGroup ">
@@ -315,7 +316,16 @@ export default {
 				inviteeId:this.filterForm.userId
 			}).then(res=>{
 				if(res.code == 200 && res.result){
-					this.inviteList = [res.result]
+					let list = res.result
+					list.forEach(el=> {
+						if (el.num>0) {
+							el.hasChildren = true
+						} else {
+							el.hasChildren = false
+						}
+					})
+					this.inviteList = list
+					console.log(this.inviteList)
 				}
 			})
 		},
@@ -428,6 +438,22 @@ export default {
 					this.$message.error(res.msg)
 				}
 				this.queryUserMatchConfig()
+			})
+		},
+		load(tree, treeNode, resolve) {
+			let inviterId = tree.inviteeId
+			console.log(inviterId)
+			this.$http.post('/wallet/invite/backmgr/findInviteTree',{inviterId:inviterId}).then(res=>{
+				console.log(res.result)
+				let  list  = res.result;
+				list.forEach(element => {
+					if(element.num>0){
+						element.hasChildren = true
+					}else{
+						element.hasChildren = false
+					}
+				})
+				resolve(list)
 			})
 		}
 	},

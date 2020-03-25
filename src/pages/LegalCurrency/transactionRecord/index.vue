@@ -8,7 +8,7 @@
 						<el-form-item label="订单号:">
 							<el-input placeholder="请输入单号" v-model.trim="filterForm.recdId" class="input-with-select"></el-input>
 						</el-form-item>
-						<el-form-item label="账号:">
+						<el-form-item label="用户编号/账号:" label-width="110px">
 							<el-input placeholder="请输入用户账户或用户编号" v-model.trim="filterForm.account" class="input-with-select"></el-input>
 						</el-form-item>
 						<el-form-item label="状态:">

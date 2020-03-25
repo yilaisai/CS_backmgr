@@ -34,7 +34,7 @@
                 <el-form-item label="订单号：">
                     <el-input v-model="filter.orderId" placeholder="搜索订单号"></el-input>
                 </el-form-item>
-                <el-form-item label="账号：">
+                <el-form-item label="账号/用户编号：" label-width="110px">
                     <el-input v-model="filter.name" placeholder="搜索账号"></el-input>
                 </el-form-item>
 				<el-form-item label="用户类型：">

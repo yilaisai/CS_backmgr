@@ -1,9 +1,9 @@
 <template>
 	<div class="capitalFlow-page">
 		<el-form :inline="true"  ref="filterForm" label-width="85px" :model="filterForm" size="mini">
-			<!-- <el-form-item label="订单号:">
-				<el-input placeholder="请输入单号" v-model="filterForm.userId" class="input-with-select"></el-input>
-			</el-form-item> -->
+			<el-form-item label="用户编号:">
+				<el-input placeholder="请输入用户编号" v-model="filterForm.nickName" class="input-with-select"></el-input>
+			</el-form-item>
 			<el-form-item label="账号:">
 				<el-input placeholder="请输入用户账号" v-model="filterForm.phone" class="input-with-select"></el-input>
 			</el-form-item>

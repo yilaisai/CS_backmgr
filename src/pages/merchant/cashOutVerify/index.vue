@@ -3,8 +3,8 @@
 		<el-collapse value="filter">
 			<el-collapse-item title="查询条件" name="filter">
 				<el-form :inline="true" label-width="86px" ref="filterForm" size="mini" :model="filterForm">
-					<el-form-item label="账号:" >
-						<el-input placeholder="请输入用户账号" v-model="filterForm.phoneOrEmail" ></el-input>
+					<el-form-item label="账号/用户编号:" label-width="110px" >
+						<el-input placeholder="请输入账号或用户编号" v-model="filterForm.phoneOrEmail" ></el-input>
 					</el-form-item>
 					<el-form-item label="类型:">
 						<el-select v-model="filterForm.advType" :disabled="tabs == 1">

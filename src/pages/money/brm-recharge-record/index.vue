@@ -65,8 +65,14 @@ export default {
 				}
 			})
 		},
-		handleCurrentChange() {},
-		handleSizeChange() {},
+		handleCurrentChange(e) {
+			this.pageNum = e
+			this.getData()
+		},
+		handleSizeChange(e) {
+			this.pageSize = e
+			this.getData()
+		},
 		hideDialogMR(b) {
 			this.showDialogMR = b
 		},

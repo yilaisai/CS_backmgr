@@ -12,6 +12,9 @@
 					<el-form-item label="订单号码：">
 						<el-input v-model="formData.orderId" placeholder="搜索订单号"></el-input>
 					</el-form-item>
+					<el-form-item label="用戶编号：">
+						<el-input v-model="formData.nickName" placeholder="搜索用户编号"></el-input>
+					</el-form-item>
 				</div>
 				<div>
 					<el-form-item label="TXID：">
@@ -126,6 +129,7 @@ export default {
 				endDate: '', //结束时间
 				name: '', //账号
 				orderId: '', //订单号
+				nickName: '', //用户编号
 				pageNum: '', //页码
 				pageSize: '', //页数
 				status: null, //状态0-失败,1-成功,2-待审核,3-审核不通过,4-审核通过

@@ -41,7 +41,7 @@
         </el-col>
         <el-col  :span="12" >
           <label>谷歌密钥:</label>
-          <el-button v-if="detais.googleVerifyStatus == 1" size="small" type="danger" @click="$router.go(-1)">删除</el-button>
+          <el-button v-if="detais.googleVerifyStatus == 1" size="small" type="danger" @click="deleteGoogle">删除</el-button>
           <span v-else>无</span>
         </el-col>
         <el-col :span="12">
@@ -96,6 +96,17 @@ export default {
           this.totalRechargeToRMB=totalRechargeToRMB
           this.totalToRMB=totalToRMB
           this.totalWithdrawToRMB=totalWithdrawToRMB
+        })
+      },
+      deleteGoogle(){
+        this.$http.post('wallet/backmgr/user/deleteGoogleVerify', {
+          userId:this.$route.query.userId
+        }).then(res => {
+          console.log(res)
+          this.$notify.success({
+						title: '提示',
+						message: res.msg
+					})
         })
       }
     },

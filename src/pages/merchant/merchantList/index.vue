@@ -14,6 +14,9 @@
 										end-placeholder="结束日期" @change='filterForm.dateType=""'>
 									</el-date-picker>
 								</el-form-item>
+								<el-form-item label="用戶编号:">
+									<el-input placeholder="请输入用戶编号" v-model.trim="filterForm.name" class="input-with-select"></el-input>
+								</el-form-item>
 								<el-form-item label="状态:">
 									<el-select v-model="filterForm.status" placeholder="请选择">
 										<el-option value="" label="全部"></el-option>

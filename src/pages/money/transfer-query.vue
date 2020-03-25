@@ -16,6 +16,7 @@
 				</el-date-picker>
 			</el-form-item>
 			<sac-input ref="fromOrToUserPhone" label="用户账号" v-model.trim="filterForm.fromOrToUserPhone"></sac-input>
+      <sac-input ref="nickName" label="用户编号" v-model.trim="filterForm.fromOrToNickName"></sac-input>
 			<sac-coin ref="coinId" v-model="filterForm.coinId"></sac-coin>
 			<sac-select ref="tradeStatus" label="状　　态" v-model="filterForm.tradeStatus" :dataList="transferQueryStatus"></sac-select>
 			<sac-submit-form @submitForm="submitForm(1)" :isReset="false"></sac-submit-form>
@@ -78,6 +79,7 @@
           tradeStatus: '',
           thirdOrderNo: '',
           fromOrToUserPhone: '',
+          fromOrToNickName:'',
           startDate: '',
           endDate: '',
           toAddr: '',

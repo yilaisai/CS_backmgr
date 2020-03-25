@@ -18,9 +18,8 @@ if(window.location.href.indexOf('homo.plus') >= 0) {
 	// SERVER_PATH = 'http://192.168.120.108:7036/'
 	// SERVER_PATH2 = 'http://192.168.120.108:7036/' 
 	// SERVER_PATH = 'http://192.168.120.42:7036/'  //林威
-	// SERVER_PATH2 = 'http://192.168.120.42:7036/' 
-	// SERVER_PATH = 'http://192.168.120.53:7036/'  //李海
-	// SERVER_PATH = 'https://api.num22.org/'
 		SERVER_PATH2 = 'https://api.icoinease.com/'  //测试
 		SERVER_PATH = 'https://api.icoinease.com/'
+	// SERVER_PATH2 = 'http://192.168.120.42:7036/' 
+	// SERVER_PATH = 'http://192.168.120.53:7036/'  //李海
 }

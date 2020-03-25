@@ -103,7 +103,7 @@
 						<el-input :value="payList.num" disabled></el-input>
 					</el-form-item>
 					 <el-form-item label="付款图片:" >
-						 <el-image style="width: 100px; height: 100px" :src="payList.qrcode" :preview-src-list="[payList.qrcode]"></el-image>
+						 <el-image style="width: 100px; height: 100px" :src="detaileData.paymentPhoto" :preview-src-list="[detaileData.paymentPhoto]"></el-image>
 						<!-- <img style="width:200px" :src="payList.qrcode" alt=""> -->
 					</el-form-item>
 					<!--<el-form-item label="退回凭证:" >

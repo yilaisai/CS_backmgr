@@ -87,6 +87,13 @@
 							</div>
 						</el-table-column>
 						<el-table-column prop="fee" label="手续费" align="center"></el-table-column>
+						<el-table-column prop="fee" label="付款凭证" align="center">
+							<div slot-scope="scope" class="imgBox" style="height:50px;">
+								<viewer :options="options">
+									<img :src="scope.row.payment_photo" alt="" style="height:50px;cursor: pointer;">
+								</viewer>
+							</div>
+						</el-table-column>
 						<el-table-column prop="price" label="操作" fixed="right" align="center" width="300">
 							<template slot-scope="scope">
 								<el-button type="danger" size="mini" v-if="scope.row.trade_status==1||scope.row.trade_status==2" @click="appealClick(scope.row) ">申诉</el-button>
@@ -278,7 +285,23 @@ export default {
 				3: '微信',
 			},
 			server_path:'',
-			token:localStorage.getItem('wallet_token')
+			token:localStorage.getItem('wallet_token'),
+			options: {
+				inline: false,
+				button: false,
+				navbar: false,
+				title: false,
+				toolbar: false,
+				tooltip: false,
+				movable: true,
+				zoomable: true,
+				rotatable: true,
+				scalable: false,
+				transition: true,
+				fullscreen: true,
+				keyboard: true,
+				url: 'data-source'
+			},
 		}
         
 	},

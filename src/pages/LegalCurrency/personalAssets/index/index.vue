@@ -1,14 +1,15 @@
 <template>
 	<div class="personalAssets-page">
 		<el-header>
-			<div class="nav">资产排名>查看个人详情<span v-show="customerInfo.length>0">-{{customerInfo[0].nickName}}</span></div>
+			<div class="nav">资产排名>查看个人详情<span v-if="customerInfo.length>0">-{{customerInfo[0].nickName}}</span></div>
 			<!-- <el-button type="primary" @click="$router.go(-1)">返回</el-button> -->
 		</el-header>
 		<div class="main">
 			<div class="title">
 				<h3>个人资产</h3>
-				<el-table stripe border   :data="customerInfo" >
-					<el-table-column prop="phone" label="手机号" align="center"></el-table-column>
+				<el-table stripe border   :data="customerInfo" v-show="customerInfo.length>0">
+					<el-table-column prop="phone" label="手机号" align="center">
+					</el-table-column>
 					<el-table-column prop="nickName" label="昵称" align="center"></el-table-column>
 					<el-table-column prop="totalToRmb"  label="资产总折合（CNY）" align="center"></el-table-column>
 					<el-table-column prop="registTime"  label="注册时间" align="center">
@@ -88,7 +89,10 @@ export default {
 					// this.detaileData = res.result;
 					const { otcList,walletList } = res.result
 					this.otcList = otcList
-					this.walletList = walletList
+					this.walletList = walletList.filter(element => {
+						return element.coinName != 'USD'
+					});
+					// this.walletList = walletList
 					this.customerInfo= [{
 						totalToRmb:res.result.totalToRmb,
 						nickName:res.result.customerInfo.nickName,
@@ -96,7 +100,7 @@ export default {
 						registTime:res.result.customerInfo.registTime
 					}]
 					this.otcSumTotalToRmb = res.result.otcSumTotalToRmb
-					this.walletSumAmount = res.result.walletSumAmount
+					this.walletSumAmount = res.result.walletSumTotalToRmb
 				}
 			})
 		},

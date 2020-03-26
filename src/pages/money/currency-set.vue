@@ -2,7 +2,7 @@
   <div class='currency-set'>
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="190px">
       <el-form-item label="币种:" prop="coinName">
-        <el-input v-model="ruleForm.coinName" size="small" clearable placeholder="请输入币种"></el-input>
+        <el-input v-model="ruleForm.coinName" size="small" clearable placeholder="请输入币种" :disabled="buttonTitle !=1"></el-input>
       </el-form-item>
       <el-form-item label="应用图标:" prop="iconUrl">
         <el-input style="width:80%" v-model="ruleForm.iconUrl" clearable size="small" placeholder="请输入应用图标地址">
@@ -79,7 +79,7 @@
             <span class="input-before-lable1">站内</span>
             <el-input v-model="ruleForm.auditInMinAmount" clearable size="small" placeholder="请输入数额"
                       class="min-input"></el-input>
-            <el-tag>RMB</el-tag>
+            <el-tag>USDT</el-tag>
           </el-form-item>
         </el-col>
         <el-col class="line" :span="2"></el-col>
@@ -88,7 +88,7 @@
             <span class="input-before-lable">站外</span>
             <el-input v-model="ruleForm.auditOutMinAmount" clearable size="small" placeholder="请输入数额"
                       class="min-input"></el-input>
-            <el-tag>RMB</el-tag>
+            <el-tag>USDT</el-tag>
           </el-form-item>
         </el-col>
       </el-form-item>
@@ -99,7 +99,7 @@
             <span class="input-before-lable1">站内</span>
             <el-input v-model="ruleForm.smsCkInMinAmount" clearable size="small" placeholder="请输入数额"
                       class="min-input"></el-input>
-            <el-tag>RMB</el-tag>
+            <el-tag>USDT</el-tag>
           </el-form-item>
         </el-col>
         <el-col class="line" :span="2"></el-col>
@@ -108,7 +108,7 @@
             <span class="input-before-lable">站外</span>
             <el-input v-model="ruleForm.smsCkOutMinAmount" clearable size="small" placeholder="请输入数额"
                       class="min-input"></el-input>
-            <el-tag>RMB</el-tag>
+            <el-tag>USDT</el-tag>
           </el-form-item>
         </el-col>
       </el-form-item>
@@ -118,7 +118,7 @@
             <span class="input-before-lable1">站内</span>
             <el-input v-model="ruleForm.smsInNoticeMinAmount" clearable size="small" placeholder="请输入数额"
                       class="min-input"></el-input>
-            <el-tag>RMB</el-tag>
+            <el-tag>USDT</el-tag>
           </el-form-item>
         </el-col>
         <el-col class="line" :span="2"></el-col>
@@ -127,7 +127,7 @@
             <span class="input-before-lable">站外</span>
             <el-input v-model="ruleForm.smsOutNoticeMinAmount" clearable size="small" placeholder="请输入数额"
                       class="min-input"></el-input>
-            <el-tag>RMB</el-tag>
+            <el-tag>USDT</el-tag>
           </el-form-item>
         </el-col>
       </el-form-item>
@@ -278,7 +278,7 @@
                 });
                 setTimeout(() => {
                   this.$router.push({
-                    path: '/configurable/currency',
+                    path: '/money/currency',
                   })
                 }, 1000)
                 this.$store.commit('setCoinList', []);
@@ -293,7 +293,7 @@
                 });
                 setTimeout(() => {
                   this.$router.push({
-                    path: '/configurable/currency',
+                    path: '/money/currency',
                   })
                 }, 1000)
                 this.$store.commit('setCoinList', []);

@@ -138,7 +138,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$http.post("/wallet/backmgr/user/checkRealInfo", {
+          this.$http.post("wallet/backmgr/user/checkRealInfo", {
             userId: this.details.userId,
           }).then((res) => {
             if (res.result.verifyMsg && res.result.verifyMsg.indexOf(':') > -1) {
@@ -213,6 +213,12 @@
     }
     .content {
       margin-bottom: 20px;
+      .viewer {
+        >div {
+          display: flex;
+          align-items: center;
+        }
+      }
     }
   }
 </style>

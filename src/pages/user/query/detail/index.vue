@@ -102,11 +102,11 @@ export default {
         this.$http.post('wallet/backmgr/user/deleteGoogleVerify', {
           userId:this.$route.query.userId
         }).then(res => {
-          console.log(res)
           this.$notify.success({
 						title: '提示',
 						message: res.msg
-					})
+          })
+          this.getDetail(this.$route.query.userId);
         })
       }
     },

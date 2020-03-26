@@ -23,8 +23,8 @@
 			</el-table-column>
 			<el-table-column prop="rmtAmount" sortable='custom' :label="$variableCoin">
 				<div class="scope" slot-scope="scope">
-					<p>可用:{{ scope.row.rmtAmount }}</p>
-					<p>冻结:{{ scope.row.rmtFrozenAmount }}</p>
+					<p>可用:{{ scope.row.usdtAmount }}</p>
+					<p>冻结:{{ scope.row.usdtFrozenAmount }}</p>
 				</div>
 			</el-table-column>
 			<el-table-column prop="btcAmount" sortable ='custom' label="BTC">

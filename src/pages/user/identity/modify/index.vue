@@ -106,7 +106,8 @@
         },
         upData: {
           userInfo: 'img',
-          type: 'userInfo'
+          type: 'userInfo',
+          token: localStorage.getItem('wallet_token')
         },
       };
     },
@@ -123,7 +124,7 @@
             this.$http.post("wallet/backmgr/user/updateUserInfo", ruleForm).then((res) => {
               this.$notify({
                 title: '成功',
-                message: `${this.details.phone} 修改成功`,
+                message: `修改成功`,
                 type: 'success'
               });
               data.cardFrontUrl = ruleForm.frontUrl;
@@ -133,7 +134,7 @@
               data.cardNo = ruleForm.cardNo;
               setTimeout(() => {
                 this.$router.push({
-                  name: 'identityDetails',
+                  name: 'identityVerify',
                   params: data,
                 })
               }, 1000)
@@ -153,6 +154,7 @@
         return isJPG;
       },
       frontUrlSuccess(response, res, file) {
+        console.log(1)
         this.ruleForm.frontUrl = response.result.urls[0]
       },
       backUrlSuccess(response, res, file) {

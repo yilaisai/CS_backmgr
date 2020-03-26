@@ -215,7 +215,7 @@ import {userTypes} from '@/common/constants'
 			}
 		},
 		activated() {
-			//this.getUserRaking();      // 查询代理用户列表
+			this.getUserRaking();      // 查询代理用户列表
 		}
     };
 </script>

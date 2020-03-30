@@ -8,12 +8,12 @@
 			<div>
 				<div class="title">
 					<h3>用户信息</h3>
-					<div class="select-wrap">
+					<!-- <div class="select-wrap">
 						<label>币种：</label>
 						<el-select v-model="filterForm.coinName" @change="selectCoin" placeholder="请选择币种" >
 							<el-option v-for="(item,index) in coinInfo" :key = 'index' :label="item.coinName == 'USDT'?'omni':item.coinName == 'TetherUSD'?'erc20':item.coinName" :value="item.coinName"></el-option>
 						</el-select>
-					</div>
+					</div> -->
 				</div>
 				<el-form :inline="true" :model="detaileData" class="demo-form-inline">
 					<el-form-item label="账号:">

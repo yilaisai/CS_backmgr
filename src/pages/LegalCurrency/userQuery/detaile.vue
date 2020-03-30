@@ -65,25 +65,26 @@
 			<div>
 				<h3>抢派单参数</h3>
 				<el-form :inline="true" label-width="200px" :model="MatchConfig" class="panicBuying">
-					<el-form-item :label="'派单兑入开关(' + filterForm.coinName + ')：'">
+					<!-- <el-form-item :label="'派单兑入开关(' + filterForm.coinName + ')：'">
 						<el-switch
 							v-model="sysMatchSwitch"
 							@change='onSysMatchSwitch'>
 						</el-switch>
+					</el-form-item> -->
+					<el-form-item :label="'兑入开关(' + filterForm.coinName + ')：'">
+						<el-switch
+							v-model="sysRushMatchSwitch"
+							@change='onSysRushMatchSwitch'>
+						</el-switch>
 					</el-form-item>
+					<br>
 					<el-form-item :label="'派单兑出开关(' + filterForm.coinName + ')：'">
 						<el-switch
 							v-model="sysCashoutSwitch"
 							@change='onSysCashoutSwitch'>
 						</el-switch>
 					</el-form-item>
-					<br>
-					<el-form-item :label="'抢单兑入开关(' + filterForm.coinName + ')：'">
-						<el-switch
-							v-model="sysRushMatchSwitch"
-							@change='onSysRushMatchSwitch'>
-						</el-switch>
-					</el-form-item>
+					
 					<el-form-item :label="'抢单兑出开关(' + filterForm.coinName + ')：'">
 						<el-switch
 							v-model="sysRushCashoutSwitch"

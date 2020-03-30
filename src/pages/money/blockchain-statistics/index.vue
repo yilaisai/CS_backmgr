@@ -39,7 +39,7 @@
             <el-button size="mini" type="primary" @click="downloadExcel" icon="el-icon-download">导出Excel</el-button>
         </div>
 
-        <el-table :data="tableData" border style="width: 100%" size="mini">
+        <el-table :data="tableData" border style="width: 100%" size="mini" height="100%">
             <el-table-column prop="txTime" label="时间" width="140" align="center">
                 <template slot-scope="scope">
                     {{scope.row.txTime*1 | dateFormat('YYYY-MM-DD HH:mm:ss')}}

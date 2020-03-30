@@ -525,27 +525,27 @@ export default {
 			min-width: 840px;
 		}
 		.rate{
-				list-style: none;
-				display: flex;
-				flex-direction: row;
-				// justify-content: space-between;
-				margin: 0;
-				padding: 0;
-				li{
-					width: 25%;
-					p{
-						margin: 0;
-						padding: 0;
-						font-size: 12px;
-						line-height: 14px;
-						&:last-of-type{
-							font-size: 14px;
-							line-height: 18px;
-							color: #409EFF;
-						}
+			list-style: none;
+			display: flex;
+			flex-direction: row;
+			// justify-content: space-between;
+			margin: 0;
+			padding: 0;
+			li{
+				width: 25%;
+				p{
+					margin: 0;
+					padding: 0;
+					font-size: 12px;
+					line-height: 14px;
+					&:last-of-type{
+						font-size: 14px;
+						line-height: 18px;
+						color: #409EFF;
 					}
 				}
 			}
+		}
 		.custom-tree-node{
 			display: flex;
 			flex-direction: row;

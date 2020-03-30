@@ -17,7 +17,10 @@
 				<span >{{userEnterprise ==0?'非企业账号':'企业账号'}}</span>
 			</el-table-column>
       <el-table-column prop="coinName" label="支付方式" width="90" align="center">
-				<span slot-scope="scope" >{{scope.row.payType==1?'银行卡':scope.row.payType==2?'支付宝':scope.row.payType==3?'微信支付':'宝转卡'}}</span>
+				<span slot-scope="scope" >{{scope.row.payType==1?'银行卡':scope.row.payType==2?'支付宝':scope.row.payType==3?'微信支付':scope.row.payType==4?'宝转卡':'支付宝'}}</span>
+			</el-table-column>
+			<el-table-column prop="realName" label="实名姓名" align="center">
+				<span>{{realName}}</span>
 			</el-table-column>
 			<el-table-column prop="userName" label="姓名" align="center"></el-table-column>
 			<el-table-column  label="账户" align="center">
@@ -31,7 +34,12 @@
 						<p v-if="scope.row.payType==1||scope.row.payType==4">{{scope.row.bankName}}{{scope.row.bankBranch}}</p>
 				</template>
 			</el-table-column>
-				<el-table-column  label="cardindex" align="center">
+			<el-table-column  label="userId" align="center" width="60">
+				<template slot-scope="scope">
+						<p>{{scope.row.userId}}</p>
+				</template>
+			</el-table-column>
+			<el-table-column  label="cardindex" align="center">
 				<div slot-scope="scope" class="cardindex">
 						<p v-if="scope.row.cardindex">{{scope.row.cardindex}} <span class="btn" v-if="scope.row.payType==4" @click="open(scope.row.payId)"> 修改</span></p>
 						<p v-else>
@@ -53,9 +61,18 @@
 			<el-table-column prop="analysisQrCode" label="QrCode" align="center"  width="100"> 
 				<template slot-scope="scope">
 						<p v-if="scope.row.payType==1||scope.row.payType==4">无</p>
-						<div v-else>
-							<p  @click="verify(scope.row)"  style="color:#409EFF;cursor: pointer;user-select:none;" v-if="scope.row.analysisQrCode"> <img style="width:20px;position: relative; top: 5px; margin-right: 3px;" src="../../../../assets/QR_code.png" alt=""> 验证二维码</p>
-							<el-button v-else @click="getAnalysisQrCode(scope.row)" type="text" size="mini">识别二维码</el-button>
+						<div v-else class="payCode">
+							<div>
+								<p  @click="verify(scope.row)"  style="color:#409EFF;cursor: pointer;user-select:none;" v-if="scope.row.analysisQrCode">
+									<img style="width:20px;position: relative; top: 5px; margin-right: 3px;" src="../../../../assets/QR_code.png" alt=""> 验证二维码
+								</p>
+								<el-button v-else @click="getAnalysisQrCode(scope.row)" type="text" size="mini">识别二维码</el-button>
+							</div>
+							<div v-if="scope.row.alipayUserId">	
+								<p  @click="verifyTransfer(scope.row)"  style="color:#409EFF;cursor: pointer;user-select:none;">
+									<img style="width:20px;position: relative; top: 5px; margin-right: 3px;" src="../../../../assets/QR_code.png" alt=""> 验证转账码
+								</p>
+							</div>
 						</div>
 				</template>
 			</el-table-column>
@@ -79,7 +96,7 @@
 				<span >{{userEnterprise ==0?'非企业账号':'企业账号'}}</span>
 			</el-table-column>
       <el-table-column prop="coinName" label="支付方式" width="90" align="center">
-				<span slot-scope="scope" >{{scope.row.payType==1?'银行卡':scope.row.payType==2?'支付宝':scope.row.payType==3?'微信支付':'宝转卡'}}</span>
+				<span slot-scope="scope" >{{scope.row.payType==1?'银行卡':scope.row.payType==2?'支付宝':scope.row.payType==3?'微信支付':scope.row.payType==4?'宝转卡':'支付宝'}}</span>
 			</el-table-column>
 			<el-table-column prop="userName" label="姓名" align="center"></el-table-column>
 			<el-table-column  label="账户" align="center">
@@ -90,6 +107,11 @@
 			<el-table-column  label="银行卡信息" align="center" width="150">
 				<template slot-scope="scope">
 						<p v-if="scope.row.payType==1||scope.row.payType==4">{{scope.row.bankName}}{{scope.row.bankBranch}}</p>
+				</template>
+			</el-table-column>
+			<el-table-column  label="userId" align="center" width="60">
+				<template slot-scope="scope">
+						<p>{{scope.row.userId}}</p>
 				</template>
 			</el-table-column>
 			<el-table-column  label="cardindex" align="center">
@@ -155,10 +177,19 @@
 				<div style="padding-left:20px"><img style="width:100%;vertical-align: text-top;" :src="imgurl" alt="">
 				</div>
 		</el-dialog>
+		<div class="imgBox">
+			<el-image 
+				style="width: 0; height: 0;"
+				:src="imgList[0]"
+				id="peveImg"
+				:preview-src-list="imgList">
+			</el-image>
+		</div>
   </div>
 </template>
 <script>
-
+	import QRCode from 'qrcode'
+	// import QRCode from 'qrcodejs2'
 	import vueQr from 'vue-qr'
   export default {
 		name: 'paymentMethodDetaile',
@@ -168,6 +199,7 @@
 				imgurl:'',
 				qrcodeShow:false,
 				imgShow:false,
+				transferCodeShow:false,
         detais: {},
 				tableData: [],
 				otcBindInfoList:[],
@@ -180,23 +212,37 @@
 				obj:{},
 				cardindex:'',
 				payId:'',
-				analysisQrCode:''
+				analysisQrCode:'',
+				transferCode:'',
+				realName:'',
+				imgList:[],
       };
     },
     methods: {
 			verify(data){
-				console.log(data)
 				if(data.payType==2){
 					this.analysisQrCode = 'http://devadmin.hongmo.io/test.html?analysisQrCode='+data.analysisQrCode
 				}else{
 					this.analysisQrCode = data.analysisQrCode
-				}
-				
-				this.qrcodeShow = true
+
+				}		
+				QRCode.toDataURL(this.analysisQrCode, { errorCorrectionLevel: 'H' }, (err, url) => {
+						this.transferCode = url
+						this.imgList = [url]
+						setTimeout(()=>{
+							document.getElementById('peveImg').click()
+						},200)
+				})
+				// this.qrcodeShow = true
 			},
 			imgClick(imgurl){
-				this.imgurl = imgurl
-				this.imgShow = true
+				// this.imgurl = imgurl
+				// this.imgShow = true
+				this.transferCode = imgurl
+				this.imgList = [imgurl]
+				setTimeout(()=>{
+					document.getElementById('peveImg').click()
+				},200)
 			},
 			refuse(data){
 				this.obj = data
@@ -225,9 +271,10 @@
         this.$http.post('/wallet/app/otc/backmgr/getCustomPayDetailInfo', {
 					userId:this.$route.query.userId
         }).then((res) => {
-					const { otcBindInfoList, OtcAuditPayRecdList } = res.result;
+					const { otcBindInfoList, OtcAuditPayRecdList,realName } = res.result;
 					this.OtcAuditPayRecdList = OtcAuditPayRecdList;
 					this.otcBindInfoList = otcBindInfoList;
+					this.realName = realName
 				});
 			},
 			updatePayStatus(data,state){
@@ -262,7 +309,16 @@
 						this.getDetail()
 					})
 			},
-			
+			verifyTransfer(data) {
+				let url = `alipays://platformapi/startapp?appId=09999988&actionType=toAccount&goBack=NO&amount=&userId=${data.alipayUserId}&memo=`
+        QRCode.toDataURL(url, { errorCorrectionLevel: 'H' }, (err, url) => {
+						this.transferCode = url
+						this.imgList = [url]
+						setTimeout(()=>{
+							document.getElementById('peveImg').click()
+						},200)
+				})
+			}
 		},
     activated() {
 			this.nickName = this.$route.query.nickName
@@ -300,5 +356,12 @@
 			color: #409EFF;
 			cursor: pointer;
 		}
+	}
+	.imgBox {
+		position: absolute;
+		top:0;
+		left:0;
+		width:0;
+		height:0;
 	}
 </style>

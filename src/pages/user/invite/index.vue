@@ -21,7 +21,43 @@
 		</div> -->
 		<el-table :data="inviteData" height="100%" style="width: 100%;height:100%;" row-key="inviteCode" border lazy :load="load" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" size="mini">
 			<el-table-column prop="nickName" label="用户编号"></el-table-column>
-			<el-table-column prop="userId" label="ID" align="center" width="120"></el-table-column>
+			<!-- <el-table-column prop="userId" label="ID" align="center" width="120"></el-table-column> -->
+			<el-table-column prop="userId" label="兑出佣金费率" align="center" width="250">
+				<div slot-scope="scope">
+					<ul class="rate">
+						<li>
+							<p>银行卡</p>
+							<p>{{ $fmtNumber('%2', scope.row.userId) }}% </p>
+						</li>
+						<li>
+							<p>支付宝</p>
+							<p>{{ $fmtNumber('%2', scope.row.userId) }}% </p>
+						</li>
+						<li>
+							<p>微信</p>
+							<p>{{ $fmtNumber('%2', scope.row.userId) }}% </p>
+						</li>
+					</ul>
+				</div>
+			</el-table-column>
+			<el-table-column prop="userId" label="兑入佣金费率" align="center" width="250">
+				<div slot-scope="scope">
+					<ul class="rate">
+						<li>
+							<p>银行卡</p>
+							<p>{{ Math.floor(scope.row.userId*10000)/100 }}% </p>
+						</li>
+						<li>
+							<p>支付宝</p>
+							<p>{{ Math.floor(scope.row.userId*10000)/100 }}% </p>
+						</li>
+						<li>
+							<p>微信</p>
+							<p>{{ Math.floor(scope.row.userId*10000)/100 }}% </p>
+						</li>
+					</ul>
+				</div>
+			</el-table-column>
 			<el-table-column prop="realName" label="姓名" align="center" width="120"></el-table-column>
 			<el-table-column align="center" prop="account" label="账号" width="180"> </el-table-column>
 			<el-table-column align="center"  prop="inviteCode" label="邀请码" width="80"></el-table-column>
@@ -276,6 +312,28 @@ export default {
 			&.active {
 				background-color: #409EFF;
 				color: #fff;
+			}
+		}
+	}
+	.rate{
+		list-style: none;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		margin: 0;
+		padding: 0;
+		li{
+			width: 25%;
+			p{
+				margin: 0;
+				padding: 0;
+				font-size: 12px;
+				line-height: 14px;
+				&:last-of-type{
+					font-size: 14px;
+					line-height: 18px;
+					color: #409EFF;
+				}
 			}
 		}
 	}

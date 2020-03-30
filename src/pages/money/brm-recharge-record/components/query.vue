@@ -32,6 +32,12 @@
 							<el-option v-for="(item, key) in orderStatus" :key="key" :value="item.val" :label="item.name"></el-option>
 						</el-select>
 					</el-form-item>
+					<el-form-item label="类型：">
+						<el-select v-model="formData.transType" placeholder="选择类型" clearable style="width: 178px">
+							<el-option :value="null" label="全部"></el-option>
+							<el-option v-for="(item, key) in transTypes" :key="key" :value="item.val" :label="item.name"></el-option>
+						</el-select>
+					</el-form-item>
 				</div>
 				<el-form-item label="时间：">
 					<el-date-picker
@@ -71,7 +77,7 @@ export default {
 	props: {
 		orderStatus: {
 			type: Array
-		}
+		},
 	},
 	data () {
 		return {
@@ -134,9 +140,17 @@ export default {
 				pageSize: '', //页数
 				status: null, //状态0-失败,1-成功,2-待审核,3-审核不通过,4-审核通过
 				txId: '', //txid
-				userType: null
+				userType: null,
+				transType:null,  //1-充值，2-提币
 			},
-			userTypes: userTypes
+			userTypes: userTypes,
+			transTypes:[{
+				'name':'充值',
+				'val':2
+			},{
+				'name':'提币',
+				'val':3
+			}]
 		}
 	},
 	methods: {

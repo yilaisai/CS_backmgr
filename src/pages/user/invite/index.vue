@@ -27,15 +27,15 @@
 					<ul class="rate">
 						<li>
 							<p>银行卡</p>
-							<p>{{ $fmtNumber('%2', scope.row.userId) }}% </p>
+							<p>{{ $fmtNumber('%2', scope.row.cardBuyRate) }}% </p>
 						</li>
 						<li>
 							<p>支付宝</p>
-							<p>{{ $fmtNumber('%2', scope.row.userId) }}% </p>
+							<p>{{ $fmtNumber('%2', scope.row.abuyRate) }}% </p>
 						</li>
 						<li>
 							<p>微信</p>
-							<p>{{ $fmtNumber('%2', scope.row.userId) }}% </p>
+							<p>{{ $fmtNumber('%2', scope.row.wxBuyRate) }}% </p>
 						</li>
 					</ul>
 				</div>
@@ -45,15 +45,15 @@
 					<ul class="rate">
 						<li>
 							<p>银行卡</p>
-							<p>{{ Math.floor(scope.row.userId*10000)/100 }}% </p>
+							<p>{{ Math.floor(scope.row.cardSaleRate*10000)/100 }}% </p>
 						</li>
 						<li>
 							<p>支付宝</p>
-							<p>{{ Math.floor(scope.row.userId*10000)/100 }}% </p>
+							<p>{{ Math.floor(scope.row.asaleRate*10000)/100 }}% </p>
 						</li>
 						<li>
 							<p>微信</p>
-							<p>{{ Math.floor(scope.row.userId*10000)/100 }}% </p>
+							<p>{{ Math.floor(scope.row.wxSaleRate*10000)/100 }}% </p>
 						</li>
 					</ul>
 				</div>

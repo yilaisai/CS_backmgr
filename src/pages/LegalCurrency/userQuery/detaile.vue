@@ -65,26 +65,25 @@
 			<div>
 				<h3>抢派单参数</h3>
 				<el-form :inline="true" label-width="200px" :model="MatchConfig" class="panicBuying">
-					<!-- <el-form-item :label="'派单兑入开关(' + filterForm.coinName + ')：'">
+					<el-form-item :label="'派单兑入开关(' + filterForm.coinName + ')：'">
 						<el-switch
 							v-model="sysMatchSwitch"
 							@change='onSysMatchSwitch'>
 						</el-switch>
-					</el-form-item> -->
-					<el-form-item :label="'兑入开关(' + filterForm.coinName + ')：'">
-						<el-switch
-							v-model="sysRushMatchSwitch"
-							@change='onSysRushMatchSwitch'>
-						</el-switch>
 					</el-form-item>
-					<br>
 					<el-form-item :label="'派单兑出开关(' + filterForm.coinName + ')：'">
 						<el-switch
 							v-model="sysCashoutSwitch"
 							@change='onSysCashoutSwitch'>
 						</el-switch>
 					</el-form-item>
-					
+					<br>
+					<el-form-item :label="'抢单兑入开关(' + filterForm.coinName + ')：'">
+						<el-switch
+							v-model="sysRushMatchSwitch"
+							@change='onSysRushMatchSwitch'>
+						</el-switch>
+					</el-form-item>
 					<el-form-item :label="'抢单兑出开关(' + filterForm.coinName + ')：'">
 						<el-switch
 							v-model="sysRushCashoutSwitch"
@@ -94,9 +93,11 @@
 					<br>
 					<el-form-item  :label="'派单兑入范围(' + filterForm.coinName + ')：'">
 						<span>【{{MatchConfig.matchMin}}】 ~ 【{{MatchConfig.matchMax}}】</span>
+						<el-button type="primary" plain size="mini" @click="showChange(1)">修改</el-button>
 					</el-form-item>
 					<el-form-item  :label="'派单兑出范围(' + filterForm.coinName + ')：'">
 						<span>【{{MatchConfig.cashoutMin}}】 ~ 【{{MatchConfig.cashoutMax}}】</span>
+						<el-button type="primary" plain size="mini" @click="showChange(2)">修改</el-button>
 					</el-form-item>
 					<!-- <el-form-item  :label="'派单兑入最小额度(' + filterForm.coinName + ')：'">
 						<el-input v-model=" MatchConfig.matchMin" disabled ></el-input>
@@ -239,6 +240,30 @@
 				</sac-pagination>
 			</div>
 		</el-dialog>
+		<el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="40%" >
+			<el-form ref="form" :model="MatchConfig" label-width="120px">
+				<el-form-item label="最小兑入额度" v-if="dialogType == 1">
+					<el-input type="number" v-model="dialogConfig.matchMin" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')" >
+					</el-input>
+				</el-form-item>
+				<el-form-item label="最小兑出额度" v-if="dialogType == 2">
+					<el-input type="number" v-model="dialogConfig.cashoutMin" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')" >
+					</el-input>
+				</el-form-item>
+				<el-form-item label="最大兑入额度" v-if="dialogType == 1">
+					<el-input type="number" v-model="dialogConfig.matchMax" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3')">
+					</el-input>
+				</el-form-item>
+				<el-form-item label="最大兑出额度" v-if="dialogType == 2">
+					<el-input type="number" v-model="dialogConfig.cashoutMax" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3')">
+					</el-input>
+				</el-form-item>
+			</el-form>
+			<span slot="footer" class="dialog-footer">
+				<el-button @click="dialogVisible = false" size="mini">取 消</el-button>
+				<el-button type="primary" size="mini" @click="dialogEnter">确 定</el-button>
+			</span>
+		</el-dialog>
 	</div>
 </template>
 <script>
@@ -254,6 +279,7 @@ export default {
 			buyRate:'',
 			showDialog:false,
 			showDialog2:false,
+			dialogVisible:false,
 			filterForm:{
 				coinName:this.$variableCoin,
 				userId:'',
@@ -273,7 +299,15 @@ export default {
 			inviteList:[],
 			detaileData:{
 			},
-			MatchConfig:{}
+			MatchConfig:{},
+			dialogType:'',  //调整范围方式 1-兑入范围 2-兑出范围
+			dialogTitle:'', 
+			dialogConfig:{
+				matchMax:'',
+				matchMin:'',
+				cashoutMax:'',
+				cashoutMin:''
+			}
 		}
 	},
 	components:{EditBalance},
@@ -407,6 +441,10 @@ export default {
 			this.$http.post('/wallet/app/otc/backmgr/queryUserMatchConfig',this.filterForm).then(res=>{
 				if(res.code==200){
 					this.MatchConfig = res.result;
+					this.dialogConfig.matchMax = res.result.matchMax;
+					this.dialogConfig.matchMin = res.result.matchMin;
+					this.dialogConfig.cashoutMax = res.result.cashoutMax;
+					this.dialogConfig.cashoutMin = res.result.cashoutMin;
 					this.sysRushMatchSwitch = res.result.sysRushMatchSwitch==1?true:false
 					this.sysRushCashoutSwitch = res.result.sysRushCashoutSwitch==1?true:false
 					this.sysMatchSwitch = res.result.sysMatchSwitch==1?true:false
@@ -456,7 +494,33 @@ export default {
 				})
 				resolve(list)
 			})
-		}
+		},
+		showChange(type){
+			this.dialogType = type 
+			if (this.dialogType == 1) {
+				this.dialogTitle = '修改兑入范围'
+			} else if (this.dialogType == 2){
+				this.dialogTitle = '修改兑出范围'
+			}
+			this.dialogVisible = true
+		},
+		dialogEnter() {
+			this.$http.post('/wallet/app/otc/backmgr/updateUserAmountRange',{
+				coinName:'USDT',
+				maxAmount:this.dialogType == 1?this.dialogConfig.matchMax : this.dialogConfig.cashoutMax,
+				minAmount:this.dialogType == 1?this.dialogConfig.matchMin : this.dialogConfig.cashoutMin,
+				type:this.dialogType,
+				userId:this.filterForm.userId
+			}).then(res => {
+				if (res.code === 200) {
+					this.$message.success(res.msg)
+				} else {
+					this.$message.error(res.msg)
+				}
+				this.dialogVisible = false
+				this.queryUserMatchConfig()
+			})
+		}	
 	},
 	computed:{
 		...mapState(['coinInfo'])
@@ -518,7 +582,10 @@ export default {
 			}
 			.panicBuying{
 				/deep/.el-form-item{
-					width: 420px;
+					width: 450px;
+					.el-form-item__content {
+						width:250px;
+					}
 				}
 			}
 		}

@@ -30,6 +30,16 @@
                     <span class="toAdd" @click="showImg(scope.row.to_addr)">{{scope.row.to_addr}}</span>
                 </template>
             </el-table-column>
+            <el-table-column prop="toUrl" label="地址图片" width="100" align="center" >
+                <template slot-scope="scope">
+                    <el-image 
+                        v-if="scope.row.toUrl"
+                        style="width: 40px; height: 40px"
+                        :src="scope.row.toUrl" 
+                        :preview-src-list="[scope.row.toUrl]">
+                    </el-image>
+                </template>
+            </el-table-column>
             <el-table-column prop="id" label="订单号"  align="center"></el-table-column>
             <el-table-column prop="user_remark" label="上链备注" width="150" align="center"></el-table-column>
             <el-table-column fixed="right" label="操作" width="280" align="center">
@@ -144,6 +154,9 @@ export default {
             display: block !important;
         }
         /deep/ .cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             .toAdd {
                 cursor: pointer;
                 color:blue;

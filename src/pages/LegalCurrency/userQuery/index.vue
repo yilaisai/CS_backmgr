@@ -56,7 +56,7 @@
 						<div class="scope" slot-scope="scope">
 							<el-button type="primary" @click.native="$router.push({path:'/LegalCurrency/userQueryDetaile',query:{userId:scope.row.userId}})" size="mini">查看详情</el-button>
 							<el-button type="warning" @click.native=" editType(scope.row)" size="mini">修改类型</el-button>
-							<el-button type="danger" @click.native=" $refs.editBalance.editBalance(scope.row.userId)" size="mini">修改余额</el-button>
+							<!-- <el-button type="danger" @click.native=" $refs.editBalance.editBalance(scope.row.userId)" size="mini">修改余额</el-button> -->
 						</div>
 					</el-table-column>
 				</el-table>
@@ -229,6 +229,9 @@ export default {
 					flex: 1;
 					width: 100%;
 					height: 100%;
+					.cell {
+
+					}
 				}
 			}
 	} 
@@ -283,6 +286,8 @@ export default {
 		
 	}
 	/deep/ .scope{
+		display: flex;
+		justify-content: center;
 		p{
 			margin: 0;
 		}

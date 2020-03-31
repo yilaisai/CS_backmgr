@@ -1,9 +1,9 @@
 <template>
   <div class='query-details'>
-      <el-header>
-        <div class="nav">用户管理>用户查询>查看用户详情</div>
-        <!-- <el-button type="primary" @click="$router.go(-1)">返回</el-button> -->
-      </el-header>
+    <el-header>
+      <div class="nav">用户管理>用户查询>查看用户详情</div>
+      <!-- <el-button type="primary" @click="$router.go(-1)">返回</el-button> -->
+    </el-header>
     <div class="content">
       <label>基本信息：</label>
       <el-row class="sac-row" :gutter="10">
@@ -70,6 +70,13 @@
         
       </el-row>
     </div>
+    <el-dialog title="谷歌验证" :visible.sync="dialogVisible" class="googlePop">
+      <el-input v-model="googleCode" clearable placeholder="请输入谷歌验证码" maxlength="6"></el-input>
+      <el-button-group>
+        <el-button @click="dialogVisible = false;googleCode = ''" :disabled="disabled">取消</el-button>
+        <el-button type="primary" @click="confirmDelete" :disabled="disabled">确认</el-button>
+      </el-button-group>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -82,6 +89,9 @@ export default {
         totalRechargeToRMB:'',
         totalToRMB:'',
         totalWithdrawToRMB:'',
+        dialogVisible:false,
+        googleCode:'',
+        disabled:false,
       };
 	},
     methods: {
@@ -99,14 +109,33 @@ export default {
         })
       },
       deleteGoogle(){
+        this.dialogVisible = true
+      },
+      confirmDelete() {
+        if (!this.googleCode) {
+          this.$notify.warning({
+            title:'提示',
+            message:'请输入谷歌验证码'
+          })
+          return
+        }
+        this.disabled = true
         this.$http.post('wallet/backmgr/user/deleteGoogleVerify', {
-          userId:this.$route.query.userId
+          userId:this.$route.query.userId,
+          secret:this.googleCode
         }).then(res => {
           this.$notify.success({
 						title: '提示',
 						message: res.msg
           })
+          this.dialogVisible = false
+          this.disabled = false
+          this.googleCode = ''
           this.getDetail(this.$route.query.userId);
+        }).catch(err => {
+          this.dialogVisible = false
+          this.disabled = false
+          this.googleCode = ''
         })
       }
     },
@@ -131,6 +160,19 @@ export default {
         font-size: 18px;
         font-weight: 500;
       }
+    }
+    .googlePop {
+      .el-button-group {
+        margin-top:30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        button {
+          width:120px;
+          margin:0 10px;
+        }
+      }
+      
     }
   }
 </style>

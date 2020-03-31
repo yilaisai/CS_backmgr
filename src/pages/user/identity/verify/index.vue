@@ -7,6 +7,9 @@
 						<el-option v-for="item in identityType" :key="item.value" :label="item.label" :value="item.value"></el-option>
 					</el-select>
 				</el-form-item>
+				<el-form-item label="用户编号">
+					<el-input v-model.trim="filterForm.nickName" placeholder="请输入" clearable></el-input>
+				</el-form-item>
 				<el-form-item label="手机号">
 					<el-input v-model.trim="filterForm.phone" placeholder="请输入" clearable></el-input>
 				</el-form-item>
@@ -24,6 +27,7 @@
 		</div>
 		<sac-table :data="listData.list" size="mini">
 			<el-table-column prop="phone" label="账号" align="center"></el-table-column>
+			<el-table-column prop="nickName" label="用户编号" align="center"></el-table-column>
 			<el-table-column prop="realName" label="姓名" align="center"></el-table-column>
 			<el-table-column prop="cardNo" label="身份证号码" align="center"></el-table-column>
 			<el-table-column label="状态" align="center">
@@ -55,6 +59,7 @@ export default {
 				auditStatus: "",
 				phone: "",
 				realName: '',
+				nickName:'',
 				cardNo: '',
 				pageNum: 1,
 				pageSize: 20
@@ -77,6 +82,7 @@ export default {
 			this.$refs.phone.reset();
 			this.$refs.realName.reset();
 			this.$refs.cardNo.reset();
+			this.$refs.nickName.reset();
 			this.filterForm.auditStatus = '';
 			this.$refs.filterForm.resetFields(); // 重置query的数据
 			this.filterForm.pageNum = 1;

@@ -22,7 +22,7 @@
 		<el-table :data="inviteData" height="100%" style="width: 100%;height:100%;" row-key="inviteCode" border lazy :load="load" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" size="mini">
 			<el-table-column prop="nickName" label="用户编号"></el-table-column>
 			<!-- <el-table-column prop="userId" label="ID" align="center" width="120"></el-table-column> -->
-			<el-table-column prop="userId" label="兑出佣金费率" align="center" width="250">
+			<el-table-column prop="userId" label="兑出佣金费率" align="center" width="200">
 				<div slot-scope="scope">
 					<ul class="rate">
 						<li>
@@ -40,7 +40,7 @@
 					</ul>
 				</div>
 			</el-table-column>
-			<el-table-column prop="userId" label="兑入佣金费率" align="center" width="250">
+			<el-table-column prop="userId" label="兑入佣金费率" align="center" width="200">
 				<div slot-scope="scope">
 					<ul class="rate">
 						<li>
@@ -59,7 +59,7 @@
 				</div>
 			</el-table-column>
 			<el-table-column prop="realName" label="姓名" align="center" width="120"></el-table-column>
-			<el-table-column align="center" prop="account" label="账号" width="180"> </el-table-column>
+			<el-table-column align="center" prop="account" label="账号" width="140"> </el-table-column>
 			<el-table-column align="center"  prop="inviteCode" label="邀请码" width="80"></el-table-column>
 			<el-table-column align="center" label="操作" width="180">
 				<template slot-scope="scope"  >   

@@ -80,6 +80,16 @@
 		</el-table-column>
 		<el-table-column prop="from_addr" label="From" width="320"></el-table-column>
 		<el-table-column prop="to_addr" label="To" width="320"></el-table-column>
+		<el-table-column prop="toUrl" label="地址图片" width="100">
+			<span slot-scope="scope">
+				 <el-image 
+				  v-if="scope.row.toUrl"
+					style="width: 40px; height: 40px"
+					:src="scope.row.toUrl" 
+					:preview-src-list="[scope.row.toUrl]">
+				</el-image>
+			</span>
+		</el-table-column>
 		<el-table-column prop="id" label="订单号"></el-table-column>
 		<el-table-column prop="tx_id" label="Txid">
 							<a slot-scope="scope" :href="'https://www.omniexplorer.info/search/'+ scope.row.tx_id" target="_blank">{{scope.row.tx_id}}</a>
@@ -164,5 +174,13 @@ export default {
 .el-table{
 	flex: 1;
 	margin-top: 0px;
+	/deep/ .cell {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		span {
+			line-height: 1em;
+		}
+	}
 }
 </style>

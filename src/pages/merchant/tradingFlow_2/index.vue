@@ -89,10 +89,12 @@
 						<el-table-column prop="fee" label="手续费" align="center"></el-table-column>
 						<el-table-column prop="payment_name" label="付款人" align="center"></el-table-column>
 						<el-table-column prop="fee" label="付款凭证" align="center">
-							<div slot-scope="scope" class="imgBox" style="height:50px;">
-								<viewer :options="options">
-									<img :src="scope.row.payment_photo" alt="" style="height:50px;cursor: pointer;">
-								</viewer>
+							<div slot-scope="scope" class="imgBox" v-if="scope.row.payment_photo">
+								<el-image
+									:src="scope.row.payment_photo ? scope.row.payment_photo.split(',')[0] : ''" 
+									:preview-src-list="scope.row.payment_photo ? scope.row.payment_photo.split(',') : []">
+								</el-image>
+								<i>{{scope.row.payment_photo.split(',').length}}</i>
 							</div>
 						</el-table-column>
 						<el-table-column prop="price" label="操作" fixed="right" align="center" width="300">
@@ -656,6 +658,26 @@ export default {
 			}
 			
 		}
+	.imgBox {
+		position: relative;
+		height: 50px;
+		i {
+			position: absolute;
+			font-style: normal;
+			font-size: 12px;
+			height: 16px;
+			width: 16px;
+			line-height: 16px;
+			background-color: #666;
+			border-radius: 50%;
+			left: 0;
+			top: 0;
+			color: #fff;
+		}
+		.el-image {
+			height: 100%;
+		}
+	}
 	.EntryPrompt{
 		// position: fixed;
 		// width: 100%;

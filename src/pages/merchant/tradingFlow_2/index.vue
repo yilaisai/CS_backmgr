@@ -676,6 +676,7 @@ export default {
 		}
 		.el-image {
 			height: 100%;
+			width: 60px;
 		}
 	}
 	.EntryPrompt{

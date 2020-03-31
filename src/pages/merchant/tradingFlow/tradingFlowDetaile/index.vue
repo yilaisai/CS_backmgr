@@ -102,9 +102,13 @@
 					<el-form-item label="收款账号:" >
 						<el-input :value="payList.num" disabled></el-input>
 					</el-form-item>
-					 <el-form-item label="付款图片:" >
-						 <el-image style="width: 100px; height: 100px" :src="detaileData.paymentPhoto" :preview-src-list="[detaileData.paymentPhoto]"></el-image>
-						<!-- <img style="width:200px" :src="payList.qrcode" alt=""> -->
+					 <el-form-item label="付款图片:" class="special">
+						 <el-image 
+						 	v-for="(img, idx) in detaileData.paymentPhoto ? detaileData.paymentPhoto.split(',') : []"
+							:src="img"
+							:preview-src-list="[img]"
+							:key="idx">
+						</el-image>
 					</el-form-item>
 					<!--<el-form-item label="退回凭证:" >
 						<el-input disabled></el-input>
@@ -269,6 +273,16 @@ export default {
 				}
 				.el-form-item__label{
 					width: 100px;
+				}
+				&.special {
+					/deep/.el-form-item__content {
+						width: auto;
+						.el-image {
+							width: 100px;
+							height: 100px;
+							margin-right: 10px;
+						}
+					}
 				}
 			}
 		}

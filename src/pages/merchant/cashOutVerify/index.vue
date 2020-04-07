@@ -91,7 +91,7 @@
 			<!-- <el-table-column align="center" prop="auditUserName" label="操作人"></el-table-column> -->
 			<el-table-column align="center" prop="payType" label="付款方式"  width="80">
 				<div slot-scope="scope">
-					{{scope.row.payType == 1?"银行卡":scope.row.payType == 2?"支付宝":scope.row.payType == 1?"微信":scope.row.payType == 4?"宝转卡":scope.row.payType == 5?'支付宝':'新的支付方式'}}
+					{{scope.row.payType == 1?"银行卡":scope.row.payType == 2?"支付宝":scope.row.payType == 3?"微信":scope.row.payType == 4?"宝转卡":scope.row.payType == 5?'支付宝':'新的支付方式'}}
 				</div>
 			</el-table-column>
 			<el-table-column align="center" prop="bankUserName" label="收款人"  width="80">

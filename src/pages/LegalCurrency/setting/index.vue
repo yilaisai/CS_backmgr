@@ -61,19 +61,20 @@
 		</el-tabs>
 		<h3>返佣设置</h3>
 		<el-tabs type="border-card">
-				<el-form label-width="160px" ref="filterForm" size="mini">
+				<el-form label-width="160px" ref="filterForm" size="mini" v-if="rateDetaile.length>0">
 					<el-form-item label="全局最大兑出返佣比例:">
-					<el-input placeholder="未设置默认0.7%" v-model="rateDetaile.totalBuyRate" ><template slot="append">%</template></el-input>
+					<el-input placeholder="未设置默认0.7%" v-model="rateDetaile[0].totalBuyRate" ><template slot="append">%</template></el-input>
 					<span>设置后返佣比例之和不可超过该值</span>
 				</el-form-item>
 				<el-form-item label="全局最大兑入返佣比例:">
-					<el-input placeholder="未设置默认0.2%" v-model="rateDetaile.totalSaleRate" ><template slot="append">%</template></el-input>
+					<el-input placeholder="未设置默认0.2%" v-model="rateDetaile[0].totalSaleRate" ><template slot="append">%</template></el-input>
 					<span>设置后返佣比例之和不可超过该值</span>
 				</el-form-item>
 				<br>
 				<br>
 				<el-form-item label="支付通道:">
-					<el-select v-model="rateDetaile.payType"  placeholder="请选择"  @change="getDefaultRate">
+					<el-select v-model="currentItem.payType"  placeholder="请选择"  @change="getDefaultRate">
+							<el-option label="全部" :value="0"></el-option>
 							<el-option label="银行卡" :value="1"></el-option>
 							<el-option label="支付宝" :value="2"></el-option>
 							<el-option label="微信" :value="3"></el-option>
@@ -87,16 +88,29 @@
 					</el-select>
 				</el-form-item> -->
 				<el-form-item label="默认返佣兑入返佣比例:">
-					<el-input placeholder="未设置默认0.6%" v-model="rateDetaile.saleRate" >
+					<el-input placeholder="" v-model="currentItem.saleRate" >
 						<template slot="append">%</template>
 					</el-input>
 				</el-form-item>
 				<el-form-item label="默认返佣兑出返佣比例:">
-					<el-input placeholder="未设置默认0.1%" v-model="rateDetaile.buyRate" >
+					<el-input placeholder="" v-model="currentItem.buyRate" >
 						<template slot="append">%</template>
 					</el-input>
 				</el-form-item>
-				
+				<el-form-item label="" v-if="currentItem.payType == 0" class="showList">
+					<div class="item" v-if="rateDetaile.length >1">
+						<span>银行卡兑入返佣比例：<b>{{rateDetaile[0].saleRate}}%</b></span>
+						<span>银行卡兑出返佣比例：<b>{{rateDetaile[0].buyRate}}%</b></span>
+					</div>
+					<div class="item" v-if="rateDetaile.length >1">
+						<span>支付宝兑入返佣比例：<b>{{rateDetaile[1].saleRate}}%</b></span>
+						<span>支付宝兑出返佣比例：<b>{{rateDetaile[1].buyRate}}%</b></span>
+					</div>
+					<div class="item" v-if="rateDetaile.length >1">
+						<span>微信兑入返佣比例：<b>{{rateDetaile[2].saleRate}}%</b></span>
+						<span>微信兑出返佣比例：<b>{{rateDetaile[2].buyRate}}%</b></span>
+					</div>
+				</el-form-item>
 				<el-form-item label="">
 					<el-button type="primary" @click="updateDefaultRate">保存</el-button>
 				</el-form-item>
@@ -112,7 +126,7 @@ export default {
 	data(){
 		return {
 			filterForm:{
-				coinName: '',
+				coinName: 'USDT',
 			},
 			detaileData:{
 				otcFee:'',
@@ -123,24 +137,32 @@ export default {
 				payType:'',
 			},
 			OtcPayList:[],
-			rateDetaile:{
-				buyRate: null,
-				payType: 1,
-				rank: 1,
-				saleRate: null,
-				totalBuyRate: 0.1,
-				totalSaleRate: 0.1,
+			// rateDetaile:[{
+			// 	buyRate: null,
+			// 	payType: 1,
+			// 	rank: 1,
+			// 	saleRate: null,
+			// 	totalBuyRate: 0.1,
+			// 	totalSaleRate: 0.1,
+			// }],
+			currentItem:{
+				payType:1,
+				buyRate:'',
+				saleRate:'',
+				rank:1,
 			},
+			rateDetaile:[],
 			atobLimitNum:0,
 			atobLimitMin:0,
 			atobLimitMax:0,
 		}
 	},
 	activated() {
-		if(this.coinInfo[0]) {
-			this.filterForm.coinName = this.coinInfo[0].coinName
-			this.queryOtcCoinConfig()
-		}
+		// if(this.coinInfo[0]) {
+		// 	this.filterForm.coinName = this.coinInfo[0].coinName
+		// 	this.queryOtcCoinConfig()
+		// }
+		this.queryOtcCoinConfig()
 		this.getDefaultRate()
 	},
 	methods:{
@@ -148,11 +170,11 @@ export default {
 		
 		updateDefaultRate(){
 			let queryDate ={
-				buyRate:Math.floor(this.rateDetaile.buyRate*100)/10000,
-				saleRate:Math.floor(this.rateDetaile.saleRate*100)/10000,
-				totalBuyRate:Math.floor(this.rateDetaile.totalBuyRate*100)/10000,
-				totalSaleRate:Math.floor(this.rateDetaile.totalSaleRate*100)/10000,
-				payType:this.rateDetaile.payType,
+				buyRate:Math.floor(this.currentItem.buyRate*100)/10000 || -1,
+				saleRate:Math.floor(this.currentItem.saleRate*100)/10000 || -1,
+				totalBuyRate:Math.floor(this.rateDetaile[0].totalBuyRate*100)/10000,
+				totalSaleRate:Math.floor(this.rateDetaile[0].totalSaleRate*100)/10000,
+				payType:this.currentItem.payType,
 				rank:1,
 			}
 			this.$http.post("/wallet/invite/backmgr/updateDefaultRate", queryDate).then(res => {
@@ -166,12 +188,38 @@ export default {
 			})
 		},
 		getDefaultRate(){
-			this.$http.post("/wallet/invite/backmgr/getDefaultRate", {payType:this.rateDetaile.payType,rank:this.rateDetaile.rank}).then(res => {
+			this.$http.post("/wallet/invite/backmgr/getDefaultRate", {payType:this.currentItem.payType,rank:this.currentItem.rank}).then(res => {
 				if(res.code == 200){
-					res.result.totalBuyRate = Math.floor(res.result.totalBuyRate*10000)/100
-					res.result.totalSaleRate = Math.floor(res.result.totalSaleRate*10000)/100
-					res.result.saleRate = Math.floor(res.result.saleRate*10000)/100
-					res.result.buyRate = Math.floor(res.result.buyRate*10000)/100
+					
+					// res.result.totalBuyRate = Math.floor(res.result.totalBuyRate*10000)/100
+					// res.result.totalSaleRate = Math.floor(res.result.totalSaleRate*10000)/100
+					// res.result.saleRate = Math.floor(res.result.saleRate*10000)/100
+					// res.result.buyRate = Math.floor(res.result.buyRate*10000)/100
+					
+					res.result.forEach(el => {
+						el.totalBuyRate = Math.floor(el.totalBuyRate*10000)/100
+						el.totalSaleRate = Math.floor(el.totalSaleRate*10000)/100
+						el.saleRate = Math.floor(el.saleRate*10000)/100
+						el.buyRate = Math.floor(el.buyRate*10000)/100
+					})
+					if (res.result.length > 1) {
+
+						let saleChoose = true;
+						let buyChoose = true;
+						let saleRate = res.result[0].saleRate;
+						let buyRate = res.result[0].buyRate;
+						this.currentItem.saleRate = ''
+						this.currentItem.buyRate = ''
+						res.result.forEach(el => {
+							saleChoose && saleRate == el.saleRate? saleChoose = true: saleChoose = false
+							buyChoose &&  buyRate == el.buyRate?buyChoose = true: buyChoose = false
+						})
+						if (saleChoose) this.currentItem.saleRate = saleRate
+						if (buyChoose)  this.currentItem.buyRate = buyRate
+					} else {
+						this.currentItem.saleRate =  res.result[0].saleRate
+						this.currentItem.buyRate = res.result[0].buyRate
+					}
 					this.rateDetaile = res.result
 				}
 			})
@@ -309,6 +357,17 @@ export default {
 		display: block;
 		width: 30%;
 		margin: 0 auto 20px;
+	}
+	.showList {
+		display: flex;
+		.item {
+			display: flex;
+			span {
+				width:200px;
+				text-align: right;
+				margin-right:20px;
+			}
+		}
 	}
 }
 </style>

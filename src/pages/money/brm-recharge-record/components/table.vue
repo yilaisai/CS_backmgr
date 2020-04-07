@@ -95,7 +95,7 @@
 							<a slot-scope="scope" :href="'https://www.omniexplorer.info/search/'+ scope.row.tx_id" target="_blank">{{scope.row.tx_id}}</a>
 		</el-table-column>
 		<el-table-column prop="sys_remark" label="备注"></el-table-column>
-		<el-table-column prop="user_remark" label="上链备注"></el-table-column>
+		<el-table-column prop="user_remark" label="审核备注"></el-table-column>
 		<el-table-column prop="pay_time" label="打币时间" width="140"></el-table-column>
 		<el-table-column prop="tx_time" label="到账时间" width="140" ></el-table-column>
 	</el-table>

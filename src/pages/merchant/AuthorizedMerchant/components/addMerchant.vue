@@ -5,7 +5,7 @@
 		<el-dialog class="addMerchant-page" title="增加商户" :visible.sync="showWidget">
 			<el-form  :model="merchantFormData" label-width="105px" size="mini" inline>
 				<el-form-item label="账户/用户编号:">
-					<el-input v-model="merchantFormData.name" placeholder="请输入账户或者用户编号"></el-input>
+					<el-input v-model="merchantFormData.phone" placeholder="请输入账户或者用户编号"></el-input>
 				</el-form-item>
 				
 				<el-form-item>
@@ -56,7 +56,7 @@ export default {
 			showWidget:false,
 			addMerchantShow:false,
 			merchantFormData: {
-				name:'',
+				phone:'',
 				groupId:'',
 				pageNum: 1, //页码
 				pageSize: 10, //页数

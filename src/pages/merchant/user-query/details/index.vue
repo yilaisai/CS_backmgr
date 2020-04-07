@@ -100,6 +100,16 @@
 					<span>{{outFee}} %</span>
 					<el-button type="primary" plain size="mini" @click="showDialog('feeRateIn')">修改</el-button>
 				</li>
+				<li v-if="payType == 0">
+					<p>银行卡兑入手续费：{{Math.floor(pageData.feeList[1].inFee*10000)/100}} %</p>
+					<p>支付宝兑入手续费：{{Math.floor(pageData.feeList[2].inFee*10000)/100}} %</p>
+					<p>微信兑入手续费：{{Math.floor(pageData.feeList[3].inFee*10000)/100}} %</p>
+				</li>
+				<li v-if="payType == 0">
+					<p>银行卡兑出手续费：{{Math.floor(pageData.feeList[1].outFee*10000)/100}} %</p>
+					<p>支付宝兑出手续费：{{Math.floor(pageData.feeList[2].outFee*10000)/100}} %</p>
+					<p>微信兑出手续费：{{Math.floor(pageData.feeList[3].outFee*10000)/100}} %</p>
+				</li>
 				<li>
 					<label>商户兑出方式:</label>
 					<span>
@@ -215,6 +225,24 @@ export default {
 				userId: this.$route.query.id
 			}).then(res => {
 				this.pageData = res.result
+				let inFee = ''
+				let outFee = ''
+				if (this.pageData.feeList[0].inFee == this.pageData.feeList[1].inFee &&  this.pageData.feeList[1].inFee == this.pageData.feeList[2].inFee) {
+					inFee = this.pageData.feeList[0].inFee
+				}
+				if (this.pageData.feeList[0].outFee == this.pageData.feeList[1].outFee && this.pageData.feeList[1].outFee  == this.pageData.feeList[2].outFee) {
+					outFee = this.pageData.feeList[0].outFee
+				}
+				console.log(inFee)
+				this.pageData.feeList.unshift({
+					payType:0,
+					inFee:inFee,
+					outFee:outFee
+				})
+				this.pageData.payList.unshift({
+					payType: 0,
+					description:'全部'
+				})
 			})
 		},
 		updateMerchantExchangeType(postData) {
@@ -339,13 +367,14 @@ export default {
 		},
 		//1、修改商户手续费率；
 		updateMerchantFee(type) {
+			if (this.dialogType == "feeRateIn")
 			this.$http.post('/wallet/backmgr/merchant/updateMerchantFee', {
 				coinName: this.coinName,
 				payType: this.payType,
 				type: type,   //1、兑入；2、兑出；
 				userId: this.$route.query.id,
-				value1: (this.formData.value1 / 100).toFixed(4),   //最小兑入手续费
-				value2: (this.formData.value2 / 100).toFixed(4)   //最大兑入手续费
+				value1:this.formData.value1?(this.formData.value1 / 100).toFixed(4):-0.01,   //兑入手续费
+				value2:this.formData.value2?(this.formData.value2 / 100).toFixed(4):-0.01  //兑出手续费
 			}).then(res => {
 				this.formData.value1 = ""
 				this.formData.value2 = ""
@@ -409,7 +438,7 @@ export default {
 					return
 				}
 			})
-			return Math.floor(inFee*10000)/100
+			return inFee?Math.floor(inFee*10000)/100:inFee
 		},
 		outFee() {
 			let outFee = 0
@@ -419,7 +448,7 @@ export default {
 					return
 				}
 			})
-			return Math.floor(outFee*10000)/100
+			return outFee?Math.floor(outFee*10000)/100:outFee
 		},
 		payTypeName() {
 			let payTypeName = ""

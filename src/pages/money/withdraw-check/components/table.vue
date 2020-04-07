@@ -41,7 +41,6 @@
                 </template>
             </el-table-column>
             <el-table-column prop="id" label="订单号"  align="center"></el-table-column>
-            <el-table-column prop="user_remark" label="上链备注" width="150" align="center"></el-table-column>
             <el-table-column fixed="right" label="操作" width="280" align="center">
                 <template slot-scope="scope">
                     <!-- <el-button @click="btnHandle('auto', scope.row)" type="success" size="mini" :disabled="scope.row.status !== 2">自动放行</el-button> -->

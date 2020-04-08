@@ -16,8 +16,7 @@
       :props="defaultProps"
       :expand-on-click-node="false">
       <span class="custom-tree-node" slot-scope="{ node, data }">
-        <span class="sac-label"> {{ node.label }} <i class="el-icon-info sac-icon" v-show="data.describe"
-                                                     @click="showDescription(data.describe)"></i></span>
+        <span class="sac-label"> {{ node.label }} <i class="el-icon-info sac-icon" v-show="data.describe" @click="showDescription(data.describe)"></i></span>
         <span class="sac-btn">
           <el-button
             type="text"
@@ -40,7 +39,7 @@
         </span>
       </span>
     </el-tree>
-    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
+    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
         <el-form-item label="排序:">
           <el-input-number v-model="ruleForm.position" size="small" :min="0"></el-input-number>

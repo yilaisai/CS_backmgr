@@ -1,7 +1,7 @@
 
 <template>
   <div class='user'>
-    <el-col :span="22" style="text-align:right; margin-bottom: 30px;">
+    <el-col style="text-align:right; margin-bottom: 10px;">
       <el-button size="small" type="primary" @click="addUser">创建用户</el-button>
     </el-col>
     <sac-table :data="listData">
@@ -56,14 +56,12 @@
         <el-form-item label="所属角色">
           <el-select v-model="ruleForm.roleId" placeholder="请选择所属角色">
             <el-option v-for="(item, index) in roleList"
-                       size="small"
-                       :label="item.label"
-                       :value="item.value"
-                       :key="index"></el-option>
+                size="small"
+                :label="item.label"
+                :value="item.value"
+                :key="index"></el-option>
           </el-select>
         </el-form-item>
-
-
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisibleRole = false" size="small">取 消</el-button>
@@ -136,16 +134,22 @@
       },
       
       updateSysUserGoogleSecret(item){
-        this.$http.post('/wallet/backmgr/privilege/updateSysUserGoogleSecret', {
-              sysUserId:item.id
-            }).then((res) => {
-              this.$notify({
-                title: '成功',
-                message: `更换成功`,
-                type: 'success'
-              });
-              this.getSysUserList();
-            })
+		this.$confirm(`确定更换 ${item.name}(${item.roleName}) 的谷歌秘钥吗？`, '提示', {
+			confirmButtonText: '确定',
+			cancelButtonText: '取消',
+			type: 'warning'
+        }).then(() => {
+          	this.$http.post('/wallet/backmgr/privilege/updateSysUserGoogleSecret', {
+				sysUserId:item.id
+			}).then((res) => {
+				this.$notify({
+				title: '成功',
+				message: `更换成功`,
+				type: 'success'
+				});
+				this.getSysUserList();
+			})
+        })
       },
       submitForm() {
         this.$refs.ruleForm.validate((valid) => {

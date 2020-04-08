@@ -101,6 +101,7 @@
 							<template slot-scope="scope">
 								<el-button type="danger" size="mini" v-if="scope.row.trade_status==1||scope.row.trade_status==2" @click="appealClick(scope.row) ">申诉</el-button>
 								<el-button type="primary" size="mini" @click.native="$router.push({path:'/merchant/merchantTradingFlowDetaile',query:{tradeId:scope.row.trade_id}})">查看详情</el-button>
+								<el-button type="primary" size="mini" v-if="scope.row.trade_status==5 && (scope.row.adv_type == 4||scope.row.adv_type == 5)" @click="goComplaint(scope.row) ">处理</el-button>
 								<el-button type="danger" size="mini" v-if="(scope.row.trade_status==8||scope.row.trade_status==4)&&showActiveBtn(scope.row.create_time)" @click.native="orderActivation(scope.row)">激活订单</el-button>
 								<el-button type="danger" size="mini" v-if="scope.row.trade_status==2&&scope.row.isActivation==1" @click.native="activationLetgo(scope.row.trade_id)">&nbsp;&nbsp;放 &nbsp;&nbsp;行&nbsp;&nbsp;</el-button>
 								<el-button type="warning" size="mini" v-if="((scope.row.adv_type == 4 || scope.row.adv_type == 5) && (scope.row.trade_status == 3 || scope.row.trade_status == 6))&&scope.row.trade_type!=3" @click="returnApi(scope.row)">异步补发</el-button>
@@ -506,28 +507,36 @@ export default {
 				this.selectedDate=[formatwdate,formatnowdate]
 			}
 		},
-        search(){
+		search(){
 			this.filterForm.pageNum = 1
 			this.getList()
-        },
-        checkLog(){
-            this.$router.push({
-                path:'customer-log'
-            })
-        },
-        checkDetails(){
-            this.$router.push({
-                path:'complaint-details'
-            })
-        },
-        handleCurrentChange(val,currentPage) {
-            this.filterForm.pageSize=val
-            this.filterForm.pageNum=currentPage
-            this.getList()
-        },
-        download(){
-            location.href =`${ SERVER_PATH}/wallet/app/otc/backmgr/exportExcel?startDate=${this.filterForm.startDate}&endDate=${this.filterForm.endDate}&userId=${this.filterForm.userId}&token=${localStorage.getItem('cus_token')}`;
-        }
+		},
+		checkLog(){
+				this.$router.push({
+						path:'customer-log'
+				})
+		},
+		checkDetails(){
+				this.$router.push({
+						path:'complaint-details'
+				})
+		},
+		handleCurrentChange(val,currentPage) {
+				this.filterForm.pageSize=val
+				this.filterForm.pageNum=currentPage
+				this.getList()
+		},
+		download(){
+				location.href =`${ SERVER_PATH}/wallet/app/otc/backmgr/exportExcel?startDate=${this.filterForm.startDate}&endDate=${this.filterForm.endDate}&userId=${this.filterForm.userId}&token=${localStorage.getItem('cus_token')}`;
+		},
+		goComplaint(itemData){
+			this.$router.push({
+				name:'complaintDetails',
+				query:{
+					tradeId:itemData.trade_id,
+				}
+			})
+		},
 	},
 	computed:{
 		...mapState(['coinInfo'])

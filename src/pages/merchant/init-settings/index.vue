@@ -64,14 +64,27 @@
 						</el-form-item>
 						<br />
 						<el-form-item label="商户兑入手续费比例：">
-							<el-input type="number" v-model.trim="inFee" @input="inFee = inFee.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')" placeholder="未设置默认1.5%">
+							<el-input type="number" v-model.trim="inFee" @input="inFee = inFee.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')" >
 								<template slot="append">%</template>
 							</el-input>
 						</el-form-item>
 						<el-form-item label="商户兑出手续费比例：">
-							<el-input type="number" v-model.trim="outFee" @input="outFee = outFee.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')" placeholder="未设置默认0.3%">
+							<el-input type="number" v-model.trim="outFee" @input="outFee = outFee.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')" >
 								<template slot="append">%</template>
 							</el-input>
+						</el-form-item>
+						<br />
+						<el-form-item v-if="payType === 0" class="payList">
+							<div>
+								<div><span>银行卡兑入手续费：</span>{{form.otcPayLists[1].inFee}} %</div>
+								<div><span>支付宝兑入手续费：</span>{{form.otcPayLists[2].inFee}} %</div>
+								<div><span>微信兑入手续费：</span>{{form.otcPayLists[3].inFee}}%</div>
+							</div>
+							<div>
+								<div><span>银行卡兑出手续费： </span>{{form.otcPayLists[1].outFee}}%</div>
+								<div><span>支付宝兑出手续费：</span>{{form.otcPayLists[2].outFee}}%</div>
+								<div><span>微信兑出手续费：</span> {{form.otcPayLists[3].outFee}}%</div>
+							</div>
 						</el-form-item>
 						<br />
 						<el-form-item label="商户最小兑入额度：">
@@ -193,8 +206,22 @@ export default {
 			}).then(res => {
 				this.form = res.result
 				this.form.BATCHOUT_RATIO_FEE = Math.floor(this.form.BATCHOUT_RATIO_FEE*10000)/100
+				let inFee = ''
+				let outFee = ''
+				if (this.form.otcPayLists[0].inFee == this.form.otcPayLists[1].inFee &&  this.form.otcPayLists[1].inFee == this.form.otcPayLists[2].inFee) {
+					inFee = this.form.otcPayLists[0].inFee
+				}
+				if (this.form.otcPayLists[0].outFee == this.form.otcPayLists[1].outFee && this.form.otcPayLists[1].outFee  == this.form.otcPayLists[2].outFee) {
+					outFee = this.form.otcPayLists[0].outFee
+				}
+				this.form.otcPayLists.unshift({
+					payType:0,
+					inFee:inFee,
+					outFee:outFee,
+					description:'全部'
+				})
 				if(this.form.otcPayLists.length > 0) {
-					this.payType = this.form.otcPayLists[0].payType
+					this.payType = this.form.otcPayLists[1].payType
 				}
 			})
 		},
@@ -230,6 +257,13 @@ export default {
 			})
 		},
 		open() {
+			if (!this.inFee && !this.outFee) {
+				this.$notify.warning({
+					title:'提示',
+					message:'兑入手续费与兑出手续费不能同时为空！'
+				})
+				return
+			}
 			this.$prompt('请输入谷歌验证码', '安全验证', {
 				confirmButtonText: '确定',
 				cancelButtonText: '取消'
@@ -262,8 +296,8 @@ export default {
 				return
 			}
 			this.form.secret = ggCode
-			this.form.inFee = (this.inFee / 100).toFixed(4)
-			this.form.outFee = (this.outFee / 100).toFixed(4)
+			this.form.inFee = this.inFee?(this.inFee / 100).toFixed(4):-1
+			this.form.outFee = this.outFee?(this.outFee / 100).toFixed(4):-1
 			this.form.payType = this.payType
 			this.form.BATCHOUT_RATIO_FEE = Math.floor(this.form.BATCHOUT_RATIO_FEE)/100
 			this.$http.post('/wallet/backmgr/merchant/trade/updateConfig', this.form).then(res => {
@@ -282,8 +316,8 @@ export default {
 		payType(newVal, oldVal) {
 			this.form.otcPayLists.forEach((val, idx) => {
 				if(val.payType == this.payType) {
-					this.inFee = Math.floor(val.inFee*10000) / 100
-					this.outFee = Math.floor(val.outFee*10000) / 100
+					this.inFee = val.inFee?Math.floor(val.inFee*10000) / 100 :val.inFee
+					this.outFee = val.outFee?Math.floor(val.outFee*10000) / 100:val.outFee
 				}
 			})
 		}
@@ -339,6 +373,24 @@ export default {
 	}
 	.el-tabs {
 		margin-bottom: 20px;
+		.payList {
+			display: block;
+			/deep/ .el-form-item__content {
+				width:auto;
+				display: flex;
+				>div {
+					width:355px;
+					margin-right:15px;
+					span {
+						display: inline-block;
+						width:155px;
+						padding-right:15px;
+						text-align: right;
+						box-sizing: border-box;
+					}
+				}
+			}
+		}
 	}
 	.tips {
 		color: #999;

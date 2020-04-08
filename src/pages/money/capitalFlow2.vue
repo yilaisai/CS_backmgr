@@ -88,7 +88,7 @@ export default {
 			userTypes
 		}
 	},
-	mounted(){
+	activated(){
 		this.getList()
 	},
 	methods:{

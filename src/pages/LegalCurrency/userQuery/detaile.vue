@@ -193,6 +193,7 @@
 			<div class=" inputGroup ">
 				<span>支付通道:</span>
 				<el-select v-model="payType"  placeholder="请选择"  @change="setRate">
+					<el-option label="全部" :value="0"></el-option>
 					<el-option label="银行卡" :value="1"></el-option>
 					<el-option label="支付宝" :value="2"></el-option>
 					<el-option label="微信" :value="3"></el-option>
@@ -210,6 +211,20 @@
 				<el-input placeholder="请输入内容" v-model="rate" >
 					<template slot="append">%</template>
 				</el-input>
+			</div>
+			<div class="showList" v-if="payType == 0">
+				<div>
+					<span><b>银行卡兑入佣金费率：</b>{{$fmtNumber('%2',currItem.cardSaleRate)}}%</span>
+					<span><b>银行卡兑出佣金费率：</b>{{$fmtNumber('%2',currItem.cardBuyRate)}}%</span>
+				</div>
+				<div>
+					<span><b>支付宝兑入佣金费率：</b>{{$fmtNumber('%2',currItem.asaleRate)}}%</span>
+					<span><b>支付宝兑出佣金费率：</b>{{$fmtNumber('%2',currItem.abuyRate)}}%</span>
+				</div>
+				<div>
+					<span><b>微信兑入佣金费率：</b>{{$fmtNumber('%2',currItem.wxSaleRate)}}%</span>
+					<span><b>微信兑出佣金费率：</b>{{$fmtNumber('%2',currItem.wxBuyRate)}}%</span>
+				</div>
 			</div>
 			<div slot="footer" class="dialog-footer">
 				<el-button @click="showDialog = false">取 消</el-button>
@@ -319,7 +334,16 @@ export default {
 	},
 	methods:{
 		setRate(e){
-			if(e == 1){
+			this.buyRate = ''
+			this.rate = ''
+			if (e == 0) {
+				if ((this.currItem.cardBuyRate == this.currItem.abuyRate) && (this.currItem.abuyRate == this.currItem.wxBuyRate)) {
+					this.buyRate = this.$fmtNumber('%2', this.currItem.cardBuyRate)
+				}
+				if ((this.currItem.cardSaleRate == this.currItem.asaleRate) && (this.currItem.asaleRate== this.currItem.wxSaleRate)) {
+					this.rate = this.$fmtNumber('%2', this.currItem.cardSaleRate)
+				}
+			}else if(e == 1){
 				this.buyRate = this.$fmtNumber('%2', this.currItem.cardBuyRate)
 				this.rate = this.$fmtNumber('%2', this.currItem.cardSaleRate)
 			}else if(e == 2){
@@ -366,7 +390,12 @@ export default {
 		},
 		EditRate(data){
 			this.currItem = data
-			this.payType = 1
+			console.log(this.currItem)
+			if ((this.currItem.cardBuyRate == this.currItem.abuyRate) && (this.currItem.abuyRate == this.currItem.wxBuyRate) && (this.currItem.cardSaleRate == this.currItem.asaleRate) && (this.currItem.asaleRate == this.currItem.wxSaleRate)){
+				this.payType = 0
+			} else {
+				this.payType = 1
+			}
 			this.buyRate = this.$fmtNumber('%2', this.currItem.cardBuyRate)
 			this.rate =  this.$fmtNumber('%2', this.currItem.cardSaleRate)
 			this.showDialog=true
@@ -398,8 +427,8 @@ export default {
 		},
 		updateRewardRate(){
 			this.$http.post('/wallet/invite/backmgr/updateRewardRate',{
-				buyRate: this.$fmtNumber('/4', this.buyRate),
-				rate: this.$fmtNumber('/4', this.rate),
+				buyRate: this.$fmtNumber('/4', this.buyRate) || -1,
+				rate: this.$fmtNumber('/4', this.rate) || -1,
 				inviteeId:this.currItem.inviteeId,
 				payType:this.payType
 			}).then(res=>{
@@ -648,22 +677,36 @@ export default {
 		}
 	}
 	 .inputGroup{
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 20px;
+		&:last-of-type{
+			margin-bottom: 0px;
+		}
+		/deep/.el-select{
+			// margin-right: 20px;
+			width: 100%;
+		}
+		&>span{
+			width: 140px;
+		}
+	}
+	.showList {
+		>div {
 			display: flex;
-			flex-direction: row;
 			justify-content: space-between;
-			align-items: center;
-			margin-bottom: 20px;
-			&:last-of-type{
-				margin-bottom: 0px;
-			}
-			/deep/.el-select{
-				// margin-right: 20px;
-				width: 100%;
-			}
-			&>span{
-				width: 140px;
+			span {
+				display: flex;	
+				b {
+					font-weight: normal;
+					width:150px;
+					text-align: right;
+				}
 			}
 		}
+	}
 		
 }
 </style>

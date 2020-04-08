@@ -12,6 +12,9 @@
                     <el-form-item label="TXID" prop="txid：">
                         <el-input size="small" placeholder="请输入TXID" v-model="form.txid"></el-input>
                     </el-form-item>
+                    <el-form-item label="备注" prop="txid：">
+                        <el-input size="small" placeholder="请输入备注" v-model="form.memo"></el-input>
+                    </el-form-item>
                     <!-- <el-form-item label="实际到账金额：" prop="blockAmount">
                         <el-input size="small" v-model="form.blockAmount" placeholder="请输入实际到账金额"></el-input>
                     </el-form-item>
@@ -56,7 +59,8 @@ export default {
                 blockAmount: '',
                 blockFee: '',
                 reason: '',
-                secret:''
+                secret:'',
+                userRemark:''
             }
         }
     },
@@ -125,6 +129,7 @@ export default {
 				params.txId = form.txid
                 params.orderId = this.item.id
                 params.secret = form.secret
+                params.userRemark = form.memo
                 console.log(params)
                 this.$http.post('/wallet/backmgr/trade/updateWithdrawSuccess', params).then((res) => {
 					if(res.code == 200) {
@@ -146,6 +151,13 @@ export default {
 				params.sysRemark = form.reason
                 params.tradeId = this.item.id
                 params.secret = form.secret
+                if (!form.reason) {
+                    this.$notify.warning({
+                        title:'提示',
+                        message:'拒绝理由不能为空！'
+                    })
+                    return
+                }
                 this.$http.post('/wallet/backmgr/trade/auditTrade', params).then(res => {
 					if(res.code == 200) {
 						this.$notify.success({

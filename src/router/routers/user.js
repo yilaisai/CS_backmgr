@@ -13,7 +13,7 @@ const user = [
 			{
 				path: 'query',
 				name: 'query',
-				meta: { title: '用户查询' },
+				meta: { title: '用户基本信息' },
 				component: () => import('@/pages/user/query/list')
 			},
 			{
@@ -25,7 +25,7 @@ const user = [
 			{
 				path: 'invite',
 				name: 'invite',
-				meta: { title: '邀请关系' },
+				meta: { title: '代理管理' },
 				component: () => import('@/pages/user/invite')
 			},
 			{

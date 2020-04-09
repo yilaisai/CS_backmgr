@@ -13,7 +13,7 @@ const merchant = [
 			{
 				path: 'user-query',
 				name: 'merUserQuery',
-				meta: { title: '商户查询' },
+				meta: { title: '商户管理' },
 				component: () => import('@/pages/merchant/user-query/index/index.vue')
 			},
 			{
@@ -43,14 +43,14 @@ const merchant = [
 			{
 				path: 'merchantTradingFlow2',
 				name: 'merchantTradingFlow2',
-				meta: { title: '商户交易记录' },
+				meta: { title: '兑入兑出流水' },
 				component: () => import('@/pages/merchant/tradingFlow_2/index.vue')
 			},
 			{
 				path: 'merchantList',
 				name: 'merchantList',
 				meta: {
-					title: '商户注册申请'
+					title: '商户注册审核'
 				},
 				component: () => import('@/pages/merchant/merchantList/index.vue')
 			},{
@@ -64,7 +64,7 @@ const merchant = [
 					path: 'cashOutVerify',
 					name: 'cashOutVerify',
 					meta: {
-						title: '交易广告列表'
+						title: '广告列表'
 					},
 					component: () => import('@/pages/merchant/cashOutVerify/index.vue')
 			},

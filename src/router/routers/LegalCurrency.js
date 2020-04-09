@@ -11,20 +11,20 @@ const user = [
 		component: Index,
 		children: [
 			{
-        path: 'userQuery',
-        name:'userQuery',
-        meta: {
-          title: '用户查询',
-        },
-        component:() => import('@/pages/LegalCurrency/userQuery/index.vue'),
-      },
-      {
-        path: 'userQueryDetaile',
-        name:'userQueryDetaile',
-        meta: {
-          title: '查看用户详情',
-        },
-        component:() => import('@/pages/LegalCurrency/userQuery/detaile.vue'),
+				path: 'userQuery',
+				name:'userQuery',
+				meta: {
+				title: '币商管理',
+				},
+				component:() => import('@/pages/LegalCurrency/userQuery/index.vue'),
+			},
+      		{
+				path: 'userQueryDetaile',
+				name:'userQueryDetaile',
+				meta: {
+				title: '查看用户详情',
+				},
+				component:() => import('@/pages/LegalCurrency/userQuery/detaile.vue'),
       },{
         path: 'ranking',
         name:'LegalCurrencyRanking',
@@ -61,7 +61,7 @@ const user = [
         path: 'transactionRecord',
         name: 'LegalCurrencyTransactionRecord',
         meta: {
-          title: '交易流水',
+          title: 'OTC交易流水',
         },
         component: () => import('@/pages/LegalCurrency/transactionRecord'),
       },
@@ -69,7 +69,7 @@ const user = [
         path: 'complaint',
         name:'complaint',
         meta: {
-          title: '投诉管理',
+          title: '申诉审核',
         },
         component: () => import('@/pages/LegalCurrency/complaint/index'),
 			},
@@ -77,21 +77,21 @@ const user = [
         path: 'complaintDetails',
         name:'complaintDetails',
         meta: {
-          title: '投诉管理-查看详情',
+          title: '申诉审核-查看详情',
         },
         component: () => import('@/pages/LegalCurrency/complaint/details'),
       },{
         path: 'customer-log',
         name:'customer-log',
         meta: {
-          title: '投诉管理-查看客服操作日志',
+          title: '申诉审核-查看客服操作日志',
         },
         component: () => import('@/pages/LegalCurrency/complaint/customer-log'),
       },{
         path: 'complaint-more',
         name: 'complaint-more',
         meta: {
-          title: '投诉管理-查看更多',
+          title: '申诉审核-查看更多',
         },
         component: () => import('@/pages/LegalCurrency/complaint/more'),
       },
@@ -99,7 +99,7 @@ const user = [
         path: 'paymentMethodVerify',
         name:'paymentMethodVerify',
         meta: {
-          title: '支付方式审核',
+          title: '收款方式管理',
         },
         component: () => import('@/pages/LegalCurrency/paymentMethod/verify'),
       },
@@ -123,7 +123,7 @@ const user = [
         path: 'LegalCurrencySetting',
         name:'LegalCurrencySetting',
         meta: {
-          title: '法币设置',
+          title: '币商全局设置',
         },
         component:() => import('@/pages/LegalCurrency/setting'),
       },{

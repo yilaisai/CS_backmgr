@@ -37,7 +37,6 @@
 							<el-table-column label="商户编号" prop="name" align="center"></el-table-column>
 							<el-table-column label="手机号" prop="phone" align="center"></el-table-column>
 							<el-table-column label="邮箱" prop="email" align="center"></el-table-column>
-							<el-table-column label="手机号" prop="phone" align="center"></el-table-column>
 							<el-table-column label="状态" align="center">
 								<template slot-scope="scope">
 									{{ scope.row.status==1?'已审核':scope.row.status==2?'审核失败':'待审核' }}

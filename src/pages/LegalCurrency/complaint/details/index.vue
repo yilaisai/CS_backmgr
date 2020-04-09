@@ -327,8 +327,8 @@ export default {
     },
     methods:{
 		getProofInfo() {
-			this.$http.post('/wallet/app/otc/backmgr/proofInfo', {
-				appealId: this.appealId
+			this.$http.post('/wallet/app/otc/backmgr/proofInfoByTradeId', {
+				tradeId: this.tradeId
 			}).then(res=>{
 				
 				res.result.forEach((val, idx) => {
@@ -382,14 +382,16 @@ export default {
         },
         getBuyList(){
             const postdata={
-                appealId:this.appealId
+                tradeId:this.tradeId
             }
-            this.$http.post('/wallet/app/otc/backmgr/infoBuyList',postdata).then(res=>{
+            this.$http.post('/wallet/app/otc/backmgr/infoBuyListByTradeId',postdata).then(res=>{
                 //console.log(res)
                 this.appealStatus = res.result.appealStatus
                 const {makerMap,takerMap} = res.result;
+                this.appealId = makerMap.appealId
                 this.BuyList = [makerMap];
                 this.SaleList = [takerMap]
+                console.log(this.appealId)
                 // const postdata2={
                 //     appealId:this.appealId,
                 //     userId:res.result.list[0].userId

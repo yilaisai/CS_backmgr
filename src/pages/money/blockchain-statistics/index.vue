@@ -251,8 +251,10 @@ export default {
                 params.feeCoinName = filter.coinName
             }
             if (filter.transType) params.transType = filter.transType
-            params.token = localStorage.getItem('token')
-            window.open('/wallet/block/backmgr/opsExportBlockRecdList?' + qs.stringify(params))
+			params.token = localStorage.getItem('wallet_token')
+			let baseURL = localStorage.getItem('SERVER_PATH') || SERVER_PATH
+			window.open(baseURL + '/wallet/block/backmgr/getBlockTransList/export?' + qs.stringify(params))
+			// https://api.icoinease.com//wallet/block/backmgr/getBlockTransList/export
 		},
         hideCount (refer) {
             this.rowHeight = refer ? '500px' : '30px'

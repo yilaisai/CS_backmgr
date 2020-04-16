@@ -391,7 +391,6 @@ export default {
                 this.appealId = makerMap.appealId
                 this.BuyList = [makerMap];
                 this.SaleList = [takerMap]
-                console.log(this.appealId)
                 // const postdata2={
                 //     appealId:this.appealId,
                 //     userId:res.result.list[0].userId
@@ -399,6 +398,18 @@ export default {
                 // this.$http.post('/wallet/app/otc/backmgr/proofInfo',postdata2).then(res2=>{
                 //     this.BuyProofInfo = res2;
                 // })
+            })
+        },
+        refreshBuyList() {
+            const postdata={
+                appealId:this.appealId
+            }
+            this.$http.post('/wallet/app/otc/backmgr/infoBuyList',postdata).then(res=>{
+                //console.log(res)
+                this.appealStatus = res.result.appealStatus
+                const {makerMap,takerMap} = res.result;
+                this.BuyList = [makerMap];
+                this.SaleList = [takerMap]
             })
         },
         payDetaile(data){
@@ -455,9 +466,10 @@ export default {
                     type: "success"
                 });
                 this.dialogVisible=false
-                this.getBuyList()
+                this.refreshBuyList()
             })
-        }
+        },
+        
     },
     activated(){
         this.BuyProofInfo={}

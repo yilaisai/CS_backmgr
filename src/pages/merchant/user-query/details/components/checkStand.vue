@@ -125,7 +125,7 @@
         this.defaultForm.CHECK_STAND_SWITCH = newVal.info.checkStandSwitch == 1?true:false
         this.defaultForm.CHECK_STAND_SKIN_TYPE = newVal.info.checkStandSkinType && newVal.info.checkStandSkinType.toString()
         this.defaultForm.CHECK_STAND_CHECK_TYPE = newVal.info.checkStandCheckType && newVal.info.checkStandCheckType.toString()
-        this.defaultForm.CHECK_STAND_SIGN_TYPE = newVal.info.CHECK_STAND_SIGN_TYPE && newVal.info.checkStandSginType.toString()
+        this.defaultForm.CHECK_STAND_SIGN_TYPE = newVal.info.checkStandSignType && newVal.info.checkStandSignType.toString()
         let list = newVal.info.payList?newVal.info.payList.split(','):[]
         this.defaultForm.CHECK_STAND_PAY_TYPE = []
         list.forEach(element => {

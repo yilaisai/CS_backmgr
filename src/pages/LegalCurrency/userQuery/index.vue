@@ -79,7 +79,7 @@
 				</el-form-item> -->
 				<el-form-item label="企业类型调整：" label-width="140px" >
 					<el-select v-model="userTypeForm.userEnterprise" placeholder="请选择企业类型">
-						<el-option v-for="(item,index) in companyType" :key = 'index' :label="item.value" :value="item.label "></el-option>
+						<el-option v-for="(item,index) in userEnterpriseType" :key = 'index' :label="item.value" :value="item.label "></el-option>
 					</el-select>
 				</el-form-item>
 			</el-form>
@@ -129,6 +129,10 @@ export default {
 			companyType:[
 				{value:'法币账户',label:"0"},
 				{value:'资产账户',label:"1"},
+			],
+			userEnterpriseType: [
+				{value:'非企业号',label:"0"},
+				{value:'企业号',label:"1"}
 			],
             listData: {
                 total: null,

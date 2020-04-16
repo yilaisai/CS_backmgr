@@ -2,7 +2,7 @@
 	<el-dialog title="修改用户余额" :visible.sync="editBalanceShow">
 			<p>当前用户资产账户余额：{{balanceData.assetsAmount}} {{this.$variableCoin}}</p>
 			<p>当前用户法币账户余额：{{balanceData.otcAmount}} {{this.$variableCoin}}</p>
-			<el-form :model="balanceData">
+			<el-form :model="balanceData" size="small">
 				<el-form-item label="修改账户类型：" label-width="110px" >
 					<el-select v-model="balanceData.otcOrWallet" placeholder="请选择账户类型">
 						<el-option  label="资产账户" value="1"></el-option>
@@ -12,8 +12,8 @@
 				<el-form-item label="修改数量：" label-width="110px" >
 					<el-input placeholder="请输入内容" v-model="balanceData.amount" @input="amountInput" class="input-with-select">
 						<el-select v-model="balanceData.subOrAdd" slot="prepend" placeholder="请选择">
-						<el-option label="减少" value="0"></el-option>
-						<el-option label="增加" value="1"></el-option>
+							<el-option label="减少" value="0"></el-option>
+							<el-option label="增加" value="1"></el-option>
 						</el-select>
 						<span slot="append" >{{this.$variableCoin}}</span>
 					</el-input>
@@ -26,11 +26,13 @@
 					v-model="balanceData.remarks">
 					</el-input>
 				</el-form-item>
-				
+				<el-form-item label="谷歌验证码：" label-width="110px" >
+					<el-input placeholder="请输入谷歌验证码" v-model="balanceData.secret"></el-input>
+				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-				<el-button @click="editBalanceShow = false">取 消</el-button>
-				<el-button type="primary" @click="modifyAmount">确 定</el-button>
+				<el-button @click="editBalanceShow = false" size="small">取 消</el-button>
+				<el-button type="primary" @click="modifyAmount" size="small">确 定</el-button>
 			</div>
 		</el-dialog>
 </template>
@@ -50,6 +52,7 @@ export default {
 				otcOrWallet:'',//1就是钱包账户，2是法币账户
 				remarks:'',//
 				subOrAdd:'',//0是减1是加
+				secret: ''  //谷歌验证码
 			},
         }
     },
@@ -71,9 +74,11 @@ export default {
 				this.$message.error('请输入操作理由')
 				return
 			}
-			// return
+			if(this.balanceData.secret==''){
+				this.$message.error('请输入谷歌验证码')
+				return
+			}
 			this.$http.post('/wallet/app/otc/backmgr/modifyAmount',this.balanceData).then(res=>{
-				
 				if(res.code == 200){
                     this.$message.success(res.msg)
 					this.editBalanceShow = false
@@ -116,4 +121,12 @@ export default {
     }
 }
 </script>
+
+<style lang="less" scoped>
+.input-with-select {
+	/deep/.el-input-group__prepend {
+		width: 55px;
+	}
+}
+</style>
 

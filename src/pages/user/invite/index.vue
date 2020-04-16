@@ -29,14 +29,14 @@
 							<p>银行卡</p>
 							<p>{{ $fmtNumber('%2', scope.row.cardBuyRate) }}% </p>
 						</li>
-						<li>
+						<!-- <li>
 							<p>支付宝</p>
 							<p>{{ $fmtNumber('%2', scope.row.abuyRate) }}% </p>
 						</li>
 						<li>
 							<p>微信</p>
 							<p>{{ $fmtNumber('%2', scope.row.wxBuyRate) }}% </p>
-						</li>
+						</li> -->
 					</ul>
 				</div>
 			</el-table-column>
@@ -47,14 +47,14 @@
 							<p>银行卡</p>
 							<p>{{ Math.floor(scope.row.cardSaleRate*10000)/100 }}% </p>
 						</li>
-						<li>
+						<!-- <li>
 							<p>支付宝</p>
 							<p>{{ Math.floor(scope.row.asaleRate*10000)/100 }}% </p>
 						</li>
 						<li>
 							<p>微信</p>
 							<p>{{ Math.floor(scope.row.wxSaleRate*10000)/100 }}% </p>
-						</li>
+						</li> -->
 					</ul>
 				</div>
 			</el-table-column>
@@ -324,6 +324,7 @@ export default {
 		padding: 0;
 		li{
 			width: 25%;
+			margin: 0 auto;
 			p{
 				margin: 0;
 				padding: 0;

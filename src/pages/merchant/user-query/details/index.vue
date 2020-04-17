@@ -61,6 +61,10 @@
 					<label>申请时间:</label>
 					<span>{{pageData.info.applyDate}}</span>
 				</li>
+				<li>
+					<label>商户网址:</label>
+					<span>{{pageData.info.companyAddr}}</span>
+				</li>
 			</ul>
 		</div>
 		<div class="settable">

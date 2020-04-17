@@ -59,6 +59,11 @@
 				</template>
 			</el-table-column>
 			<el-table-column label="资产证明余额" prop="assetCertification" width="120" align="center"></el-table-column>
+			<el-table-column label="备注" prop="remark" align="center">
+				<el-tooltip slot-scope="scope" :content="scope.row.remark" placement="bottom" effect="light">
+					<span>{{scope.row.remark}}</span>
+				</el-tooltip>
+			</el-table-column>
 		</el-table>
 		<div>
 		<div class="footer">

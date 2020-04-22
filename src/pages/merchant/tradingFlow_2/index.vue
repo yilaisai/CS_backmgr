@@ -220,7 +220,7 @@ export default {
 				tradeType:'3',
 				advType:'',
 				dateType:'1',
-				timeOut: "",
+				timeOut: "2",
 				recdId: "",
 				payType: ""  //支付渠道
 			},

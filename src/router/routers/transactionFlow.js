@@ -23,7 +23,18 @@ const transactionFlow = [
 				meta: { title: '兑出流水' },
 				component: () => import('@/pages/transactionFlow/CashOut')
 			},
-			
+			{
+				path: 'recharge',
+				name: 'recharge',
+				meta: { title: '充值记录' },
+				component: () => import('@/pages/transactionFlow/recharge')
+			},
+			{
+				path: 'extract',
+				name: 'extract',
+				meta: { title: '提取记录' },
+				component: () => import('@/pages/transactionFlow/extract')
+			}
 		]
 	}
 ]

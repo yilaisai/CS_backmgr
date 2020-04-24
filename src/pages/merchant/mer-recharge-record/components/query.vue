@@ -165,6 +165,14 @@ export default {
 	},
 	computed:{
 		...mapState(['coinInfo'])
+	},
+	watch:{
+		formData:{
+			handler(newValue, oldValue){
+				console.log(1212)
+			},
+			deep:true
+		}
 	}
 }
 </script>

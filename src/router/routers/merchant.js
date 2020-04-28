@@ -109,7 +109,14 @@ const merchant = [
 					},
 					component: () => import('@/pages/merchant/blacklist/index.vue')
 			},
-			
+			{
+				path: 'merchantWhitelist',
+				name: 'merchantWhitelist',
+				meta: {
+					title: 'API商户IP白名单'
+				},
+				component: () => import('@/pages/merchant/whitelist/index.vue')
+			},
 			{
 					path: 'addAuthorizedMerchant',
 					name: 'addAuthorizedMerchant',

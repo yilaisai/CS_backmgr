@@ -25,4 +25,5 @@ if(window.location.href.indexOf('homo.plus') >= 0) {
 
 		SERVER_PATH2 = 'https://api.icoinease.com/'  //测试
 		SERVER_PATH = 'https://api.icoinease.com/'
+		console.log(SERVER_PATH2)
 }

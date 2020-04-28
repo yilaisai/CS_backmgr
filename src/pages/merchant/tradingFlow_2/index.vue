@@ -49,6 +49,8 @@
 								<el-select v-model="filterForm.timeOut" >
 									<el-option value="" label="所有"></el-option>
 									<el-option value="1" label="已超时"></el-option>
+									<el-option value="2" label="进行中"></el-option>
+									<el-option value="3" label="已结束"></el-option>
 								</el-select>
 							</el-form-item>
 							<el-button type="primary" @click.native="search" size="mini">搜索</el-button>
@@ -218,7 +220,7 @@ export default {
 				tradeType:'3',
 				advType:'',
 				dateType:'1',
-				timeOut: "",
+				timeOut: "2",
 				recdId: "",
 				payType: ""  //支付渠道
 			},

@@ -49,6 +49,11 @@
 							<span v-for="(item, index) in scope.row.inviteRateDtoList" :key="index">{{item.payTypeName}}: {{Math.floor(item.saleFee*10000)/100}}% </span>
 						</template>
 					</el-table-column>
+					<el-table-column prop="price" label="兑出佣金费" width="300">
+						<template class="scope" slot-scope="scope">
+							<span v-for="(item, index) in scope.row.inviteRateDtoList" :key="index">{{item.payTypeName}}: {{Math.floor(item.buyFee*10000)/100}}% </span>
+						</template>
+					</el-table-column>
 					<el-table-column label="注册时间" width="140">
 						<div slot-scope="scope">{{ $fmtDate(scope.row.registTimeStamp,'full') }}</div>
 					</el-table-column>

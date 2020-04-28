@@ -5,6 +5,7 @@ import store from '../store'
 import qs from 'qs'
 axios.defaults.baseURL = localStorage.getItem('SERVER_PATH') || SERVER_PATH
 
+console.log(axios.defaults.baseURL)
 const httpInstance = axios.create({
 	responseType: 'json',
 	timeout: 5000,

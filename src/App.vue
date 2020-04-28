@@ -7,7 +7,8 @@
     element-loading-spinner="el-icon-loading"
     element-loading-background="rgba(0, 0, 0, 0.5)"
   >
-    <router-view></router-view>
+    <router-view @musicPlay="musicPlay"></router-view>
+	<audio ref="music"><source src="../static/music.mp3" type="audio/wav" /><source src="../static/music.mp3" type="audio/mpeg"/></audio>
   </div>
 </template>
 
@@ -19,6 +20,11 @@ export default {
   name: 'App', // 1.指定 name 选项的另一个好处是便于调试 2.允许组件模板递归地调用自身
   mounted() {
 	  this.$store.dispatch('getCoinInfo')
+  },
+  methods: {
+	  musicPlay() {
+		  this.$refs.music.play()
+	  }
   },
   computed: {
     ...mapState({

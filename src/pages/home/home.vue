@@ -1,26 +1,5 @@
 <template>
   <div class="sac-home">
-    <!-- <div class="table-wrap">
-      <h2 class="t-title">运营数据</h2>
-      <el-table :data="user" border size="mini">
-        <el-table-column prop="date" label="日期" align="center"></el-table-column>
-        <el-table-column prop="total" label="用户总数" align="center"></el-table-column>
-		    <el-table-column prop="onlineNum" label="当前在线人数" align="center"></el-table-column>
-        <el-table-column prop="tdCount" label="今日新增" align="center"></el-table-column>
-        <el-table-column prop="ytdCount" label="昨日新增" align="center"></el-table-column>
-      </el-table>
-    </div>
-    <div class="table-wrap">
-      <h2 class="t-title">钱包账户资产信息</h2>
-      <el-table :data="account" border size="mini">
-        <el-table-column prop="name" label="币种" align="center"></el-table-column>
-        <el-table-column prop="total" label="钱包账户总额" align="center"></el-table-column>
-        <el-table-column prop="total" label="昨日充值额" align="center"></el-table-column>
-        <el-table-column prop="total" label="昨日成功提现额" align="center"></el-table-column>
-        <el-table-column prop="total" label="提现中金额" align="center"></el-table-column>
-        <el-table-column prop="total" label="资金净流入" align="center"></el-table-column>
-      </el-table>
-    </div> -->
     <div class="ToDoList">
       <div class="title">待办事项</div>
       <ul>
@@ -221,6 +200,19 @@
         </li>
       </ul>
     </div>
+	<!-- <div class="message-box">
+		<div class="topbar" @click="messageBoxShow = !messageBoxShow">
+			<span class="blink" v-show="!messageBoxShow">有5条新的待处理事项，点击展开</span>
+			<el-button v-show="messageBoxShow" size="mini">全部已读</el-button>
+			<i :class="{'down' : messageBoxShow}"></i>
+		</div>
+		<ul v-show="messageBoxShow">
+			<li v-for="item in 16">
+				<span>新的商户注册审核待处理</span>
+				<i>5分钟前</i>
+			</li>
+		</ul>
+	</div> -->
   </div>
 </template>
 <script>
@@ -253,7 +245,8 @@
         yesterdayRechargeAmount:0,
         inFrozen:0,
         outFrozen:0,
-        withdrawFrozen:0,
+		withdrawFrozen:0,
+		messageBoxShow: true
       };
     },
     methods: {
@@ -328,10 +321,18 @@
           ],
         }
         myChart.setOption(option)
-      }
+	  },
+	  getNewsList() {
+		  this.$http.post('/wallet/backmgr/getNewsList').then(res => {
+			  console.log(res)
+		  })
+	  }
+		
     },
   	activated() {
-  		this.getData()
+		this.getData()
+		// this.$emit('musicPlay')
+		// this.getNewsList()
     },
   };
 </script>
@@ -575,6 +576,100 @@
           }
         }
       }
-    }
+	}
+	.message-box {
+		position: fixed;
+		bottom: 0;
+		right: 2px;
+		background-color: #fff;
+		box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+		border-radius:4px;
+		width: 300px;
+		.topbar {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 5px 10px;
+			font-size: 16px;
+			cursor: pointer;
+			border-bottom: 1px solid #999;
+			i {
+				width: 20px;
+				height: 20px;
+				background: url(../../../static/img/up_icon.png) no-repeat center;
+				background-size: 100% 100%;
+				&.down {
+					background: url(../../../static/img/down_icon.png) no-repeat center;
+					background-size: 100% 100%;
+				}
+			}
+			span {
+				&.blink{
+					color: #dd4814;
+					animation: blink 1s linear infinite;  
+					/* 其它浏览器兼容性前缀 */
+					-webkit-animation: blink 1s linear infinite;
+					-moz-animation: blink 1s linear infinite;
+					-ms-animation: blink 1s linear infinite;
+					-o-animation: blink 1s linear infinite;
+				}
+			}
+		}
+		ul {
+			margin: 0;
+			padding: 0;
+			max-height: 300px;
+			overflow-y: auto;
+			li {
+				list-style: none;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: 5px 10px;
+				height: 30px;
+				box-sizing: border-box;
+				// border-bottom: 1px dashed #646464;
+				&:last-child {
+					border-bottom: none;
+				}
+				span {
+					font-size: 14px;
+					text-decoration: underline;
+					cursor: pointer;
+				}
+				i {
+					color: #646464;
+					font-size: 12px;
+					font-style: normal;
+				}
+			}
+		}
+	}
   }
+@keyframes blink {  
+	0%{ text-shadow: 0 0 4px #4cc134}  
+	50%{ text-shadow: 0 0 40px #4cc134}  
+	100%{ text-shadow: 0 0 4px #4cc134}  
+}
+/* 添加兼容性前缀 */
+@-webkit-keyframes blink {
+	0%{ text-shadow: 0 0 4px #4cc134}  
+		50%{ text-shadow: 0 0 40px #4cc134}  
+		100%{ text-shadow: 0 0 4px #4cc134}  
+}
+@-moz-keyframes blink {
+	0%{ text-shadow: 0 0 4px #4cc134}  
+		50%{ text-shadow: 0 0 40px #4cc134}  
+		100%{ text-shadow: 0 0 4px #4cc134}  
+}
+@-ms-keyframes blink {
+	0%{ text-shadow: 0 0 4px #4cc134}  
+		50%{ text-shadow: 0 0 40px #4cc134}  
+		100%{ text-shadow: 0 0 4px #4cc134}  
+}
+@-o-keyframes blink {
+	0%{ text-shadow: 0 0 4px #4cc134}  
+		50%{ text-shadow: 0 0 40px #4cc134}  
+		100%{ text-shadow: 0 0 4px #4cc134}  
+}
 </style>

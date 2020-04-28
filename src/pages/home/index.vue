@@ -27,7 +27,7 @@
           <Tags></Tags>
           <transition name="el-zoom-in-center">
             <keep-alive>
-              <router-view class="router-view"></router-view>
+              <router-view class="router-view" @musicPlay="$emit('musicPlay')"></router-view>
             </keep-alive>
           </transition>
         </el-main>

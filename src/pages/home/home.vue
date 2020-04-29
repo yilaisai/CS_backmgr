@@ -200,19 +200,26 @@
         </li>
       </ul>
     </div>
-	<!-- <div class="message-box">
+	<div class="message-box" v-show="appealIng + withdrawIng + bindInfoIng + outIng + merchantApplyIng + auditIng + auditPersonIng > 0">
 		<div class="topbar" @click="messageBoxShow = !messageBoxShow">
-			<span class="blink" v-show="!messageBoxShow">有5条新的待处理事项，点击展开</span>
-			<el-button v-show="messageBoxShow" size="mini">全部已读</el-button>
+			<span class="blink" v-show="!messageBoxShow">有{{appealIng + withdrawIng + bindInfoIng + outIng + merchantApplyIng + auditIng + auditPersonIng}}条新的待处理事项，点击展开</span>
+			<!-- <el-button v-show="messageBoxShow" size="mini">全部已读</el-button> -->
+			<span v-show="messageBoxShow"><img src="../../../static/img/logo_white.png" alt=""></span>
 			<i :class="{'down' : messageBoxShow}"></i>
 		</div>
 		<ul v-show="messageBoxShow">
-			<li v-for="item in 16">
-				<span>新的商户注册审核待处理</span>
-				<i>5分钟前</i>
+			<li @click="$router.push('/LegalCurrency/complaint')" v-show="appealIng > 0">
+				<span>{{appealIng}}条申诉待处理</span>
+				<!-- <i>5分钟前</i> -->
 			</li>
+			<li @click="$router.push('/money/withdraw-check')" v-show="withdrawIng > 0"><span>{{withdrawIng}}条提币审核待处理</span></li>
+			<li @click="$router.push('/LegalCurrency/paymentMethodVerify')" v-show="bindInfoIng > 0"><span>{{bindInfoIng}}条收款方式审核待处理</span></li>
+			<li @click="$router.push({path:'/merchant/cashOutVerify',query: { status: '1' }})" v-show="outIng > 0"><span>{{outIng}}条兑出审核待处理</span></li>
+			<li @click="$router.push({path:'/merchant/merchantList',query:{status:'0'}})" v-show="merchantApplyIng > 0"><span>{{merchantApplyIng}}条商户注册审核待处理</span></li>
+			<li @click="$router.push('/LegalCurrency/advertisersVerify')" v-show="auditIng > 0"><span>{{auditIng}}条广告商审核待处理</span></li>
+			<li @click="$router.push({path:'/user/identityVerify',query:{status:'1'}})" v-show="auditPersonIng > 0"><span>{{auditPersonIng}}条实名审核待处理</span></li>
 		</ul>
-	</div> -->
+	</div>
   </div>
 </template>
 <script>
@@ -246,7 +253,8 @@
         inFrozen:0,
         outFrozen:0,
 		withdrawFrozen:0,
-		messageBoxShow: true
+		messageBoxShow: false,
+		timer: null
       };
     },
     methods: {
@@ -322,17 +330,36 @@
         }
         myChart.setOption(option)
 	  },
-	  getNewsList() {
-		  this.$http.post('/wallet/backmgr/getNewsList').then(res => {
-			  console.log(res)
-		  })
-	  }
+	  	getNewsList() {
+		  	clearTimeout(this.timer)
+			this.$http.post('/wallet/backmgr/indexInfo', {type: 1, noLoading: true}).then(res => {
+					let result = res.result;
+					this.appealIng = result.appealIng
+					this.auditIng = result.auditIng
+					this.bindInfoIng = result.bindInfoIng
+					this.outIng = result.outIng
+					this.withdrawIng = result.withdrawIng
+					this.auditPersonIng = result.auditPersonIng
+					this.merchantApplyIng = result.merchantApplyIng
+					if(this.appealIng > 0 || this.auditIng > 0 || this.bindInfoIng > 0 || this.outIng > 0 || this.withdrawIng > 0 || this.auditPersonIng > 0 || this.merchantApplyIng > 0) {
+						this.$emit('musicPlay')
+					}
+					this.timer = setTimeout(() => {
+						this.getNewsList()
+					}, 60000)
+			}).catch(err => {
+				this.timer = setTimeout(() => {
+					this.getNewsList()
+				}, 60000)
+			})
+		}
 		
     },
   	activated() {
 		this.getData()
 		// this.$emit('musicPlay')
-		// this.getNewsList()
+		this.getNewsList()
+		
     },
   };
 </script>
@@ -581,21 +608,23 @@
 		position: fixed;
 		bottom: 0;
 		right: 2px;
-		background-color: #fff;
-		box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
-		border-radius:4px;
+		background-color: #FFFAF5;
+		box-shadow: 0px -4px 12px 0px rgba(0,0,0,0.15);
+		border-radius:6px;
+		overflow: hidden;
 		width: 300px;
 		.topbar {
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			padding: 5px 10px;
+			padding: 0 14px;
+			height: 48px;
 			font-size: 16px;
 			cursor: pointer;
-			border-bottom: 1px solid #999;
+			background:linear-gradient(135deg,rgba(255,184,101,1) 0%,rgba(255,146,85,1) 21%,rgba(255,62,49,1) 53%,rgba(255,38,38,1) 100%);
 			i {
-				width: 20px;
-				height: 20px;
+				width: 14px;
+				height: 14px;
 				background: url(../../../static/img/up_icon.png) no-repeat center;
 				background-size: 100% 100%;
 				&.down {
@@ -605,13 +634,17 @@
 			}
 			span {
 				&.blink{
-					color: #dd4814;
+					color: #fff;
 					animation: blink 1s linear infinite;  
 					/* 其它浏览器兼容性前缀 */
 					-webkit-animation: blink 1s linear infinite;
 					-moz-animation: blink 1s linear infinite;
 					-ms-animation: blink 1s linear infinite;
 					-o-animation: blink 1s linear infinite;
+				}
+				img {
+					display: block;
+					height: 30px;
 				}
 			}
 		}
@@ -620,18 +653,16 @@
 			padding: 0;
 			max-height: 300px;
 			overflow-y: auto;
+			padding: 20px 30px 30px;
 			li {
 				list-style: none;
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
-				padding: 5px 10px;
+				margin-top: 8px;
 				height: 30px;
 				box-sizing: border-box;
-				// border-bottom: 1px dashed #646464;
-				&:last-child {
-					border-bottom: none;
-				}
+				color: #000000;
 				span {
 					font-size: 14px;
 					text-decoration: underline;

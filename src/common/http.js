@@ -71,9 +71,13 @@ httpInstance.interceptors.request.use((config) => {
 			configs.params.token = token
 		}
 	}
-	store.commit('updateLoadingStatus', {
-		isLoading: true
-	})
+	if(configs.method == "post" && config.data.noLoading) {
+
+	}else {
+		store.commit('updateLoadingStatus', {
+			isLoading: true
+		})
+	}
 	const obj = {}
 	Object.entries(config.data).forEach(([key, value]) => {
 		if (value || value === '0' || value === 0 || value == 'empty') {

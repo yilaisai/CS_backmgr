@@ -3,7 +3,7 @@
 		<!-- 查询条件 -->
 		<el-form :inline="true"  ref="filterForm" :model="filterForm" label-width="86px" size="mini">
 			<el-form-item label="appid:" >
-				<el-input placeholder="请输入appid" v-model="filterForm.appid" class="input-with-select"></el-input>
+				<el-input placeholder="请输入appid" v-model="filterForm.appId" class="input-with-select"></el-input>
 			</el-form-item>
 			<el-form-item label="ip:" >
 				<el-input placeholder="ip" v-model="filterForm.ip" class="input-with-select"></el-input>
@@ -67,8 +67,8 @@ export default {
 	data(){
 		return {
 			filterForm:{
-				appid:'',
-				id: '',
+				appId:'',
+				ip: '',
 				pageNum:1,
 				pageSize:20,
 			},
@@ -166,9 +166,6 @@ export default {
 			})
 		},
 		search(){
-			if(this.filterForm.appid.trim() == ''){
-				return
-			}
 			this.filterForm.pageNum =  1
 			this.getList()
 		}

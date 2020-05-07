@@ -2,44 +2,33 @@
 	<el-collapse value="filter">
 		<el-collapse-item title="查询条件" name="filter">
 			<el-form ref="form" :model="formData" label-width="110px" size="mini" inline>
-        
 				<div>
 					<el-form-item label="账号/用户编号：">
-						<el-input v-model="formData.name" placeholder="账号/用户编号"></el-input>
+						<el-input v-model="formData.account" placeholder="账号/用户编号"></el-input>
 					</el-form-item>
 					<el-form-item label="实名姓名：">
-						<el-input v-model="formData.addr" placeholder="搜索地址"></el-input>
-					</el-form-item>
-					<el-form-item label="状态：">
-						<el-select v-model="formData.status" placeholder="选择订单状态" clearable>
-							<el-option :value="null" label="全部"></el-option>
-							<el-option v-for="(item, key) in orderStatus" :key="key" :value="item.val" :label="item.name"></el-option>
-						</el-select>
+						<el-input v-model="formData.realName" placeholder="真实姓名"></el-input>
 					</el-form-item>
           <el-form-item label="订单类型：">
-						<el-select v-model="formData.coinName" placeholder="选择类型" clearable>
-							<el-option :value="null" label="全部"></el-option>
-							<el-option v-for="(item, key) in coinInfo" :key="key" :value="item.coinName" :label="item.coinName"></el-option>
+						<el-select v-model="formData.type" placeholder="选择类型">
+							<el-option v-for="(item, key) in typeList" :key="key" :value="item.value" :label="item.label"></el-option>
 						</el-select>
 					</el-form-item>
 				</div>
-				<el-form-item label="时间：" style="width: 510px">
+				<el-form-item label="时间：" style="width: 350px">
 					<el-date-picker
 						id="createtime"
-						v-model="formData.create_time"
-						type="datetimerange"
+						v-model="formData.createDate"
+						type="date"
 						align="right"
 						width="auto"
-						value-format="yyyy-MM-dd HH:mm:ss"
-						unlink-panels
-						range-separator="至"
-						start-placeholder="开始日期"
-						end-placeholder="结束日期"
+						value-format="yyyyMMdd"
+						:clearable="false"
 						:picker-options="pickerOptions">
 					</el-date-picker>
 				</el-form-item>
         <el-button type="primary" @click="queryData" size="mini">查询</el-button>
-        <el-button type="primary" @click="clear" size="mini">清空</el-button>
+        <el-button type="primary" @click="$emit('clear')" size="mini">清空</el-button>
         <el-button type="primary" @click.native="exportExcel" size="mini" icon="el-icon-document-checked">导出Excel</el-button>
 			</el-form>
 		</el-collapse-item>
@@ -49,108 +38,70 @@
 import {mapState} from 'vuex'
 export default {
 	props: {
-		orderStatus: {
-			type: Array
+		formData:{
+			type:Object
 		}
 	},
-    data () {
-        return {
-          pickerOptions: {
-              disabledDate(time) {
-                  return time.getTime() > Date.now();
-              },
-              shortcuts: [{
-                  text: '最近一周',
-                  onClick(picker) {
-                      const end = new Date();
-                      const start = new Date();
-                      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-                      picker.$emit('pick', [start, end]);
-                  }
-              }, {
-                  text: '最近一个月',
-                  onClick(picker) {
-                      const end = new Date();
-                      const start = new Date();
-                      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-                      picker.$emit('pick', [start, end]);
-                  }
-              }, {
-                  text: '最近三个月',
-                  onClick(picker) {
-                      const end = new Date();
-                      const start = new Date();
-                      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-                      picker.$emit('pick', [start, end]);
-                  }
-              }, {
-                  text: '最近半年',
-                  onClick(picker) {
-                      const end = new Date();
-                      const start = new Date();
-                      start.setTime(start.getTime() - 3600 * 1000 * 24 * 180);
-                      picker.$emit('pick', [start, end]);
-                  }
-              }, {
-                  text: '最近一年',
-                  onClick(picker) {
-                      const end = new Date();
-                      const start = new Date();
-                      start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
-                      picker.$emit('pick', [start, end]);
-                  }
-              }]
-          },
-          formData: {
-            create_time: '',
-            addr: '', //地址
-            coinName: null, //币种名称
-            startDate: '', //起始时间
-            endDate: '', //结束时间
-            name: '', //账号
-            orderId: '', //订单号
-            pageNum: '', //页码
-            pageSize: '', //页数
-            status: null, //状态0-失败,1-成功,2-待审核,3-审核不通过,4-审核通过
-            txId: '' //txid
-          }
-        }
-    },
+	data () {
+			return {
+				pickerOptions: {
+						disabledDate(time) {
+								return time.getTime() >  (Date.now() - 24*60*60*1000);
+						},
+						shortcuts: [{
+								text: '一周前',
+								onClick(picker) {
+										const date = new Date();
+										date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+										picker.$emit('pick', date);
+								}
+						}, {
+								text: '一个月前',
+								onClick(picker) {
+										const date = new Date();
+										date.setTime(date.getTime() - 3600 * 1000 * 24 * 30);
+										picker.$emit('pick',date);
+								}
+						}, {
+								text: '三个月前',
+								onClick(picker) {
+										const date = new Date();
+										date.setTime(date.getTime() - 3600 * 1000 * 24 * 90);
+										picker.$emit('pick', date);
+								}
+						}, {
+								text: '半年前',
+								onClick(picker) {
+										const date = new Date();
+										date.setTime(date.getTime() - 3600 * 1000 * 24 * 180);
+										picker.$emit('pick', date);
+								}
+						}, {
+								text: '一年前',
+								onClick(picker) {
+										const date = new Date();
+										date.setTime(date.getTime() - 3600 * 1000 * 24 * 365);
+										picker.$emit('pick', date);
+								}
+						}]
+				},
+				typeList:[{
+					value:'0',
+					label:'兑入'
+				},{
+					value:'1',
+					label:'兑出'
+				}]
+			}
+	},
 	methods: {
 		queryData () {
-			if(this.formData.create_time) {
-				this.formData.startDate = this.formData.create_time[0]
-				this.formData.endDate = this.formData.create_time[1]
-			}else {
-				this.formData.startDate = ""
-				this.formData.endDate = ""
-			}
+
 			this.$emit('queryData', this.formData)
 		},
 		exportExcel() {
-			if(this.formData.create_time) {
-				this.formData.startDate = this.formData.create_time[0]
-				this.formData.endDate = this.formData.create_time[1]
-			}else {
-				this.formData.startDate = ""
-				this.formData.endDate = ""
-			}
+		
 			this.$emit('exportExcel', this.formData)
-		},
-		clear () {
-				this.formData = {
-				create_time: '',
-				addr: '', //地址
-				coinName: null, //币种名称
-				startDate: '', //起始时间
-				endDate: '', //结束时间
-				name: '', //账号
-				orderId: '', //订单号
-				pageNum: '', //页码
-				pageSize: '', //页数
-				status: null, //状态0-失败,1-成功,2-待审核,3-审核不通过,4-审核通过
-				txId: '' //txid
-			}
 		},
 		fetchFilter () {
 				return this.filter

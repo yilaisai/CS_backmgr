@@ -373,6 +373,7 @@ export default {
 			}
 			this.filterForm.token = localStorage.getItem('wallet_token') || ""
 			const baseUrl = localStorage.getItem('SERVER_PATH') || window.SERVER_PATH
+			console.log(baseUrl + '/wallet/backmgr/merchant/trade/list/export?' + qs.stringify(this.filterForm))
 			window.open(baseUrl + '/wallet/backmgr/merchant/trade/list/export?' + qs.stringify(this.filterForm))
 		},
 		showPrompt(selectItem){

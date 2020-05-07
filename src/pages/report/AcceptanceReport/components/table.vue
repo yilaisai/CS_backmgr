@@ -5,6 +5,7 @@
 			<div class="btn-wrap">
 				<!-- <el-button type="primary" size="mini" icon="el-icon-circle-plus" @click="$emit('hideDialogMR', true)">手动录单</el-button> -->
 			</div>
+			<h4>活跃用户数：{{activeUser}}</h4>
 		</div>
 		<el-table
 			:data="list"
@@ -12,35 +13,22 @@
 			border
 			size="mini"
 			style="min-width: 100%">
-			<el-table-column prop="create_time" label="发起时间" width="140"></el-table-column>
 			<el-table-column prop="nickName" label="用户编号" width="170" align="center">
+			</el-table-column>
+			<el-table-column prop="realName" label="姓名" align="center" width="60"></el-table-column>
+			<el-table-column prop="phone" label="账号" align="center"></el-table-column>
+			<el-table-column prop="amount" label="累计数量(USDT)" align="center"></el-table-column>
+			<el-table-column prop="cny" label="金额(CNY)" align="center"></el-table-column>
+			<el-table-column prop="reward" label="累计佣金(USDT)" align="center"></el-table-column>
+			<el-table-column prop="num" label="订单数量" align="center"></el-table-column>
+			<el-table-column prop="second" label="平均放币时间"  align="center">
 				<template slot-scope="scope">
-					<span>{{scope.row.phone + ' | ' + scope.row.nickName}}</span>
+				{{scope.row.second | secondsChange}}
 				</template>
 			</el-table-column>
-			<el-table-column prop="coin_name" label="姓名" align="center" width="60"></el-table-column>
-			<el-table-column prop="amount" label="账号" align="center"></el-table-column>
-			<el-table-column prop="fee" label="累计数量(USDT)" align="center"></el-table-column>
-			<el-table-column prop="status" label="金额(CNY)" align="center">
-			</el-table-column>
-			<el-table-column prop="type" label="订单数量" align="center">
-			</el-table-column>
-			<el-table-column prop="from_addr" label="平均放币时间"></el-table-column>
-			<el-table-column prop="to_addr" label="充值数量"></el-table-column>
-			<el-table-column prop="id" label="提币数量"></el-table-column>
-			<el-table-column prop="tx_id" label="当前余额">
-                <a slot-scope="scope" :href="'https://www.omniexplorer.info/search/'+ scope.row.tx_id" target="_blank">{{scope.row.tx_id}}</a>
-			</el-table-column>
-			<!-- <el-table-column prop="date" label="操作" fixed="right" width="100">
-				<template slot-scope="scope">
-					<el-button
-						size="mini"
-						type="primary"
-						@click="handleEdit(scope.$index, scope.row)">
-						手动打币
-					</el-button>
-				</template>
-			</el-table-column> -->
+			<el-table-column prop="recharge" label="充值数量"  align="center"></el-table-column>
+			<el-table-column prop="withdraw" label="提币数量" align="center"></el-table-column>
+			<el-table-column prop="currentAmount" label="当前余额" align="center"></el-table-column>
 		</el-table>
 	</div>
 </template>
@@ -55,6 +43,9 @@ export default {
 		},
 		orderStatus: {
 			type: Array
+		},
+		activeUser:{
+			type:Number
 		}
 	},
 	created() {
@@ -62,7 +53,7 @@ export default {
 	},
 	data() { 
 		return {
-			showDialogMT: false
+			showDialogMT: false,
 		}
 	},
 	filters: {

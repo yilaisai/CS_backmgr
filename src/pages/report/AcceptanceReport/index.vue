@@ -1,10 +1,10 @@
 <template>
   <div class='AcceptanceReport'>
     <!-- 筛选条件 -->
-		<Query ref="query" @queryData='getData' @exportExcel="exportExcel" :orderStatus="orderStatus"/>
+		<Query ref="query" @queryData='getData' @exportExcel="exportExcel" @clear="clear" :formData="formData" />
 
     <!-- 表格 -->
-		<Table :list="pageData.list" :orderStatus="orderStatus" @hideDialogMR="hideDialogMR"></Table>
+		<Table :list="pageData.list"  @hideDialogMR="hideDialogMR" :activeUser="activeUser"></Table>
 
     <div class="load-more" style="display: flex;">
       <div class="count">
@@ -25,29 +25,32 @@
 <script>
   import Query from './components/query.vue'
   import Table from './components/table.vue'
+  import qs from 'qs'
+  import {getYesterdayTime} from '@/common/util'
   export default {
     data() {
       return { 
-        orderStatus: [
-          {name: '失败', val: 0},
-          {name: '成功', val: 1},
-          {name: '待审核', val: 2},
-          {name: '审核不通过', val: 3},
-          {name: '审核通过', val: 4},
-        ],
         pageData: {
           total: 0,
           list: []
         },
-        formData: {},
+        formData: {
+					createDate:getYesterdayTime(),
+					type: '0', //订单类型
+					realName:'', //真实姓名
+					account: '', //账号
+					pageNum: '', //页码
+					pageSize: '', //页数
+				},
         showDialogMR:false,
         pageNum:1,
         pageSize:20,
-        sumInfo:'',
+        activeUser:0
       }
     },
     activated(){
       this.getData()
+      this.getActiveUser()
     },
     methods: {
       getData(formData) {
@@ -56,20 +59,26 @@
         formData.pageNum = this.pageNum
         formData.pageSize = this.pageSize
         this.formData = formData
-        this.$http.post('/wallet/backmgr/merchant/trade/queryRechargeWithdrawPage', formData).then(res => {
+        this.$http.post('/wallet/app/otc/backmgr/coinMerchantReportForm', formData).then(res => {
           if(res.code == 200) {
-            this.pageData = res.result.pageInfo
-            this.sumInfo = res.result.sumInfo
+            this.pageData = res.result
+          }
+        })
+      },
+      getActiveUser(){
+        this.$http.post('/wallet/app/otc/backmgr/activeBS').then(res => {
+          if(res.code == 200) {
+            this.activeUser = res.result
           }
         })
       },
       exportExcel(formData) {
         formData = formData || this.formData
-        formData.pageNum = this.pageNum
-        formData.pageSize = this.pageSize
+        formData.pageNum = 1
+        formData.pageSize = 10000
         formData.token = localStorage.getItem('wallet_token') || ""
         const baseUrl = localStorage.getItem('SERVER_PATH') || window.SERVER_PATH
-        window.open(baseUrl + '/wallet/backmgr/merchant/trade/queryRechargeWithdrawPage/export?' + qs.stringify(formData))
+        window.open(baseUrl + '/wallet/app/otc/backmgr/coinMerchantReportForm/export?' + qs.stringify(formData))
       },
       handleCurrentChange(val) {
         this.pageNum = val
@@ -82,7 +91,16 @@
       hideDialogMR(b) {
         this.showDialogMR = b
       },
-
+      clear(){
+        this.formData =  {
+					createDate: getYesterdayTime(),
+					type: '0', //订单类型
+					realName:'', //真实姓名
+					account: '', //账号
+					pageNum: '', //页码
+					pageSize: '', //页数
+				}
+      }
     },
     components:{
       Query,

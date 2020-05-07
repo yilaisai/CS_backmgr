@@ -61,8 +61,15 @@
 						<el-table-column  label="类型/下单时间" align="center" width="140">
 							<template slot-scope="scope"><img :src="'/static/img/paytype/' + scope.row.pay_type + '.svg'" style="vertical-align: sub;width: 18px;" alt=""> {{advTypeMap[scope.row.adv_type]}}<br />{{ $fmtDate(scope.row.create_time,'full') }}</template>
 						</el-table-column>
+						<el-table-column prop="amount" label="订单金额" align="center"></el-table-column>
+						<el-table-column prop="taker_amount" label="数量" align="center"></el-table-column>
+						<el-table-column prop="taker_price" label="价格" align="center"></el-table-column>
+						<el-table-column prop="fee" label="手续费(USDT)" align="center"></el-table-column>
 						<el-table-column  label="商户单号/平台单号" width="180" align="center" >
 							<span slot-scope="scope">{{scope.row.api_trade_id}}<br />{{scope.row.trade_id}}</span>
+						</el-table-column>
+						<el-table-column prop="tradeTime" label="订单状态" width="120" align="center" >
+							<template slot-scope="scope">{{tradeStatusMap[scope.row.trade_status]}}</template>
 						</el-table-column>
 						<el-table-column label="商户用户编号/账户" width="150" align="center" >
 							<span slot-scope="scope">{{scope.row.taker_nick_name}}<br />{{scope.row.taker_phone}}</span>
@@ -70,23 +77,33 @@
 						<el-table-column label="承兑商用户编号/账户" width="150" align="center">
 							<span slot-scope="scope">{{scope.row.nick_name}}<br />{{scope.row.phone}}</span>
 						</el-table-column>
-						<el-table-column prop="tradeTime" label="状态" width="120" align="center" >
-							<template slot-scope="scope">{{tradeStatusMap[scope.row.trade_status]}}</template>
+						<el-table-column prop="payment_name" label="付款人" align="center"></el-table-column>
+						<el-table-column prop="receive_name" label="收款人" align="center"></el-table-column>
+						<el-table-column prop="pay_type" label="收款方式" align="center">
+							<template slot-scope="scope">
+								{{scope.row.pay_type == 1?'银行卡':scope.row.pay_type == 2?'支付宝':scope.row.pay_type == 3?'微信':scope.row.pay_type == 4?'支付宝':'其他'}}
+							</template>
 						</el-table-column>
-						<el-table-column label="价格/数量" align="center">
-							<div slot-scope="scope">
-								<span>{{scope.row.taker_price}}</span><br />
-								<span>{{scope.row.taker_amount}}</span>
-							</div>
+						<el-table-column prop="nick_name" label="收款账号" align="center"></el-table-column>
+						<el-table-column prop="bank_branch" label="收款账户信息" align="center">
+							<template slot-scope="scope" v-if="pay_type == 1">{{scope.row.bank_name +''+scope.row.bank_branch}}</template>
+							<template slot-scope="scope" v-else>
+								<img :src="scope.row.qrcode" alt="">
+							</template>
 						</el-table-column>
-						<el-table-column prop="amount" label="金额" align="center"></el-table-column>
+						<el-table-column prop="pay_time" label="付款时间" align="center" width="140">
+							<template slot-scope="scope" v-if="scope.row.pay_time">{{ $fmtDate(scope.row.pay_time,'full') }}</template>
+						</el-table-column>
+						<el-table-column prop="letgo_time" label="确认时间" align="center" width="140">
+							<template slot-scope="scope" v-if="scope.row.letgo_time">{{ $fmtDate(scope.row.letgo_time,'full') }}</template>
+						</el-table-column>
+						<!-- <el-table-column prop="" label="平台收益(USDT)" align="center"></el-table-column> -->
 						<el-table-column prop="api_user_id" label="appUserId/收银台ip" align="center">
 							<div slot-scope="scope">
 								<span>{{scope.row.api_user_id}}</span><br />
 								<span>{{scope.row.api_ip}}</span>
 							</div>
 						</el-table-column>
-						<el-table-column prop="fee" label="手续费(USDT)" align="center"></el-table-column>
 						<el-table-column prop="price" label="操作" fixed="right" align="center" width="300">
 							<template slot-scope="scope">
 								<el-button type="danger" size="mini" v-if="scope.row.trade_status==1||scope.row.trade_status==2" @click="appealClick(scope.row) ">申诉</el-button>
@@ -94,13 +111,6 @@
 								<el-button type="danger" size="mini" v-if="(scope.row.trade_status==8||scope.row.trade_status==4)&&showActiveBtn(scope.row.create_time)" @click.native="orderActivation(scope.row)">激活订单</el-button>
 								<el-button type="danger" size="mini" v-if="scope.row.trade_status==2&&scope.row.isActivation==1" @click.native="activationLetgo(scope.row.trade_id)">&nbsp;&nbsp;放 &nbsp;&nbsp;行&nbsp;&nbsp;</el-button>
 								<el-button type="warning" size="mini" v-if="((scope.row.adv_type == 4 || scope.row.adv_type == 5) && (scope.row.trade_status == 3 || scope.row.trade_status == 6))&&scope.row.trade_type!=3" @click="returnApi(scope.row)">异步补发</el-button>
-								<el-button 
-									type="warning"
-									size="mini"
-									v-if="(((scope.row.adv_type == 4 || scope.row.adv_type == 5) && (scope.row.trade_status == 3 || scope.row.trade_status == 6  || scope.row.trade_status == 7))||((scope.row.adv_type == 3 || scope.row.adv_type == 6) &&  scope.row.trade_status == 7 )) && scope.row.trade_type != 3"
-									@click="showPrompt(scope.row)"
-								>手动录单
-								</el-button>
 							</template>
 						</el-table-column>
 				</el-table>

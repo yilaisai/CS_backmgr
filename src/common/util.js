@@ -128,3 +128,24 @@ export function getTodayTime() {
 	const endTime = dateObj['YYYY'] + '-' + dateObj['MM'] + '-' + dateObj['DD'] + ' 23:59:59'
 	return [startTime, endTime]
 }
+
+export function secondsChange(num) {
+  let hour = Math.floor(num/(60*60))
+  let min = Math.floor((num%(60*60))/60)
+  let second = num%60
+  min = min>9?min:'0'+min
+  second = second>9?second:'0'+second
+  return hour>0?`${hour}'${min}'${second}''`:`${min}'${second}''`
+}
+Vue.filter('secondsChange', secondsChange);
+
+export function getYesterdayTime(){
+  const nowTime = new Date(new Date().getTime() - 24*60*60*1000)
+  const dateObj = {
+		'YYYY': nowTime.getFullYear(),
+		'MM': (nowTime.getMonth() + 1) < 10 ? ('0' + (nowTime.getMonth() + 1)) : (nowTime.getMonth() + 1),
+		'DD': nowTime.getDate() < 10 ? ('0' + nowTime.getDate()) : nowTime.getDate()
+  }
+  const time = dateObj['YYYY']+dateObj['MM']+dateObj['DD']
+  return time
+}

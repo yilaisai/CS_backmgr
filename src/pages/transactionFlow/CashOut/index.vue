@@ -77,7 +77,12 @@
 							</el-table-column>
 							<el-table-column prop="payment_photo" label="付款凭证" align="center">
 								<template slot-scope="scope"> 
-									<img :src="scope.row.payment_photo" class="paymentImg" />
+									<el-image 
+										v-if="scope.row.payment_photo"
+										style="width: 40px; height: 40px"
+										:src="scope.row.payment_photo" 
+										:preview-src-list="[scope.row.payment_photo]">
+									</el-image>
 								</template>
 							</el-table-column>
 							<el-table-column prop="receive_name" label="收款人" align="center"></el-table-column>
@@ -85,7 +90,12 @@
 							<el-table-column prop="bank_branch" label="收款账户信息" align="center">
 								<template slot-scope="scope" v-if="scope.row.pay_type == 1">{{scope.row.bank_name +''+scope.row.bank_branch}}</template>
 								<template slot-scope="scope" v-else>
-									<img :src="scope.row.qrcode" alt="">
+									<el-image 
+										v-if="scope.row.qrcode"
+										style="width: 40px; height: 40px"
+										:src="scope.row.qrcode" 
+										:preview-src-list="[scope.row.qrcode]">
+									</el-image>
 								</template>
 							</el-table-column>
 							<el-table-column prop="pay_time" label="付款时间" align="center" width="140">

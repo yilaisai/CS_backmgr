@@ -86,7 +86,7 @@
 						</el-table-column>
 						<el-table-column prop="nick_name" label="收款账号" align="center"></el-table-column>
 						<el-table-column prop="bank_branch" label="收款账户信息" align="center">
-							<template slot-scope="scope" v-if="pay_type == 1">{{scope.row.bank_name +''+scope.row.bank_branch}}</template>
+							<template slot-scope="scope" v-if="scope.row.pay_type == 1">{{scope.row.bank_name +''+scope.row.bank_branch}}</template>
 							<template slot-scope="scope" v-else>
 								<img :src="scope.row.qrcode" alt="">
 							</template>

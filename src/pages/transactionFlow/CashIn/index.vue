@@ -83,19 +83,21 @@
 						<el-table-column prop="receive_name" label="收款人" align="center"></el-table-column>
 						<el-table-column prop="pay_type" label="收款方式" align="center">
 							<template slot-scope="scope">
-								{{scope.row.pay_type == 1?'银行卡':scope.row.pay_type == 2?'支付宝':scope.row.pay_type == 3?'微信':scope.row.pay_type == 4?'支付宝':'其他'}}
+								{{scope.row.pay_type == 1?'银行卡':scope.row.pay_type == 2?'支付宝':scope.row.pay_type == 3?'微信':scope.row.pay_type == 4?'支付宝':scope.row.pay_type == 5?'宝转卡':'其他'}}
 							</template>
 						</el-table-column>
-						<el-table-column prop="nick_name" label="收款账号" align="center"></el-table-column>
+						<el-table-column prop="num" label="收款账号" align="center"></el-table-column>
 						<el-table-column prop="bank_branch" label="收款账户信息" align="center">
-							<template slot-scope="scope" v-if="scope.row.pay_type == 1">{{scope.row.bank_name +''+scope.row.bank_branch}}</template>
-							<template slot-scope="scope" v-else>
-								<el-image 
+							<template slot-scope="scope" >
+								<span v-if="scope.row.pay_type == 1">{{scope.row.bank_name +''+scope.row.bank_branch}}</span>
+								<span v-else>
+									<el-image 
 										v-if="scope.row.qrcode"
 										style="width: 40px; height: 40px"
 										:src="scope.row.qrcode" 
 										:preview-src-list="[scope.row.qrcode]">
 									</el-image>
+								</span>
 							</template>
 						</el-table-column>
 						<el-table-column prop="pay_time" label="付款时间" align="center" width="140">

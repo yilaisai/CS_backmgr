@@ -1,7 +1,7 @@
 <template>
   <div class='AcceptanceReport'>
     <!-- 筛选条件 -->
-		<Query ref="query" @queryData='getData' @exportExcel="exportExcel" @clear="clear" :formData="formData" />
+		<Query ref="query" @queryData='searchData' @exportExcel="exportExcel" @clear="clear" :formData="formData" />
 
     <!-- 表格 -->
 		<Table :list="pageData.list"  @hideDialogMR="hideDialogMR" :activeUser="activeUser"></Table>
@@ -66,11 +66,18 @@
         })
       },
       getActiveUser(){
-        this.$http.post('/wallet/app/otc/backmgr/activeBS').then(res => {
+
+        this.$http.post('/wallet/app/otc/backmgr/activeBS',{
+          startTime:this.changeDateFormat(this.formData.createDate)
+        }).then(res => {
           if(res.code == 200) {
             this.activeUser = res.result
           }
         })
+      },
+      searchData(formData) {
+        this.getData(formData)
+        this.getActiveUser()
       },
       exportExcel(formData) {
         formData = formData || this.formData
@@ -100,6 +107,12 @@
 					pageNum: '', //页码
 					pageSize: '', //页数
 				}
+      },
+      changeDateFormat(date) {
+        let year = date.toString().slice(0,4)
+        let month = date.toString().slice(4,6)
+        let day = date.toString().slice(6)
+        return year + '-' + month + '-' + day + ' 00:00:00'
       }
     },
     components:{

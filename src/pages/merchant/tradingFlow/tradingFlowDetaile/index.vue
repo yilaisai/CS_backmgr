@@ -103,11 +103,10 @@
 						<el-input :value="payList.num" disabled></el-input>
 					</el-form-item>
 					 <el-form-item label="付款图片:" class="special">
-						 <el-image 
-						 	v-for="(img, idx) in detaileData.paymentPhoto ? detaileData.paymentPhoto.split(',') : []"
-							:src="img"
-							:preview-src-list="[img]"
-							:key="idx">
+						<el-image 
+							:src="payList.qrcode"
+							:preview-src-list="[payList.qrcode]"
+						>
 						</el-image>
 					</el-form-item>
 					<!--<el-form-item label="退回凭证:" >

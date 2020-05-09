@@ -83,7 +83,7 @@
 						<el-table-column prop="receive_name" label="收款人" align="center"></el-table-column>
 						<el-table-column prop="pay_type" label="收款方式" align="center">
 							<template slot-scope="scope">
-								{{scope.row.pay_type == 1?'银行卡':scope.row.pay_type == 2?'支付宝':scope.row.pay_type == 3?'微信':scope.row.pay_type == 4?'支付宝':scope.row.pay_type == 5?'宝转卡':'其他'}}
+								{{scope.row.pay_type == 1?'银行卡':scope.row.pay_type == 2?'支付宝':scope.row.pay_type == 3?'微信':scope.row.pay_type == 4?'宝转卡':scope.row.pay_type == 5?'支付宝':'其他'}}
 							</template>
 						</el-table-column>
 						<el-table-column prop="num" label="收款账号" align="center"></el-table-column>
@@ -195,6 +195,7 @@
 <script>
 import { mapState } from 'vuex'
 import qs from 'qs'
+import vueQr from 'vue-qr'
 import {getTodayTime} from '@/common/util'
 export default {
 	name:'transaction-details',
@@ -361,6 +362,7 @@ export default {
 			}
 			this.filterForm.token = localStorage.getItem('wallet_token') || ""
 			const baseUrl = localStorage.getItem('SERVER_PATH') || window.SERVER_PATH
+			console.log(baseUrl + '/wallet/backmgr/merchant/trade/list/export?' + qs.stringify(this.filterForm))
 			window.open(baseUrl + '/wallet/backmgr/merchant/trade/list/export?' + qs.stringify(this.filterForm))
 		},
 		showPrompt(selectItem){

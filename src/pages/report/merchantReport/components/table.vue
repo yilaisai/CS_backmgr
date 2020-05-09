@@ -15,8 +15,8 @@
 			style="min-width: 100%">
 			<el-table-column prop="nickName" label="用户编号" align="center" min-width="140"></el-table-column>
 			<el-table-column prop="email" label="账号" align="center" min-width="160"></el-table-column>
-			<el-table-column prop="amount" label="累计数量(USDT)" sortable="custom" align="center"></el-table-column>
-			<el-table-column prop="cny" label="金额(CNY)" sortable="custom" align="center"></el-table-column>
+			<el-table-column prop="amount" label="累计数量(USDT)" align="center"></el-table-column>
+			<el-table-column prop="cny" label="金额(CNY)"  align="center"></el-table-column>
 			<el-table-column prop="fee" label="手续费(USDT)" align="center"></el-table-column>
 			<el-table-column prop="num" label="订单数量" align="center"></el-table-column>
 			<el-table-column prop="sucNum" label="完成订单数量" align="center"></el-table-column>

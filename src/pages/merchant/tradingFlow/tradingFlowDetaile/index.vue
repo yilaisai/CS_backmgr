@@ -102,10 +102,10 @@
 					<el-form-item label="收款账号:" >
 						<el-input :value="payList.num" disabled></el-input>
 					</el-form-item>
-					 <el-form-item label="付款图片:" class="special">
+					 <el-form-item label="付款图片:" class="special" v-if="detaileData.advType == 6 || detaileData.advType == 3 ">
 						<el-image 
-							:src="payList.qrcode"
-							:preview-src-list="[payList.qrcode]"
+							:src="detaileData.paymentPhoto"
+							:preview-src-list="[detaileData.paymentPhoto]"
 						>
 						</el-image>
 					</el-form-item>

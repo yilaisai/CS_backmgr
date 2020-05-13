@@ -20,6 +20,11 @@
 			</el-table-column>
 			<el-table-column prop="app_id" label="appid" align="center"></el-table-column>
 			<el-table-column prop="name" label="商户编号" align="center"></el-table-column>
+			<el-table-column prop="name" label="商户类型" align="center">
+				<div slot-scope="scope">
+					{{scope.row.type == 0?'收银台商户':scope.row.type == 1?'普通API商户':'钱包API商户'}}
+				</div>
+			</el-table-column>
 			<el-table-column prop="ip" label="ip" align="center"></el-table-column>
 			<el-table-column  label="操作"  fixed="right" align="center" >
 				<template slot-scope="scope">
@@ -54,6 +59,16 @@
 				<el-form-item label="ip:" >
 					<el-input placeholder="请输入ip" v-model="formData.ip" ></el-input>
 				</el-form-item>
+				<el-form-item label="商户类型:" >
+					<el-select v-model="formData.type" placeholder="请选择">
+						<el-option
+							v-for="item in typeList"
+							:key="item.value"
+							:label="item.desc"
+							:value="item.value">
+						</el-option>
+					</el-select>
+				</el-form-item>
 			</el-form>
 			<span slot="footer" class="dialog-footer">
 				<el-button @click="showDialog = false" size="small">取 消</el-button>
@@ -76,7 +91,18 @@ export default {
 				appId:'',
 				name:'',
 				ip:'',
+				type:''
 			},
+			typeList:[{
+				value:0,
+				desc:'收银台商户'
+			},{
+				value:1,
+				desc:'普通API商户'
+			},{
+				value:2,
+				desc:'钱包API商户'
+			}],
 			list:[],
 			total:0,
 			showDialog:false
@@ -87,7 +113,7 @@ export default {
 	},
 	methods:{
 		addItem(){
-			this.formData = { appId:'',appUserId:'',foreverOrLimited:'2',ip:'' }
+			this.formData = { appId:'',appUserId:'',foreverOrLimited:'2',ip:'',type:'' }
 			this.showDialog=true
 		},
 		handleCurrentChange(val) {
@@ -109,6 +135,7 @@ export default {
 			})
 		},
 		addCheckoutWhitelist(){
+			console.log(this.formData.appId.trim())
 			if(this.formData.appId.trim()==''){
 				this.$message({
 					type: 'info',
@@ -120,6 +147,13 @@ export default {
 				this.$message({
 					type: 'info',
 					message: '请填写userid/ip'
+				}) 
+				return
+			}
+			if(this.formData.type === ""){
+				this.$message({
+					type: 'info',
+					message: '请选择类型'
 				}) 
 				return
 			}
@@ -148,7 +182,8 @@ export default {
 			}).then(() => {
 				this.$http.post("/wallet/backmgr/ipWhite/delete", {
 					appId: item.app_id,
-					ip: item.ip
+					ip: item.ip,
+					type: item.type
 				}).then(res => {
 					if(res.code == 200){
 						this.$message({

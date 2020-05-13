@@ -124,7 +124,7 @@
               </div>
               <div>
                 <span>昨日已完成兑出 :</span>
-                <span>{{sumInYesterday}} USDT</span>
+                <span>{{sumOutYesterday}} USDT</span>
               </div>
             </div>
             <img src="@/assets/line2.svg" alt="">

@@ -85,6 +85,7 @@
         formData.pageSize = 10000
         formData.token = localStorage.getItem('wallet_token') || ""
         const baseUrl = localStorage.getItem('SERVER_PATH') || window.SERVER_PATH
+        console.log(baseUrl + '/wallet/app/otc/backmgr/coinMerchantReportForm/export?' + qs.stringify(formData))
         window.open(baseUrl + '/wallet/app/otc/backmgr/coinMerchantReportForm/export?' + qs.stringify(formData))
       },
       handleCurrentChange(val) {

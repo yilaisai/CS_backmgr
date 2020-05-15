@@ -35,7 +35,9 @@
           list: []
         },
         formData: {
-					createDate:getYesterdayTime(),
+          createDate:[getYesterdayTime(),getYesterdayTime()],
+          startDate:getYesterdayTime(),
+				  endDate:getYesterdayTime(),
 					type: '0', //订单类型
 					realName:'', //真实姓名
 					account: '', //账号
@@ -54,6 +56,13 @@
     },
     methods: {
       getData(formData) {
+        if(this.formData.createDate && this.formData.createDate.length==2){
+          this.formData.startDate = this.formData.createDate[0]
+          this.formData.endDate = this.formData.createDate[1]
+        }else {
+          this.formData.startDate = getYesterdayTime()
+          this.formData.endDate = getYesterdayTime()
+        }
         if(formData) this.pageNum = 1
         formData = formData || this.formData
         formData.pageNum = this.pageNum
@@ -68,7 +77,8 @@
       getActiveUser(){
 
         this.$http.post('/wallet/app/otc/backmgr/activeBS',{
-          startTime:this.changeDateFormat(this.formData.createDate)
+          startTime:this.changeDateFormat(this.formData.startDate),
+          endTime:this.changeDateFormat(this.formData.endDate),
         }).then(res => {
           if(res.code == 200) {
             this.activeUser = res.result
@@ -84,8 +94,14 @@
         formData.pageNum = 1
         formData.pageSize = 10000
         formData.token = localStorage.getItem('wallet_token') || ""
+        if(this.formData.createDate && this.formData.createDate.length==2){
+          formData.startDate = this.formData.createDate[0]
+          formData.endDate = this.formData.createDate[1]
+        }else {
+          formData.startDate = getYesterdayTime()
+          formData.endDate = getYesterdayTime()
+        }
         const baseUrl = localStorage.getItem('SERVER_PATH') || window.SERVER_PATH
-        console.log(baseUrl + '/wallet/app/otc/backmgr/coinMerchantReportForm/export?' + qs.stringify(formData))
         window.open(baseUrl + '/wallet/app/otc/backmgr/coinMerchantReportForm/export?' + qs.stringify(formData))
       },
       handleCurrentChange(val) {
@@ -101,7 +117,9 @@
       },
       clear(){
         this.formData =  {
-					createDate: getYesterdayTime(),
+          createDate:[getYesterdayTime(),getYesterdayTime()],
+          startDate:getYesterdayTime(),
+				  endDate:getYesterdayTime(),
 					type: '0', //订单类型
 					realName:'', //真实姓名
 					account: '', //账号

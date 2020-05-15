@@ -15,16 +15,17 @@
 						</el-select>
 					</el-form-item>
 				</div>
-				<el-form-item label="时间：" style="width: 350px">
+				<el-form-item label="时间：" style="width: 500px">
 					<el-date-picker
 						id="createtime"
 						v-model="formData.createDate"
-						type="date"
+						type="daterange"
 						align="right"
 						width="auto"
 						value-format="yyyyMMdd"
 						:clearable="false"
-						:picker-options="pickerOptions">
+						:picker-options="pickerOptions"
+						>
 					</el-date-picker>
 				</el-form-item>
         <el-button type="primary" @click="queryData" size="mini">查询</el-button>
@@ -36,6 +37,7 @@
 </template>
 <script>
 import {mapState} from 'vuex'
+import {getYesterdayTime} from '@/common/util'
 export default {
 	props: {
 		formData:{
@@ -51,37 +53,42 @@ export default {
 						shortcuts: [{
 								text: '一周前',
 								onClick(picker) {
-										const date = new Date();
-										date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-										picker.$emit('pick', date);
+										const end = new Date(new Date().getTime() - 24*60*60*1000);
+										const start = new Date(new Date().getTime() - 24*60*60*1000);
+										start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+										picker.$emit('pick', [start, end]);
 								}
 						}, {
 								text: '一个月前',
 								onClick(picker) {
-										const date = new Date();
-										date.setTime(date.getTime() - 3600 * 1000 * 24 * 30);
-										picker.$emit('pick',date);
+										const end = new Date(new Date().getTime() - 24*60*60*1000);
+										const start = new Date(new Date().getTime() - 24*60*60*1000);
+										start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+										picker.$emit('pick',[start, end]);
 								}
 						}, {
 								text: '三个月前',
 								onClick(picker) {
-										const date = new Date();
-										date.setTime(date.getTime() - 3600 * 1000 * 24 * 90);
-										picker.$emit('pick', date);
+										const end = new Date(new Date().getTime() - 24*60*60*1000);
+										const start = new Date(new Date().getTime() - 24*60*60*1000);
+										start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+										picker.$emit('pick', [start, end]);
 								}
 						}, {
 								text: '半年前',
 								onClick(picker) {
-										const date = new Date();
-										date.setTime(date.getTime() - 3600 * 1000 * 24 * 180);
-										picker.$emit('pick', date);
+										const end = new Date(new Date().getTime() - 24*60*60*1000);
+										const start = new Date(new Date().getTime() - 24*60*60*1000);
+										start.setTime(start.getTime() - 3600 * 1000 * 24 * 180);
+										picker.$emit('pick', [start, end]);
 								}
 						}, {
 								text: '一年前',
 								onClick(picker) {
-										const date = new Date();
-										date.setTime(date.getTime() - 3600 * 1000 * 24 * 365);
-										picker.$emit('pick', date);
+										const end = new Date(new Date().getTime() - 24*60*60*1000);
+										const start = new Date(new Date().getTime() - 24*60*60*1000);
+										start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
+										picker.$emit('pick', [start, end]);
 								}
 						}]
 				},
@@ -105,7 +112,7 @@ export default {
 		},
 		fetchFilter () {
 				return this.filter
-		}
+		},
 	},
 	computed:{
 		...mapState(['coinInfo'])

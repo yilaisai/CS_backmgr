@@ -35,7 +35,9 @@
           list: []
         },
         formData: {
-          createDate: getYesterdayTime(),
+          createDate:[getYesterdayTime(),getYesterdayTime()],
+          startDate:getYesterdayTime(),
+				  endDate:getYesterdayTime(),
           account: '', //账号
           type:'0',  //类型 0 兑入 1 兑出
 					pageNum: '', //页码
@@ -51,6 +53,13 @@
     },
     methods: {
       getData(formData) {
+        if(this.formData.createDate && this.formData.createDate.length==2){
+          this.formData.startDate = this.formData.createDate[0]
+          this.formData.endDate = this.formData.createDate[1]
+        }else {
+          this.formData.startDate = getYesterdayTime()
+          this.formData.endDate = getYesterdayTime()
+        }
         if(formData) this.pageNum = 1
         formData = formData || this.formData
         formData.pageNum = this.pageNum
@@ -67,6 +76,13 @@
         formData.pageNum = 0
         formData.pageSize = 10000
         formData.token = localStorage.getItem('wallet_token') || ""
+        if(this.formData.createDate && this.formData.createDate.length==2){
+          formData.startDate = this.formData.createDate[0]
+          formData.endDate = this.formData.createDate[1]
+        }else {
+          formData.startDate = getYesterdayTime()
+          formData.endDate = getYesterdayTime()
+        }
         const baseUrl = localStorage.getItem('SERVER_PATH') || window.SERVER_PATH
         window.open(baseUrl + '/wallet/app/otc/backmgr/merchantReportForm/export?' + qs.stringify(formData))
       },
@@ -80,7 +96,9 @@
       },
       clear() {
         this.formData = {
-					createDate: getYesterdayTime(),
+          createDate:[getYesterdayTime(),getYesterdayTime()],
+          startDate:getYesterdayTime(),
+				  endDate:getYesterdayTime(),
           account: '', //账号
           type:'0',  //类型 0 兑入 1 兑出
 					pageNum: '', //页码

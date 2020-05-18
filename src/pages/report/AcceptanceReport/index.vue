@@ -77,8 +77,8 @@
       getActiveUser(){
 
         this.$http.post('/wallet/app/otc/backmgr/activeBS',{
-          startTime:this.changeDateFormat(this.formData.startDate),
-          endTime:this.changeDateFormat(this.formData.endDate),
+          startTime:this.changeDateFormat(this.formData.startDate,"start"),
+          endTime:this.changeDateFormat(this.formData.endDate,"end"),
         }).then(res => {
           if(res.code == 200) {
             this.activeUser = res.result
@@ -127,11 +127,11 @@
 					pageSize: '', //页数
 				}
       },
-      changeDateFormat(date) {
+      changeDateFormat(date,type) {
         let year = date.toString().slice(0,4)
         let month = date.toString().slice(4,6)
         let day = date.toString().slice(6)
-        return year + '-' + month + '-' + day + ' 00:00:00'
+        return type == "start"?year + '-' + month + '-' + day + ' 00:00:00':year + '-' + month + '-' + day + ' 23:59:59'
       }
     },
     components:{

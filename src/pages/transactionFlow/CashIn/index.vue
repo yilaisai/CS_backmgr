@@ -67,6 +67,7 @@
 						<el-table-column prop="taker_amount" label="数量" align="center"></el-table-column>
 						<el-table-column prop="taker_price" label="价格" align="center"></el-table-column>
 						<el-table-column prop="fee" label="手续费(USDT)" align="center"></el-table-column>
+						<el-table-column prop="coupling_fee" label="撮合费(USDT)" align="center"></el-table-column>
 						<el-table-column  label="商户单号/平台单号" width="180" align="center" >
 							<span slot-scope="scope">{{scope.row.api_trade_id}}<br />{{scope.row.trade_id}}</span>
 						</el-table-column>

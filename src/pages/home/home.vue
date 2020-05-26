@@ -200,7 +200,7 @@
         </li>
       </ul>
     </div>
-	<div class="message-box" v-show="appealIng + withdrawIng + bindInfoIng + outIng + merchantApplyIng + auditIng + auditPersonIng > 0">
+	<div class="message-box" v-show="appealIng + withdrawIng + bindInfoIng + outIng + merchantApplyIng + auditIng + auditPersonIng + payedCount > 0">
 		<div class="topbar" @click="messageBoxShow = !messageBoxShow">
 			<span class="blink" v-show="!messageBoxShow">有{{appealIng + withdrawIng + bindInfoIng + outIng + merchantApplyIng + auditIng + auditPersonIng}}条新的待处理事项，点击展开</span>
 			<!-- <el-button v-show="messageBoxShow" size="mini">全部已读</el-button> -->
@@ -218,6 +218,7 @@
 			<li @click="$router.push({path:'/merchant/merchantList',query:{status:'0'}})" v-show="merchantApplyIng > 0"><span>{{merchantApplyIng}}条商户注册审核待处理</span></li>
 			<li @click="$router.push('/LegalCurrency/advertisersVerify')" v-show="auditIng > 0"><span>{{auditIng}}条广告商审核待处理</span></li>
 			<li @click="$router.push({path:'/user/identityVerify',query:{status:'1'}})" v-show="auditPersonIng > 0"><span>{{auditPersonIng}}条实名审核待处理</span></li>
+			<li @click="$router.push({path:'/transactionFlow/CashIn',query:{status:'1'}})" v-show="payedCount > 0"><span>{{payedCount}}条订单已完成付款</span></li>
 		</ul>
 	</div>
   </div>
@@ -253,6 +254,7 @@
         inFrozen:0,
         outFrozen:0,
 		withdrawFrozen:0,
+		payedCount: 0,
 		messageBoxShow: false,
 		timer: null
       };
@@ -282,7 +284,8 @@
           this.yesterdayRechargeAmount = result.yesterdayRechargeAmount || 0
           this.inFrozen = result.inFrozen
           this.outFrozen = result.outFrozen
-          this.withdrawFrozen = result.withdrawFrozen
+		  this.withdrawFrozen = result.withdrawFrozen
+		  this.payedCount = result.payedCount
           let data1 = [{value:this.payIngOrder,name:"未付款"},{value:this.payedOrder,name:"已付款"}]
           let data2 = [{value:this.cancelOrder,name:"已取消"},{value:this.finishOrder,name:"已完成"}]
           this.intCanvas(data1,data2)

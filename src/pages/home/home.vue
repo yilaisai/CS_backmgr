@@ -277,6 +277,7 @@
           this.sumInToday = result.sumInToday
           this.sumInYesterday = result.sumInYesterday
           this.sumOutToday = result.sumOutToday
+          this.sumOutYesterday = result.sumOutYesterday
           this.sumInYesterday =result.sumInYesterday
           this.todayWithdrawAmount = result.todayWithdrawAmount || 0
           this.yesterdayWithdrawAmount = result.yesterdayWithdrawAmount || 0

@@ -188,6 +188,9 @@ Vue.filter("optType", function (val) {  //保留小数位，acc为保留几位�
 	case 40:
 		return '码商违规操作收入'
 		break;
+	case 41:
+		return '撮合费'
+		break;
 	default:
 	  return val
   }

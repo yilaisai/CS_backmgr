@@ -346,7 +346,10 @@
 					this.merchantApplyIng = result.merchantApplyIng
 					if(this.appealIng > 0 || this.auditIng > 0 || this.bindInfoIng > 0 || this.outIng > 0 || this.withdrawIng > 0 || this.auditPersonIng > 0 || this.merchantApplyIng > 0) {
 						this.$emit('musicPlay')
+					}else if(this.payedCount < result.payedCount) {
+						this.$emit('musicPlay')
 					}
+					this.payedCount = result.payedCount
 					this.timer = setTimeout(() => {
 						this.getNewsList()
 					}, 60000)

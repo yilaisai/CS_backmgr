@@ -203,8 +203,8 @@
 	<div class="message-box" v-show="appealIng + withdrawIng + bindInfoIng + outIng + merchantApplyIng + auditIng + auditPersonIng + payedCount > 0">
 		<div class="topbar" @click="messageBoxShow = !messageBoxShow">
 			<span class="blink" v-show="!messageBoxShow">有{{appealIng + withdrawIng + bindInfoIng + outIng + merchantApplyIng + auditIng + auditPersonIng}}条新的待处理事项，点击展开</span>
-			<!-- <el-button v-show="messageBoxShow" size="mini">全部已读</el-button> -->
 			<span v-show="messageBoxShow"><img src="../../../static/img/logo_white.png" alt=""></span>
+			<el-button v-show="messageBoxShow" size="mini" @click="noRemind">不再提醒</el-button>
 			<i :class="{'down' : messageBoxShow}"></i>
 		</div>
 		<ul v-show="messageBoxShow">
@@ -260,83 +260,85 @@
       };
     },
     methods: {
-      getData() {
-        this.$http.post('/wallet/backmgr/indexInfo').then(res => {
-          let result = res.result;
-          this.appealIng = result.appealIng
-          this.auditIng = result.auditIng
-          this.bindInfoIng = result.bindInfoIng
-          this.outIng = result.outIng
-          this.withdrawIng = result.withdrawIng
-          this.auditPersonIng = result.auditPersonIng
-          this.merchantApplyIng = result.merchantApplyIng
-          this.payIngOrder = result.payIngOrder
-          this.payedOrder = result.payedOrder
-          this.finishOrder = result.finishOrder
-          this.cancelOrder = result.cancelOrder
-          this.sumInToday = result.sumInToday
-          this.sumInYesterday = result.sumInYesterday
-          this.sumOutToday = result.sumOutToday
-          this.sumOutYesterday = result.sumOutYesterday
-          this.sumInYesterday =result.sumInYesterday
-          this.todayWithdrawAmount = result.todayWithdrawAmount || 0
-          this.yesterdayWithdrawAmount = result.yesterdayWithdrawAmount || 0
-          this.todayRechargeAmount = result.todayRechargeAmount || 0
-          this.yesterdayRechargeAmount = result.yesterdayRechargeAmount || 0
-          this.inFrozen = result.inFrozen
-          this.outFrozen = result.outFrozen
-		  this.withdrawFrozen = result.withdrawFrozen
-		  this.payedCount = result.payedCount
-          let data1 = [{value:this.payIngOrder,name:"未付款"},{value:this.payedOrder,name:"已付款"}]
-          let data2 = [{value:this.cancelOrder,name:"已取消"},{value:this.finishOrder,name:"已完成"}]
-          this.intCanvas(data1,data2)
-        })
-      },
-      intCanvas(data1,data2) {
-        let color = ['#FDBF5E','#0081FF']
-        this.drawLine('echart1',data1,color)
-        this.drawLine('echart2',data2,color)
-      },
-      drawLine(id, data, color) {
-        var myChart = echarts.init(document.getElementById(id));
-        let option = {
-          tooltip: {
-              trigger: 'item',
-              formatter: '{b}<br/>{c} ({d}%)'
-          },
-          series: [
-            {
-              name: '',
-              type: 'pie',
-              radius: ['0', '100%'],
-              hoverAnimation:false,
-              label: {
-                normal:{
-                  position:'inner',
-                  fontSize:'12',
-                },
-                emphasis: {
-                  textStyle: {
-                    fontSize: '14',
-                    fontWeight: 'bold'
-                  }
-                }
-              },
-              labelLine: {
-                normal: {
-                  show: false
-                }
-              },
-              data: data,
-              color:color
-            }
-          ],
-        }
-        myChart.setOption(option)
-	  },
-	  	getNewsList() {
-		  	clearTimeout(this.timer)
-			this.$http.post('/wallet/backmgr/indexInfo', {type: 1, noLoading: true}).then(res => {
+		getData() {
+			const startDate = localStorage.getItem('NO_REMIND_TIME') || ''
+			this.$http.post('/wallet/backmgr/indexInfo', {startDate}).then(res => {
+			let result = res.result;
+			this.appealIng = result.appealIng
+			this.auditIng = result.auditIng
+			this.bindInfoIng = result.bindInfoIng
+			this.outIng = result.outIng
+			this.withdrawIng = result.withdrawIng
+			this.auditPersonIng = result.auditPersonIng
+			this.merchantApplyIng = result.merchantApplyIng
+			this.payIngOrder = result.payIngOrder
+			this.payedOrder = result.payedOrder
+			this.finishOrder = result.finishOrder
+			this.cancelOrder = result.cancelOrder
+			this.sumInToday = result.sumInToday
+			this.sumInYesterday = result.sumInYesterday
+			this.sumOutToday = result.sumOutToday
+			this.sumOutYesterday = result.sumOutYesterday
+			this.sumInYesterday =result.sumInYesterday
+			this.todayWithdrawAmount = result.todayWithdrawAmount || 0
+			this.yesterdayWithdrawAmount = result.yesterdayWithdrawAmount || 0
+			this.todayRechargeAmount = result.todayRechargeAmount || 0
+			this.yesterdayRechargeAmount = result.yesterdayRechargeAmount || 0
+			this.inFrozen = result.inFrozen
+			this.outFrozen = result.outFrozen
+			this.withdrawFrozen = result.withdrawFrozen
+			this.payedCount = result.payedCount
+			let data1 = [{value:this.payIngOrder,name:"未付款"},{value:this.payedOrder,name:"已付款"}]
+			let data2 = [{value:this.cancelOrder,name:"已取消"},{value:this.finishOrder,name:"已完成"}]
+			this.intCanvas(data1,data2)
+			})
+		},
+		intCanvas(data1,data2) {
+			let color = ['#FDBF5E','#0081FF']
+			this.drawLine('echart1',data1,color)
+			this.drawLine('echart2',data2,color)
+		},
+		drawLine(id, data, color) {
+			var myChart = echarts.init(document.getElementById(id));
+			let option = {
+			tooltip: {
+				trigger: 'item',
+				formatter: '{b}<br/>{c} ({d}%)'
+			},
+			series: [
+				{
+				name: '',
+				type: 'pie',
+				radius: ['0', '100%'],
+				hoverAnimation:false,
+				label: {
+					normal:{
+					position:'inner',
+					fontSize:'12',
+					},
+					emphasis: {
+					textStyle: {
+						fontSize: '14',
+						fontWeight: 'bold'
+					}
+					}
+				},
+				labelLine: {
+					normal: {
+					show: false
+					}
+				},
+				data: data,
+				color:color
+				}
+			],
+			}
+			myChart.setOption(option)
+		},
+		getNewsList() {
+			clearTimeout(this.timer)
+			const startDate = localStorage.getItem('NO_REMIND_TIME') || ''
+			this.$http.post('/wallet/backmgr/indexInfo', {type: 1, noLoading: true, startDate}).then(res => {
 					let result = res.result;
 					this.appealIng = result.appealIng
 					this.auditIng = result.auditIng
@@ -359,8 +361,12 @@
 					this.getNewsList()
 				}, 60000)
 			})
+		},
+		// 不再提醒
+		noRemind() {
+			localStorage.setItem('NO_REMIND_TIME', dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss'))
+			this.getNewsList()
 		}
-		
     },
   	activated() {
 		this.getData()

@@ -452,7 +452,7 @@ export default {
 				userId: item.taker_user_id
 			}).then(res=>{
 				if(res.code==200){
-					this.$alert('返回结果：'+res.result, {
+					this.$alert(`返回结果：${res.result.result} <br /> 回调地址：${res.result.url}`, {
 						title:'提示',
 						dangerouslyUseHTMLString: true
 					});	

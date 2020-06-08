@@ -12,6 +12,16 @@
 		<el-table-column prop="tradeTime" label="状态" align="center" >
 			<span slot-scope="scope">{{ scope.row.tradeStatus==1?'未付款':scope.row.tradeStatus==2?'待放行':scope.row.tradeStatus==3?'已完成':scope.row.tradeStatus==4?'已取消':scope.row.tradeStatus==5?'申述':'' }}</span>
 		</el-table-column>
+		<el-table-column prop="paymentPhoto" label="交易凭证" width="80" align="center">
+			<template slot-scope="scope">
+				<el-image 
+					v-if="scope.row.paymentPhoto"
+					style="height: 50px"
+					:src="scope.row.paymentPhoto" 
+					:preview-src-list="[scope.row.paymentPhoto]">
+				</el-image>
+			</template>
+		</el-table-column>
 		<el-table-column prop="tradeType" label="广告类型" width="80" align="center">
 			<template slot-scope="scope">
 				<span v-if="scope.row.trans==1">购买</span>

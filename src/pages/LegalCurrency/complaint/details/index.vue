@@ -412,6 +412,20 @@ export default {
                 this.SaleList = [takerMap]
             })
         },
+        proofInfo(){
+            const postdata={
+                appealId:this.appealId
+            }
+            this.$http.post('/wallet/app/otc/backmgr/proofInfo',postdata).then(res=>{
+                res.result.forEach((val, idx) => {
+					if(val.isBuyer == 1) {
+						this.BuyProofInfo = val
+					}else {
+						this.SaleProofInfo = val
+					}
+				})
+            })
+        },
         payDetaile(data){
             console.log(data)
             this.payItem = data
@@ -476,9 +490,15 @@ export default {
         this.SaleProofInfo= {}
         this.tradeId=this.$route.query.tradeId
         this.appealId=this.$route.query.appealId
-		this.getProofInfo()
-		this.getBuyList()
-		// this.getSaleList()
+        // this.getSaleList()
+        console.log(this.appealId)
+        if(this.appealId) {
+            this.refreshBuyList()
+            this.proofInfo()
+        } else {
+            this.getProofInfo()
+		    this.getBuyList()
+        }
     }
 }
 </script>

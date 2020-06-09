@@ -77,14 +77,14 @@
 								<span slot-scope="scope">{{scope.row.taker_nick_name}}<br />{{scope.row.taker_phone}}</span>
 							</el-table-column>
 							<el-table-column prop="payment_photo" label="付款凭证" align="center">
-								<template slot-scope="scope"> 
+								<div slot-scope="scope" v-if="scope.row.payment_photo" class="imgBox"> 
 									<el-image 
-										v-if="scope.row.payment_photo"
 										style="width: 40px; height: 40px"
 										:src="scope.row.payment_photo.split(',')[0]" 
 										:preview-src-list="scope.row.payment_photo.split(',')">
 									</el-image>
-								</template>
+									<i>{{scope.row.payment_photo.split(',').length}}</i>
+								</div>
 							</el-table-column>
 							<el-table-column prop="receive_name" label="收款人" align="center"></el-table-column>
 							<el-table-column prop="num" label="收款账号" align="center"></el-table-column>
@@ -537,6 +537,26 @@ export default {
 				flex-direction: column;
 				.paymentImg {
 					height:40px;
+				}
+				.imgBox {
+					position: relative;
+					height: 50px;
+					i {
+						position: absolute;
+						font-style: normal;
+						font-size: 12px;
+						height: 16px;
+						width: 16px;
+						line-height: 16px;
+						background-color: #666;
+						border-radius: 50%;
+						left: 0;
+						top: 0;
+						color: #fff;
+					}
+					.el-image {
+						height: 100%;
+					}
 				}
 			}
 			.el-footer {

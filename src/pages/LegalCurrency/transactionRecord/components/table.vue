@@ -13,14 +13,14 @@
 			<span slot-scope="scope">{{ scope.row.tradeStatus==1?'未付款':scope.row.tradeStatus==2?'待放行':scope.row.tradeStatus==3?'已完成':scope.row.tradeStatus==4?'已取消':scope.row.tradeStatus==5?'申述':'' }}</span>
 		</el-table-column>
 		<el-table-column prop="paymentPhoto" label="交易凭证" width="80" align="center">
-			<template slot-scope="scope">
+			<div slot-scope="scope" class="imgBox" v-if="scope.row.paymentPhoto">
 				<el-image 
-					v-if="scope.row.paymentPhoto"
 					style="height: 50px"
-					:src="scope.row.paymentPhoto.split(',')[0]" 
-					:preview-src-list="scope.row.paymentPhoto.split(',')">
+					:src="scope.row.paymentPhoto ? scope.row.paymentPhoto.split(',')[0] : ''" 
+					:preview-src-list="scope.row.paymentPhoto ? scope.row.paymentPhoto.split(',') : []">
 				</el-image>
-			</template>
+				<i>{{scope.row.paymentPhoto.split(',').length}}</i>
+			</div>
 		</el-table-column>
 		<el-table-column prop="tradeType" label="广告类型" width="80" align="center">
 			<template slot-scope="scope">
@@ -46,4 +46,29 @@ export default {
 	}
 }
 </script>
+<style lang="less" scoped>
+.el-table{
+	margin-top: 10px;
+	.imgBox {
+		position: relative;
+		height: 50px;
+		i {
+			position: absolute;
+			font-style: normal;
+			font-size: 12px;
+			height: 16px;
+			width: 16px;
+			line-height: 16px;
+			background-color: #666;
+			border-radius: 50%;
+			left: 0;
+			top: 0;
+			color: #fff;
+		}
+		.el-image {
+			height: 100%;
+		}
+	}
+}
+</style>
 

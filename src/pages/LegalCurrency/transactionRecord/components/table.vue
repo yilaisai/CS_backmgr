@@ -18,7 +18,7 @@
 					v-if="scope.row.paymentPhoto"
 					style="height: 50px"
 					:src="scope.row.paymentPhoto.split(',')[0]" 
-					:preview-src-list="[scope.row.paymentPhoto].split(',')">
+					:preview-src-list="scope.row.paymentPhoto.split(',')">
 				</el-image>
 			</template>
 		</el-table-column>

@@ -104,8 +104,8 @@
 					</el-form-item>
 					 <el-form-item label="付款图片:" class="special" v-if="detaileData.advType == 6 || detaileData.advType == 3 ">
 						<el-image 
-							:src="detaileData.paymentPhoto"
-							:preview-src-list="[detaileData.paymentPhoto]"
+							:src="detaileData.paymentPhoto.split(',')[0]"
+							:preview-src-list="detaileData.paymentPhoto.split(',')"
 						>
 						</el-image>
 					</el-form-item>

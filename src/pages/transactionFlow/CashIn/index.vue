@@ -64,7 +64,7 @@
 							<template slot-scope="scope"><img :src="'/static/img/paytype/' + scope.row.pay_type + '.svg'" style="vertical-align: sub;width: 18px;" alt=""> {{advTypeMap[scope.row.adv_type]}}<br />{{ $fmtDate(scope.row.create_time,'full') }}</template>
 						</el-table-column>
 						<el-table-column prop="amount" label="订单金额" align="center"></el-table-column>
-						<el-table-column prop="taker_amount" label="数量" align="center"></el-table-column>
+						<el-table-column prop="maker_amount" label="数量" align="center"></el-table-column>
 						<el-table-column prop="taker_price" label="价格" align="center"></el-table-column>
 						<el-table-column prop="fee" label="手续费(USDT)" align="center"></el-table-column>
 						<el-table-column prop="coupling_fee" label="撮合费(USDT)" align="center"></el-table-column>
@@ -128,7 +128,7 @@
 			</div>
 			<el-footer>
 				<div class="statistics">
-					总数量： <span>{{sumInfo.sumTakerAmount}} {{$variableCoin}}</span>
+					总数量： <span>{{sumInfo.sumMakerAmount}} {{$variableCoin}}</span>
 					总金额： <span>{{sumInfo.sumAmount}} CNY</span>
 					已到账手续费： <span>{{sumInfo.sumFee}} {{$variableCoin}}</span>
 				</div>

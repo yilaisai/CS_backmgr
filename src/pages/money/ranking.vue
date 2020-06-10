@@ -14,14 +14,14 @@
 				<el-button type="primary" size="mini" @click="exportExcel">导出EXCEL</el-button>
 			</el-form-item>
 		</el-form>
-		<el-table stripe border height="100%" size="mini" :default-sort = "{prop: 'rmtAmount', order: 'descending'}" :data="listData.list" @sort-change='sortChange'>
+		<el-table stripe border height="100%" size="mini" :default-sort = "{prop: 'usdtAmount', order: 'descending'}" :data="listData.list" @sort-change='sortChange'>
 			<el-table-column align="center" type="index" label="序号" :index="indexMethod"></el-table-column>
 			<el-table-column prop="phone" label="账号" align="center"></el-table-column>
 			<el-table-column prop="nick_name" label="用户编号"  align="center"></el-table-column>
 			<el-table-column prop="nick_name" label="用户类型" align="center">
 				<template slot-scope="scope">{{scope.row.user_type | userTypesFilter}}</template>
 			</el-table-column>
-			<el-table-column prop="rmtAmount" sortable='custom' :label="$variableCoin">
+			<el-table-column prop="usdtAmount" sortable='custom' :label="$variableCoin">
 				<div class="scope" slot-scope="scope">
 					<p>可用:{{ scope.row.usdtAmount }}</p>
 					<p>冻结:{{ scope.row.usdtFrozenAmount }}</p>
@@ -53,7 +53,7 @@
 			</el-table-column>
 		</el-table>
 		<div class="load-more">
-			<p class="total"> <span>{{this.$variableCoin}}：</span> 可用{{rmtAmount}}   冻结{{rmtFrozenAmount}}    <span>BTC：</span> 可用{{btcAmount}}    冻结{{btcFrozenAmount}}      <span>ETH：</span>可用{{ethAmount}}   冻结{{ethFrozenAmount}}    <span>EOS：</span>可用{{eosAmount}}   冻结{{eosFrozenAmount}} </p>
+			<p class="total"> <span>{{this.$variableCoin}}：</span> 可用{{usdtAmount}}   冻结{{usdtFrozenAmount}}    <span>BTC：</span> 可用{{btcAmount}}    冻结{{btcFrozenAmount}}      <span>ETH：</span>可用{{ethAmount}}   冻结{{ethFrozenAmount}}    <span>EOS：</span>可用{{eosAmount}}   冻结{{eosFrozenAmount}} </p>
 			<sac-pagination v-show="listData.list.length > 0"
 				@handleChange="getPaginationChange"
 				:total="+listData.total"
@@ -109,7 +109,7 @@ export default {
 				pageNum: 1,
 				pageSize: 20,
 				account: '',
-				coinName:'RMT',//'BTC'
+				coinName:'USDT',//'BTC'
 				order:'desc',//和asc
 				userType: null
 			},
@@ -119,8 +119,8 @@ export default {
 				list: [],
 			},
 			ExList:[],
-			rmtAmount:0,
-			rmtFrozenAmount:0,
+			usdtAmount:0,
+			usdtFrozenAmount:0,
 			eosAmount:0,
 			eosFrozenAmount:0,
 			btcAmount:0,
@@ -155,7 +155,7 @@ export default {
 			if(a.prop=="btcAmount"){
 				this.filterForm.coinName = 'BTC'
 			}else{
-				this.filterForm.coinName = 'RMT'
+				this.filterForm.coinName = 'USDT'
 			}
 			this.filterForm.pageNum = 1
 			this.getUserRaking()
@@ -207,8 +207,8 @@ export default {
 				this.listData.list = res.result.pageInfo.list
 				this.ExList = res.result.sysList
 				this.listData.total = res.result.pageInfo.total
-				this.rmtAmount=res.result.rmtAmount
-				this.rmtFrozenAmount=res.result.rmtFrozenAmount
+				this.usdtAmount=res.result.usdtAmount
+				this.usdtFrozenAmount=res.result.usdtFrozenAmount
 				this.eosAmount=res.result.eosAmount
 				this.eosFrozenAmount=res.result.eosFrozenAmount
 				this.btcAmount=res.result.btcAmount

@@ -60,12 +60,12 @@
           <span>{{Math.floor(totalFrozenToRMB*100)/100}}</span>
         </el-col>
         <el-col :span="12">
-          <label>累计充币：</label>
-          <span>{{totalRechargeToRMB}}</span>
+          <label>累计充币（USDT）：</label>
+          <span>{{totalRechargeToUSDT}}</span>
         </el-col>
         <el-col :span="12">
-          <label>累计提币（CNY）:</label>
-          <span>{{totalWithdrawToRMB}}</span>
+          <label>累计提币（USDT）:</label>
+          <span>{{totalWithdrawToUSDT}}</span>
         </el-col>
         
       </el-row>
@@ -89,6 +89,8 @@ export default {
         totalRechargeToRMB:'',
         totalToRMB:'',
         totalWithdrawToRMB:'',
+        totalWithdrawToUSDT:'',
+        totalRechargeToUSDT:'',
         dialogVisible:false,
         googleCode:'',
         disabled:false,
@@ -100,12 +102,14 @@ export default {
           userId:userId
         })
         .then((res) => {
-          const { customerInfo, totalFrozenToRMB,totalRechargeToRMB,totalToRMB,totalWithdrawToRMB } = res.result;
+          const { customerInfo, totalFrozenToRMB,totalRechargeToRMB,totalToRMB,totalWithdrawToRMB,totalRechargeToUSDT,totalWithdrawToUSDT } = res.result;
           this.detais = customerInfo
           this.totalFrozenToRMB=totalFrozenToRMB
           this.totalRechargeToRMB=totalRechargeToRMB
           this.totalToRMB=totalToRMB
           this.totalWithdrawToRMB=totalWithdrawToRMB
+          this.totalWithdrawToUSDT = totalWithdrawToUSDT
+          this.totalRechargeToUSDT = totalRechargeToUSDT
         })
       },
       deleteGoogle(){

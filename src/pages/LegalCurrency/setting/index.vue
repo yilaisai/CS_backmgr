@@ -47,7 +47,7 @@
 							<template slot="append" >{{filterForm.coinName}}</template>
 						</el-input>
 					</el-form-item> -->
-					<el-form-item label="宝转卡接入单限制:">
+					<!-- <el-form-item label="宝转卡接入单限制:">
 						每张卡24小时内允许接
 					 	<el-input class="miniInput" v-model="atobLimitNum" placeholder="默认2"></el-input>笔单
 					</el-form-item>
@@ -55,7 +55,7 @@
 						<el-input v-model="atobLimitMin" placeholder="100"><template slot="append" >{{filterForm.coinName}}</template></el-input>
 						～
 						<el-input v-model="atobLimitMax" placeholder="1000"><template slot="append" >{{filterForm.coinName}}</template></el-input>
-					</el-form-item>
+					</el-form-item> -->
 					<el-form-item label=""><el-button type="primary"  @click="UpdateOtcCoinConfig">保存修改</el-button></el-form-item>
 				</el-form>
 		</el-tabs>

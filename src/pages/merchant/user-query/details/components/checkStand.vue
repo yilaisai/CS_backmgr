@@ -25,7 +25,7 @@
 							:min="1"
               @change="changeSetting(5)">
 
-							<el-checkbox v-for="item in payList" :label="item.payType" :key="item.payType">{{item.description}}</el-checkbox>
+							<el-checkbox v-for="item in payList" :label="item.payType" :key="item.payType" >{{item.description}}</el-checkbox>
 						</el-checkbox-group>
 					</el-form-item>
 					<el-form-item label="默认验证方式：" v-if="defaultForm.CHECK_STAND_SWITCH">
@@ -132,8 +132,8 @@
           this.defaultForm.CHECK_STAND_PAY_TYPE.push(Number(element))
         });
         // this.defaultForm.CHECK_STAND_PAY_TYPE = newVal.info.payList.split(',')
-        console.log(newVal)
-        this.payList = newVal.payList
+        this.payList = newVal.payList.slice()
+        this.payList.shift()
       }
       
     }

@@ -103,11 +103,11 @@
 					{{scope.row.bankName}}{{scope.row.bankBranch}}
 				</div>
 			</el-table-column>
-			<el-table-column align="center" label="操作" fixed="right">
+			<el-table-column align="center" label="操作" fixed="right" width="150">
 				<template slot-scope="scope">
 					<!-- <el-button type="text" v-show="scope.row.advType==4||scope.row.advType==5" @click="showIP(scope.row)">查看</el-button> -->
 					<el-button :disabled=" !(scope.row.matchResult == 0 && (scope.row.advType==3||scope.row.advType==6))" size="mini" type="text" @click="open(scope.row)">审核</el-button>
-					<!-- <el-button :disabled="scope.row.matchResult != 1" size="mini" type="text" @click="close(scope.row)">取消订单</el-button> -->
+					<el-button :disabled="scope.row.matchResult != 1" size="mini" type="text" @click="close(scope.row)">取消订单</el-button>
 				</template>
 			</el-table-column>
 		</el-table>

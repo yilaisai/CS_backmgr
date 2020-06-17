@@ -90,6 +90,12 @@
 						</el-input>
 						<el-input v-else value="--" disabled></el-input>
 					</el-form-item>
+					<el-form-item label="撮合费:">
+						<el-input
+							:value=" detaileData.couplingFee"
+							disabled>
+						</el-input>
+					</el-form-item>
 				</el-form>
 				<h3>收款信息</h3>
 				<el-form :inline="true" :model="detaileData" class="demo-form-inline" size="small">

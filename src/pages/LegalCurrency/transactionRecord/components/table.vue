@@ -51,6 +51,7 @@ export default {
 	margin-top: 10px;
 	.imgBox {
 		position: relative;
+		width:50px;
 		height: 50px;
 		i {
 			position: absolute;

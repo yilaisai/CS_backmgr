@@ -79,7 +79,7 @@
 							<el-table-column prop="payment_photo" label="付款凭证" align="center">
 								<div slot-scope="scope" v-if="scope.row.payment_photo" class="imgBox"> 
 									<el-image 
-										style="width: 40px; height: 40px"
+										style="width: 50px; height: 50px"
 										:src="scope.row.payment_photo.split(',')[0]" 
 										:preview-src-list="scope.row.payment_photo.split(',')">
 									</el-image>
@@ -93,7 +93,7 @@
 								<div slot-scope="scope" class="imgBox" v-else>
 									<el-image 
 										v-if="scope.row.qrcode"
-										style="width: 40px; height: 40px"
+										style="height: 40px"
 										:src="scope.row.qrcode.split(',')[0]" 
 										:preview-src-list="scope.row.qrcode.split(',')">
 									</el-image>
@@ -541,6 +541,7 @@ export default {
 				}
 				.imgBox {
 					position: relative;
+					width:50px;
 					height: 50px;
 					i {
 						position: absolute;

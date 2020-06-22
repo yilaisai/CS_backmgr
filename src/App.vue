@@ -23,7 +23,9 @@ export default {
   },
   methods: {
 	  musicPlay() {
-		  this.$refs.music.play()
+		  if(localStorage.getItem('MUSIC_SWITCH') == 'open') {
+			  this.$refs.music.play()
+		  }
 	  }
   },
   computed: {

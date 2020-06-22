@@ -1,9 +1,3 @@
-/**
-*  Created by   阿紫
-*  On  2018/8/8
-*  Content
-*/
-
 <template>
   <div class="sac-main">
     <el-container style="height: calc(100vh);">
@@ -11,6 +5,9 @@
       <el-container>
         <el-header>
           <ul class="sac-header__right">
+			<li @click="musicSwitch">
+				<a class="music-switch" :class="{'off' : !musicIsOpen}" href="javascript:;"></a>
+			</li>
             <li>
               <img class="sac-header__img" src="@/assets/head.png" alt="">
               {{userName}}，{{roleName}}
@@ -103,16 +100,17 @@ export default {
 				checkPass: '',
 			},
 			rules: {
-			oldPwd: [
-				{ validator: checkOldPwd, trigger: 'blur' }
-			],
-			pwd: [
-				{ validator: validatePass, trigger: 'blur' }
-			],
-			checkPass: [
-				{ validator: checkPass, trigger: 'blur' }
-			]
+				oldPwd: [
+					{ validator: checkOldPwd, trigger: 'blur' }
+				],
+				pwd: [
+					{ validator: validatePass, trigger: 'blur' }
+				],
+				checkPass: [
+					{ validator: checkPass, trigger: 'blur' }
+				]
 			},
+			musicIsOpen: true
 		};
 	},
 	methods: {
@@ -156,10 +154,16 @@ export default {
 			}
 			});
 		},
+		musicSwitch() {
+			this.musicIsOpen = !this.musicIsOpen
+			localStorage.setItem('MUSIC_SWITCH', this.musicIsOpen ? 'open' : 'close')
+		}
 	},
 	mounted() {
 		this.userName = localStorage.getItem('wallet_username');
 		this.roleName = localStorage.getItem('wallet_roleName') || '暂无角色';
+		let musicIsOpen = localStorage.getItem('MUSIC_SWITCH') || 'open'
+		this.musicIsOpen = musicIsOpen == 'open' ? true : false
 	},
 	computed: {
 		...mapState(['tagsList'])
@@ -182,7 +186,19 @@ export default {
         height: 50px;
         line-height: 50px;
         font-size: 14px;
-        padding: 0 20px;
+		padding: 0 20px;
+		.music-switch {
+			display: inline-block;
+			width: 30px;
+			height: 30px;
+			background: url(../../../static/img/music_on.png) no-repeat center;
+			background-size: 100% 100%;
+			margin-top: 10px;
+			&.off {
+				background: url(../../../static/img/music_off.png) no-repeat center;
+				background-size: 100% 100%;
+			}
+		}
       }
       li:not(.sac-header__logout):after {
         content: '';

@@ -200,9 +200,9 @@
         </li>
       </ul>
     </div>
-	<div class="message-box" v-show="appealIng + withdrawIng + bindInfoIng + outIng + merchantApplyIng + auditIng + auditPersonIng + payedCount > 0">
+	<div class="message-box" v-show="appealIng + withdrawIng + bindInfoIng + outIng + merchantApplyIng + auditIng + auditPersonIng + payedCount + appealOverIng > 0">
 		<div class="topbar" @click="messageBoxShow = !messageBoxShow">
-			<span class="blink" v-show="!messageBoxShow">有{{appealIng + withdrawIng + bindInfoIng + outIng + merchantApplyIng + auditIng + auditPersonIng}}条新的待处理事项，点击展开</span>
+			<span class="blink" v-show="!messageBoxShow">有{{appealIng + withdrawIng + bindInfoIng + outIng + merchantApplyIng + auditIng + auditPersonIng + appealOverIng }}条新的待处理事项，点击展开</span>
 			<span v-show="messageBoxShow"><img src="../../../static/img/logo_white.png" alt=""></span>
 			<el-button v-show="messageBoxShow" size="mini" @click="noRemind">不再提醒</el-button>
 			<i :class="{'down' : messageBoxShow}"></i>
@@ -212,13 +212,17 @@
 				<span>{{appealIng}}条申诉待处理</span>
 				<!-- <i>5分钟前</i> -->
 			</li>
+      <li @click="$router.push('/LegalCurrency/complaint')" v-show="appealOverIng > 0">
+				<span>{{appealOverIng}}条超时申诉待处理</span>
+				<!-- <i>5分钟前</i> -->
+			</li>
 			<li @click="$router.push('/money/withdraw-check')" v-show="withdrawIng > 0"><span>{{withdrawIng}}条提币审核待处理</span></li>
 			<li @click="$router.push('/LegalCurrency/paymentMethodVerify')" v-show="bindInfoIng > 0"><span>{{bindInfoIng}}条收款方式审核待处理</span></li>
 			<li @click="$router.push({path:'/merchant/cashOutVerify',query: { status: '1' }})" v-show="outIng > 0"><span>{{outIng}}条兑出审核待处理</span></li>
 			<li @click="$router.push({path:'/merchant/merchantList',query:{status:'0'}})" v-show="merchantApplyIng > 0"><span>{{merchantApplyIng}}条商户注册审核待处理</span></li>
 			<li @click="$router.push('/LegalCurrency/advertisersVerify')" v-show="auditIng > 0"><span>{{auditIng}}条广告商审核待处理</span></li>
 			<li @click="$router.push({path:'/user/identityVerify',query:{status:'1'}})" v-show="auditPersonIng > 0"><span>{{auditPersonIng}}条实名审核待处理</span></li>
-			<li @click="$router.push({path:'/transactionFlow/CashIn',query:{status:'1'}})" v-show="payedCount > 0"><span>{{payedCount}}条订单已完成付款</span></li>
+			<li @click="$router.push({path:'/transactionFlow/CashIn',query:{status:'1'}})" v-show="payedCount > 0"><span>{{payedCount}}条5分钟未放行订单</span></li>
 		</ul>
 	</div>
   </div>
@@ -237,6 +241,7 @@
         bindInfoIng:0,
         outIng:0,
         withdrawIng:0,
+        appealOverIng:0,
         auditPersonIng:0,
         merchantApplyIng:0,
         payIngOrder:0,
@@ -269,6 +274,7 @@
 			this.bindInfoIng = result.bindInfoIng
 			this.outIng = result.outIng
 			this.withdrawIng = result.withdrawIng
+      this.appealOverIng = result.appealOverIng
 			this.auditPersonIng = result.auditPersonIng
 			this.merchantApplyIng = result.merchantApplyIng
 			this.payIngOrder = result.payIngOrder
@@ -347,7 +353,7 @@
 					this.withdrawIng = result.withdrawIng
 					this.auditPersonIng = result.auditPersonIng
 					this.merchantApplyIng = result.merchantApplyIng
-					if(this.appealIng > 0 || this.auditIng > 0 || this.bindInfoIng > 0 || this.outIng > 0 || this.withdrawIng > 0 || this.auditPersonIng > 0 || this.merchantApplyIng > 0) {
+					if(this.appealIng > 0 || this.auditIng > 0 || this.bindInfoIng > 0 || this.outIng > 0 || this.withdrawIng > 0 || this.auditPersonIng > 0 || this.merchantApplyIng > 0 || this.appealOverIng > 0) {
 						this.$emit('musicPlay')
 					}else if(this.payedCount < result.payedCount) {
 						this.$emit('musicPlay')

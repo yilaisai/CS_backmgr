@@ -112,6 +112,7 @@
 						<el-image 
 							:src="detaileData.paymentPhoto.split(',')[0]"
 							:preview-src-list="detaileData.paymentPhoto.split(',')"
+							v-if="detaileData.paymentPhoto"
 						>
 						</el-image>
 					</el-form-item>
@@ -207,7 +208,6 @@ export default {
 				pageSize:1000
 			}).then(res=>{
 				this.detaile = res.result.list
-				console.log(this.detaile)
 			})
 		},
 		getData(tradeId){

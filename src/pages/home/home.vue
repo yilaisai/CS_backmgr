@@ -293,7 +293,6 @@
 			this.inFrozen = result.inFrozen
 			this.outFrozen = result.outFrozen
 			this.withdrawFrozen = result.withdrawFrozen
-			this.payedCount = result.payedCount
 			let data1 = [{value:this.payIngOrder,name:"未付款"},{value:this.payedOrder,name:"已付款"}]
 			let data2 = [{value:this.cancelOrder,name:"已取消"},{value:this.finishOrder,name:"已完成"}]
 			this.intCanvas(data1,data2)

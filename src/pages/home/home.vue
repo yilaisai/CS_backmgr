@@ -222,7 +222,7 @@
 			<li @click="$router.push({path:'/merchant/merchantList',query:{status:'0'}})" v-show="merchantApplyIng > 0"><span>{{merchantApplyIng}}条商户注册审核待处理</span></li>
 			<li @click="$router.push('/LegalCurrency/advertisersVerify')" v-show="auditIng > 0"><span>{{auditIng}}条广告商审核待处理</span></li>
 			<li @click="$router.push({path:'/user/identityVerify',query:{status:'1'}})" v-show="auditPersonIng > 0"><span>{{auditPersonIng}}条实名审核待处理</span></li>
-			<li @click="$router.push({path:'/transactionFlow/CashIn',query:{status:'1'}})" v-show="payedCount > 0"><span>{{payedCount}}条5分钟未放行订单</span></li>
+			<li @click="$router.push({path:'/transactionFlow/CashIn',query:{status:'1'}})" v-show="payedCount > 0"><span>{{payedCount}}条15分钟未放行订单</span></li>
 		</ul>
 	</div>
   </div>

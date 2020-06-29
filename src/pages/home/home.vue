@@ -72,7 +72,7 @@
               </div>
               <div class="pay-right">
                 <span>已付款：</span>
-                <b>{{payedOrder}}</b>
+                <b>{{payedCount}}</b>
               </div>
             </div>
           </div>
@@ -200,29 +200,30 @@
         </li>
       </ul>
     </div>
-	<div class="message-box" v-show="appealIng + withdrawIng + bindInfoIng + outIng + merchantApplyIng + auditIng + auditPersonIng + payedCount + appealOverIng > 0">
+	<div class="message-box" v-show="appealIngRemind + withdrawIngRemind + bindInfoIngRemind + outIngRemind + merchantApplyIngRemind + auditIngRemind + auditPersonIngRemind + payedOrderIn + payedOrderOut + appealOverIng > 0">
 		<div class="topbar" @click="messageBoxShow = !messageBoxShow">
-			<span class="blink" v-show="!messageBoxShow">有{{appealIng + withdrawIng + bindInfoIng + outIng + merchantApplyIng + auditIng + auditPersonIng + appealOverIng }}条新的待处理事项，点击展开</span>
+			<span class="blink" v-show="!messageBoxShow">有{{appealIngRemind + withdrawIngRemind + bindInfoIngRemind + outIngRemind + merchantApplyIngRemind + auditIngRemind + auditPersonIngRemind + appealOverIng }}条新的待处理事项，点击展开</span>
 			<span v-show="messageBoxShow"><img src="../../../static/img/logo_white.png" alt=""></span>
 			<el-button v-show="messageBoxShow" size="mini" @click="noRemind">不再提醒</el-button>
 			<i :class="{'down' : messageBoxShow}"></i>
 		</div>
 		<ul v-show="messageBoxShow">
-			<li @click="$router.push('/LegalCurrency/complaint')" v-show="appealIng > 0">
-				<span>{{appealIng}}条申诉待处理</span>
+			<li @click="$router.push('/LegalCurrency/complaint')" v-show="appealIngRemind > 0">
+				<span>{{appealIngRemind}}条申诉待处理</span>
 				<!-- <i>5分钟前</i> -->
 			</li>
       <li @click="$router.push('/LegalCurrency/complaint')" v-show="appealOverIng > 0">
 				<span>{{appealOverIng}}条超时申诉待处理</span>
 				<!-- <i>5分钟前</i> -->
 			</li>
-			<li @click="$router.push('/money/withdraw-check')" v-show="withdrawIng > 0"><span>{{withdrawIng}}条提币审核待处理</span></li>
-			<li @click="$router.push('/LegalCurrency/paymentMethodVerify')" v-show="bindInfoIng > 0"><span>{{bindInfoIng}}条收款方式审核待处理</span></li>
-			<li @click="$router.push({path:'/merchant/cashOutVerify',query: { status: '1' }})" v-show="outIng > 0"><span>{{outIng}}条兑出审核待处理</span></li>
-			<li @click="$router.push({path:'/merchant/merchantList',query:{status:'0'}})" v-show="merchantApplyIng > 0"><span>{{merchantApplyIng}}条商户注册审核待处理</span></li>
-			<li @click="$router.push('/LegalCurrency/advertisersVerify')" v-show="auditIng > 0"><span>{{auditIng}}条广告商审核待处理</span></li>
-			<li @click="$router.push({path:'/user/identityVerify',query:{status:'1'}})" v-show="auditPersonIng > 0"><span>{{auditPersonIng}}条实名审核待处理</span></li>
-			<li @click="$router.push({path:'/transactionFlow/CashIn',query:{status:'1'}})" v-show="payedCount > 0"><span>{{payedCount}}条15分钟未放行订单</span></li>
+			<li @click="$router.push('/money/withdraw-check')" v-show="withdrawIngRemind > 0"><span>{{withdrawIngRemind}}条提币审核待处理</span></li>
+			<li @click="$router.push('/LegalCurrency/paymentMethodVerify')" v-show="bindInfoIngRemind > 0"><span>{{bindInfoIngRemind}}条收款方式审核待处理</span></li>
+			<li @click="$router.push({path:'/merchant/cashOutVerify',query: { status: '1' }})" v-show="outIngRemind > 0"><span>{{outIngRemind}}条兑出审核待处理</span></li>
+			<li @click="$router.push({path:'/merchant/merchantList',query:{status:'0'}})" v-show="merchantApplyIngRemind > 0"><span>{{merchantApplyIngRemind}}条商户注册审核待处理</span></li>
+			<li @click="$router.push('/LegalCurrency/advertisersVerify')" v-show="auditIngRemind > 0"><span>{{auditIngRemind}}条广告商审核待处理</span></li>
+			<li @click="$router.push({path:'/user/identityVerify',query:{status:'1'}})" v-show="auditPersonIngRemind > 0"><span>{{auditPersonIngRemind}}条实名审核待处理</span></li>
+			<li @click="$router.push({path:'/transactionFlow/CashIn',query:{status:'1'}})" v-show="payedOrderIn > 0"><span>{{payedOrderIn}}条15分钟兑入未确认</span></li>
+      <li @click="$router.push({path:'/transactionFlow/CashOut',query:{status:'1'}})" v-show="payedOrderOut > 0"><span>{{payedOrderOut}}条15分钟兑出未确认</span></li>
 		</ul>
 	</div>
   </div>
@@ -245,7 +246,7 @@
         auditPersonIng:0,
         merchantApplyIng:0,
         payIngOrder:0,
-        payedOrder:0,
+        payedCount:0,
         finishOrder:0,
         cancelOrder:0,
         sumInToday:0,
@@ -258,126 +259,147 @@
         yesterdayRechargeAmount:0,
         inFrozen:0,
         outFrozen:0,
-		withdrawFrozen:0,
-		payedCount: 0,
-		messageBoxShow: false,
-		timer: null
+        withdrawFrozen:0,
+        payedCount: 0,
+        messageBoxShow: false,
+        timer: null,
+        appealIngRemind:0,
+        auditIngRemind:0,
+        bindInfoIngRemind:0,
+        outIngRemind:0,
+        withdrawIngRemind:0,
+        auditPersonIngRemind:0,
+        merchantApplyIngRemind:0,
+        payedOrderIn:0,
+        payedOrderOut:0,
+        remindTimes:0,        //提醒的次数
       };
     },
     methods: {
-		getData() {
-			const startDate = localStorage.getItem('NO_REMIND_TIME') || ''
-			this.$http.post('/wallet/backmgr/indexInfo', {startDate}).then(res => {
-			let result = res.result;
-			this.appealIng = result.appealIng
-			this.auditIng = result.auditIng
-			this.bindInfoIng = result.bindInfoIng
-			this.outIng = result.outIng
-			this.withdrawIng = result.withdrawIng
-      this.appealOverIng = result.appealOverIng
-			this.auditPersonIng = result.auditPersonIng
-			this.merchantApplyIng = result.merchantApplyIng
-			this.payIngOrder = result.payIngOrder
-			this.payedOrder = result.payedOrder
-			this.finishOrder = result.finishOrder
-			this.cancelOrder = result.cancelOrder
-			this.sumInToday = result.sumInToday
-			this.sumInYesterday = result.sumInYesterday
-			this.sumOutToday = result.sumOutToday
-			this.sumOutYesterday = result.sumOutYesterday
-			this.sumInYesterday =result.sumInYesterday
-			this.todayWithdrawAmount = result.todayWithdrawAmount || 0
-			this.yesterdayWithdrawAmount = result.yesterdayWithdrawAmount || 0
-			this.todayRechargeAmount = result.todayRechargeAmount || 0
-			this.yesterdayRechargeAmount = result.yesterdayRechargeAmount || 0
-			this.inFrozen = result.inFrozen
-			this.outFrozen = result.outFrozen
-			this.withdrawFrozen = result.withdrawFrozen
-			let data1 = [{value:this.payIngOrder,name:"未付款"},{value:this.payedOrder,name:"已付款"}]
-			let data2 = [{value:this.cancelOrder,name:"已取消"},{value:this.finishOrder,name:"已完成"}]
-			this.intCanvas(data1,data2)
-			})
-		},
-		intCanvas(data1,data2) {
-			let color = ['#FDBF5E','#0081FF']
-			this.drawLine('echart1',data1,color)
-			this.drawLine('echart2',data2,color)
-		},
-		drawLine(id, data, color) {
-			var myChart = echarts.init(document.getElementById(id));
-			let option = {
-			tooltip: {
-				trigger: 'item',
-				formatter: '{b}<br/>{c} ({d}%)'
-			},
-			series: [
-				{
-				name: '',
-				type: 'pie',
-				radius: ['0', '100%'],
-				hoverAnimation:false,
-				label: {
-					normal:{
-					position:'inner',
-					fontSize:'12',
-					},
-					emphasis: {
-					textStyle: {
-						fontSize: '14',
-						fontWeight: 'bold'
-					}
-					}
-				},
-				labelLine: {
-					normal: {
-					show: false
-					}
-				},
-				data: data,
-				color:color
-				}
-			],
-			}
-			myChart.setOption(option)
-		},
-		getNewsList() {
-			clearTimeout(this.timer)
-			const startDate = localStorage.getItem('NO_REMIND_TIME') || ''
-			this.$http.post('/wallet/backmgr/indexInfo', {type: 1, noLoading: true, startDate}).then(res => {
-					let result = res.result;
-					this.appealIng = result.appealIng
-					this.auditIng = result.auditIng
-					this.bindInfoIng = result.bindInfoIng
-					this.outIng = result.outIng
-					this.withdrawIng = result.withdrawIng
-					this.auditPersonIng = result.auditPersonIng
-					this.merchantApplyIng = result.merchantApplyIng
-					if(this.appealIng > 0 || this.auditIng > 0 || this.bindInfoIng > 0 || this.outIng > 0 || this.withdrawIng > 0 || this.auditPersonIng > 0 || this.merchantApplyIng > 0 || this.appealOverIng > 0) {
-						this.$emit('musicPlay')
-					}else if(this.payedCount < result.payedCount) {
-						this.$emit('musicPlay')
-					}
-					this.payedCount = result.payedCount
-					this.timer = setTimeout(() => {
-						this.getNewsList()
-					}, 60000)
-			}).catch(err => {
-				this.timer = setTimeout(() => {
-					this.getNewsList()
-				}, 60000)
-			})
-		},
-		// 不再提醒
-		noRemind() {
-			localStorage.setItem('NO_REMIND_TIME', dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss'))
-			this.getNewsList()
-		}
+      getData() {
+        const startDate = localStorage.getItem('NO_REMIND_TIME') || ''
+        this.$http.post('/wallet/backmgr/indexInfo').then(res => {
+        let result = res.result;
+        this.appealIng = result.appealIng
+        this.auditIng = result.auditIng
+        this.bindInfoIng = result.bindInfoIng
+        this.outIng = result.outIng
+        this.withdrawIng = result.withdrawIng
+        this.auditPersonIng = result.auditPersonIng
+        this.merchantApplyIng = result.merchantApplyIng
+        this.payIngOrder = result.payIngOrder
+        this.payedCount = result.payedCount
+        this.finishOrder = result.finishOrder
+        this.cancelOrder = result.cancelOrder
+        this.sumInToday = result.sumInToday
+        this.sumInYesterday = result.sumInYesterday
+        this.sumOutToday = result.sumOutToday
+        this.sumOutYesterday = result.sumOutYesterday
+        this.sumInYesterday =result.sumInYesterday
+        this.todayWithdrawAmount = result.todayWithdrawAmount || 0
+        this.yesterdayWithdrawAmount = result.yesterdayWithdrawAmount || 0
+        this.todayRechargeAmount = result.todayRechargeAmount || 0
+        this.yesterdayRechargeAmount = result.yesterdayRechargeAmount || 0
+        this.inFrozen = result.inFrozen
+        this.outFrozen = result.outFrozen
+        this.withdrawFrozen = result.withdrawFrozen
+        let data1 = [{value:this.payIngOrder,name:"未付款"},{value:this.payedCount,name:"已付款"}]
+        let data2 = [{value:this.cancelOrder,name:"已取消"},{value:this.finishOrder,name:"已完成"}]
+        this.intCanvas(data1,data2)
+        })
+      },
+      intCanvas(data1,data2) {
+        let color = ['#FDBF5E','#0081FF']
+        this.drawLine('echart1',data1,color)
+        this.drawLine('echart2',data2,color)
+      },
+      drawLine(id, data, color) {
+        var myChart = echarts.init(document.getElementById(id));
+        let option = {
+        tooltip: {
+          trigger: 'item',
+          formatter: '{b}<br/>{c} ({d}%)'
+        },
+        series: [
+          {
+          name: '',
+          type: 'pie',
+          radius: ['0', '100%'],
+          hoverAnimation:false,
+          label: {
+            normal:{
+            position:'inner',
+            fontSize:'12',
+            },
+            emphasis: {
+            textStyle: {
+              fontSize: '14',
+              fontWeight: 'bold'
+            }
+            }
+          },
+          labelLine: {
+            normal: {
+            show: false
+            }
+          },
+          data: data,
+          color:color
+          }
+        ],
+        }
+        myChart.setOption(option)
+      },
+      getNewsList() {
+        clearTimeout(this.timer)
+        const startDate = localStorage.getItem('NO_REMIND_TIME') || ''
+        this.$http.post('/wallet/backmgr/indexInfo', {type: 1, noLoading: true, startDate}).then(res => {
+            let result = res.result;
+            this.appealIngRemind = result.appealIng
+            this.auditIngRemind = result.auditIng
+            this.bindInfoIngRemind = result.bindInfoIng
+            this.outIngRemind = result.outIng
+            this.withdrawIngRemind = result.withdrawIng
+            this.auditPersonIngRemind = result.auditPersonIng
+            this.merchantApplyIngRemind = result.merchantApplyIng
+            this.appealOverIng = result.appealOverIng
+            if(this.appealIngRemind > 0 || this.auditIngRemind > 0 || this.bindInfoIngRemind > 0 || this.outIngRemind > 0 || this.withdrawIngRemind > 0 || this.auditPersonIngRemind > 0 || this.merchantApplyIngRemind > 0 || this.appealOverIng > 0) {
+              this.$emit('musicPlay')
+            }else if(this.payedOrderIn < result.payedOrderIn || this.payedOrderOut < result.payedOrderOut) {
+              this.$emit('musicPlay')
+            }
+            this.payedOrderIn = result.payedOrderIn
+            this.payedOrderOut = result.payedOrderOut
+            this.timer = setTimeout(() => {
+              this.getNewsList()
+              this.remindTimes++
+              if (this.remindTimes > 480) {
+                clearTimeout(this.timer)
+              }
+            }, 60000)
+        }).catch(err => {
+          this.timer = setTimeout(() => {
+            this.getNewsList()
+            this.remindTimes++
+            if (this.remindTimes > 480) {
+              clearTimeout(this.timer)
+            }
+          }, 60000)
+        })
+      },
+      // 不再提醒
+      noRemind() {
+        localStorage.setItem('NO_REMIND_TIME', dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss'))
+        this.getNewsList()
+      }
     },
   	activated() {
-		this.getData()
-		// this.$emit('musicPlay')
-		this.getNewsList()
-		
+      if (this.timer) clearTimeout(this.timer)
+      this.remindTimes = 0
+      this.getData()
+      // this.$emit('musicPlay')
+      this.getNewsList()
+      
     },
   };
 </script>

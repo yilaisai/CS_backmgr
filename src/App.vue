@@ -24,7 +24,9 @@ export default {
   methods: {
 	  musicPlay() {
 		  if(localStorage.getItem('MUSIC_SWITCH') == 'open') {
-			  this.$refs.music.play()
+        this.$nextTick(()=>{
+          this.$refs.music.play()
+        })
 		  }
 	  }
   },

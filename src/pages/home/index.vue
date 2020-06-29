@@ -5,9 +5,9 @@
       <el-container>
         <el-header>
           <ul class="sac-header__right">
-			<li @click="musicSwitch">
-				<a class="music-switch" :class="{'off' : !musicIsOpen}" href="javascript:;"></a>
-			</li>
+            <li @click="musicSwitch">
+              <a class="music-switch" :class="{'off' : !musicIsOpen}" href="javascript:;"></a>
+            </li>
             <li>
               <img class="sac-header__img" src="@/assets/head.png" alt="">
               {{userName}}，{{roleName}}
@@ -162,8 +162,9 @@ export default {
 	mounted() {
 		this.userName = localStorage.getItem('wallet_username');
 		this.roleName = localStorage.getItem('wallet_roleName') || '暂无角色';
-		let musicIsOpen = localStorage.getItem('MUSIC_SWITCH') || 'open'
-		this.musicIsOpen = musicIsOpen == 'open' ? true : false
+    let musicIsOpen = localStorage.getItem('MUSIC_SWITCH') || 'open'
+    this.musicIsOpen = musicIsOpen == 'open' ? true : false
+    localStorage.setItem('MUSIC_SWITCH', this.musicIsOpen ? 'open' : 'close')
 	},
 	computed: {
 		...mapState(['tagsList'])

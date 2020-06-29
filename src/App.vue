@@ -23,10 +23,9 @@ export default {
   },
   methods: {
 	  musicPlay() {
+      let This = this
 		  if(localStorage.getItem('MUSIC_SWITCH') == 'open') {
-        this.$nextTick(()=>{
-          this.$refs.music.play()
-        })
+        this.$refs.music.play()
 		  }
 	  }
   },

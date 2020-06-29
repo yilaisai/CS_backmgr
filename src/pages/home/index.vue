@@ -43,7 +43,32 @@
         <el-button type="primary" @click="submitFormPwd" size="small">确 定</el-button>
       </div>
     </el-dialog>
-
+    <div class="message-box" v-show="appealIngRemind + withdrawIngRemind + bindInfoIngRemind + outIngRemind + merchantApplyIngRemind + auditIngRemind + auditPersonIngRemind + payedOrderIn + payedOrderOut + appealOverIng > 0">
+      <div :class="['topbar',{'down' : !messageBoxShow}]" @click="messageBoxShow = !messageBoxShow">
+        <span class="blink" v-show="!messageBoxShow">有{{appealIngRemind + withdrawIngRemind + bindInfoIngRemind + outIngRemind + merchantApplyIngRemind + auditIngRemind + auditPersonIngRemind + appealOverIng }}条新的待处理事项，点击展开</span>
+        <span v-show="messageBoxShow"><img src="../../../static/img/logo_white.png" alt=""></span>
+        <el-button v-show="messageBoxShow" size="mini" @click="noRemind">不再提醒</el-button>
+        <i :class="{'down' : messageBoxShow}"></i>
+      </div>
+      <ul v-show="messageBoxShow">
+        <li @click="$router.push('/LegalCurrency/complaint')" v-show="appealIngRemind > 0">
+          <span>{{appealIngRemind}}条申诉待处理</span>
+          <!-- <i>5分钟前</i> -->
+        </li>
+        <li @click="$router.push('/LegalCurrency/complaint')" v-show="appealOverIng > 0">
+          <span>{{appealOverIng}}条超时申诉待处理</span>
+          <!-- <i>5分钟前</i> -->
+        </li>
+        <li @click="$router.push('/money/withdraw-check')" v-show="withdrawIngRemind > 0"><span>{{withdrawIngRemind}}条提币审核待处理</span></li>
+        <li @click="$router.push('/LegalCurrency/paymentMethodVerify')" v-show="bindInfoIngRemind > 0"><span>{{bindInfoIngRemind}}条收款方式审核待处理</span></li>
+        <li @click="$router.push({path:'/merchant/cashOutVerify',query: { status: '1' }})" v-show="outIngRemind > 0"><span>{{outIngRemind}}条兑出审核待处理</span></li>
+        <li @click="$router.push({path:'/merchant/merchantList',query:{status:'0'}})" v-show="merchantApplyIngRemind > 0"><span>{{merchantApplyIngRemind}}条商户注册审核待处理</span></li>
+        <li @click="$router.push('/LegalCurrency/advertisersVerify')" v-show="auditIngRemind > 0"><span>{{auditIngRemind}}条广告商审核待处理</span></li>
+        <li @click="$router.push({path:'/user/identityVerify',query:{status:'1'}})" v-show="auditPersonIngRemind > 0"><span>{{auditPersonIngRemind}}条实名审核待处理</span></li>
+        <li @click="$router.push({path:'/transactionFlow/CashIn',query:{status:'1'}})" v-show="payedOrderIn > 0"><span>{{payedOrderIn}}条15分钟兑入未确认</span></li>
+        <li @click="$router.push({path:'/transactionFlow/CashOut',query:{status:'1'}})" v-show="payedOrderOut > 0"><span>{{payedOrderOut}}条15分钟兑出未确认</span></li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -52,6 +77,7 @@ import SacAside from '@/components/sac-aside';
 import Tags from '@/components/Tags';
 import Md5 from '../../../static/js/md5';
 import {mapState} from 'vuex'
+import { dateFormat } from '@/common/util';
 export default {
 	name: 'homeIndex',
 	components: {
@@ -110,7 +136,21 @@ export default {
 					{ validator: checkPass, trigger: 'blur' }
 				]
 			},
-			musicIsOpen: true
+      musicIsOpen: false,
+      timer:null,
+      messageBoxShow:false,
+      appealIngRemind:0,
+      appealOverIng:0,
+      auditIngRemind:0,
+      bindInfoIngRemind:0,
+      outIngRemind:0,
+      withdrawIngRemind:0,
+      auditPersonIngRemind:0,
+      merchantApplyIngRemind:0,
+      payedOrderIn:0,
+      payedOrderOut:0,
+      remindTimes:0,        //提醒的次数
+      appealOverNumber:0,   //点击不再提醒时的超时待申诉数量
 		};
 	},
 	methods: {
@@ -121,7 +161,7 @@ export default {
 				localStorage.removeItem('wallet_menuUrls');
 				localStorage.removeItem('menuDefaultActive');
 				localStorage.removeItem('wallet_token');
-				localStorage.removeItem('wallet_username');
+        localStorage.removeItem('wallet_username');
 				this.$router.push('login');
 			});
 		},
@@ -157,18 +197,74 @@ export default {
 		musicSwitch() {
 			this.musicIsOpen = !this.musicIsOpen
 			localStorage.setItem('MUSIC_SWITCH', this.musicIsOpen ? 'open' : 'close')
-		}
+    },
+    getNewsList() {
+      clearTimeout(this.timer)
+      const startDate = localStorage.getItem('NO_REMIND_TIME') || ''
+      this.$http.post('/wallet/backmgr/indexInfo', {type: 1, noLoading: true, startDate}).then(res => {
+          let result = res.result;
+          this.appealIngRemind = result.appealIng
+          this.auditIngRemind = result.auditIng
+          this.bindInfoIngRemind = result.bindInfoIng
+          this.outIngRemind = result.outIng
+          this.withdrawIngRemind = result.withdrawIng
+          this.auditPersonIngRemind = result.auditPersonIng
+          this.merchantApplyIngRemind = result.merchantApplyIng
+          if(this.appealIngRemind > 0 || this.auditIngRemind > 0 || this.bindInfoIngRemind > 0 || this.outIngRemind > 0 || this.withdrawIngRemind > 0 || this.auditPersonIngRemind > 0 || this.merchantApplyIngRemind > 0 ) {
+            this.$emit('musicPlay')
+          }else if(this.payedOrderIn < result.payedOrderIn || this.payedOrderOut < result.payedOrderOut || this.appealOverNumber < result.appealOverIng) {
+            this.$emit('musicPlay')
+          }
+          this.payedOrderIn = result.payedOrderIn
+          this.payedOrderOut = result.payedOrderOut
+          this.appealOverIng = result.appealOverIng
+          this.timer = setTimeout(() => {
+            this.getNewsList()
+            this.remindTimes++
+          }, 60000)
+          let This = this
+          if (this.remindTimes > 480 || !localStorage.getItem('wallet_token')) {
+              clearTimeout(This.timer)
+          }
+      }).catch(err => {
+        this.timer = setTimeout(() => {
+          this.getNewsList()
+          this.remindTimes++
+        }, 60000)
+        let This = this
+        if (this.remindTimes > 480 || !localStorage.getItem('wallet_token')) {
+            clearTimeout(This.timer)
+        }
+      })
+    },
+    // 不再提醒
+    noRemind() {
+      localStorage.setItem('NO_REMIND_TIME', dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss'))
+      this.appealOverNumber = this.appealOverIng
+      this.getNewsList()
+    }
 	},
 	mounted() {
 		this.userName = localStorage.getItem('wallet_username');
 		this.roleName = localStorage.getItem('wallet_roleName') || '暂无角色';
-    let musicIsOpen = localStorage.getItem('MUSIC_SWITCH') || 'open'
-    this.musicIsOpen = musicIsOpen == 'open' ? true : false
-    localStorage.setItem('MUSIC_SWITCH', this.musicIsOpen ? 'open' : 'close')
-	},
+    // let musicIsOpen = localStorage.getItem('MUSIC_SWITCH') || 'close'
+    // this.musicIsOpen = musicIsOpen == 'open' ? true : false
+    localStorage.setItem('MUSIC_SWITCH','close')
+    if (localStorage.getItem('wallet_token')) {
+      this.getNewsList()
+    }
+  },
+  activated(){
+    if (this.timer) clearTimeout(this.timer)
+  },
 	computed: {
 		...mapState(['tagsList'])
-	},
+  },
+  watch:{
+    $route(to,from){
+      this.remindTimes = 0
+    }
+  },
 };
 </script>
 
@@ -292,5 +388,82 @@ export default {
     width: 200px;
     overflow-y: auto;
   }
+  .message-box {
+		position: fixed;
+		bottom: 0;
+		right: 2px;
+		background-color: #FFFAF5;
+		box-shadow: 0px -4px 12px 0px rgba(0,0,0,0.15);
+		border-radius:6px;
+		overflow: hidden;
+    width: 300px;
+    z-index:9999;
+		.topbar {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 0 14px;
+			height: 48px;
+			font-size: 16px;
+			cursor: pointer;
+      background:linear-gradient(135deg,rgba(255,184,101,1) 0%,rgba(255,146,85,1) 21%,rgba(255,62,49,1) 53%,rgba(255,38,38,1) 100%);
+      &.down {
+        height:26px;
+        font-size:14px;
+      }
+			i {
+				width: 14px;
+				height: 14px;
+				background: url(../../../static/img/up_icon.png) no-repeat center;
+				background-size: 100% 100%;
+				&.down {
+					background: url(../../../static/img/down_icon.png) no-repeat center;
+					background-size: 100% 100%;
+				}
+			}
+			span {
+				&.blink{
+					color: #fff;
+					animation: blink 1s linear infinite;  
+					/* 其它浏览器兼容性前缀 */
+					-webkit-animation: blink 1s linear infinite;
+					-moz-animation: blink 1s linear infinite;
+					-ms-animation: blink 1s linear infinite;
+					-o-animation: blink 1s linear infinite;
+				}
+				img {
+					display: block;
+					height: 30px;
+				}
+			}
+		}
+		ul {
+			margin: 0;
+			padding: 0;
+			max-height: 300px;
+			overflow-y: auto;
+			padding: 20px 30px 30px;
+			li {
+				list-style: none;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-top: 8px;
+				height: 30px;
+				box-sizing: border-box;
+				color: #000000;
+				span {
+					font-size: 14px;
+					text-decoration: underline;
+					cursor: pointer;
+				}
+				i {
+					color: #646464;
+					font-size: 12px;
+					font-style: normal;
+				}
+			}
+		}
+	}
 </style>
 

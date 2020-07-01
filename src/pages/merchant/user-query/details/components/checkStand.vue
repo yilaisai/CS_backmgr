@@ -18,6 +18,24 @@
 									<img src="@/assets/head.png" alt="" style="width:100px">
 									<el-radio label="2" v-model="defaultForm.CHECK_STAND_SKIN_TYPE" @change="changeSetting(4)">皮肤2</el-radio>
 							</div>
+              <div class="radioBox">
+									<img src="@/assets/head.png" alt="" style="width:100px">
+									<el-radio label="3" v-model="defaultForm.CHECK_STAND_SKIN_TYPE" @change="changeSetting(4)">皮肤3</el-radio>
+							</div>
+					</el-form-item>
+          <el-form-item label="默认LOGO：" v-if="defaultForm.CHECK_STAND_SWITCH">
+							<div class="radioBox">
+									<!-- <img src="@/assets/head.png" alt="" style="width:100px"> -->
+									<el-radio label="1" v-model="defaultForm.CHECK_STAND_LOGO_TYPE" @change="changeSetting(9)">FlashEx</el-radio>
+							</div>
+							<div class="radioBox">
+									<!-- <img src="@/assets/head.png" alt="" style="width:100px"> -->
+									<el-radio label="2" v-model="defaultForm.CHECK_STAND_LOGO_TYPE" @change="changeSetting(9)">OTC-Flash</el-radio>
+							</div>
+              <div class="radioBox">
+									<!-- <img src="@/assets/head.png" alt="" style="width:100px"> -->
+									<el-radio label="3" v-model="defaultForm.CHECK_STAND_LOGO_TYPE" @change="changeSetting(9)">RouteOtc</el-radio>
+							</div>
 					</el-form-item>
 					<el-form-item label="收银台支付入口：" v-if="defaultForm.CHECK_STAND_SWITCH">
 						<el-checkbox-group 
@@ -52,6 +70,7 @@
           CHECK_STAND_SKIN_TYPE:"",
           CHECK_STAND_CHECK_TYPE:"",
           CHECK_STAND_SIGN_TYPE:"",
+          CHECK_STAND_LOGO_TYPE:"",
           CHECK_STAND_PAY_TYPE:[]
         },
         modes:[
@@ -104,6 +123,9 @@
           case 8:
             value3 = this.defaultForm.CHECK_STAND_SWITCH?1:0
             break
+          case 9:
+            value3 = this.defaultForm.CHECK_STAND_LOGO_TYPE
+            break
           default:
             break
         }
@@ -126,6 +148,7 @@
         this.defaultForm.CHECK_STAND_SKIN_TYPE = newVal.info.checkStandSkinType && newVal.info.checkStandSkinType.toString()
         this.defaultForm.CHECK_STAND_CHECK_TYPE = newVal.info.checkStandCheckType && newVal.info.checkStandCheckType.toString()
         this.defaultForm.CHECK_STAND_SIGN_TYPE = newVal.info.checkStandSignType && newVal.info.checkStandSignType.toString()
+        this.defaultForm.CHECK_STAND_LOGO_TYPE = newVal.info.checkStandLogoType && newVal.info.checkStandLogoType.toString()
         let list = newVal.info.payList?newVal.info.payList.split(','):[]
         this.defaultForm.CHECK_STAND_PAY_TYPE = []
         list.forEach(element => {

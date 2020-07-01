@@ -12,6 +12,24 @@
                       <img src="@/assets/head.png" alt="" style="width:100px">
                       <el-radio label="2" v-model="defaultForm.CHECK_STAND_SKIN_TYPE" @change="change('CHECK_STAND_SKIN_TYPE',2)">皮肤2</el-radio>
                   </div>
+                  <div class="radioBox">
+                      <img src="@/assets/head.png" alt="" style="width:100px">
+                      <el-radio label="3" v-model="defaultForm.CHECK_STAND_SKIN_TYPE" @change="change('CHECK_STAND_SKIN_TYPE',3)">皮肤3</el-radio>
+                  </div>
+              </el-form-item>
+              <el-form-item label="默认LOGO：">
+                  <div class="radioBox">
+                      <!-- <img src="@/assets/head.png" alt="" style="width:100px"> -->
+                      <el-radio label="1" v-model="defaultForm.CHECK_STAND_LOGO_TYPE" @change="change('CHECK_STAND_LOGO_TYPE',1)">FlashEx</el-radio>
+                  </div>
+                  <div class="radioBox">
+                      <!-- <img src="@/assets/head.png" alt="" style="width:100px"> -->
+                      <el-radio label="2" v-model="defaultForm.CHECK_STAND_LOGO_TYPE" @change="change('CHECK_STAND_LOGO_TYPE',2)">OTC-Flash</el-radio>
+                  </div>
+                  <div class="radioBox">
+                      <!-- <img src="@/assets/head.png" alt="" style="width:100px"> -->
+                      <el-radio label="3" v-model="defaultForm.CHECK_STAND_LOGO_TYPE" @change="change('CHECK_STAND_LOGO_TYPE',3)">RouteOtc</el-radio>
+                  </div>
               </el-form-item>
               <el-form-item label="默认验证方式：">
                     <el-radio-group v-model="defaultForm.CHECK_STAND_CHECK_TYPE" >
@@ -72,8 +90,6 @@
       },
       //改变默认皮肤
       change(type,value) {
-          console.log(type)
-          console.log(value)
           this.$http.post('/backmgr/checkStand/updateDefaultInfo',{
             key:type,
             value:value

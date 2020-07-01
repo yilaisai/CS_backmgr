@@ -45,9 +45,10 @@
 										<el-option v-for="(item, key) in transList" :key="key" :value="item.label" :label="item.value"></el-option>
 									</el-select>
 								</el-form-item>
-								<el-form-item label="超时筛选:">
+								<el-form-item label="长时间筛选:">
 									<el-select v-model="filterForm.timeOut" >
 										<el-option value="" label="所有"></el-option>
+										<el-option value="1" label="长时间未确认"></el-option>
 										<el-option value="2" label="进行中"></el-option>
 										<el-option value="3" label="已结束"></el-option>
 									</el-select>

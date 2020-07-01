@@ -45,6 +45,11 @@
 									<el-option v-for="(item, key) in transList" :key="key" :value="item.label" :label="item.value"></el-option>
 								</el-select>
 							</el-form-item>
+							<el-form-item label="返佣状态:">
+								<el-select v-model="filterForm.isReward" >
+									<el-option v-for="(item, key) in rewardList" :key="key" :value="item.value" :label="item.label"></el-option>
+								</el-select>
+							</el-form-item>
 							<el-form-item label="长时间筛选:">
 								<el-select v-model="filterForm.timeOut" >
 									<el-option value="" label="所有"></el-option>
@@ -72,6 +77,9 @@
 						<el-table-column prop="taker_price" label="价格" align="center"></el-table-column>
 						<el-table-column prop="fee" label="手续费(USDT)" align="center"></el-table-column>
 						<el-table-column prop="coupling_fee" label="撮合费(USDT)" align="center"></el-table-column>
+						<el-table-column prop="isReward" label="返佣状态" align="center" width="120">
+							<span slot-scope="scope">{{scope.row.isReward == 1?'已发佣金':scope.row.isReward == 2?'已扣除佣金':'未发佣金'}}</span>
+						</el-table-column>
 						<el-table-column  label="商户单号/平台单号" width="180" align="center" >
 							<span slot-scope="scope">{{scope.row.api_trade_id}}<br />{{scope.row.trade_id}}</span>
 						</el-table-column>
@@ -235,7 +243,8 @@ export default {
 				dateType:'1',
 				timeOut: "",
 				recdId: "",
-				payType: ""  //支付渠道
+				payType: "",  //支付渠道
+				isReward:"",
 			},
 			advTypeMap: {
 				1: '在线出售',
@@ -302,7 +311,14 @@ export default {
 				3: '微信',
 			},
 			server_path:'',
-			token:localStorage.getItem('wallet_token')
+			token:localStorage.getItem('wallet_token'),
+			rewardList:[{
+				value:'',label:'全部'
+			},{
+				value:0,label:'未发佣金'
+			},{
+				value:1,label:'已发佣金'
+			},{value:2,label:'已扣除佣金'}]
 		}
         
 	},

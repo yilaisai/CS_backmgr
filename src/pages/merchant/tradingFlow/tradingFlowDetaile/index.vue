@@ -72,9 +72,9 @@
 				</el-form>
 				<h3>交易奖励</h3>
 				<el-form :inline="true" :model="detaileData" class="demo-form-inline" size="small">
-					<el-form-item label="商户方奖励:" class="big">
+					<!-- <el-form-item label="商户方奖励:" class="big">
 						<el-input :value=" '直接 0'+detaileData.coinName+', 间接 0'+detaileData.coinName  " disabled></el-input>
-					</el-form-item>
+					</el-form-item> -->
 					<el-form-item label="承兑商方折扣:" >
 						<!-- <el-input class="hasBtn" :value=" '承兑商'+detaileData.makerCommission+detaileData.coinName+', 直接'+detaileData.makerFirstCommission+detaileData.coinName+', 间接'+detaileData.makerSecondaryCommission+detaileData.coinName  " disabled> -->
 							<el-button  @click=" discountDetaile ">查看详情</el-button>
@@ -95,6 +95,15 @@
 							:value=" detaileData.couplingFee"
 							disabled>
 						</el-input>
+					</el-form-item>
+					<el-form-item label="返佣状态:" v-if="detaileData.advType == 4 || detaileData.advType == 5">
+						<el-input
+							:value="detaileData.isReward == 1?'已补发佣金':detaileData.isReward == 2?'已扣除佣金':'未扣除佣金'"
+							disabled>
+						</el-input>
+					</el-form-item>
+					<el-form-item v-if="(detaileData.advType == 4 || detaileData.advType == 5) && detaileData.isReward == 2">
+						<el-button type="primary" plain @click="fetchReward">补发返佣</el-button>
 					</el-form-item>
 				</el-form>
 				<h3>收款信息</h3>
@@ -220,6 +229,24 @@ export default {
 				}
 			})
 		},
+		fetchReward(){
+			this.$confirm(`确定补发佣金`, '提示', {
+				confirmButtonText: '确定',
+				cancelButtonText: '取消',
+				type: 'warning'
+			}).then(res=>{
+				this.$http.post('/wallet/invite/backmgr/fetchReward',{
+					recdId : this.detaileData.tradeId
+				}).then(res=>{
+					if(res.code == 200) {
+						this.$message.success('补发成功！')
+						this.getData(this.$route.query.tradeId)
+					} else {
+						this.$message.error(res.msg)
+					}
+				})
+			})
+		}
 	},
 	watch:{
 

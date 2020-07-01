@@ -9,9 +9,9 @@
 					<el-form-item label="地址：">
 						<el-input v-model="formData.addr" placeholder="搜索地址"></el-input>
 					</el-form-item>
-					<!-- <el-form-item label="订单号码：">
-						<el-input v-model="formData.orderId" placeholder="搜索订单号"></el-input>
-					</el-form-item> -->
+					<el-form-item label="TXID：">
+						<el-input v-model="formData.txId" placeholder="搜索TXID"></el-input>
+					</el-form-item>
 					<el-form-item label="用戶编号：">
 						<el-input v-model="formData.nickName" placeholder="搜索用户编号"></el-input>
 					</el-form-item>
@@ -42,6 +42,12 @@
 						<el-select v-model="formData.userType" placeholder="选择订单状态" clearable style="width: 178px">
 							<el-option :value="null" label="全部"></el-option>
 							<el-option v-for="(item, key) in userTypes" :key="key" :value="key" :label="item"></el-option>
+						</el-select>
+					</el-form-item>
+					<el-form-item label="归拢状态：">
+						<el-select v-model="formData.collectType" placeholder="选择归拢状态" clearable style="width: 178px">
+							<el-option :value="null" label="全部"></el-option>
+							<el-option v-for="(item, key) in collectTypes" :key="key" :value="item.val" :label="item.name"></el-option>
 						</el-select>
 					</el-form-item>
 				</div>
@@ -143,6 +149,7 @@ export default {
 				txId: '', //txid
 				userType: null,
 				transType:2,  //2-充值，3-提币
+				collectType:null, //归拢状态  0-未归拢 1-归拢
 			},
 			userTypes: userTypes,
 			transTypes:[{
@@ -151,6 +158,13 @@ export default {
 			},{
 				'name':'提币',
 				'val':3
+			}],
+			collectTypes:[{
+				'name':'未归拢',
+				'val':0,
+			},{
+				'name':'已归拢',
+				'val':1,
 			}]
 		}
 	},

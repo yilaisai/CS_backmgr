@@ -60,7 +60,7 @@
 		border
 		size="mini"
 		style="min-width: 100%">
-		<el-table-column prop="create_time" label="发起时间" width="140"></el-table-column>
+		<!-- <el-table-column prop="create_time" label="发起时间" width="140"></el-table-column> -->
 		<el-table-column prop="nickName" label="账号|用户编号" width="140">
 			<template slot-scope="scope">
 				<span>{{scope.row.phone + ' | ' + scope.row.nickName}}</span>
@@ -71,16 +71,25 @@
 		</el-table-column>
 		<el-table-column prop="coin_name" label="币种" align="center"></el-table-column>
 		<el-table-column prop="amount" label="数量"></el-table-column>
-		<el-table-column prop="fee" label="手续费"></el-table-column>
-		<el-table-column prop="status" label="状态" align="center">
+		<el-table-column prop="status" label="充值状态" align="center">
 			<span slot-scope="scope">{{scope.row.status | filterStatus(orderStatus)}}</span>
 		</el-table-column>
-		<el-table-column prop="type" label="类型" align="center">
+		<el-table-column prop="status" label="归拢状态" align="center">
+			<span slot-scope="scope">{{scope.row.collectTxId?'已归拢':'未归拢'}}</span>
+		</el-table-column>
+		<el-table-column prop="to_addr" label="充值地址" width="280"></el-table-column>
+		<el-table-column prop="tx_id" label="充值TXID" width="280"></el-table-column>
+		<el-table-column prop="collectTxId" label="归拢TXID" width="280"></el-table-column>
+		<el-table-column prop="create_time" label="充值时间" width="150"></el-table-column>
+		<el-table-column prop="updateTime" label="归拢时间" width="150">
+			<span slot-scope="scope">{{ scope.row.updateTime*1 | dateFormat('YYYY-MM-DD HH:mm:ss') }}</span>
+		</el-table-column>
+		<!-- <el-table-column prop="type" label="类型" align="center">
 			<span slot-scope="scope">{{scope.row.type | filterType(orderStatus)}}</span>
 		</el-table-column>
 		<el-table-column prop="from_addr" label="From" width="320"></el-table-column>
 		<el-table-column prop="to_addr" label="To" width="320"></el-table-column>
-		<!-- <el-table-column prop="toUrl" label="地址图片" width="100">
+		<el-table-column prop="toUrl" label="地址图片" width="100">
 			<span slot-scope="scope">
 				 <el-image 
 				  v-if="scope.row.toUrl"
@@ -95,9 +104,9 @@
 							<a slot-scope="scope" :href="'https://www.omniexplorer.info/search/'+ scope.row.tx_id" target="_blank">{{scope.row.tx_id}}</a>
 		</el-table-column>
 		<el-table-column prop="sys_remark" label="备注"></el-table-column>
-		<el-table-column prop="user_remark" label="审核备注"></el-table-column> -->
+		<el-table-column prop="user_remark" label="审核备注"></el-table-column>
 		<el-table-column prop="pay_time" label="打币时间" width="140"></el-table-column>
-		<el-table-column prop="tx_time" label="到账时间" width="140" ></el-table-column>
+		<el-table-column prop="tx_time" label="到账时间" width="140" ></el-table-column> -->
 	</el-table>
 </template>
 

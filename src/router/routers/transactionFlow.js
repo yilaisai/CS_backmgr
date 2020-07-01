@@ -34,7 +34,7 @@ const transactionFlow = [
 				name: 'extract',
 				meta: { title: '提取记录' },
 				component: () => import('@/pages/transactionFlow/extract')
-			}
+			},
 		]
 	}
 ]

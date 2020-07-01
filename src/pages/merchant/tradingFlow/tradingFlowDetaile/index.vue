@@ -98,7 +98,7 @@
 					</el-form-item>
 					<el-form-item label="返佣状态:" v-if="detaileData.advType == 4 || detaileData.advType == 5">
 						<el-input
-							:value="detaileData.isReward == 1?'已补发佣金':detaileData.isReward == 2?'已扣除佣金':'未扣除佣金'"
+							:value="detaileData.isReward == 1?'已发佣金':detaileData.isReward == 2?'已扣除佣金':'未发佣金'"
 							disabled>
 						</el-input>
 					</el-form-item>

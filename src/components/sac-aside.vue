@@ -1,7 +1,7 @@
 <template>
 	<div class="sac-aside">
 		<div class="logo">
-			<img src="@/assets/logo.svg" alt="logo">
+			<img src="@/assets/logo.png" alt="logo">
 		</div>
 		<el-menu @select="handleSelect" :default-openeds="openeds" :default-active="onRoutes" class="el-menu-vertical-demo scroll" background-color="#1a2238" text-color="#fff" unique-opened router>
 			<template v-for="(item, index) in menuList">
@@ -101,7 +101,7 @@ export default {
       align-items: center;
       /*background: #1a2238;*/
       img {
-        width: 120px;
+        height: 39px;
       }
     }
     .el-menu-vertical-demo:not(.el-menu--collapse) {

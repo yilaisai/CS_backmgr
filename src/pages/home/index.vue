@@ -136,7 +136,7 @@ export default {
 					{ validator: checkPass, trigger: 'blur' }
 				]
 			},
-      musicIsOpen: false,
+      musicIsOpen: true,
       timer:null,
       messageBoxShow:false,
       appealIngRemind:0,
@@ -247,9 +247,9 @@ export default {
 	mounted() {
 		this.userName = localStorage.getItem('wallet_username');
 		this.roleName = localStorage.getItem('wallet_roleName') || '暂无角色';
-    // let musicIsOpen = localStorage.getItem('MUSIC_SWITCH') || 'close'
-    // this.musicIsOpen = musicIsOpen == 'open' ? true : false
-    localStorage.setItem('MUSIC_SWITCH','close')
+    let musicIsOpen = localStorage.getItem('MUSIC_SWITCH') || 'open'
+    this.musicIsOpen = musicIsOpen == 'open' ? true : false
+    localStorage.setItem('MUSIC_SWITCH',musicIsOpen)
     if (localStorage.getItem('wallet_token')) {
       this.getNewsList()
     }

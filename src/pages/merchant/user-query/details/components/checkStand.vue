@@ -11,15 +11,30 @@
           </el-form-item>
 					<el-form-item label="默认皮肤：" v-if="defaultForm.CHECK_STAND_SWITCH">
 							<div class="radioBox">
-									<img src="@/assets/head.png" alt="" style="width:100px">
+									<el-image 
+                    style="width: 100px;"
+                    :src="imgList[0]" 
+                    :preview-src-list="[imgList[0]]"
+                    >
+                  </el-image>
 									<el-radio label="1" v-model="defaultForm.CHECK_STAND_SKIN_TYPE" @change="changeSetting(4)">皮肤1</el-radio>
 							</div>
 							<div class="radioBox">
-									<img src="@/assets/head.png" alt="" style="width:100px">
+									<el-image 
+                    style="width: 100px;"
+                    :src="imgList[1]" 
+                    :preview-src-list="[imgList[1]]"
+                    >
+                  </el-image>
 									<el-radio label="2" v-model="defaultForm.CHECK_STAND_SKIN_TYPE" @change="changeSetting(4)">皮肤2</el-radio>
 							</div>
               <div class="radioBox">
-									<img src="@/assets/head.png" alt="" style="width:100px">
+									<el-image 
+                    style="width: 100px;"
+                    :src="imgList[2]" 
+                    :preview-src-list="[imgList[2]]"
+                    >
+                  </el-image>
 									<el-radio label="3" v-model="defaultForm.CHECK_STAND_SKIN_TYPE" @change="changeSetting(4)">皮肤3</el-radio>
 							</div>
 					</el-form-item>
@@ -65,6 +80,7 @@
     props:['data'],
     data() {
       return { 
+        imgList:[require('@/assets/skin1.png'),require('@/assets/skin2.png'),require('@/assets/skin3.png')],
         defaultForm:{
           CHECK_STAND_SWITCH:'',
           CHECK_STAND_SKIN_TYPE:"",

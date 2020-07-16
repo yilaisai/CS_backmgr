@@ -144,13 +144,17 @@
 				</template>
 			</el-table-column>
 			<el-table-column prop="isShow" label="状态" width="80" align="center">
-				<span slot-scope="scope" >{{scope.row.isShow==1?'使用中':'已审核'}}</span>
+				<span slot-scope="scope" >{{scope.row.isReview==1?'已审核':scope.row.isReview==2?'审核失败':'未审核'}}</span>
+			</el-table-column>
+			<el-table-column prop="isShow" label="是否启用" width="80" align="center">
+				<span slot-scope="scope" >{{scope.row.isShow==1?'启用中':'未启用'}}</span>
 			</el-table-column>
 			<el-table-column prop="auditName" label="审核人" width="100" align="center"></el-table-column>
-			<el-table-column fixed="right" label="操作" width="100" align="center">
+			<el-table-column fixed="right" label="操作" width="120" align="center">
 				<template slot-scope="scope">
-					<el-button v-if="scope.row.isShow==1" @click="updatePayStatus(scope.row,2)" type="text" size="mini">停止使用</el-button>
-					<el-button v-else @click="updatePayStatus(scope.row,1)" type="text" size="mini">开始使用</el-button>
+					<el-button v-if="scope.row.isReview==1" @click="updatePayStatus(scope.row,2)" type="text" size="mini">审核失败</el-button>
+					<!-- <el-button v-else @click="updatePayStatus(scope.row,1)" type="text" size="mini">开始使用</el-button> -->
+					<el-button v-if="scope.row.isShow==0" @click="deleteItem(scope.row)" type="text" size="mini">删除</el-button>
 				</template>
 			</el-table-column>
     </sac-table>
@@ -317,6 +321,30 @@
 						setTimeout(()=>{
 							document.getElementById('peveImg').click()
 						},200)
+				})
+			},
+			deleteItem(data) {
+				this.$confirm('是否删除该收款方式，该操作不可逆，请谨慎操作','提示',{
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then( res => {
+					this.$prompt('请输入谷歌验证码', '安全验证', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消'
+					}).then(({ value }) => {
+						this.$http.post("/wallet/app/otc/backmgr/deletePayInfo", {
+							recdId:data.recdId,
+							secret:value
+						}).then((res) => {
+							this.$message.success('操作成功');
+							this.getDetail()
+						})
+					}).catch(err => {
+						this.$message('已取消')
+					})
+				}).catch(err => {
+					this.$message('已取消')
 				})
 			}
 		},

@@ -15,8 +15,8 @@ if(window.location.href.indexOf('homo.plus') >= 0) {
 	// SERVER_PATH2 = 'http://47.52.110.161:7036/'
 	// SERVER_PATH = 'http://47.52.110.161:7036/'
 
-	SERVER_PATH2 = 'http://192.168.120.108:7036/'  //付岳远程
-	SERVER_PATH = 'http://192.168.120.108:7036/'
+	// SERVER_PATH2 = 'http://192.168.1.56:7036/'  //付岳远程
+	// SERVER_PATH = 'http://192.168.1.56:7036/'
 	
 	// SERVER_PATH = 'http://192.168.120.108:7036/'
 	// SERVER_PATH2 = 'http://192.168.120.108:7036/' 

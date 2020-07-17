@@ -103,7 +103,7 @@
 						<el-table-column prop="bank_branch" label="收款账户信息" align="center">
 							<template slot-scope="scope" >
 								<span v-if="scope.row.pay_type == 1">{{scope.row.bank_name +''+scope.row.bank_branch}}</span>
-								<span v-else>
+								<span v-else-if="scope.row.pay_type != 5">
 									<el-image 
 										v-if="scope.row.qrcode"
 										style="width: 40px; height: 40px"

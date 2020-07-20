@@ -141,6 +141,11 @@
 							<p  @click="verify(scope.row)"  style="color:#409EFF;cursor: pointer;user-select:none;" v-if="scope.row.analysisQrCode"><img style="width:20px;position: relative; top: 5px; margin-right: 3px;" src="../../../../assets/QR_code.png" alt="">验证二维码</p>
 							<p v-else>识别错误</p>
 						</div>
+						<div v-if="scope.row.alipayUserId">	
+							<p  @click="verifyTransfer(scope.row)"  style="color:#409EFF;cursor: pointer;user-select:none;">
+								<img style="width:20px;position: relative; top: 5px; margin-right: 3px;" src="../../../../assets/QR_code.png" alt=""> 验证转账码
+							</p>
+						</div>
 				</template>
 			</el-table-column>
 			<el-table-column prop="isShow" label="状态" width="80" align="center">

@@ -13,9 +13,9 @@
 			</div>
 			<ul>
 				<li><label>{{coinName}}当前市价:</label><span>{{form.toRMBPrice}}</span></li>
-				<li v-if="form.MERCHANT_RATE_TYPE == 1"><label>{{coinName}}当前兑入价格:</label><span>{{Math.floor((form.MERCHANT_IN_PRICE*1 + form.MERCHANT_IN_PRICE_FLOAT*1 )* 1000000) / 1000000}}</span></li>
+				<li v-if="form.MERCHANT_RATE_TYPE == 1"><label>{{coinName}}当前兑入价格:</label><span>{{Math.floor((BigNumber(form.MERCHANT_IN_PRICE*1).plus(form.MERCHANT_IN_PRICE_FLOAT*1 ))* 100) / 100}}</span></li>
 				<li v-else><label>{{coinName}}当前兑入价格:</label><span>{{form.MERCHANT_IN_PRICE}}</span></li>
-				<li v-if="form.MERCHANT_RATE_TYPE == 1"><label>{{coinName}}当前兑出价格:</label><span>{{Math.floor((form.MERCHANT_OUT_PRICE*1 + form.MERCHANT_OUT_PRICE_FLOAT*1) * 1000000) / 1000000}}</span></li>
+				<li v-if="form.MERCHANT_RATE_TYPE == 1"><label>{{coinName}}当前兑出价格:</label><span>{{Math.floor((BigNumber(form.MERCHANT_OUT_PRICE*1).plus(form.MERCHANT_OUT_PRICE_FLOAT*1)) * 100) / 100}}</span></li>
 				<li v-else><label>{{coinName}}当前兑出价格:</label><span>{{form.MERCHANT_OUT_PRICE}}</span></li>
 			</ul>
 		</div>
@@ -175,6 +175,7 @@
 
 <script>
 import {mapState} from 'vuex'
+import BigNumber from 'bignumber.js'
 export default {
 	data() { 
 		return {
@@ -307,6 +308,9 @@ export default {
 				})
 				this.getData()
 			})
+		},
+		BigNumber(val) {
+			return BigNumber(val)
 		}
 	},
 	watch: {

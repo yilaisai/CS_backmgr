@@ -186,14 +186,16 @@ export default {
 						list[0].hasChildren = true
 					}
 				}else{
-					list =res.result.list
-					list.forEach(element => {
-						if(element.childNum>0){
-							element.hasChildren = true
-						}else{
-							element.hasChildren = false
-						}
-					})
+					list =res.result.list || []
+					if (list.length) {
+						list.forEach(element => {
+							if(element.childNum>0){
+								element.hasChildren = true
+							}else{
+								element.hasChildren = false
+							}
+						})
+					}
 				}
 				this.inviteData =[] 
 				setTimeout(()=>{

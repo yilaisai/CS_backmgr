@@ -18,9 +18,10 @@
 			<el-table-column align="center" type="index" label="序号" :index="indexMethod"></el-table-column>
 			<el-table-column prop="phone" label="账号" align="center"></el-table-column>
 			<el-table-column prop="nick_name" label="用户编号"  align="center"></el-table-column>
-			<el-table-column prop="nick_name" label="用户类型" align="center">
+			<el-table-column prop="user_type" label="用户类型" align="center">
 				<template slot-scope="scope">{{scope.row.user_type | userTypesFilter}}</template>
 			</el-table-column>
+			<el-table-column prop="userStatusName" label="类型"  align="center"></el-table-column>
 			<el-table-column prop="usdtAmount" sortable='custom' :label="$variableCoin">
 				<div class="scope" slot-scope="scope">
 					<p>可用:{{ scope.row.usdtAmount }}</p>
@@ -45,10 +46,10 @@
 					<p>冻结:{{ scope.row.eosFrozenAmount }}</p>
 				</div>
 			</el-table-column>
-			<el-table-column  label="操作" width="80px" fixed="right"  align="center">
+			<el-table-column  label="操作" width="200px" fixed="right"  align="center">
 				<template class="scope" slot-scope="scope">
-					<!-- <el-button size="mini" @click="modify(scope.row)" >修改状态</el-button> -->
 					<el-button size="mini" @click="$router.push({path:'/LegalCurrency/personalAssets',query:{userId:scope.row.user_id}})" >详情</el-button>
+					<el-button size="mini" @click="modify(scope.row)" type="warning">修改状态</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -169,7 +170,7 @@ export default {
 			})
 			this.$refs.ruleForm.validate(valid => {
 				if (valid) {
-					this.$http.post("/wallet/app/otc/backmgr/setCustomStatus", this.ruleForm).then(res => {
+					this.$http.post("/wallet/app/otc/backmgr/setCustomStatusZc", this.ruleForm).then(res => {
 						this.$notify({
 							title: "成功",
 							message: `修改成功`,

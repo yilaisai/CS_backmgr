@@ -53,6 +53,11 @@
                     </el-table-column>
                     <el-table-column prop="appealId" label="申诉号" align="center" ></el-table-column>
                     <el-table-column  prop="tradeTime" label="投诉时间"  align="center"></el-table-column>
+                    <el-table-column  prop="updateTime" label="判决时间"  align="center">
+                        <template slot-scope="scope">
+                            <span>{{$fmtDate(scope.row.updateTime,'full')}}</span>
+                        </template>
+                    </el-table-column>
                     <el-table-column label="操作" width="120" >
                         <template slot-scope="scope">
                             <el-button  plain size="small" 

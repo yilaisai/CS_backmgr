@@ -95,11 +95,11 @@ export default {
 					value:0
 				},
 				{
-					label:'24小时冻结',
+					label:'24小时锁定',
 					value:1
 				},
 				{
-					label:'永远冻结',
+					label:'永远锁定',
 					value:2
 				}
 			],
@@ -198,7 +198,7 @@ export default {
 					return
 				}
 			})
-			this.ruleForm.userId=itemData.userId
+			this.ruleForm.userId=itemData.user_id
 			this.ruleForm.status=default_status
 			this.dialogVisible=true
 		},

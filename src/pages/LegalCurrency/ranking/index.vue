@@ -101,11 +101,11 @@ import {userTypes} from '@/common/constants'
 						value:0
 					},
 					{
-						label:'24小时冻结',
+						label:'24小时锁定',
 						value:1
 					},
 					{
-						label:'永远冻结',
+						label:'永远锁定',
 						value:2
 					}
 				],

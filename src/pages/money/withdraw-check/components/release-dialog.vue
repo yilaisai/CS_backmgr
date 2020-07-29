@@ -77,7 +77,7 @@ export default {
     methods: {
         openHandle () {
             const title = {
-                auto: '自动放行',
+                auto: '审核通过',
                 manual: '手动放行',
                 reject: '拒绝订单'
             }

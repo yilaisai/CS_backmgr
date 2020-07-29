@@ -95,7 +95,15 @@ const brm = [
 				  title: '提币审核'
 			  },
 			  component: () => import('@/pages/money/withdraw-check/index.vue')
-			},
+      },
+      {
+			  path: 'withdraw-list',
+			  name: 'withdraw-list',
+			  meta: {
+				  title: '待提币列表'
+			  },
+			  component: () => import('@/pages/money/withdraw-list/index.vue')
+      },
 			{
 				path: 'blockchain-statistics',
 				name: 'blockchainStatistics',

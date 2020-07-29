@@ -43,9 +43,9 @@
             <el-table-column prop="id" label="订单号"  align="center"></el-table-column>
             <el-table-column fixed="right" label="操作" width="280" align="center">
                 <template slot-scope="scope">
-                    <!-- <el-button @click="btnHandle('auto', scope.row)" type="success" size="mini" :disabled="scope.row.status !== 2">自动放行</el-button> -->
-                    <el-button type="primary" @click="btnHandle('manual', scope.row)" size="mini" :disabled="scope.row.status !== 2">手动放行</el-button>
-                    <el-button type="danger" @click="btnHandle('reject', scope.row)" size="mini" :disabled="scope.row.status !== 2">拒绝</el-button>
+                    <el-button @click="btnHandle('auto', scope.row)" type="success" size="mini" v-if="scope.row.status == 2">审核通过</el-button>
+                    <el-button type="primary" @click="btnHandle('manual', scope.row)" size="mini" v-if="scope.row.status == 4">手动放行</el-button>
+                    <el-button type="danger" @click="btnHandle('reject', scope.row)" size="mini" v-if="scope.row.status == 2">拒绝</el-button>
                 </template>
             </el-table-column>
         </el-table>

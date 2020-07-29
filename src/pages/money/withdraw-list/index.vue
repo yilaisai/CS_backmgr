@@ -24,11 +24,11 @@
     </div>
 </template>
 <script>
-    import Table from './components/table.vue'
-    import Query from './components/query.vue'
-    import Columns from './components/columns'
-    import ReleaseDialog from './components/release-dialog.vue'
-    import ManualRecordDialog from './components/manual-record-dialog'
+    import Table from '../withdraw-check/components/table.vue'
+    import Query from '../withdraw-check/components/query.vue'
+    import Columns from '../withdraw-check/components/columns'
+    import ReleaseDialog from '../withdraw-check/components/release-dialog.vue'
+    import ManualRecordDialog from '../withdraw-check/components/manual-record-dialog'
     import {mapState} from 'vuex'
     export default {
         name: 'examine',
@@ -109,7 +109,7 @@
                 filter = Object.assign(filter, {
                     pageNum: this.pageNum,
                     pageSize: this.pageSize,
-                    status:2       //待审核
+                    status:4       //待提币
                 })
                 
                 this.$http.post(`/wallet/backmgr/trade/getAuditingWithdraw`, filter)

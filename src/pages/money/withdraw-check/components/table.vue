@@ -19,11 +19,11 @@
             <el-table-column prop="realAmount" label="实际支付数量" width="100" align="center">
                 <template slot-scope="scope">{{scope.row.amount + scope.row.fee}}</template>
             </el-table-column>
-            <el-table-column prop="status" label="状态" align="center">
+            <!-- <el-table-column prop="status" label="状态" align="center">
                 <template slot-scope="scope">
                     <span>{{scope.row.status | recdStatusMap}}</span>
                 </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column prop="from_addr" label="From地址" width="300" align="center"></el-table-column>
             <el-table-column prop="to_addr" label="To地址" width="350" align="center" >
                 <template slot-scope="scope">

@@ -31,7 +31,7 @@
 						<el-form-item><el-button  type="primary" size="mini" @click.native="search">搜索</el-button></el-form-item>
 					</div>
 				</el-form>
-				<el-table :data="listData.list" border size="mini" height="100%">
+				<el-table :data="listData.list" border size="mini" height="100%" @sort-change ="sortChange">
 					<el-table-column label="账户/用户编号">
 						<div class="scope" slot-scope="scope">{{scope.row.account}} -- {{scope.row.nickName}}</div>
 					</el-table-column>
@@ -54,7 +54,7 @@
 							<span v-for="(item, index) in scope.row.inviteRateDtoList" :key="index">{{item.payTypeName}}: {{Math.floor(item.buyFee*10000)/100}}% </span>
 						</template>
 					</el-table-column>
-					<el-table-column prop="amount" label="法币持币量(USDT)" width="140">
+					<el-table-column prop="amount" label="法币持币量(USDT)" min-width="140" sortable="custom">
 					</el-table-column>
 					<el-table-column label="注册时间" width="140">
 						<div slot-scope="scope">{{ $fmtDate(scope.row.registTimeStamp,'full') }}</div>
@@ -112,7 +112,7 @@ export default {
 			selectUserId:'',
             selectedDate: [], //已选日期
             currentPage:1,
-            filterForm:{
+			filterForm:{
 				pageNum:1,
 				pageSize: 20,
 				startDate:'',
@@ -122,6 +122,7 @@ export default {
 				nickName:'',
 				userLevel:'',
 				userRole:'',
+				orderAmount:'',
 			},
 			userTypeForm:{
 				userLevel:'1',
@@ -148,72 +149,76 @@ export default {
         }
     },
     methods:{
-        getList(){
-			if(this.selectedDate && this.selectedDate.length == 2 ){
-				this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
-				this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
-			}else {
-				this.filterForm.startDate = ""
-				this.filterForm.endDate = ""
-			}
-			this.$http.post('/wallet/app/otc/backmgr/queryOtcUser',this.filterForm).then(res=>{
-				const { list ,total} = res.result;
-				this.listData.list = list;
-				this.listData.total = total;
-			})
-		},
-		//
-		updateOtcUserLevel(userid){
-			this.$http.post('/wallet/app/otc/backmgr/updateOtcUserLevel',this.userTypeForm).then(res=>{
-				this.$message.success('类型修改成功')
-				this.dialogFormVisible=false
-				this.getList()
-			})
-		},
-		dateChange(){
-		},
-		editType(data){
-			this.userTypeForm = {
-					userLevel:data.userLevel+'',
-					userEnterprise:data.userEnterprise+'',
-					userId:data.userId
+			getList(){
+				if(this.selectedDate && this.selectedDate.length == 2 ){
+					this.filterForm.startDate = this.selectedDate && this.$fmtDate(this.selectedDate[0].getTime())+' 00:00:00';
+					this.filterForm.endDate = this.selectedDate && this.$fmtDate(this.selectedDate[1].getTime())+' 23:59:59';
+				}else {
+					this.filterForm.startDate = ""
+					this.filterForm.endDate = ""
 				}
-			this.dialogFormVisible=true
-		},
-		setDateType(){
-			//获取系统当前时间
-			let nowdate = new Date();
-			let y = nowdate.getFullYear();
-			let m = nowdate.getMonth()+1;
-			let d = nowdate.getDate();
-			let formatnowdate = y+'-'+m+'-'+d;
-			this.selectedDate=[formatnowdate,formatnowdate]
-		},
-        search(){
-            this.getList()
-        },
-        checkLog(){
-            this.$router.push({
-                path:'customer-log'
-            })
-        },
-        checkDetails(){
-            this.$router.push({
-                path:'complaint-details'
-            })
-        },
-        handleCurrentChange(val,currentPage) {
-            this.filterForm.pageSize=val
-            this.filterForm.pageNum=currentPage
-            this.getList()
-        },
-        /* handleCurrentChange(val) {
-            this.filterForm.pageNum=val
-            this.getList()
-        }, */
-        download(){
-            location.href =`${SERVER_PATH}/wallet/app/otc/backmgr/exportExcel?startDate=${this.filterForm.startDate}&endDate=${this.filterForm.endDate}&userId=${this.filterForm.userId}&token=${localStorage.getItem('cus_token')}`;
-        }
+				this.$http.post('/wallet/app/otc/backmgr/queryOtcUser',this.filterForm).then(res=>{
+					const { list ,total} = res.result;
+					this.listData.list = list;
+					this.listData.total = total;
+				})
+			},
+			//
+			updateOtcUserLevel(userid){
+				this.$http.post('/wallet/app/otc/backmgr/updateOtcUserLevel',this.userTypeForm).then(res=>{
+					this.$message.success('类型修改成功')
+					this.dialogFormVisible=false
+					this.getList()
+				})
+			},
+			dateChange(){
+			},
+			editType(data){
+				this.userTypeForm = {
+						userLevel:data.userLevel+'',
+						userEnterprise:data.userEnterprise+'',
+						userId:data.userId
+					}
+				this.dialogFormVisible=true
+			},
+			setDateType(){
+				//获取系统当前时间
+				let nowdate = new Date();
+				let y = nowdate.getFullYear();
+				let m = nowdate.getMonth()+1;
+				let d = nowdate.getDate();
+				let formatnowdate = y+'-'+m+'-'+d;
+				this.selectedDate=[formatnowdate,formatnowdate]
+			},
+			search(){
+					this.getList()
+			},
+			checkLog(){
+					this.$router.push({
+							path:'customer-log'
+					})
+			},
+			checkDetails(){
+					this.$router.push({
+							path:'complaint-details'
+					})
+			},
+			handleCurrentChange(val,currentPage) {
+					this.filterForm.pageSize=val
+					this.filterForm.pageNum=currentPage
+					this.getList()
+			},
+			/* handleCurrentChange(val) {
+					this.filterForm.pageNum=val
+					this.getList()
+			}, */
+			download(){
+					location.href =`${SERVER_PATH}/wallet/app/otc/backmgr/exportExcel?startDate=${this.filterForm.startDate}&endDate=${this.filterForm.endDate}&userId=${this.filterForm.userId}&token=${localStorage.getItem('cus_token')}`;
+			},
+			sortChange(data) {
+				this.filterForm.orderAmount = data.order == "descending"?1:data.order == "ascending"?0:''
+				this.getList()
+			}
     },
     activated(){
         this.getList()

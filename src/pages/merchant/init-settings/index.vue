@@ -13,13 +13,13 @@
 			</div>
 			<ul>
 				<li><label>{{coinName}}当前市价:</label><span>{{form.toRMBPrice}}</span></li>
-				<li v-if="form.MERCHANT_RATE_TYPE == 1"><label>{{coinName}}当前兑入价格:</label><span>{{Math.floor((BigNumber(form.MERCHANT_IN_PRICE*1).plus(form.MERCHANT_IN_PRICE_FLOAT*1 ))* 100) / 100}}</span></li>
-				<li v-else-if="form.MERCHANT_RATE_TYPE == 3"><label>{{coinName}}当前兑入价格:</label><span>{{Math.floor((BigNumber(form.bian.buy*1).plus(form.MERCHANT_IN_PRICE_FLOAT*1 ))* 100) / 100}}</span></li>
-				<li v-else-if="form.MERCHANT_RATE_TYPE == 4"><label>{{coinName}}当前兑入价格:</label><span>{{Math.floor((BigNumber(form.okex.buy*1).plus(form.MERCHANT_IN_PRICE_FLOAT*1 ))* 100) / 100}}</span></li>
+				<li v-if="form.MERCHANT_RATE_TYPE == 1"><label>{{coinName}}当前兑入价格:</label><span>{{Math.floor((BigNumber(form.MERCHANT_OUT_PRICE*1).plus(form.MERCHANT_OUT_PRICE_FLOAT*1 ))* 100) / 100}}</span></li>
+				<li v-else-if="form.MERCHANT_RATE_TYPE == 3"><label>{{coinName}}当前兑入价格:</label><span>{{Math.floor((BigNumber(form.bian.sell*1).plus(form.MERCHANT_OUT_PRICE_FLOAT*1 ))* 100) / 100}}</span></li>
+				<li v-else-if="form.MERCHANT_RATE_TYPE == 4"><label>{{coinName}}当前兑入价格:</label><span>{{Math.floor((BigNumber(form.okex.sell*1).plus(form.MERCHANT_OUT_PRICE_FLOAT*1 ))* 100) / 100}}</span></li>
 				<li v-else><label>{{coinName}}当前兑入价格:</label><span>{{form.MERCHANT_IN_PRICE}}</span></li>
-				<li v-if="form.MERCHANT_RATE_TYPE == 1"><label>{{coinName}}当前兑出价格:</label><span>{{Math.floor((BigNumber(form.MERCHANT_OUT_PRICE*1).plus(form.MERCHANT_OUT_PRICE_FLOAT*1)) * 100) / 100}}</span></li>
-				<li v-else-if="form.MERCHANT_RATE_TYPE == 3"><label>{{coinName}}当前兑出价格:</label><span>{{Math.floor((BigNumber(form.bian.sell*1).plus(form.MERCHANT_OUT_PRICE_FLOAT*1)) * 100) / 100}}</span></li>
-				<li v-else-if="form.MERCHANT_RATE_TYPE == 4"><label>{{coinName}}当前兑出价格:</label><span>{{Math.floor((BigNumber(form.okex.sell*1).plus(form.MERCHANT_OUT_PRICE_FLOAT*1)) * 100) / 100}}</span></li>
+				<li v-if="form.MERCHANT_RATE_TYPE == 1"><label>{{coinName}}当前兑出价格:</label><span>{{Math.floor((BigNumber(form.MERCHANT_IN_PRICE*1).plus(form.MERCHANT_IN_PRICE_FLOAT*1)) * 100) / 100}}</span></li>
+				<li v-else-if="form.MERCHANT_RATE_TYPE == 3"><label>{{coinName}}当前兑出价格:</label><span>{{Math.floor((BigNumber(form.bian.buy*1).plus(form.MERCHANT_IN_PRICE_FLOAT*1)) * 100) / 100}}</span></li>
+				<li v-else-if="form.MERCHANT_RATE_TYPE == 4"><label>{{coinName}}当前兑出价格:</label><span>{{Math.floor((BigNumber(form.okex.buy*1).plus(form.MERCHANT_IN_PRICE_FLOAT*1)) * 100) / 100}}</span></li>
 				<li v-else><label>{{coinName}}当前兑出价格:</label><span>{{form.MERCHANT_OUT_PRICE}}</span></li>
 			</ul>
 		</div>
@@ -32,20 +32,20 @@
 							<el-radio-group v-model="form.MERCHANT_RATE_TYPE">
 								<el-radio label="1">
 									<span>火币</span>
-									<span>兑入价格：{{Math.floor(form.huobi.buy * 100) / 100}}</span>
-									<span>兑出价格：{{Math.floor(form.huobi.sell * 100) / 100}}</span>
+									<span>兑入价格：{{form.huobi.sell}}</span>
+									<span>兑出价格：{{form.huobi.buy}}</span>
 								</el-radio>
 								<br/>
 								<el-radio label="4">
 									<span>OKEX</span>
-									<span>兑入价格：{{Math.floor(form.okex.buy * 100) / 100}}</span>
-									<span>兑出价格：{{Math.floor(form.okex.sell * 100) / 100 }}</span>
+									<span>兑入价格：{{form.okex.sell}}</span>
+									<span>兑出价格：{{form.okex.buy}}</span>
 								</el-radio>
 								<br/>
 								<el-radio label="3">
 									<span>币安</span>
-									<span>兑入价格：{{Math.floor(form.bian.buy * 100) / 100}}</span>
-									<span>兑出价格：{{Math.floor(form.bian.sell * 100 ) / 100}}</span>
+									<span>兑入价格：{{form.bian.sell}}</span>
+									<span>兑出价格：{{form.bian.buy}}</span>
 								</el-radio>
 								<br/>
 								<el-radio label="2">
@@ -57,28 +57,28 @@
 							<el-input v-model.trim="form.MERCHANT_COIN_NAME" :disabled="true" style="width:100px"></el-input>
 						</el-form-item>
 						<el-form-item label="兑入价格：" v-if="form.MERCHANT_RATE_TYPE == 1">
-							<el-input v-model.trim="form.MERCHANT_IN_PRICE" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.MERCHANT_IN_PRICE_FLOAT" placeholder="输入倍数（如0.9）"></el-input>
+							<el-input v-model.trim="form.MERCHANT_OUT_PRICE" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.MERCHANT_OUT_PRICE_FLOAT" placeholder="输入倍数（如0.9）"></el-input>
 						</el-form-item>
 						<el-form-item label="兑入价格：" v-else-if="form.MERCHANT_RATE_TYPE == 3">
-							<el-input v-model.trim="form.bian.buy" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.MERCHANT_IN_PRICE_FLOAT" placeholder="输入倍数（如0.9）"></el-input>
+							<el-input v-model.trim="form.bian.sell" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.MERCHANT_OUT_PRICE_FLOAT" placeholder="输入倍数（如0.9）"></el-input>
 						</el-form-item>
 						<el-form-item label="兑入价格：" v-else-if="form.MERCHANT_RATE_TYPE == 4">
-							<el-input v-model.trim="form.okex.buy" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.MERCHANT_IN_PRICE_FLOAT" placeholder="输入倍数（如0.9）"></el-input>
+							<el-input v-model.trim="form.okex.sell" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.MERCHANT_OUT_PRICE_FLOAT" placeholder="输入倍数（如0.9）"></el-input>
 						</el-form-item>
 						<el-form-item label="兑入价格：" v-else>
-							<el-input v-model.trim="form.MERCHANT_IN_PRICE"></el-input>
+							<el-input v-model.trim="form.MERCHANT_OUT_PRICE"></el-input>
 						</el-form-item>
 						<el-form-item label="兑出价格：" v-if="form.MERCHANT_RATE_TYPE == 1">
-							<el-input v-model.trim="form.MERCHANT_OUT_PRICE" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.MERCHANT_OUT_PRICE_FLOAT" placeholder="输入倍数（如1.1）"></el-input>
+							<el-input v-model.trim="form.MERCHANT_IN_PRICE" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.MERCHANT_IN_PRICE_FLOAT" placeholder="输入倍数（如1.1）"></el-input>
 						</el-form-item>
 						<el-form-item label="兑出价格：" v-else-if="form.MERCHANT_RATE_TYPE == 3">
-							<el-input v-model.trim="form.bian.sell" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.MERCHANT_OUT_PRICE_FLOAT" placeholder="输入倍数（如1.1）"></el-input>
+							<el-input v-model.trim="form.bian.buy" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.MERCHANT_IN_PRICE_FLOAT" placeholder="输入倍数（如1.1）"></el-input>
 						</el-form-item>
 						<el-form-item label="兑出价格：" v-else-if="form.MERCHANT_RATE_TYPE == 4">
-							<el-input v-model.trim="form.okex.sell" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.MERCHANT_OUT_PRICE_FLOAT" placeholder="输入倍数（如1.1）"></el-input>
+							<el-input v-model.trim="form.okex.buy" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.MERCHANT_IN_PRICE_FLOAT" placeholder="输入倍数（如1.1）"></el-input>
 						</el-form-item>
 						<el-form-item label="兑出价格：" v-else>
-							<el-input v-model.trim="form.MERCHANT_OUT_PRICE"></el-input>
+							<el-input v-model.trim="form.MERCHANT_IN_PRICE"></el-input>
 						</el-form-item>
 					</el-form>
 					<p class="tips">提示：价格默认使用系统设置的价格，开启手动设置的价格，则自动关闭系统价格，关闭手动设置的价格，则自动开启系统价格。</p>
@@ -414,6 +414,10 @@ export default {
 				.el-radio__label {
 					span {
 						margin-right:20px;
+						&:first-of-type {
+							display: inline-block;
+							width:50px;
+						}
 					}
 				}
 			}

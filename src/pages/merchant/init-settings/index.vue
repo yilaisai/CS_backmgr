@@ -13,14 +13,14 @@
 			</div>
 			<ul>
 				<li><label>{{coinName}}当前市价:</label><span>{{form.toRMBPrice}}</span></li>
-				<li v-if="form.MERCHANT_RATE_TYPE == 1"><label>{{coinName}}当前兑入价格:</label><span>{{Math.floor((BigNumber(form.MERCHANT_OUT_PRICE*1).plus(form.MERCHANT_OUT_PRICE_FLOAT*1 ))* 100) / 100}}</span></li>
+				<li v-if="form.MERCHANT_RATE_TYPE == 1"><label>{{coinName}}当前兑入价格:</label><span>{{Math.floor((BigNumber(form.huobi.sell*1).plus(form.MERCHANT_OUT_PRICE_FLOAT*1 ))* 100) / 100}}</span></li>
 				<li v-else-if="form.MERCHANT_RATE_TYPE == 3"><label>{{coinName}}当前兑入价格:</label><span>{{Math.floor((BigNumber(form.bian.sell*1).plus(form.MERCHANT_OUT_PRICE_FLOAT*1 ))* 100) / 100}}</span></li>
 				<li v-else-if="form.MERCHANT_RATE_TYPE == 4"><label>{{coinName}}当前兑入价格:</label><span>{{Math.floor((BigNumber(form.okex.sell*1).plus(form.MERCHANT_OUT_PRICE_FLOAT*1 ))* 100) / 100}}</span></li>
-				<li v-else><label>{{coinName}}当前兑入价格:</label><span>{{form.MERCHANT_IN_PRICE}}</span></li>
-				<li v-if="form.MERCHANT_RATE_TYPE == 1"><label>{{coinName}}当前兑出价格:</label><span>{{Math.floor((BigNumber(form.MERCHANT_IN_PRICE*1).plus(form.MERCHANT_IN_PRICE_FLOAT*1)) * 100) / 100}}</span></li>
+				<li v-else><label>{{coinName}}当前兑入价格:</label><span>{{form.MERCHANT_OUT_PRICE}}</span></li>
+				<li v-if="form.MERCHANT_RATE_TYPE == 1"><label>{{coinName}}当前兑出价格:</label><span>{{Math.floor((BigNumber(form.huobi.buy*1).plus(form.MERCHANT_IN_PRICE_FLOAT*1)) * 100) / 100}}</span></li>
 				<li v-else-if="form.MERCHANT_RATE_TYPE == 3"><label>{{coinName}}当前兑出价格:</label><span>{{Math.floor((BigNumber(form.bian.buy*1).plus(form.MERCHANT_IN_PRICE_FLOAT*1)) * 100) / 100}}</span></li>
 				<li v-else-if="form.MERCHANT_RATE_TYPE == 4"><label>{{coinName}}当前兑出价格:</label><span>{{Math.floor((BigNumber(form.okex.buy*1).plus(form.MERCHANT_IN_PRICE_FLOAT*1)) * 100) / 100}}</span></li>
-				<li v-else><label>{{coinName}}当前兑出价格:</label><span>{{form.MERCHANT_OUT_PRICE}}</span></li>
+				<li v-else><label>{{coinName}}当前兑出价格:</label><span>{{form.MERCHANT_IN_PRICE}}</span></li>
 			</ul>
 		</div>
 		<div class="content-wrap">
@@ -135,6 +135,10 @@
 						<el-form-item label="商户最大兑出额度：">
 							<el-input type="number" v-model.trim="form.MERCHANT_MAX_OUT_AMOUNT"></el-input>
 						</el-form-item>
+						<br />
+						<!-- <el-form-item label="商户充币手续费：">
+							<el-input type="number" v-model.trim="form.MERCHANT_MAX_OUT_AMOUNT"></el-input>
+						</el-form-item> -->
 					</el-form>
 					<p class="tips">提示：商户默认该参数，可在商户查询模块单独配置该参数。初始化设置修改后只对新增商户生效。</p>
 				</el-tab-pane>
@@ -142,7 +146,6 @@
 			<el-tabs type="border-card">
 				<el-tab-pane label="全局设置">
 					<el-form ref="form" :model="form" label-width="170px" size="small">
-						
 						<el-form-item v-if=" coinName == 'USDT' " label="omni提币手续费:">
 							<el-input type="number" v-model.trim="form.MERCHANT_WITHDRAW_RATE_OMNI"></el-input>
 						</el-form-item>

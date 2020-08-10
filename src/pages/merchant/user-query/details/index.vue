@@ -141,6 +141,11 @@
 					<span>【{{pageData.coinInfo.minOut}}】 ~ 【{{pageData.coinInfo.maxOut}}】</span>
 					<el-button type="primary" plain size="mini" @click="showDialog('duiChu')">修改</el-button>
 				</li>
+				<!-- <li>
+					<label>充币手续费:</label>
+					<span>【{{pageData.coinInfo.minOut}}】</span>
+					<el-button type="primary" plain size="mini" @click="showDialog('chongbi')">修改</el-button>
+				</li> -->
 				<!-- <li class="big">
 					<label>代付兑出手续费比例 : 每单代付数量的</label>
 					<el-input class="inputHasText" disabled placeholder="未设置默认1" :value="Math.floor(pageData.info.batchOutRatioFee*10000)/100"><template slot="append">%</template> </el-input>
@@ -172,7 +177,7 @@
 		<CheckStand :data="pageData"></CheckStand>
 		<el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="40%" >
 			<el-form ref="form" :model="formData" label-width="120px">
-				<el-form-item :label="label1">
+				<el-form-item :label="label1" v-if="dialogType != 'chongbi'">
 					<el-input type="number" v-model="formData.value1" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')">
 						<template slot="append" v-if="dialogType == 'feeRateIn' || dialogType == 'firstRate' || dialogType == 'secRate'|| dialogType == 'daifu'">%</template>
 					</el-input>
@@ -329,6 +334,11 @@ export default {
 				this.label1 = '每单代付费率'
 				this.label2 = '每单固定金额'
 				this.formData.value1 = Math.floor(this.pageData.info.batchOutRatioFee*10000)/100
+				this.formData.value2 = this.pageData.info.batchOutFixedFee
+			}else if (this.dialogType == 'chongbi'){
+				this.dialogTitle = '修改充币手续费：'
+				this.label2 = '充币手续费'
+				this.formData.value1 = ''
 				this.formData.value2 = this.pageData.info.batchOutFixedFee
 			}
 			this.dialogVisible = true

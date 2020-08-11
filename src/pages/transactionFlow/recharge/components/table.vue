@@ -61,7 +61,7 @@
 		size="mini"
 		style="min-width: 100%">
 		<!-- <el-table-column prop="create_time" label="发起时间" width="140"></el-table-column> -->
-		<el-table-column prop="nickName" label="账号|用户编号" width="140">
+		<el-table-column prop="nickName" label="账号|用户编号" width="190">
 			<template slot-scope="scope">
 				<span>{{scope.row.phone + ' | ' + scope.row.nickName}}</span>
 			</template>
@@ -71,6 +71,7 @@
 		</el-table-column>
 		<el-table-column prop="coin_name" label="币种" align="center"></el-table-column>
 		<el-table-column prop="amount" label="数量"></el-table-column>
+		<el-table-column prop="fee" label="手续费"></el-table-column>
 		<el-table-column prop="status" label="充值状态" align="center">
 			<span slot-scope="scope">{{scope.row.status | filterStatus(orderStatus)}}</span>
 		</el-table-column>

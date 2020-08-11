@@ -70,7 +70,11 @@
 			<template slot-scope="scope">{{scope.row.userType | userTypesFilter}}</template>
 		</el-table-column>
 		<el-table-column prop="coin_name" label="币种" align="center"></el-table-column>
-		<el-table-column prop="amount" label="数量"></el-table-column>
+		<el-table-column prop="amount" label="数量">
+			<template slot-scope="scope">
+        {{BigNumber(scope.row.amount).plus(scope.row.fee)}}
+      </template>
+		</el-table-column>
 		<el-table-column prop="fee" label="手续费"></el-table-column>
 		<el-table-column prop="status" label="充值状态" align="center">
 			<span slot-scope="scope">{{scope.row.status | filterStatus(orderStatus)}}</span>
@@ -114,6 +118,7 @@
 <script>
 let orderStatus = []
 import ManualTransferDialog from './manual-transfer-dialog'
+import BigNumber from 'bignumber.js'
 export default {
 	props: {
 		list: {
@@ -157,6 +162,9 @@ export default {
 		},
 		hideDialogMT(b) {
 			this.showDialogMT = b
+		},
+		BigNumber(num){
+			return BigNumber(num)
 		}
 	},
 	components: {

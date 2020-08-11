@@ -129,7 +129,7 @@ Vue.filter("optType", function (val) {  //保留小数位，acc为保留几位�
 		return '钱包转账到法币'
 	  break;
 	  case 21:
-		return '承兑商折扣'
+		return '交易员折扣'
 	  break;
 	  case 22:
 		return '直接折扣'

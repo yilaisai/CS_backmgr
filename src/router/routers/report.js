@@ -13,7 +13,7 @@ const report = [
 			{
 				path: 'AcceptanceReport',
 				name: 'AcceptanceReport',
-				meta: { title: '承兑商交易报表' },
+				meta: { title: '交易员交易报表' },
 				component: () => import('@/pages/report/AcceptanceReport')
       },
       {

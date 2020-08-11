@@ -107,7 +107,7 @@
 							<el-table-column prop="letgo_time" label="确认时间" align="center" width="140">
 								<template slot-scope="scope" v-if="scope.row.letgo_time">{{ $fmtDate(scope.row.letgo_time,'full') }}</template>
 							</el-table-column>
-							<el-table-column prop="api_user_id" label="承兑商编号/账号" align="center">
+							<el-table-column prop="api_user_id" label="交易员编号/账号" align="center">
 								<span slot-scope="scope">{{scope.row.nick_name}}<br />{{scope.row.phone}}</span>
 							</el-table-column>
 							<el-table-column prop="price" label="操作" fixed="right" align="center" width="300">

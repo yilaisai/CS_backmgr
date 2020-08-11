@@ -14,7 +14,7 @@ const user = [
 				path: 'userQuery',
 				name:'userQuery',
 				meta: {
-				title: '币商管理',
+				title: '交易员管理',
 				},
 				component:() => import('@/pages/LegalCurrency/userQuery/index.vue'),
 			},
@@ -123,7 +123,7 @@ const user = [
         path: 'LegalCurrencySetting',
         name:'LegalCurrencySetting',
         meta: {
-          title: '币商全局设置',
+          title: '交易员全局设置',
         },
         component:() => import('@/pages/LegalCurrency/setting'),
       },{

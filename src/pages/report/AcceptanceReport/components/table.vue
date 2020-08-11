@@ -1,7 +1,7 @@
 <template>
 	<div class="table-wrap">
 		<div class="table-title">
-			<h4>承兑商交易报表</h4>
+			<h4>交易员交易报表</h4>
 			<div class="btn-wrap">
 				<!-- <el-button type="primary" size="mini" icon="el-icon-circle-plus" @click="$emit('hideDialogMR', true)">手动录单</el-button> -->
 			</div>

@@ -41,10 +41,10 @@
 					<el-form-item label="商户订单号:">
 						<el-input v-model="detaileData.apiTradeId" disabled></el-input>
 					</el-form-item>
-					<el-form-item label="承兑商账户:">
+					<el-form-item label="交易员账户:">
 						<el-input v-model="detaileData.makerPhone" disabled></el-input>
 					</el-form-item>
-					<el-form-item label="承兑商用户编号:">
+					<el-form-item label="交易员用户编号:">
 						<el-input v-model="detaileData.makerName" disabled></el-input>
 					</el-form-item>
 				</el-form>
@@ -75,7 +75,7 @@
 					<!-- <el-form-item label="商户方奖励:" class="big">
 						<el-input :value=" '直接 0'+detaileData.coinName+', 间接 0'+detaileData.coinName  " disabled></el-input>
 					</el-form-item> -->
-					<el-form-item label="承兑商方折扣:" >
+					<el-form-item label="交易员方折扣:" >
 						<!-- <el-input class="hasBtn" :value=" '承兑商'+detaileData.makerCommission+detaileData.coinName+', 直接'+detaileData.makerFirstCommission+detaileData.coinName+', 间接'+detaileData.makerSecondaryCommission+detaileData.coinName  " disabled> -->
 							<el-button  @click=" discountDetaile ">查看详情</el-button>
 						<!-- </el-input> -->

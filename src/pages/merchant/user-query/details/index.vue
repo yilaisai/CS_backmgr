@@ -141,11 +141,11 @@
 					<span>【{{pageData.coinInfo.minOut}}】 ~ 【{{pageData.coinInfo.maxOut}}】</span>
 					<el-button type="primary" plain size="mini" @click="showDialog('duiChu')">修改</el-button>
 				</li>
-				<!-- <li>
+				<li>
 					<label>充币手续费:</label>
-					<span>【{{pageData.coinInfo.minOut}}】</span>
+					<span>{{Math.floor(pageData.coinInfo.merchantRechargeRate*10000)/100}}<span> %</span></span>
 					<el-button type="primary" plain size="mini" @click="showDialog('chongbi')">修改</el-button>
-				</li> -->
+				</li>
 				<!-- <li class="big">
 					<label>代付兑出手续费比例 : 每单代付数量的</label>
 					<el-input class="inputHasText" disabled placeholder="未设置默认1" :value="Math.floor(pageData.info.batchOutRatioFee*10000)/100"><template slot="append">%</template> </el-input>
@@ -187,9 +187,12 @@
 					<el-input type="number" v-if="dialogType == 'daifu'" v-model="formData.value2" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3')">
 						<template slot="append" v-if="dialogType == 'daifu'">{{$variableCoin}}</template>
 					</el-input>
+					<el-input v-else-if="dialogType == 'chongbi'"  v-model="formData.value2">
+						<template slot="append" v-if="dialogType == 'feeRateIn' || dialogType == 'firstRate' || dialogType == 'secRate' || dialogType == 'chongbi'">%</template>
+					</el-input>
 					<el-input v-else type="number" v-model="formData.value2" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')">
-					<template slot="append" v-if="dialogType == 'feeRateIn' || dialogType == 'firstRate' || dialogType == 'secRate'">%</template>
-				</el-input>
+						<template slot="append" v-if="dialogType == 'feeRateIn' || dialogType == 'firstRate' || dialogType == 'secRate' || dialogType == 'chongbi'">%</template>
+					</el-input>
 				</el-form-item>
 			</el-form>
 			<span slot="footer" class="dialog-footer">
@@ -202,6 +205,7 @@
 
 <script>
 import CheckStand from './components/checkStand'
+import BigNumber from 'bignumber.js'
 export default {
 	data() { 
 		return {
@@ -242,7 +246,6 @@ export default {
 				if (this.pageData.feeList[0].outFee == this.pageData.feeList[1].outFee && this.pageData.feeList[1].outFee  == this.pageData.feeList[2].outFee) {
 					outFee = this.pageData.feeList[0].outFee
 				}
-				console.log(inFee)
 				this.pageData.feeList.unshift({
 					payType:0,
 					inFee:inFee,
@@ -339,7 +342,8 @@ export default {
 				this.dialogTitle = '修改充币手续费：'
 				this.label2 = '充币手续费'
 				this.formData.value1 = ''
-				this.formData.value2 = this.pageData.info.batchOutFixedFee
+				console.log(this.pageData.info.merchantRechargeRate)
+				this.formData.value2 = Math.floor(this.pageData.coinInfo.merchantRechargeRate*10000)/100
 			}
 			this.dialogVisible = true
 		},
@@ -350,7 +354,7 @@ export default {
 				type: type,   //1、兑入；2、兑出；
 				userId: this.$route.query.id,
 				value1: this.formData.value1,   //最小兑入额
-				value2: this.formData.value2   //最大兑入额
+				value2: this.formData.value2,   //最大兑入额
 			}).then(res => {
 				this.formData.value1 = ""
 				this.formData.value2 = ""
@@ -413,6 +417,8 @@ export default {
 				this.updateMerchantInfo(3)
 			}else if(this.dialogType == 'daifu'){
 				this.updateBatchOutFee()
+			}else if(this.dialogType == "chongbi") {
+				this.updateRechargeFee()
 			}
 		},
 		
@@ -435,6 +441,23 @@ export default {
 				matchSwitch: val,
 				userId: this.pageData.info.userId
 			}).then(res => {
+				this.$notify.success({
+					title: '提示',
+					message: res.msg
+				})	
+				this.getDetails()
+			})
+		},
+		//修改充币手续费
+		updateRechargeFee(){
+			this.$http.post('/wallet/backmgr/merchant/updateMerchantCoinConfig', {
+				coinName: this.coinName,
+				userId: this.$route.query.id,
+				type:1,      // 无实际意义，必填参数，随便填兑入或者兑出
+				merchantRechargeRate:Math.floor(this.formData.value2*1000)/100000
+			}).then(res => {
+				this.formData.value1 = ""
+				this.formData.value2 = ""
 				this.$notify.success({
 					title: '提示',
 					message: res.msg

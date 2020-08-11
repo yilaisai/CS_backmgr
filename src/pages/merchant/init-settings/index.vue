@@ -7,7 +7,6 @@
 					<label>币种：</label>
 					<el-select v-model="coinName" placeholder="请选择" size="small">
 						<el-option label="USDT" value="USDT"></el-option>
-						<!-- <el-option v-for="(item, key) in coinInfo" :key="key" :value="item.coinName" :label="item.coinName"></el-option> -->
 					</el-select>
 				</div>
 			</div>
@@ -28,7 +27,7 @@
 			<el-tabs type="border-card">
 				<el-tab-pane label="兑入兑出价格设置">
 					<el-form ref="form" :model="form" label-width="100px" size="small">
-						<el-form-item label="类型：">
+						<el-form-item label="类型：" v-if="form.huobi">
 							<el-radio-group v-model="form.MERCHANT_RATE_TYPE">
 								<el-radio label="1">
 									<span>火币</span>
@@ -136,9 +135,11 @@
 							<el-input type="number" v-model.trim="form.MERCHANT_MAX_OUT_AMOUNT"></el-input>
 						</el-form-item>
 						<br />
-						<!-- <el-form-item label="商户充币手续费：">
-							<el-input type="number" v-model.trim="form.MERCHANT_MAX_OUT_AMOUNT"></el-input>
-						</el-form-item> -->
+						<el-form-item label="商户充币手续费：">
+							<el-input v-model.trim="form.MERCHANT_RECHARGE_RATE" @input="form.MERCHANT_RECHARGE_RATE = form.MERCHANT_RECHARGE_RATE.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')">
+								<template slot="append">%</template>
+							</el-input>
+						</el-form-item>
 					</el-form>
 					<p class="tips">提示：商户默认该参数，可在商户查询模块单独配置该参数。初始化设置修改后只对新增商户生效。</p>
 				</el-tab-pane>
@@ -223,6 +224,7 @@ export default {
 			dialogVisible:false,
 			inFee: 0,
 			outFee: 0,
+			
 			coinName: this.$variableCoin,
 			payType: "",
 			inSwitch:'1',
@@ -245,6 +247,7 @@ export default {
 			}).then(res => {
 				this.form = res.result
 				this.form.BATCHOUT_RATIO_FEE = Math.floor(this.form.BATCHOUT_RATIO_FEE*10000)/100
+				this.form.MERCHANT_RECHARGE_RATE = Math.floor(this.form.MERCHANT_RECHARGE_RATE*10000)/100
 				let inFee = ''
 				let outFee = ''
 				if (this.form.otcPayLists[0].inFee == this.form.otcPayLists[1].inFee &&  this.form.otcPayLists[1].inFee == this.form.otcPayLists[2].inFee) {
@@ -339,6 +342,7 @@ export default {
 			this.form.outFee = this.outFee?(this.outFee / 100).toFixed(4):-1
 			this.form.payType = this.payType
 			this.form.BATCHOUT_RATIO_FEE = Math.floor(this.form.BATCHOUT_RATIO_FEE)/100
+			this.form.MERCHANT_RECHARGE_RATE = Math.floor(this.form.MERCHANT_RECHARGE_RATE*100)/10000
 			this.$http.post('/wallet/backmgr/merchant/trade/updateConfig', this.form).then(res => {
 				this.$notify.success({
 					title: '提示',

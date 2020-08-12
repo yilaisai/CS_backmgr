@@ -43,18 +43,17 @@
         <el-button type="primary" @click="submitFormPwd" size="small">确 定</el-button>
       </div>
     </el-dialog>
-    <div class="message-box" v-show="appealIngRemind + withdrawIngRemind + bindInfoIngRemind + outIngRemind + merchantApplyIngRemind + auditIngRemind + auditPersonIngRemind + payedOrderIn + payedOrderOut + appealOverIng > 0">
+    <div class="message-box" v-show=" withdrawIngRemind + bindInfoIngRemind + outIngRemind + merchantApplyIngRemind + auditIngRemind + auditPersonIngRemind + payedOrderIn + payedOrderOut + appealOverIng > 0">
       <div :class="['topbar',{'down' : !messageBoxShow}]" @click="messageBoxShow = !messageBoxShow">
-        <span class="blink" v-show="!messageBoxShow">有{{appealIngRemind + withdrawIngRemind + bindInfoIngRemind + outIngRemind + merchantApplyIngRemind + auditIngRemind + auditPersonIngRemind + appealOverIng }}条新的待处理事项，点击展开</span>
+        <span class="blink" v-show="!messageBoxShow">有{{withdrawIngRemind + bindInfoIngRemind + outIngRemind + merchantApplyIngRemind + auditIngRemind + auditPersonIngRemind + appealOverIng }}条新的待处理事项，点击展开</span>
         <span v-show="messageBoxShow"><img src="../../../static/img/logo_white.png" alt=""></span>
         <el-button v-show="messageBoxShow" size="mini" @click="noRemind">不再提醒</el-button>
         <i :class="{'down' : messageBoxShow}"></i>
       </div>
       <ul v-show="messageBoxShow">
-        <li @click="$router.push('/LegalCurrency/complaint')" v-show="appealIngRemind > 0">
+        <!-- <li @click="$router.push('/LegalCurrency/complaint')" v-show="appealIngRemind > 0">
           <span>{{appealIngRemind}}条申诉待处理</span>
-          <!-- <i>5分钟前</i> -->
-        </li>
+        </li> -->
         <li @click="$router.push('/LegalCurrency/complaint')" v-show="appealOverIng > 0">
           <span>{{appealOverIng}}条超时申诉待处理</span>
           <!-- <i>5分钟前</i> -->
@@ -203,14 +202,14 @@ export default {
       const startDate = localStorage.getItem('NO_REMIND_TIME') || ''
       this.$http.post('/wallet/backmgr/indexInfo', {type: 1, noLoading: true, startDate}).then(res => {
           let result = res.result;
-          this.appealIngRemind = result.appealIng
+          // this.appealIngRemind = result.appealIng
           this.auditIngRemind = result.auditIng
           this.bindInfoIngRemind = result.bindInfoIng
           this.outIngRemind = result.outIng
           this.withdrawIngRemind = result.withdrawIng
           this.auditPersonIngRemind = result.auditPersonIng
           this.merchantApplyIngRemind = result.merchantApplyIng
-          if(this.appealIngRemind > 0 || this.auditIngRemind > 0 || this.bindInfoIngRemind > 0 || this.outIngRemind > 0 || this.withdrawIngRemind > 0 || this.auditPersonIngRemind > 0 || this.merchantApplyIngRemind > 0 ) {
+          if( this.auditIngRemind > 0 || this.bindInfoIngRemind > 0 || this.outIngRemind > 0 || this.withdrawIngRemind > 0 || this.auditPersonIngRemind > 0 || this.merchantApplyIngRemind > 0 ) {
             this.$emit('musicPlay')
           }else if(this.payedOrderIn < result.payedOrderIn || this.payedOrderOut < result.payedOrderOut || this.appealOverNumber < result.appealOverIng) {
             this.$emit('musicPlay')

@@ -100,7 +100,7 @@ export default {
 							// this.mergeArray(list)
             }
         }else{
-          list =res.result.list
+          list =res.result.list || []
           list.forEach(element => {
             if(element.childNum>0){
               element.hasChildren = true

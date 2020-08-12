@@ -1,6 +1,6 @@
 <template>
 	<div class="authorizedMerchant-page">
-		<el-form ref="form" :model="formData" label-width="85px" size="mini" inline>
+		<el-form ref="form" :model="formData" label-width="auto" size="mini" inline>
 			<el-form-item label="分组名称:">
 				<el-input v-model="formData.groupName" placeholder="分组名称"></el-input>
 			</el-form-item>

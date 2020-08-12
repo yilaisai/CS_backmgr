@@ -303,7 +303,7 @@ export default {
 			this.appealData.proofImg = '' 
 			this.appealList=[
 				{value:data.taker_user_id,label:'商户:'+data.taker_nick_name},
-				{value:data.maker_user_id,label:'码商:'+data.nick_name}
+				{value:data.maker_user_id,label:'交易员:'+data.nick_name}
 			]
 			this.showAppeal = true
 		}, 
@@ -399,7 +399,7 @@ export default {
 			})
 		},
 		activationLetgo(tradeId){
-			this.$confirm('放行后订单状态将变为已完成(码商扣币，商户加币)，确认放行？', '确认放行订单？', {
+			this.$confirm('放行后订单状态将变为已完成(交易员扣币，商户加币)，确认放行？', '确认放行订单？', {
 				confirmButtonText: '确定',
 				cancelButtonText: '取消',
 			// type: 'warning'

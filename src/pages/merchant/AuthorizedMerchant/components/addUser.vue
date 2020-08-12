@@ -2,7 +2,7 @@
 	<!-- <div class="addMerchant-page">
 
 	</div> -->
-		<el-dialog class="addUser-page" title="增加码商" :visible.sync="showWidget">
+		<el-dialog class="addUser-page" title="增加交易员" :visible.sync="showWidget">
 			<el-form  :model="filterForm" label-width="95px" size="mini" inline>
 				<el-form-item label="账号:">
 					<el-input v-model="filterForm.account" placeholder="请输入账号"></el-input>
@@ -60,7 +60,7 @@ export default {
 	methods:{
 		addUser(){
 			if(this.selectList.length<1){
-				this.$message.error('请选择码商')
+				this.$message.error('请选择交易员')
 				return
 			}
 			if(this.groupId!==''){

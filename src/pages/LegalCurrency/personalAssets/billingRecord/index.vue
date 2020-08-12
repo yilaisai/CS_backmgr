@@ -224,10 +224,10 @@ export default {
 						return '批量代付完成'
 						break;
 					case 39:
-						return '码商违规操作'
+						return '交易员违规操作'
 						break;
 					case 40:
-						return '码商违规操作收入'
+						return '交易员违规操作收入'
 						break;
 					default:
 						return 'null'
@@ -274,10 +274,10 @@ export default {
 						return '法币转钱包'
 					break;
 					case 16:
-						return '码商违规操作'
+						return '交易员违规操作'
 					break;
 					case 17:
-						return '码商违规操作收入'
+						return '交易员违规操作收入'
 					break;
 					default:
 							return data.optType

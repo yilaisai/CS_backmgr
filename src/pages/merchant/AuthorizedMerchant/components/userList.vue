@@ -1,19 +1,19 @@
 <template>
 	<div class="userList-page">
 		<div class="title">
-			<span>码商列表：</span>
+			<span>交易员列表：</span>
 			<p>
 				<el-button size="mini" type="danger" :disabled=" multipleSelection.length==0 " @click="checkedDelete()"> 一键删除 </el-button>
-				<el-button size="mini" type="primary" @click="$refs.AddUser.show(list,groupId) "> 增加码商 </el-button>
+				<el-button size="mini" type="primary" @click="$refs.AddUser.show(list,groupId) "> 增加交易员 </el-button>
 			</p>
 		</div>
 		<el-table :data="list" height="auto" border size="mini"  @selection-change="handleSelectionChange">
 			<el-table-column type="selection" width="55" align="center"></el-table-column >
 			<el-table-column type="index" width="50" label="序号" align="center"> </el-table-column>
-			<el-table-column prop="phone" label="码商账户" align="center" >
+			<el-table-column prop="phone" label="交易员账户" align="center" >
 				<template slot-scope="scope">{{ scope.row.phone || scope.row.account }}</template>
 			</el-table-column>
-			<el-table-column prop="nickName" label="码商用户编号" align="center"></el-table-column>
+			<el-table-column prop="nickName" label="交易员用户编号" align="center"></el-table-column>
 			<el-table-column prop="realName" label="实名姓名" align="center"></el-table-column>
 			<el-table-column prop="date" label="操作" fixed="right" width="110" align="center">
 				<template slot-scope="scope">

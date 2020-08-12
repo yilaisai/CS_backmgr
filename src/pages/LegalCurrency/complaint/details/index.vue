@@ -71,7 +71,7 @@
             <div class="card-box" v-if="BuyList.length>0">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
-                        <span>码商信息</span>
+                        <span>交易员信息</span>
                         <!-- <el-button style="float: right; padding: 3px 0" type="text" @click="routerMore(BuyList[0].userId)">查看更多</el-button> -->
                     </div>
                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#dee2e6" class="com-table">

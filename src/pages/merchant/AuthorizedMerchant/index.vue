@@ -30,7 +30,7 @@
 		<el-table :data="list" height="auto" border size="mini" style="min-width: 100%" :show-overflow-tooltip='true' >
 			<el-table-column prop="groupName" label="分组名" align="center" width="90"></el-table-column>
 			<el-table-column prop="merchentNameList" label="商户列表" align="center"></el-table-column>
-			<el-table-column prop="userNameList" label="码商列表" align="center"></el-table-column>
+			<el-table-column prop="userNameList" label="交易员列表" align="center"></el-table-column>
 			<el-table-column  label="创建时间" width="160" align="center">
 				<template slot-scope="scope">
 					{{ $fmtDate(scope.row.createTime,'full') }}

@@ -76,7 +76,7 @@ export default {
 				this.$message.error('请添加商户')
 				return
 			}else if(this.$refs.UserList.getList().length<1){
-				this.$message.error('请添加码商')
+				this.$message.error('请添加交易员')
 				return
 			}
 			let merIds = ''

@@ -48,7 +48,7 @@
                     <el-table-column prop="isBuyer" label="身份"  align="center">
                         <template slot-scope="scope">
                             <span v-if="scope.row.taker == 1">商户</span>
-                            <span v-else>码商</span>
+                            <span v-else>交易员</span>
                         </template>
                     </el-table-column>
                     <el-table-column prop="appealId" label="申诉号" align="center" ></el-table-column>

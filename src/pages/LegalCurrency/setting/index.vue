@@ -19,7 +19,7 @@
 						<el-input placeholder="请输入保证金" v-model="detaileData.deposit" ></el-input>
 					</el-form-item>
 				</el-form>
-				<h4>码商接单额度全局设置</h4>
+				<h4>交易员接单额度全局设置</h4>
 				<el-form label-width="140px" ref="filterForm" size="mini">
 					<el-form-item label="全局兑出范围:">
 						<el-input v-model="detaileData.sysMatchMin" placeholder="请输入">

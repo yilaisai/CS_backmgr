@@ -67,7 +67,7 @@
         <li @click="$router.push({path:'/transactionFlow/CashIn',query:{status:'1'}})" v-show="payedOrderIn > 0"><span>{{payedOrderIn}}条15分钟兑入未确认</span></li>
         <li @click="$router.push({path:'/transactionFlow/CashIn',query:{status:'1'}})" v-show="payedIn > 0"><span>{{payedIn}}条已付款10分钟兑入未确认</span></li>
         <li @click="$router.push({path:'/transactionFlow/CashOut',query:{status:'1'}})" v-show="payedOrderOut > 0"><span>{{payedOrderOut}}条15分钟兑出未确认</span></li>
-        <li @click="$router.push({path:'/transactionFlow/CashOut',query:{status:'1'}})" v-show="payedOut > 0"><span>{{payedOut}}条已付款15分钟兑出未确认</span></li>
+        <li @click="$router.push({path:'/transactionFlow/CashOut',query:{status:'1'}})" v-show="payedOut > 0"><span>{{payedOut}}条已付款10分钟兑出未确认</span></li>
       </ul>
     </div>
   </div>

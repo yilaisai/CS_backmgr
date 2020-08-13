@@ -78,7 +78,7 @@
 						<el-table-column prop="fee" label="手续费(USDT)" align="center"></el-table-column>
 						<el-table-column prop="coupling_fee" label="撮合费(USDT)" align="center"></el-table-column>
 						<el-table-column prop="isReward" label="返佣状态" align="center" width="120">
-							<span slot-scope="scope">{{scope.row.isReward == 1?'已发佣金':scope.row.isReward == 2?'已扣除佣金':scope.row.isReward == 3?'超时未返佣':'未发佣金'}}</span>
+							<span slot-scope="scope">{{scope.row.isReward == 1?'已发佣金':scope.row.isReward == 2?'已扣除佣金':scope.row.isReward == 3?'激活未返佣':'未发佣金'}}</span>
 						</el-table-column>
 						<el-table-column  label="商户单号/平台单号" width="180" align="center" >
 							<span slot-scope="scope">{{scope.row.api_trade_id}}<br />{{scope.row.trade_id}}</span>

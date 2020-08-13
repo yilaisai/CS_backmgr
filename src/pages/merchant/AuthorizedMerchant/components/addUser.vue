@@ -3,8 +3,8 @@
 
 	</div> -->
 		<el-dialog class="addUser-page" title="增加交易员" :visible.sync="showWidget">
-			<el-form  :model="filterForm" label-width="95px" size="mini" inline>
-				<el-form-item label="账号:">
+			<el-form  :model="filterForm" label-width="105px" size="mini" inline>
+				<el-form-item label="账号/用户编号:">
 					<el-input v-model="filterForm.account" placeholder="请输入账号"></el-input>
 				</el-form-item>
 				<el-form-item>

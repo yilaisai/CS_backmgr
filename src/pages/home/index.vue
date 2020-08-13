@@ -43,9 +43,9 @@
         <el-button type="primary" @click="submitFormPwd" size="small">确 定</el-button>
       </div>
     </el-dialog>
-    <div class="message-box" v-show=" withdrawIngRemind + bindInfoIngRemind + outIngRemind + merchantApplyIngRemind + auditIngRemind + auditPersonIngRemind + payedOrderIn + payedOrderOut + appealOverIng > 0">
+    <div class="message-box" v-show=" withdrawIngRemind + bindInfoIngRemind + outIngRemind + merchantApplyIngRemind + auditIngRemind + auditPersonIngRemind + payedOrderIn + payedOrderOut + appealOverIng + payedIn + payedOut > 0">
       <div :class="['topbar',{'down' : !messageBoxShow}]" @click="messageBoxShow = !messageBoxShow">
-        <span class="blink" v-show="!messageBoxShow">有{{withdrawIngRemind + bindInfoIngRemind + outIngRemind + merchantApplyIngRemind + auditIngRemind + auditPersonIngRemind + appealOverIng }}条新的待处理事项，点击展开</span>
+        <span class="blink" v-show="!messageBoxShow">有{{withdrawIngRemind + bindInfoIngRemind + outIngRemind + merchantApplyIngRemind + auditIngRemind + auditPersonIngRemind + appealOverIng + payedIn + payedOut}}条新的待处理事项，点击展开</span>
         <span v-show="messageBoxShow"><img src="../../../static/img/logo_white.png" alt=""></span>
         <el-button v-show="messageBoxShow" size="mini" @click="noRemind">不再提醒</el-button>
         <i :class="{'down' : messageBoxShow}"></i>
@@ -65,7 +65,9 @@
         <li @click="$router.push('/LegalCurrency/advertisersVerify')" v-show="auditIngRemind > 0"><span>{{auditIngRemind}}条广告商审核待处理</span></li>
         <li @click="$router.push({path:'/user/identityVerify',query:{status:'1'}})" v-show="auditPersonIngRemind > 0"><span>{{auditPersonIngRemind}}条实名审核待处理</span></li>
         <li @click="$router.push({path:'/transactionFlow/CashIn',query:{status:'1'}})" v-show="payedOrderIn > 0"><span>{{payedOrderIn}}条15分钟兑入未确认</span></li>
+        <li @click="$router.push({path:'/transactionFlow/CashIn',query:{status:'1'}})" v-show="payedIn > 0"><span>{{payedIn}}条已付款10分钟兑入未确认</span></li>
         <li @click="$router.push({path:'/transactionFlow/CashOut',query:{status:'1'}})" v-show="payedOrderOut > 0"><span>{{payedOrderOut}}条15分钟兑出未确认</span></li>
+        <li @click="$router.push({path:'/transactionFlow/CashOut',query:{status:'1'}})" v-show="payedOut > 0"><span>{{payedOut}}条已付款15分钟兑出未确认</span></li>
       </ul>
     </div>
   </div>
@@ -150,6 +152,8 @@ export default {
       payedOrderOut:0,
       remindTimes:0,        //提醒的次数
       appealOverNumber:0,   //点击不再提醒时的超时待申诉数量
+      payedIn:0,            //已付款10分钟兑入未确认
+      payedOut:0,           //已付款10分钟兑出未确认
 		};
 	},
 	methods: {
@@ -209,9 +213,11 @@ export default {
           this.withdrawIngRemind = result.withdrawIng
           this.auditPersonIngRemind = result.auditPersonIng
           this.merchantApplyIngRemind = result.merchantApplyIng
-          if( this.auditIngRemind > 0 || this.bindInfoIngRemind > 0 || this.outIngRemind > 0 || this.withdrawIngRemind > 0 || this.auditPersonIngRemind > 0 || this.merchantApplyIngRemind > 0 ) {
+          this.payedIn = result.payedIn
+          this.payedOut = result.payedOut
+          if( this.auditIngRemind > 0 || this.bindInfoIngRemind > 0 || this.outIngRemind > 0 || this.withdrawIngRemind > 0 || this.auditPersonIngRemind > 0 || this.merchantApplyIngRemind > 0 || this.payedIn >0 || this.payedOut >0) {
             this.$emit('musicPlay')
-          }else if(this.payedOrderIn < result.payedOrderIn || this.payedOrderOut < result.payedOrderOut || this.appealOverNumber < result.appealOverIng) {
+          }else if(this.payedOrderIn < result.payedOrderIn || this.payedOrderOut < result.payedOrderOut || this.appealOverNumber < result.appealOverIng ) {
             this.$emit('musicPlay')
           }
           this.payedOrderIn = result.payedOrderIn

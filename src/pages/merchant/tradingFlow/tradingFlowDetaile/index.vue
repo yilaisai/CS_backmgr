@@ -98,11 +98,11 @@
 					</el-form-item>
 					<el-form-item label="返佣状态:" v-if="detaileData.advType == 4 || detaileData.advType == 5">
 						<el-input
-							:value="detaileData.isReward == 1?'已发佣金':detaileData.isReward == 2?'已扣除佣金':'未发佣金'"
+							:value="detaileData.isReward == 1?'已发佣金':detaileData.isReward == 2?'已扣除佣金':detaileData.isReward == 3?'激活未返佣':'未发佣金'"
 							disabled>
 						</el-input>
 					</el-form-item>
-					<el-form-item v-if="(detaileData.advType == 4 || detaileData.advType == 5) && detaileData.isReward == 2">
+					<el-form-item v-if="(detaileData.advType == 4 || detaileData.advType == 5) && detaileData.isReward == 2 || detaileData.isReward == 3">
 						<el-button type="primary" plain @click="fetchReward">补发返佣</el-button>
 					</el-form-item>
 				</el-form>

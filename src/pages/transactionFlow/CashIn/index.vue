@@ -321,7 +321,7 @@ export default {
 			},{
 				value:2,label:'已扣除佣金'
 			},{
-				value:3,label:'超时未返佣'
+				value:3,label:'激活未返佣'
 			}
 			]
 		}

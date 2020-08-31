@@ -16,6 +16,20 @@
 								<el-option v-for="(item, key) in companyType" :key="key" :value="item.label" :label="item.value"></el-option>
 							</el-select>
 						</el-form-item>
+						<el-form-item  label="兑入开关:" >
+							<el-select v-model="filterForm.inSwitch" >
+								<el-option value="" label='所有'></el-option>
+								<el-option value="1" label='启用中'></el-option>
+								<el-option value="0" label='关闭'></el-option>
+							</el-select>
+						</el-form-item>
+						<el-form-item  label="兑出开关:" >
+							<el-select v-model="filterForm.outSwitch" >
+								<el-option value="" label='所有'></el-option>
+								<el-option value="1" label='启用中'></el-option>
+								<el-option value="0" label='关闭'></el-option>
+							</el-select>
+						</el-form-item>
 					</div>
 					<div class="form-group">
 						<el-form-item class='dateItem' label="时间:" >
@@ -59,7 +73,13 @@
 					<el-table-column label="注册时间" width="140">
 						<div slot-scope="scope">{{ $fmtDate(scope.row.registTimeStamp,'full') }}</div>
 					</el-table-column>
-					<el-table-column prop="price" label="操作" fixed="right" width="290">
+					<el-table-column label="兑入开关" align="center">
+						<div slot-scope="scope">{{ scope.row.inSwitch == 0 ? '关闭' : '启用中' }}</div>
+					</el-table-column>
+					<el-table-column label="兑出开关" align="center">
+						<div slot-scope="scope">{{ scope.row.outSwitch == 0 ? '关闭' : '启用中' }}</div>
+					</el-table-column>
+					<el-table-column prop="price" label="操作" fixed="right" width="260">
 						<div class="scope" slot-scope="scope">
 							<el-button type="primary" @click.native="$router.push({path:'/LegalCurrency/userQueryDetaile',query:{userId:scope.row.userId}})" size="mini">查看详情</el-button>
 							<el-button type="warning" @click.native=" editType(scope.row)" size="mini">修改类型</el-button>
@@ -123,6 +143,8 @@ export default {
 				userLevel:'',
 				userRole:'',
 				orderAmount:'',
+				inSwitch: '',
+				outSwitch: ''
 			},
 			userTypeForm:{
 				userLevel:'1',

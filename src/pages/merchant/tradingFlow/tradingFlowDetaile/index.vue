@@ -23,6 +23,9 @@
 					<el-form-item label="状态">
 						<el-input :value="tradeStatus[detaileData.tradeStatus]" disabled></el-input>
 					</el-form-item>
+					<el-form-item label="订单流转记录">
+						<el-button size="mini" @click="queryTradeOptList">查看</el-button>
+					</el-form-item>
 				</el-form>
 				<h3>交易方</h3>
 				<el-form :inline="true" :model="detaileData" label-width="120px" class="demo-form-inline" size="small">
@@ -117,13 +120,13 @@
 					<el-form-item label="收款账号:" >
 						<el-input :value="payList.num" disabled></el-input>
 					</el-form-item>
-					 <el-form-item label="付款图片:" class="special" v-if="detaileData.advType == 6 || detaileData.advType == 3 ">
+					<el-form-item label="付款图片:" class="special" v-if="detaileData.advType == 6 || detaileData.advType == 3 ">
 						<el-image 
 							:src="detaileData.paymentPhoto.split(',')[0]"
 							:preview-src-list="detaileData.paymentPhoto.split(',')"
-							v-if="detaileData.paymentPhoto"
-						>
+							v-if="detaileData.paymentPhoto">
 						</el-image>
+						<el-button v-if="detaileData.paymentPhoto" size="mini" type="danger" @click="resetTradeStatus" style="vertical-align: top">重置</el-button>
 					</el-form-item>
 					<!--<el-form-item label="退回凭证:" >
 						<el-input disabled></el-input>
@@ -153,12 +156,12 @@
 			</div>
 		</div>
 		<el-dialog title="折扣详情" :visible.sync="dialogVisible" width="800px">
-			<el-table  border  size="mini" :data="detaile">
+			<el-table border size="mini" :data="detaile">
 				<el-table-column prop="phone" label="手机号" align="center"></el-table-column>
 				<el-table-column prop="nickName" label="昵称" align="center"></el-table-column>
 				<el-table-column prop="rate" label="返佣比例" align="center">
 					<template slot-scope="scope">
-						{{  Math.floor(scope.row.rate*10000)/100}}%
+						{{Math.floor(scope.row.rate*10000)/100}}%
 					</template>
 				</el-table-column>
 				<el-table-column prop="amount"  label="返佣" align="center"></el-table-column>
@@ -168,6 +171,18 @@
 					</template>
 				</el-table-column>
 				
+			</el-table>
+		</el-dialog>
+
+		<el-dialog title="订单流转记录" :visible.sync="dialogVisible2" width="800px">
+			<el-table  border  size="mini" :data="tradeOptList">
+				<el-table-column prop="phone" label="操作时间" align="center">
+					<template slot-scope="scope">
+						{{  $fmtDate(scope.row.createTime,'full')}}
+					</template>
+				</el-table-column>
+				<el-table-column prop="remark" label="操作类容" align="center"></el-table-column>
+				<!-- <el-table-column prop="rate" label="操作人" align="center"></el-table-column> -->
 			</el-table>
 		</el-dialog>
 	</div>
@@ -196,6 +211,8 @@ export default {
 			},
 			payList: {},
 			dialogVisible:false,
+			dialogVisible2: false,
+			tradeOptList: []
 		}
 	},
 	activated(){
@@ -246,7 +263,29 @@ export default {
 					}
 				})
 			})
-		}
+		},
+		queryTradeOptList() {
+			this.$http.post('/wallet/app/otc/backmgr/queryTradeOptList',{
+				tradeId : this.$route.query.tradeId
+			}).then(res=>{
+				this.tradeOptList = res.result.list
+				this.dialogVisible2 = true
+			})
+		},
+		resetTradeStatus() {
+			this.$confirm(`确定重置并删除当前订单图片？`, '提示', {
+				confirmButtonText: '确定',
+				cancelButtonText: '取消',
+				type: 'warning'
+			}).then(res=>{
+				this.$http.post('/wallet/app/otc/backmgr/resetTradeStatus',{
+					tradeId : this.$route.query.tradeId
+				}).then(res=>{
+					this.$message.success(res.msg)
+					this.getData(this.$route.query.tradeId)
+				})
+			})
+		},
 	},
 	watch:{
 

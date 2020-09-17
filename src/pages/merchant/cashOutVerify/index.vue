@@ -1,5 +1,5 @@
 <template>
-	<div class="cashOutVerify-page">
+	<div class="cashOutVerify-page" v-loading="loading">
 		<el-collapse value="filter">
 			<el-collapse-item title="查询条件" name="filter">
 				<el-form :inline="true" label-width="86px" ref="filterForm" size="mini" :model="filterForm">
@@ -197,6 +197,7 @@ export default {
 			},
 			tabs:0,
 			selectList:[],
+			loading:false,
 		}
 	},
 	activated(){
@@ -289,19 +290,24 @@ export default {
 				this.selectList.forEach(el => {
 					list.push(el.recdId)
 				})
+				this.loading = true
 				this.$http.post('wallet/backmgr/merchant/updateCashoutAuditStatusBatch', {
 					recdIds: list.join(','),
 					remark: this.reason,
 					status:status
 				}).then( res => {
 					this.dialogVisible = false
-					this.getCashoutAuditList()
-					this.$message({
-						type: 'success',
-						message: res.msg
-					});
+					setTimeout(()=>{
+						this.loading = false
+						this.getCashoutAuditList()
+						this.$message({
+							type: 'success',
+							message: res.msg
+						});
+					},3000)
 				}).catch( err => {
 					this.dialogVisible = false
+					this.loading = false
 				})
 			} else {
 				//单笔审核

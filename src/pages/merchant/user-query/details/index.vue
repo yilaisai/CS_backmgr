@@ -71,7 +71,7 @@
 			<div class="title"><h3>可设置参数</h3></div>
 			<ul>
 				<li>
-					<label>商户兑入手续费:</label>
+					<label>支付方式:</label>
 					<el-select v-model="payType" placeholder="请选择" size="mini" style="width:90px">
 						<el-option
 							v-for="item in pageData.payList"
@@ -80,6 +80,10 @@
 							:value="item.payType">
 						</el-option>
 					</el-select>
+				</li>
+				<li></li>
+				<li>
+					<label>商户兑入手续费:</label>
 					<span>{{inFee}} %</span>
 					<el-button type="primary" plain size="mini" @click="showDialog('feeRateIn')">修改</el-button>
 				</li>
@@ -93,14 +97,6 @@
 				</li> -->
 				<li>
 					<label>商户兑出手续费:</label>
-					<el-select v-model="payType" placeholder="请选择" size="mini" style="width:90px">
-						<el-option
-							v-for="item in pageData.payList"
-							:key="item.payType"
-							:label="item.description"
-							:value="item.payType">
-						</el-option>
-					</el-select>
 					<span>{{outFee}} %</span>
 					<el-button type="primary" plain size="mini" @click="showDialog('feeRateIn')">修改</el-button>
 				</li>
@@ -133,12 +129,12 @@
 				</li> -->
 				<li>
 					<label>兑入额度范围（{{$variableCoin}}）:</label>
-					<span>【{{pageData.coinInfo.minIn}}】 ~ 【{{pageData.coinInfo.maxIn}}】</span>
+					<span>【{{merchantInMinAmount}}】 ~ 【{{merchantInMaxAmount}}】</span>
 					<el-button type="primary" plain size="mini" @click="showDialog('duiRu')">修改</el-button>
 				</li>
 				<li>
 					<label>兑出额度范围（{{$variableCoin}}）:</label>
-					<span>【{{pageData.coinInfo.minOut}}】 ~ 【{{pageData.coinInfo.maxOut}}】</span>
+					<span>【{{merchantOutMinAmount}}】 ~ 【{{merchantOutMaxAmount}}】</span>
 					<el-button type="primary" plain size="mini" @click="showDialog('duiChu')">修改</el-button>
 				</li>
 				<li>
@@ -151,26 +147,6 @@
 					<el-input class="inputHasText" disabled placeholder="未设置默认1" :value="Math.floor(pageData.info.batchOutRatioFee*10000)/100"><template slot="append">%</template> </el-input>
 					+ 每单固定<el-input class="inputHasText" disabled  placeholder="未设置默认1" v-model="pageData.info.batchOutFixedFee"><template slot="append">{{this.$variableCoin}}</template></el-input>
 					<el-button type="primary" plain size="mini" @click="showDialog('daifu')">修改</el-button>
-				</li> -->
-				<!-- <li>
-					<label>最小兑入额度（{{$variableCoin}}）:</label>
-					<span>{{pageData.coinInfo.minIn}}</span>
-					<el-button type="primary" plain size="mini" @click="showDialog('duiRu')">修改</el-button>
-				</li>
-				<li>
-					<label>最小兑出额度（{{$variableCoin}}）:</label>
-					<span>{{pageData.coinInfo.minOut}}</span>
-					<el-button type="primary" plain size="mini" @click="showDialog('duiChu')">修改</el-button>
-				</li>
-				<li>
-					<label>最大兑入额度({{$variableCoin}}):</label>
-					<span>{{pageData.coinInfo.maxIn}}</span>
-					<el-button type="primary" plain size="mini" @click="showDialog('duiRu')">修改</el-button>
-				</li>
-				<li>
-					<label>最大兑出额度({{$variableCoin}}):</label>
-					<span>{{pageData.coinInfo.maxOut}}</span>
-					<el-button type="primary" plain size="mini" @click="showDialog('duiChu')">修改</el-button>
 				</li> -->
 			</ul>
 		</div>
@@ -226,7 +202,11 @@ export default {
 			label1: "",
 			label2: "",
 			dialogTitle: "修改",
-			payType: 1,
+			payType: -1,
+			merchantInMaxAmount: '',
+			merchantInMinAmount: '',
+			merchantOutMaxAmount: '',
+			merchantOutMinAmount: ''
 		}
 	},
 	activated() {
@@ -240,21 +220,33 @@ export default {
 				this.pageData = res.result
 				let inFee = ''
 				let outFee = ''
+				let merchantInMaxAmount = ''
+				let	merchantInMinAmount = ''
+				let	merchantOutMaxAmount = ''
+				let	merchantOutMinAmount = ''
 				if (this.pageData.feeList[0].inFee == this.pageData.feeList[1].inFee &&  this.pageData.feeList[1].inFee == this.pageData.feeList[2].inFee) {
 					inFee = this.pageData.feeList[0].inFee
 				}
 				if (this.pageData.feeList[0].outFee == this.pageData.feeList[1].outFee && this.pageData.feeList[1].outFee  == this.pageData.feeList[2].outFee) {
 					outFee = this.pageData.feeList[0].outFee
 				}
+				if(this.payType == -1) {
+					this.payType = this.pageData.feeList[0].payType
+				}
 				this.pageData.feeList.unshift({
 					payType:0,
 					inFee:inFee,
-					outFee:outFee
+					outFee:outFee,
+					merchantInMaxAmount,
+					merchantInMinAmount,
+					merchantOutMaxAmount,
+					merchantOutMinAmount
 				})
 				this.pageData.payList.unshift({
 					payType: 0,
 					description:'全部'
 				})
+				this.changeValue()
 			})
 		},
 		updateMerchantExchangeType(postData) {
@@ -306,14 +298,14 @@ export default {
 				this.dialogTitle = '修改兑入费率'
 				this.label1 = '最小兑入额度：'
 				this.label2 = '最大兑入额度：'
-				this.formData.value1 = this.pageData.coinInfo.minIn
-				this.formData.value2 = this.pageData.coinInfo.maxIn
+				this.formData.value1 = this.merchantInMinAmount
+				this.formData.value2 = this.merchantInMaxAmount
 			}else if(this.dialogType == 'duiChu') {
 				this.dialogTitle = '修改兑出费率'
 				this.label1 = '最小兑出额度：'
 				this.label2 = '最大兑出额度：'
-				this.formData.value1 = this.pageData.coinInfo.minOut
-				this.formData.value2 = this.pageData.coinInfo.maxOut
+				this.formData.value1 = this.merchantOutMinAmount
+				this.formData.value2 = this.merchantOutMaxAmount
 			}else if(this.dialogType == 'feeRateIn') {
 				this.dialogTitle = '修改商户手续费【' + this.payTypeName + '】'
 				this.label1 = '商户兑入手续费:'
@@ -342,7 +334,6 @@ export default {
 				this.dialogTitle = '修改充币手续费：'
 				this.label2 = '充币手续费'
 				this.formData.value1 = ''
-				console.log(this.pageData.info.merchantRechargeRate)
 				this.formData.value2 = Math.floor(this.pageData.coinInfo.merchantRechargeRate*10000)/100
 			}
 			this.dialogVisible = true
@@ -350,6 +341,7 @@ export default {
 		//修改兑入兑出额度  
 		updateMerchantCoinConfig(type) {
 			this.$http.post('/wallet/backmgr/merchant/updateMerchantCoinConfig', {
+				payType: this.payType,
 				coinName: this.coinName,
 				type: type,   //1、兑入；2、兑出；
 				userId: this.$route.query.id,
@@ -383,32 +375,40 @@ export default {
 				this.getDetails()
 			})
 		},
-		//1、修改商户手续费率；
+		//1、修改商户手续费率；修改兑入兑出额度  
 		updateMerchantFee(type) {
-			if (this.dialogType == "feeRateIn")
-			this.$http.post('/wallet/backmgr/merchant/updateMerchantFee', {
-				coinName: this.coinName,
-				payType: this.payType,
-				type: type,   //1、兑入；2、兑出；
-				userId: this.$route.query.id,
-				value1:this.formData.value1?(this.formData.value1 / 100).toFixed(4):-0.01,   //兑入手续费
-				value2:this.formData.value2?(this.formData.value2 / 100).toFixed(4):-0.01  //兑出手续费
-			}).then(res => {
-				this.formData.value1 = ""
-				this.formData.value2 = ""
-				this.$notify.success({
-					title: '提示',
-					message: res.msg
-				})	
-				this.getDetails()
-			})
+			if (this.dialogType == "feeRateIn" || this.dialogType == "duiRu" || this.dialogType == "duiChu") {
+				let value1 = this.formData.value1
+				let value2 = this.formData.value2
+				if(this.dialogType == "feeRateIn") {
+					value1 = this.formData.value1?(this.formData.value1 / 100).toFixed(4):-0.01
+					value2 = this.formData.value2?(this.formData.value2 / 100).toFixed(4):-0.01
+				}
+				this.$http.post('/wallet/backmgr/merchant/updateMerchantFee', {
+					coinName: this.coinName,
+					payType: this.payType,
+					type: type,   //1、兑入；2、兑入额度；3.兑出额度
+					userId: this.$route.query.id,
+					value1,
+					value2
+				}).then(res => {
+					this.formData.value1 = ""
+					this.formData.value2 = ""
+					this.$notify.success({
+						title: '提示',
+						message: res.msg
+					})	
+					this.getDetails()
+				})
+			}
+			
 		},
 		dialogEnter() {
 			this.dialogVisible = false
 			if(this.dialogType == 'duiRu') {
-				this.updateMerchantCoinConfig(1)
+				this.updateMerchantFee(2)
 			}else if(this.dialogType == 'duiChu') {
-				this.updateMerchantCoinConfig(2)
+				this.updateMerchantFee(3)
 			}else if(this.dialogType == 'feeRateIn') {
 				this.updateMerchantFee(1)
 			}else if(this.dialogType == 'firstRate') {
@@ -465,6 +465,21 @@ export default {
 				this.getDetails()
 			})
 		},
+		changeValue() {
+			this.pageData.feeList.forEach((val, idx) => {
+				if(val.payType == this.payType) {
+					this.merchantInMaxAmount = val.merchantInMaxAmount
+					this.merchantInMinAmount = val.merchantInMinAmount
+					this.merchantOutMaxAmount = val.merchantOutMaxAmount
+					this.merchantOutMinAmount = val.merchantOutMinAmount
+				}
+			})
+		}
+	},
+	watch: {
+		payType() {
+			this.changeValue()
+		}
 	},
 	computed: {
 		inFee() {

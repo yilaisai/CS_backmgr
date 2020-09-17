@@ -110,14 +110,14 @@
 						<br />
 						<el-form-item v-if="payType === 0" class="payList">
 							<div>
-								<div><span>银行卡兑入手续费：</span>{{form.otcPayLists[1].inFee}} %</div>
-								<div><span>支付宝兑入手续费：</span>{{form.otcPayLists[2].inFee}} %</div>
-								<div><span>微信兑入手续费：</span>{{form.otcPayLists[3].inFee}}%</div>
+								<div><span>银行卡兑入手续费：</span>{{$fmtNumber('%2', form.otcPayLists[1].inFee)}} %</div>
+								<div><span>支付宝兑入手续费：</span>{{$fmtNumber('%2', form.otcPayLists[2].inFee)}} %</div>
+								<div><span>微信兑入手续费：</span>{{$fmtNumber('%2', form.otcPayLists[3].inFee)}}%</div>
 							</div>
 							<div>
-								<div><span>银行卡兑出手续费： </span>{{form.otcPayLists[1].outFee}}%</div>
-								<div><span>支付宝兑出手续费：</span>{{form.otcPayLists[2].outFee}}%</div>
-								<div><span>微信兑出手续费：</span> {{form.otcPayLists[3].outFee}}%</div>
+								<div><span>银行卡兑出手续费： </span>{{$fmtNumber('%2', form.otcPayLists[1].outFee)}}%</div>
+								<div><span>支付宝兑出手续费：</span>{{$fmtNumber('%2', form.otcPayLists[2].outFee)}}%</div>
+								<div><span>微信兑出手续费：</span> {{$fmtNumber('%2', form.otcPayLists[3].outFee)}}%</div>
 							</div>
 						</el-form-item>
 						<br />
@@ -250,16 +250,36 @@ export default {
 				this.form.MERCHANT_RECHARGE_RATE = Math.floor(this.form.MERCHANT_RECHARGE_RATE*10000)/100
 				let inFee = ''
 				let outFee = ''
+				let merchantInMinAmount = ''
+				let merchantInMaxAmount = ''
+				let merchantOutMinAmount = ''
+				let merchantOutMaxAmount = ''
 				if (this.form.otcPayLists[0].inFee == this.form.otcPayLists[1].inFee &&  this.form.otcPayLists[1].inFee == this.form.otcPayLists[2].inFee) {
 					inFee = this.form.otcPayLists[0].inFee
 				}
 				if (this.form.otcPayLists[0].outFee == this.form.otcPayLists[1].outFee && this.form.otcPayLists[1].outFee  == this.form.otcPayLists[2].outFee) {
 					outFee = this.form.otcPayLists[0].outFee
 				}
+				if (this.form.otcPayLists[0].merchantInMinAmount == this.form.otcPayLists[1].merchantInMinAmount && this.form.otcPayLists[1].merchantInMinAmount  == this.form.otcPayLists[2].merchantInMinAmount) {
+					merchantInMinAmount = this.form.otcPayLists[0].merchantInMinAmount
+				}
+				if (this.form.otcPayLists[0].merchantInMaxAmount == this.form.otcPayLists[1].merchantInMaxAmount && this.form.otcPayLists[1].merchantInMaxAmount  == this.form.otcPayLists[2].merchantInMaxAmount) {
+					merchantInMaxAmount = this.form.otcPayLists[0].merchantInMaxAmount
+				}
+				if (this.form.otcPayLists[0].merchantOutMinAmount == this.form.otcPayLists[1].merchantOutMinAmount && this.form.otcPayLists[1].merchantOutMinAmount  == this.form.otcPayLists[2].merchantOutMinAmount) {
+					merchantOutMinAmount = this.form.otcPayLists[0].merchantOutMinAmount
+				}
+				if (this.form.otcPayLists[0].merchantOutMaxAmount == this.form.otcPayLists[1].merchantOutMaxAmount && this.form.otcPayLists[1].merchantOutMaxAmount  == this.form.otcPayLists[2].merchantOutMaxAmount) {
+					merchantOutMaxAmount = this.form.otcPayLists[0].merchantOutMaxAmount
+				}
 				this.form.otcPayLists.unshift({
 					payType:0,
 					inFee:inFee,
 					outFee:outFee,
+					merchantInMinAmount,
+					merchantInMaxAmount,
+					merchantOutMinAmount,
+					merchantOutMaxAmount,
 					description:'全部'
 				})
 				if(this.form.otcPayLists.length > 0) {
@@ -270,7 +290,6 @@ export default {
 		updateBatchOutFee(){
 			this.$http.post('/wallet/backmgr/merchant/updateBatchOutFee', {
 				batchOutRatioFee: Math.floor(this.formData.value1)/100,
-				// userId: this.pageData.info.userId,
 				batchOutFixedFee: this.formData.value2
 			}).then(res => {
 				this.$notify.success({
@@ -364,6 +383,10 @@ export default {
 				if(val.payType == this.payType) {
 					this.inFee = val.inFee?Math.floor(val.inFee*10000) / 100 :val.inFee
 					this.outFee = val.outFee?Math.floor(val.outFee*10000) / 100:val.outFee
+					this.form.MERCHANT_MIN_IN_AMOUNT = val.merchantInMinAmount
+					this.form.MERCHANT_MAX_IN_AMOUNT = val.merchantInMaxAmount
+					this.form.MERCHANT_MIN_OUT_AMOUNT = val.merchantOutMinAmount
+					this.form.MERCHANT_MAX_OUT_AMOUNT = val.merchantOutMaxAmount
 				}
 			})
 		}

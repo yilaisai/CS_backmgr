@@ -14,8 +14,6 @@
 
 <script>
 import { mapState } from 'vuex';
-
-
 export default {
   name: 'App', // 1.指定 name 选项的另一个好处是便于调试 2.允许组件模板递归地调用自身
   mounted() {

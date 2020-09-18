@@ -65,9 +65,9 @@
         <li @click="$router.push('/LegalCurrency/advertisersVerify')" v-show="auditIngRemind > 0"><span>{{auditIngRemind}}条广告商审核待处理</span></li>
         <li @click="$router.push({path:'/user/identityVerify',query:{status:'1'}})" v-show="auditPersonIngRemind > 0"><span>{{auditPersonIngRemind}}条实名审核待处理</span></li>
         <li @click="$router.push({path:'/transactionFlow/CashIn',query:{status:'1'}})" v-show="payedOrderIn > 0"><span>{{payedOrderIn}}条15分钟兑入未确认</span></li>
-        <li @click="$router.push({path:'/transactionFlow/CashIn',query:{status:'1'}})" v-show="payedIn > 0"><span>{{payedIn}}条已付款10分钟兑入未确认</span></li>
-        <li @click="$router.push({path:'/transactionFlow/CashOut',query:{status:'1'}})" v-show="payedOrderOut > 0"><span>{{payedOrderOut}}条15分钟兑出未确认</span></li>
-        <li @click="$router.push({path:'/transactionFlow/CashOut',query:{status:'1'}})" v-show="payedOut > 0"><span>{{payedOut}}条已付款10分钟兑出未确认</span></li>
+        <li @click="$router.push({path:'/transactionFlow/CashIn',query:{status:'1'}})" v-show="payedIn > 0"><span>{{payedIn}}条10分钟兑入未确认</span></li>
+        <li @click="$router.push({path:'/transactionFlow/CashOut',query:{status:'1'}})" v-show="payedOrderOut > 0"><span>{{payedOrderOut}}条兑出未确认</span></li>
+        <!-- <li @click="$router.push({path:'/transactionFlow/CashOut',query:{status:'1'}})" v-show="payedOut > 0"><span>{{payedOut}}条已付款10分钟兑出未确认</span></li> -->
       </ul>
     </div>
   </div>
@@ -164,7 +164,7 @@ export default {
 				localStorage.removeItem('wallet_menuUrls');
 				localStorage.removeItem('menuDefaultActive');
 				localStorage.removeItem('wallet_token');
-        localStorage.removeItem('wallet_username');
+        		localStorage.removeItem('wallet_username');
 				this.$router.push('login');
 			});
 		},
@@ -178,13 +178,12 @@ export default {
 				oldMd5Pwd,
 				newMd5Pwd
 				}).then((res) => {
-				this.$notify({
-					title: '成功',
-					message: `修改密码成功`,
-					type: 'success'
-				});
+					this.$notify({
+						title: '成功',
+						message: `修改密码成功`,
+						type: 'success'
+					});
 				}).catch((res) => {
-				console.error(res);
 				})
 				this.$refs.oldPwd.reset();
 				this.$refs.pwd.reset();
@@ -200,76 +199,76 @@ export default {
 		musicSwitch() {
 			this.musicIsOpen = !this.musicIsOpen
 			localStorage.setItem('MUSIC_SWITCH', this.musicIsOpen ? 'open' : 'close')
-    },
-    getNewsList() {
-      clearTimeout(this.timer)
-      const startDate = localStorage.getItem('NO_REMIND_TIME') || ''
-      this.$http.post('/wallet/backmgr/indexInfo', {type: 1, noLoading: true, startDate}).then(res => {
-          let result = res.result;
-          // this.appealIngRemind = result.appealIng
-          this.auditIngRemind = result.auditIng
-          this.bindInfoIngRemind = result.bindInfoIng
-          this.outIngRemind = result.outIng
-          this.withdrawIngRemind = result.withdrawIng
-          this.auditPersonIngRemind = result.auditPersonIng
-          this.merchantApplyIngRemind = result.merchantApplyIng
-          this.payedIn = result.payedIn
-          this.payedOut = result.payedOut
-          if( this.auditIngRemind > 0 || this.bindInfoIngRemind > 0 || this.outIngRemind > 0 || this.withdrawIngRemind > 0 || this.auditPersonIngRemind > 0 || this.merchantApplyIngRemind > 0 || this.payedIn >0 || this.payedOut >0) {
-            this.$emit('musicPlay')
-          }else if(this.payedOrderIn < result.payedOrderIn || this.payedOrderOut < result.payedOrderOut || this.appealOverNumber < result.appealOverIng ) {
-            this.$emit('musicPlay')
-          }
-          this.payedOrderIn = result.payedOrderIn
-          this.payedOrderOut = result.payedOrderOut
-          this.appealOverIng = result.appealOverIng
-          this.timer = setTimeout(() => {
-            this.getNewsList()
-            this.remindTimes++
-          }, 60000)
-          let This = this
-          if (this.remindTimes > 480 || !localStorage.getItem('wallet_token')) {
-              clearTimeout(This.timer)
-          }
-      }).catch(err => {
-        this.timer = setTimeout(() => {
-          this.getNewsList()
-          this.remindTimes++
-        }, 60000)
-        let This = this
-        if (this.remindTimes > 480 || !localStorage.getItem('wallet_token')) {
-            clearTimeout(This.timer)
-        }
-      })
-    },
-    // 不再提醒
-    noRemind() {
-      localStorage.setItem('NO_REMIND_TIME', dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss'))
-      this.appealOverNumber = this.appealOverIng
-      this.getNewsList()
-    }
+    	},
+		getNewsList() {
+			clearTimeout(this.timer)
+			const startDate = localStorage.getItem('NO_REMIND_TIME') || ''
+			this.$http.post('/wallet/backmgr/indexInfo', {type: 1, noLoading: true, startDate}).then(res => {
+				let result = res.result
+				// this.appealIngRemind = result.appealIng
+				this.auditIngRemind = result.auditIng
+				this.bindInfoIngRemind = result.bindInfoIng
+				this.outIngRemind = result.outIng
+				this.withdrawIngRemind = result.withdrawIng
+				this.auditPersonIngRemind = result.auditPersonIng
+				this.merchantApplyIngRemind = result.merchantApplyIng
+				this.payedIn = result.payedIn
+				this.payedOut = result.payedOut
+				if( this.auditIngRemind > 0 || this.bindInfoIngRemind > 0 || this.outIngRemind > 0 || this.withdrawIngRemind > 0 || this.auditPersonIngRemind > 0 || this.merchantApplyIngRemind > 0 || this.payedIn >0 || this.payedOut >0) {
+					this.$emit('musicPlay')
+				}else if(this.payedOrderIn < result.payedOrderIn || this.payedOrderOut < result.payedOrderOut || this.appealOverNumber < result.appealOverIng ) {
+					this.$emit('musicPlay')
+				}
+				this.payedOrderIn = result.payedOrderIn
+				this.payedOrderOut = result.payedOrderOut
+				this.appealOverIng = result.appealOverIng
+				this.timer = setTimeout(() => {
+					this.getNewsList()
+					this.remindTimes++
+				}, 60000)
+				let This = this
+				if (this.remindTimes > 480 || !localStorage.getItem('wallet_token')) {
+					clearTimeout(This.timer)
+				}
+			}).catch(err => {
+				this.timer = setTimeout(() => {
+				this.getNewsList()
+				this.remindTimes++
+				}, 60000)
+				let This = this
+				if (this.remindTimes > 480 || !localStorage.getItem('wallet_token')) {
+					clearTimeout(This.timer)
+				}
+			})
+		},
+		// 不再提醒
+		noRemind() {
+			localStorage.setItem('NO_REMIND_TIME', dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss'))
+			this.appealOverNumber = this.appealOverIng
+			this.getNewsList()
+		}
 	},
 	mounted() {
 		this.userName = localStorage.getItem('wallet_username');
 		this.roleName = localStorage.getItem('wallet_roleName') || '暂无角色';
-    let musicIsOpen = localStorage.getItem('MUSIC_SWITCH') || 'open'
-    this.musicIsOpen = musicIsOpen == 'open' ? true : false
-    localStorage.setItem('MUSIC_SWITCH',musicIsOpen)
-    if (localStorage.getItem('wallet_token')) {
-      this.getNewsList()
-    }
-  },
-  activated(){
-    if (this.timer) clearTimeout(this.timer)
-  },
+		let musicIsOpen = localStorage.getItem('MUSIC_SWITCH') || 'open'
+		this.musicIsOpen = musicIsOpen == 'open' ? true : false
+		localStorage.setItem('MUSIC_SWITCH',musicIsOpen)
+		if (localStorage.getItem('wallet_token')) {
+			this.getNewsList()
+		}
+  	},
+	activated(){
+		if (this.timer) clearTimeout(this.timer)
+	},
 	computed: {
 		...mapState(['tagsList'])
-  },
-  watch:{
-    $route(to,from){
-      this.remindTimes = 0
-    }
-  },
+  	},
+	watch:{
+		$route(to,from){
+			this.remindTimes = 0
+		}
+	}
 };
 </script>
 

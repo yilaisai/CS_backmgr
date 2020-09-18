@@ -285,6 +285,7 @@ export default {
 				if(this.form.otcPayLists.length > 0) {
 					this.payType = this.form.otcPayLists[1].payType
 				}
+				this.payTypeChange()
 			})
 		},
 		updateBatchOutFee(){
@@ -372,13 +373,8 @@ export default {
 		},
 		BigNumber(val) {
 			return BigNumber(val)
-		}
-	},
-	watch: {
-		coinName() {
-			this.getData()
 		},
-		payType(newVal, oldVal) {
+		payTypeChange() {
 			this.form.otcPayLists.forEach((val, idx) => {
 				if(val.payType == this.payType) {
 					this.inFee = val.inFee?Math.floor(val.inFee*10000) / 100 :val.inFee
@@ -389,6 +385,14 @@ export default {
 					this.form.MERCHANT_MAX_OUT_AMOUNT = val.merchantOutMaxAmount
 				}
 			})
+		}
+	},
+	watch: {
+		coinName() {
+			this.getData()
+		},
+		payType(newVal, oldVal) {
+			this.payTypeChange()
 		}
 	},computed:{
 		...mapState(['coinInfo'])

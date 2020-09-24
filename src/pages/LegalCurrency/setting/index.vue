@@ -21,7 +21,7 @@
 				</el-form>
 				<h4>交易员接单额度全局设置</h4>
 				<el-form label-width="140px" ref="filterForm" size="mini">
-					<el-form-item label="全局兑出范围:">
+					<el-form-item label="全局派单兑入范围:">
 						<el-input v-model="detaileData.sysMatchMin" placeholder="请输入">
 							<template slot="append">{{filterForm.coinName}}</template>
 						</el-input>
@@ -30,7 +30,7 @@
 							<template slot="append">{{filterForm.coinName}}</template>
 						</el-input>
 					</el-form-item>
-					<el-form-item label="全局兑入范围:">
+					<el-form-item label="全局派单兑出范围:">
 						<el-input v-model="detaileData.sysCashoutMin" placeholder="请输入">
 							<template slot="append">{{filterForm.coinName}}</template>
 						</el-input>

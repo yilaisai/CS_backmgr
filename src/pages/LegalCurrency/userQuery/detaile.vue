@@ -26,6 +26,9 @@
 						<el-input :value=" detaileData.userLevel==0?'普通用户':detaileData.userLevel==1?'普通广告商':detaileData.userLevel==2?'高级广告商':detaileData.userLevel==3?'企业广告商':''" disabled></el-input>
 					</el-form-item>
 					<el-form-item label="企业类型:">
+						<el-input :value=" detaileData.userType==1?'交易员':detaileData.userType==2?'普通用户':''" disabled></el-input>
+					</el-form-item>
+					<el-form-item label="用户类型:">
 						<el-input :value=" detaileData.userEnterprise==0?'非企业号':detaileData.userEnterprise==1?'企业号':''" disabled></el-input>
 					</el-form-item>
 					<el-form-item label="兑出交易额:">

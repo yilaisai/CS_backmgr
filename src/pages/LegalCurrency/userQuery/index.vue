@@ -13,7 +13,13 @@
 						<el-form-item  label="企业类型:" >
 							<el-select v-model="filterForm.userEnterprise" >
 								<el-option value="" label='所有'></el-option>
-								<el-option v-for="(item, key) in companyType" :key="key" :value="item.label" :label="item.value"></el-option>
+								<el-option v-for="(item, key) in userEnterpriseType" :key="key" :value="item.label" :label="item.value"></el-option>
+							</el-select>
+						</el-form-item>
+						<el-form-item  label="用户类型:" >
+							<el-select v-model="filterForm.userType" >
+								<el-option value="" label='所有'></el-option>
+								<el-option v-for="(item, key) in userTypes" :key="key" :value="item.label" :label="item.value"></el-option>
 							</el-select>
 						</el-form-item>
 						<el-form-item  label="兑入开关:" >
@@ -53,6 +59,12 @@
 						<div class="scope" slot-scope="scope">
 							<span v-if="scope.row.userEnterprise==0">非企业号</span>
 							<span v-if="scope.row.userEnterprise==1">企业号</span>
+						</div>
+					</el-table-column>
+					<el-table-column  label="用户类型" align="center" width="100">
+						<div class="scope" slot-scope="scope">
+							<span v-if="scope.row.userType==1">交易员</span>
+							<span v-if="scope.row.userType==2">普通用户</span>
 						</div>
 					</el-table-column>
 					<!-- <el-table-column label="卖出佣金费率" align="center" width="100">
@@ -137,6 +149,7 @@ export default {
 				pageSize: 20,
 				startDate:'',
 				userEnterprise:'',
+				userType:'',
 				endDate:'',
 				account:'',
 				nickName:'',
@@ -150,6 +163,10 @@ export default {
 				userLevel:'1',
 				userEnterprise:'1',
 			},
+			userTypes:[
+				{value:'交易员',label:1},
+				{value:'普通用户',label:2},
+			],
 			advList:[
 				{value:'普通用户',label:"0"},
 				{value:'普通广告商',label:"1"},

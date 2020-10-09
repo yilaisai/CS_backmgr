@@ -142,7 +142,7 @@ Vue.filter('secondsChange', secondsChange);
 export function getYesterdayTime(){
   const nowTime = new Date(new Date().getTime() - 24*60*60*1000)
   const dateObj = {
-		'YYYY': nowTime.getFullYear(),
+		'YYYY': nowTime.getFullYear() + '',
 		'MM': (nowTime.getMonth() + 1) < 10 ? ('0' + (nowTime.getMonth() + 1)) : (nowTime.getMonth() + 1),
 		'DD': nowTime.getDate() < 10 ? ('0' + nowTime.getDate()) : nowTime.getDate()
   }

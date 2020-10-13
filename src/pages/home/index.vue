@@ -43,9 +43,9 @@
         <el-button type="primary" @click="submitFormPwd" size="small">确 定</el-button>
       </div>
     </el-dialog>
-    <div class="message-box" v-show=" withdrawIngRemind + bindInfoIngRemind + outIngRemind + merchantApplyIngRemind + auditIngRemind + auditPersonIngRemind + payedOrderIn + payedOrderOut + appealOverIng + payedIn + payedOut > 0">
+    <div class="message-box" v-show=" withdrawIngRemind + bindInfoIngRemind + outIngRemind + merchantApplyIngRemind + auditIngRemind + auditPersonIngRemind + payedOrderIn + payedOrderOut + appealOverIng + payedIn + payedOut + moreTotalAmountLimit + moreCountMinLimit + moreNumMin  > 0">
       <div :class="['topbar',{'down' : !messageBoxShow}]" @click="messageBoxShow = !messageBoxShow">
-        <span class="blink" v-show="!messageBoxShow">有{{withdrawIngRemind + bindInfoIngRemind + outIngRemind + merchantApplyIngRemind + auditIngRemind + auditPersonIngRemind + appealOverIng + payedIn + payedOut}}条新的待处理事项，点击展开</span>
+        <span class="blink" v-show="!messageBoxShow">有{{withdrawIngRemind + bindInfoIngRemind + outIngRemind + merchantApplyIngRemind + auditIngRemind + auditPersonIngRemind + appealOverIng + payedIn + payedOut + moreTotalAmountLimit + moreCountMinLimit + moreNumMin}}条新的待处理事项，点击展开</span>
         <span v-show="messageBoxShow"><img src="../../../static/img/logo_white.png" alt=""></span>
         <el-button v-show="messageBoxShow" size="mini" @click="noRemind">不再提醒</el-button>
         <i :class="{'down' : messageBoxShow}"></i>
@@ -68,6 +68,9 @@
         <li @click="$router.push({path:'/transactionFlow/CashIn',query:{status:'1'}})" v-show="payedIn > 0"><span>{{payedIn}}条10分钟兑入未确认</span></li>
         <li @click="$router.push({path:'/transactionFlow/CashOut',query:{status:'1'}})" v-show="payedOrderOut > 0"><span>{{payedOrderOut}}条兑出未确认</span></li>
         <!-- <li @click="$router.push({path:'/transactionFlow/CashOut',query:{status:'1'}})" v-show="payedOut > 0"><span>{{payedOut}}条已付款10分钟兑出未确认</span></li> -->
+				<li @click="$router.push({path:'/LegalCurrency/userQuery'})" v-show="moreTotalAmountLimit > 0"><span>交易员总持币量：低于15万USDT</span></li>
+				<li @click="$router.push({path:'/LegalCurrency/userQuery'})" v-show="moreCountMinLimit > 0"><span>1万U以上持币量交易员少于5个 </span></li>
+				<li @click="$router.push({path:'/LegalCurrency/userQuery'})" v-show="moreNumMin > 0"><span>开启接单交易员小于20人</span></li>
       </ul>
     </div>
   </div>
@@ -154,6 +157,9 @@ export default {
       appealOverNumber:0,   //点击不再提醒时的超时待申诉数量
       payedIn:0,            //已付款10分钟兑入未确认
       payedOut:0,           //已付款10分钟兑出未确认
+			moreTotalAmountLimit:0,  //交易员总持币量：低于15万USDT
+			moreCountMinLimit:0,     //1万U以上持币量交易员少于5个
+			moreNumMin:0,            //开启接单交易员小于20人
 		};
 	},
 	methods: {
@@ -214,7 +220,10 @@ export default {
 				this.merchantApplyIngRemind = result.merchantApplyIng
 				this.payedIn = result.payedIn
 				this.payedOut = result.payedOut
-				if( this.auditIngRemind > 0 || this.bindInfoIngRemind > 0 || this.outIngRemind > 0 || this.withdrawIngRemind > 0 || this.auditPersonIngRemind > 0 || this.merchantApplyIngRemind > 0 || this.payedIn >0 || this.payedOut >0) {
+				this.moreTotalAmountLimit = result.moreTotalAmountLimit
+				this.moreCountMinLimit = result.moreCountMinLimit
+				this.moreNumMin = result.moreNumMin
+				if( this.auditIngRemind > 0 || this.bindInfoIngRemind > 0 || this.outIngRemind > 0 || this.withdrawIngRemind > 0 || this.auditPersonIngRemind > 0 || this.merchantApplyIngRemind > 0 || this.payedIn >0 || this.payedOut >0 || this.moreTotalAmountLimit>0 || this.moreCountMinLimit > 0 || this.moreNumMin>0) {
 					this.$emit('musicPlay')
 				}else if(this.payedOrderIn < result.payedOrderIn || this.payedOrderOut < result.payedOrderOut || this.appealOverNumber < result.appealOverIng ) {
 					this.$emit('musicPlay')

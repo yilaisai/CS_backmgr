@@ -430,8 +430,8 @@ export default {
 		},
 		updateRewardRate(){
 			this.$http.post('/wallet/invite/backmgr/updateRewardRate',{
-				buyRate: this.$fmtNumber('/4', this.buyRate) || -1,
-				rate: this.$fmtNumber('/4', this.rate) || -1,
+				buyRate: this.$fmtNumber('/4', this.buyRate),
+				rate: this.$fmtNumber('/4', this.rate),
 				inviteeId:this.currItem.inviteeId,
 				payType:this.payType
 			}).then(res=>{

@@ -64,13 +64,13 @@
         <li @click="$router.push({path:'/merchant/merchantList',query:{status:'0'}})" v-show="merchantApplyIngRemind > 0"><span>{{merchantApplyIngRemind}}条商户注册审核待处理</span></li>
         <li @click="$router.push('/LegalCurrency/advertisersVerify')" v-show="auditIngRemind > 0"><span>{{auditIngRemind}}条广告商审核待处理</span></li>
         <li @click="$router.push({path:'/user/identityVerify',query:{status:'1'}})" v-show="auditPersonIngRemind > 0"><span>{{auditPersonIngRemind}}条实名审核待处理</span></li>
-        <li @click="$router.push({path:'/transactionFlow/CashIn',query:{status:'1'}})" v-show="payedOrderIn > 0"><span>{{payedOrderIn}}条15分钟兑入未确认</span></li>
-        <li @click="$router.push({path:'/transactionFlow/CashIn',query:{status:'1'}})" v-show="payedIn > 0"><span>{{payedIn}}条10分钟兑入未确认</span></li>
+        <li @click="$router.push({path:'/transactionFlow/CashIn',query:{status:'1'}})" v-show="payedOrderIn > 0"><span>{{payedOrderIn}}条{{WARN_PAYED_TRADE_IN}}分钟兑入未确认</span></li>
+        <li @click="$router.push({path:'/transactionFlow/CashIn',query:{status:'1'}})" v-show="payedIn > 0"><span>{{payedIn}}条{{WARN_PAYED_IN}}分钟兑入未确认</span></li>
         <li @click="$router.push({path:'/transactionFlow/CashOut',query:{status:'1'}})" v-show="payedOrderOut > 0"><span>{{payedOrderOut}}条兑出未确认</span></li>
         <!-- <li @click="$router.push({path:'/transactionFlow/CashOut',query:{status:'1'}})" v-show="payedOut > 0"><span>{{payedOut}}条已付款10分钟兑出未确认</span></li> -->
-				<li @click="$router.push({path:'/LegalCurrency/userQuery'})" v-show="moreTotalAmountLimit > 0"><span>交易员总持币量：低于15万USDT</span></li>
-				<li @click="$router.push({path:'/LegalCurrency/userQuery'})" v-show="moreCountMinLimit > 0"><span>1万U以上持币量交易员少于5个 </span></li>
-				<li @click="$router.push({path:'/LegalCurrency/userQuery'})" v-show="moreNumMin > 0"><span>开启接单交易员小于20人</span></li>
+				<li @click="$router.push({path:'/LegalCurrency/userQuery'})" v-show="moreTotalAmountLimit > 0"><span>交易员总持币量：低于{{CB_TOTAL_AMOUNT_MIN}}USDT</span></li>
+				<li @click="$router.push({path:'/LegalCurrency/userQuery'})" v-show="moreCountMinLimit > 0"><span>{{CB_AMOUNT_MIN}}U以上持币量交易员少于{{CB_AMOUNT_COUNT_MIN}}个 </span></li>
+				<li @click="$router.push({path:'/LegalCurrency/userQuery'})" v-show="moreNumMin > 0"><span>开启接单交易员小于{{CB_COUNT_MIN}}人</span></li>
       </ul>
     </div>
   </div>
@@ -144,22 +144,31 @@ export default {
       timer:null,
       messageBoxShow:false,
       appealIngRemind:0,
-      appealOverIng:0,
+			appealOverIng:0,      //*条超时申诉待处理
+			WARN_APPLEAL:0,       // WARN_APPLEAL 条超时申诉待处理
       auditIngRemind:0,
       bindInfoIngRemind:0,
       outIngRemind:0,
       withdrawIngRemind:0,
       auditPersonIngRemind:0,
       merchantApplyIngRemind:0,
-      payedOrderIn:0,
-      payedOrderOut:0,
+			payedOrderIn:0,       //已付款*分钟兑入未确认
+			WARN_PAYED_TRADE_IN:0,//已付款 WARN_PAYED_TRADE_IN 分钟兑入未确认
+			payedOrderOut:0,      //已付款*分钟兑出未确认
+			WARN_PAYED_OUT:0,     //已付款 WARN_PAYED_OUT 分钟兑出未确认
       remindTimes:0,        //提醒的次数
       appealOverNumber:0,   //点击不再提醒时的超时待申诉数量
-      payedIn:0,            //已付款10分钟兑入未确认
+			payedIn:0,            //已付款*分钟兑入未确认
+			WARN_PAYED_IN:0,      //已付款 WARN_PAYED_IN 分钟兑入未确认
       payedOut:0,           //已付款10分钟兑出未确认
-			moreTotalAmountLimit:0,  //交易员总持币量：低于15万USDT
-			moreCountMinLimit:0,     //1万U以上持币量交易员少于5个
-			moreNumMin:0,            //开启接单交易员小于20人
+			moreTotalAmountLimit:0,  //交易员总持币量：低于*万USDT
+			CB_TOTAL_AMOUNT_MIN:0,   //交易员总持币量：低于 CB_TOTAL_AMOUNT_MIN USDT
+			moreCountMinLimit:0,     //*U以上持币量交易员少于*个
+			CB_AMOUNT_MIN:0,         //CB_AMOUNT_MIN U以上持币量交易员少于*个
+			CB_AMOUNT_COUNT_MIN:0,	 //*U以上持币量交易员少于 CB_AMOUNT_COUNT_MIN 个
+			moreNumMin:0,            //开启接单交易员小于*人
+			CB_COUNT_MIN:0,          //开启接单交易员小于 CB_COUNT_MIN 人
+
 		};
 	},
 	methods: {
@@ -231,6 +240,14 @@ export default {
 				this.payedOrderIn = result.payedOrderIn
 				this.payedOrderOut = result.payedOrderOut
 				this.appealOverIng = result.appealOverIng
+				this.WARN_APPLEAL = result.WARN_APPLEAL
+				this.WARN_PAYED_TRADE_IN = result.WARN_PAYED_TRADE_IN
+				this.WARN_PAYED_OUT = result.WARN_PAYED_OUT
+				this.WARN_PAYED_IN = result.WARN_PAYED_IN
+				this.CB_TOTAL_AMOUNT_MIN = result.CB_TOTAL_AMOUNT_MIN
+				this.CB_AMOUNT_MIN = result.CB_AMOUNT_MIN
+				this.CB_AMOUNT_COUNT_MIN = result.CB_AMOUNT_COUNT_MIN
+				this.CB_COUNT_MIN = result.CB_COUNT_MIN
 				this.timer = setTimeout(() => {
 					this.getNewsList()
 					this.remindTimes++

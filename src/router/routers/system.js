@@ -48,7 +48,14 @@ const system = [
         },
         component: () => import('@/pages/system/user-management'),
       },
-      
+      {
+        path: 'remindSetting',
+        name: 'remindSetting',
+        meta: {
+          title: '提醒设置',
+        },
+        component: () => import('@/pages/system/remind-setting'),
+      },
       
       // {
       //   path: 'role',

@@ -64,8 +64,8 @@
         <li @click="$router.push({path:'/merchant/merchantList',query:{status:'0'}})" v-show="merchantApplyIngRemind > 0"><span>{{merchantApplyIngRemind}}条商户注册审核待处理</span></li>
         <li @click="$router.push('/LegalCurrency/advertisersVerify')" v-show="auditIngRemind > 0"><span>{{auditIngRemind}}条广告商审核待处理</span></li>
         <li @click="$router.push({path:'/user/identityVerify',query:{status:'1'}})" v-show="auditPersonIngRemind > 0"><span>{{auditPersonIngRemind}}条实名审核待处理</span></li>
-        <li @click="$router.push({path:'/transactionFlow/CashIn',query:{status:'1'}})" v-show="payedOrderIn > 0"><span>{{payedOrderIn}}条{{WARN_PAYED_TRADE_IN}}分钟兑入未确认</span></li>
-        <li @click="$router.push({path:'/transactionFlow/CashIn',query:{status:'1'}})" v-show="payedIn > 0"><span>{{payedIn}}条{{WARN_PAYED_IN}}分钟兑入未确认</span></li>
+        <li @click="$router.push({path:'/transactionFlow/CashIn',query:{status:'1'}})" v-show="payedOrderIn > 0"><span>{{payedOrderIn}}条{{WARN_PAYED_IN}}分钟兑入未确认</span></li>
+        <li @click="$router.push({path:'/transactionFlow/CashIn',query:{status:'1'}})" v-show="payedIn > 0"><span>{{payedIn}}条{{WARN_PAYED_TRADE_IN}}分钟兑入未确认</span></li>
         <li @click="$router.push({path:'/transactionFlow/CashOut',query:{status:'1'}})" v-show="payedOrderOut > 0"><span>{{payedOrderOut}}条兑出未确认</span></li>
         <!-- <li @click="$router.push({path:'/transactionFlow/CashOut',query:{status:'1'}})" v-show="payedOut > 0"><span>{{payedOut}}条已付款10分钟兑出未确认</span></li> -->
 				<li @click="$router.push({path:'/LegalCurrency/userQuery'})" v-show="moreTotalAmountLimit > 0"><span>交易员总持币量：低于{{CB_TOTAL_AMOUNT_MIN}}USDT</span></li>
@@ -153,13 +153,13 @@ export default {
       auditPersonIngRemind:0,
       merchantApplyIngRemind:0,
 			payedOrderIn:0,       //已付款*分钟兑入未确认
-			WARN_PAYED_TRADE_IN:0,//已付款 WARN_PAYED_TRADE_IN 分钟兑入未确认
+			WARN_PAYED_IN:0,			//已付款 WARN_PAYED_IN 分钟兑入未确认
 			payedOrderOut:0,      //已付款*分钟兑出未确认
 			WARN_PAYED_OUT:0,     //已付款 WARN_PAYED_OUT 分钟兑出未确认
       remindTimes:0,        //提醒的次数
       appealOverNumber:0,   //点击不再提醒时的超时待申诉数量
 			payedIn:0,            //已付款*分钟兑入未确认
-			WARN_PAYED_IN:0,      //已付款 WARN_PAYED_IN 分钟兑入未确认
+			WARN_PAYED_TRADE_IN:0,      //已付款 WARN_PAYED_TRADE_IN 分钟兑入未确认
       payedOut:0,           //已付款10分钟兑出未确认
 			moreTotalAmountLimit:0,  //交易员总持币量：低于*万USDT
 			CB_TOTAL_AMOUNT_MIN:0,   //交易员总持币量：低于 CB_TOTAL_AMOUNT_MIN USDT
@@ -179,7 +179,7 @@ export default {
 				localStorage.removeItem('wallet_menuUrls');
 				localStorage.removeItem('menuDefaultActive');
 				localStorage.removeItem('wallet_token');
-        		localStorage.removeItem('wallet_username');
+				localStorage.removeItem('wallet_username');
 				this.$router.push('login');
 			});
 		},

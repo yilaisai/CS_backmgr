@@ -123,7 +123,7 @@
 				</div>
 				<el-footer>
 					<div class="statistics">
-						总数量： <span>{{sumInfo.sumTakerAmount}} {{$variableCoin}}</span>
+						总数量： <span>{{BigNumber(sumInfo.sumTakerAmount).minus(sumInfo.sumFee)}} {{$variableCoin}}</span>
 						总金额： <span>{{sumInfo.sumAmount}} CNY</span>
 						已到账手续费： <span>{{sumInfo.sumFee}} {{$variableCoin}}</span>
 					</div>
@@ -193,6 +193,7 @@
 import { mapState } from 'vuex'
 import qs from 'qs'
 import {getTodayTime} from '@/common/util'
+import BigNumber from 'bignumber.js'
 export default {
 	name:'transaction-details',
 	data(){
@@ -514,7 +515,10 @@ export default {
         },
         download(){
             location.href =`${ SERVER_PATH}/wallet/app/otc/backmgr/exportExcel?startDate=${this.filterForm.startDate}&endDate=${this.filterForm.endDate}&userId=${this.filterForm.userId}&token=${localStorage.getItem('cus_token')}`;
-        }
+				},
+				BigNumber(val){
+					return BigNumber(val)
+				}
 	},
 	computed:{
 		...mapState(['coinInfo'])

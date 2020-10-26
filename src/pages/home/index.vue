@@ -68,9 +68,9 @@
         <li @click="$router.push({path:'/transactionFlow/CashIn',query:{status:'1'}})" v-show="payedIn > 0"><span>{{payedIn}}条{{WARN_PAYED_TRADE_IN}}分钟兑入未确认</span></li>
         <li @click="$router.push({path:'/transactionFlow/CashOut',query:{status:'1'}})" v-show="payedOrderOut > 0"><span>{{payedOrderOut}}条兑出未确认</span></li>
         <!-- <li @click="$router.push({path:'/transactionFlow/CashOut',query:{status:'1'}})" v-show="payedOut > 0"><span>{{payedOut}}条已付款10分钟兑出未确认</span></li> -->
-				<li @click="$router.push({path:'/LegalCurrency/userQuery'})" v-show="moreTotalAmountLimit > 0"><span>交易员总持币量：低于{{CB_TOTAL_AMOUNT_MIN}}USDT</span></li>
-				<li @click="$router.push({path:'/LegalCurrency/userQuery'})" v-show="moreCountMinLimit > 0"><span>{{CB_AMOUNT_MIN}}U以上持币量交易员少于{{CB_AMOUNT_COUNT_MIN}}个 </span></li>
-				<li @click="$router.push({path:'/LegalCurrency/userQuery'})" v-show="moreNumMin > 0"><span>开启接单交易员小于{{CB_COUNT_MIN}}人</span></li>
+				<li @click="$router.push({path:'/LegalCurrency/userQuery'})" v-show="moreTotalAmountLimit > 0"><span>持币总量不足</span></li>
+				<li @click="$router.push({path:'/LegalCurrency/userQuery'})" v-show="moreCountMinLimit > 0"><span>持币充足人数不足</span></li>
+				<li @click="$router.push({path:'/LegalCurrency/userQuery'})" v-show="moreNumMin > 0"><span>开启接单人数不足</span></li>
       </ul>
     </div>
   </div>

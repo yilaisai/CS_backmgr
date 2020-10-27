@@ -56,6 +56,14 @@ const system = [
         },
         component: () => import('@/pages/system/remind-setting'),
       },
+      {
+        path: 'huobiToken',
+        name: 'huobiToken',
+        meta: {
+          title: '火币Token设置',
+        },
+        component: () => import('@/pages/system/huobiToken'),
+      },
       
       // {
       //   path: 'role',

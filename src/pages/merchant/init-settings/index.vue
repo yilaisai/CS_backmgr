@@ -10,7 +10,7 @@
 					</el-select>
 				</div>
 			</div>
-			<ul>
+			<ul v-if="tabs == 1">
 				<li><label>{{coinName}}当前市价:</label><span>{{form.toRMBPrice}}</span></li>
 				<li v-if="form.MERCHANT_RATE_TYPE == 1"><label>{{coinName}}当前兑入价格:</label><span>{{Math.floor((BigNumber(form.huobi.in*1).plus(form.MERCHANT_IN_PRICE_FLOAT*1 ))* 1000) / 1000}}</span></li>
 				<li v-else-if="form.MERCHANT_RATE_TYPE == 3"><label>{{coinName}}当前兑入价格:</label><span>{{Math.floor((BigNumber(form.bian.in*1).plus(form.MERCHANT_IN_PRICE_FLOAT*1 ))* 1000) / 1000}}</span></li>
@@ -21,11 +21,22 @@
 				<li v-else-if="form.MERCHANT_RATE_TYPE == 4"><label>{{coinName}}当前兑出价格:</label><span>{{Math.floor((BigNumber(form.okex.out*1).plus(form.MERCHANT_OUT_PRICE_FLOAT*1)) * 1000) / 1000}}</span></li>
 				<li v-else><label>{{coinName}}当前兑出价格:</label><span>{{Math.floor(form.MERCHANT_OUT_PRICE*1000)/1000}}</span></li>
 			</ul>
+			<ul v-else>
+				<li><label>{{coinName}}当前市价:</label><span>{{form.toRMBPrice}}</span></li>
+				<li v-if="form.SET_TIME_RATE_TYPE == 1"><label>{{coinName}}当前兑入价格:</label><span>{{Math.floor((BigNumber(form.huobi.in*1).plus(form.SET_TIME_IN_PRICE_FLOAT*1 ))* 1000) / 1000}}</span></li>
+				<li v-else-if="form.SET_TIME_RATE_TYPE == 3"><label>{{coinName}}当前兑入价格:</label><span>{{Math.floor((BigNumber(form.bian.in*1).plus(form.SET_TIME_IN_PRICE_FLOAT*1 ))* 1000) / 1000}}</span></li>
+				<li v-else-if="form.SET_TIME_RATE_TYPE == 4"><label>{{coinName}}当前兑入价格:</label><span>{{Math.floor((BigNumber(form.okex.in*1).plus(form.SET_TIME_IN_PRICE_FLOAT*1 ))* 1000) / 1000}}</span></li>
+				<li v-else><label>{{coinName}}当前兑入价格:</label><span>{{Math.floor(form.SET_TIME_IN_PRICE*1000)/1000}}</span></li>
+				<li v-if="form.SET_TIME_RATE_TYPE == 1"><label>{{coinName}}当前兑出价格:</label><span>{{Math.floor((BigNumber(form.huobi.out*1).plus(form.SET_TIME_OUT_PRICE_FLOAT*1)) * 1000) / 1000}}</span></li>
+				<li v-else-if="form.SET_TIME_RATE_TYPE == 3"><label>{{coinName}}当前兑出价格:</label><span>{{Math.floor((BigNumber(form.bian.out*1).plus(form.SET_TIME_OUT_PRICE_FLOAT*1)) * 1000) / 1000}}</span></li>
+				<li v-else-if="form.SET_TIME_RATE_TYPE == 4"><label>{{coinName}}当前兑出价格:</label><span>{{Math.floor((BigNumber(form.okex.out*1).plus(form.SET_TIME_OUT_PRICE_FLOAT*1)) * 1000) / 1000}}</span></li>
+				<li v-else><label>{{coinName}}当前兑出价格:</label><span>{{Math.floor(form.SET_TIME_OUT_PRICE*1000)/1000}}</span></li>
+			</ul>
 		</div>
 		<div class="content-wrap">
 			<h3>商户设置</h3>
-			<el-tabs type="border-card">
-				<el-tab-pane label="兑入兑出价格设置">
+			<el-tabs  v-model="tabs" type="border-card">
+				<el-tab-pane label="兑入兑出价格设置" name="1">
 					<el-form ref="form" :model="form" label-width="100px" size="small">
 						<el-form-item label="类型：" v-if="form.huobi">
 							<el-radio-group v-model="form.MERCHANT_RATE_TYPE">
@@ -81,6 +92,88 @@
 						</el-form-item>
 					</el-form>
 					<p class="tips">提示：价格默认使用系统设置的价格，开启手动设置的价格，则自动关闭系统价格，关闭手动设置的价格，则自动开启系统价格。</p>
+				</el-tab-pane>
+				<el-tab-pane label="特殊时段兑入兑出价格设置" name="2">
+					<el-form ref="form" :model="form" label-width="100px" size="small">
+						<el-form-item label="开关：">
+							<el-radio v-model="form.SET_TIME_ENABLE" label="1">开启</el-radio>
+  						<el-radio v-model="form.SET_TIME_ENABLE" label="0">关闭</el-radio>
+						</el-form-item>
+						<el-form-item label="类型：" v-if="form.huobi">
+							<el-radio-group v-model="form.SET_TIME_RATE_TYPE">
+								<el-radio label="1">
+									<span>火币</span>
+									<span>兑入价格：{{form.huobi.in}}</span>
+									<span>兑出价格：{{form.huobi.out}}</span>
+								</el-radio>
+								<br/>
+								<el-radio label="4">
+									<span>OKEX</span>
+									<span>兑入价格：{{form.okex.in}}</span>
+									<span>兑出价格：{{form.okex.out}}</span>
+								</el-radio>
+								<br/>
+								<el-radio label="3">
+									<span>币安</span>
+									<span>兑入价格：{{form.bian.in}}</span>
+									<span>兑出价格：{{form.bian.out}}</span>
+								</el-radio>
+								<br/>
+								<el-radio label="2">
+									<span>手动</span>
+								</el-radio>
+							</el-radio-group>
+						</el-form-item>
+						<el-form-item label="货币：">
+							<el-input v-model.trim="form.MERCHANT_COIN_NAME" :disabled="true" style="width:100px"></el-input>
+						</el-form-item>
+						<el-form-item label="兑入价格：" v-if="form.SET_TIME_RATE_TYPE == 1">
+							<el-input v-model.trim="form.huobi.in" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.SET_TIME_IN_PRICE_FLOAT" placeholder="输入倍数（如0.9）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d).*$/,'$1$2.$3')"></el-input>
+						</el-form-item>
+						<el-form-item label="兑入价格：" v-else-if="form.SET_TIME_RATE_TYPE == 3">
+							<el-input v-model.trim="form.bian.in" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.SET_TIME_IN_PRICE_FLOAT" placeholder="输入倍数（如0.9）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3')"></el-input>
+						</el-form-item>
+						<el-form-item label="兑入价格：" v-else-if="form.SET_TIME_RATE_TYPE == 4">
+							<el-input v-model.trim="form.okex.in" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.SET_TIME_IN_PRICE_FLOAT" placeholder="输入倍数（如0.9）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3')"></el-input>
+						</el-form-item>
+						<el-form-item label="兑入价格：" v-else>
+							<el-input v-model.trim="form.SET_TIME_IN_PRICE"></el-input>
+						</el-form-item>
+						<el-form-item label="兑出价格：" v-if="form.SET_TIME_RATE_TYPE == 1">
+							<el-input v-model.trim="form.huobi.out" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.SET_TIME_OUT_PRICE_FLOAT" placeholder="输入倍数（如1.1）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3')"></el-input>
+						</el-form-item>
+						<el-form-item label="兑出价格：" v-else-if="form.SET_TIME_RATE_TYPE == 3">
+							<el-input v-model.trim="form.bian.out" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.SET_TIME_OUT_PRICE_FLOAT" placeholder="输入倍数（如1.1）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3')"></el-input>
+						</el-form-item>
+						<el-form-item label="兑出价格：" v-else-if="form.SET_TIME_RATE_TYPE == 4">
+							<el-input v-model.trim="form.okex.out" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.SET_TIME_OUT_PRICE_FLOAT" placeholder="输入倍数（如1.1）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3')"></el-input>
+						</el-form-item>
+						<el-form-item label="兑出价格：" v-else>
+							<el-input v-model.trim="form.SET_TIME_OUT_PRICE"></el-input>
+						</el-form-item>
+						<el-form-item label="启用时间段：">
+							<el-time-select
+								placeholder="起始时间"
+								v-model="startTime"
+								@change="confirmStartTime"
+								:picker-options="{
+									start: '00:00',
+									step: '00:30',
+									end: '24:00'
+								}">
+							</el-time-select>
+							&nbsp;-&nbsp;
+							<el-time-select
+								placeholder="结束时间"
+								v-model="endTime"
+								:picker-options="{
+									start: '00:00',
+									step: '00:30',
+									end: '24:00'
+								}">
+							</el-time-select>
+						</el-form-item>
+					</el-form>
 				</el-tab-pane>
 			</el-tabs>
 			<el-tabs type="border-card">
@@ -219,7 +312,7 @@ export default {
 	data() { 
 		return {
 			form: {
-				otcPayLists: []
+				otcPayLists: [],
 			},
 			dialogVisible:false,
 			inFee: 0,
@@ -232,7 +325,10 @@ export default {
 			formData:{
 				value1: '',
 				value2: '',
-			}
+			},
+			tabs:"1",
+			startTime:'',
+			endTime:''
 		}
 	},
 	activated() {
@@ -240,7 +336,9 @@ export default {
 		this.getInSwitch()
 	},
 	methods: {
-		
+		confirmStartTime(){
+			console.log(this.form.startTime)
+		},
 		getData() {
 			this.$http.post('/wallet/backmgr/merchant/trade/config', {
 				coinName: this.coinName
@@ -248,6 +346,8 @@ export default {
 				this.form = res.result
 				this.form.BATCHOUT_RATIO_FEE = Math.floor(this.form.BATCHOUT_RATIO_FEE*10000)/100
 				this.form.MERCHANT_RECHARGE_RATE = Math.floor(this.form.MERCHANT_RECHARGE_RATE*10000)/100
+				this.startTime = this.form.SET_TIME_PRICE.split('-')[0]
+				this.endTime = this.form.SET_TIME_PRICE.split('-')[1]
 				let inFee = ''
 				let outFee = ''
 				let merchantInMinAmount = ''
@@ -357,12 +457,28 @@ export default {
 				}) 
 				return
 			}
+			if(this.form.SET_TIME_ENABLE == 0){
+				if(!this.startTime || !this.endTime) {
+					this.startTime = "00:00"
+					this.endTime = "00:00"
+				}
+			} else {
+				if(!this.startTime || !this.endTime) {
+					this.$message({
+						type:'warning',
+						message:'启用时间段格式不准确！'
+					})
+					return
+				}
+			}
 			this.form.secret = ggCode
 			this.form.inFee = this.inFee?(this.inFee / 100).toFixed(4):-1
 			this.form.outFee = this.outFee?(this.outFee / 100).toFixed(4):-1
 			this.form.payType = this.payType
 			this.form.BATCHOUT_RATIO_FEE = Math.floor(this.form.BATCHOUT_RATIO_FEE)/100
 			this.form.MERCHANT_RECHARGE_RATE = Math.floor(this.form.MERCHANT_RECHARGE_RATE*100)/10000
+			this.form.SET_TIME_PRICE = this.startTime+'-'+this.endTime
+			console.log(this.form.SET_TIME_PRICE)
 			this.$http.post('/wallet/backmgr/merchant/trade/updateConfig', this.form).then(res => {
 				this.$notify.success({
 					title: '提示',

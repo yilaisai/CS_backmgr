@@ -23,7 +23,7 @@
 									<el-input placeholder="请输入用户账号或用户编号" v-model.trim="filterForm.account" class="input-with-select"></el-input>
 								</el-form-item>
 								<el-form-item label="状态:">
-									<el-select v-model="filterForm.status" >
+									<el-select v-model="filterForm.status" :disabled="tabs == 1">
 										<el-option v-for="(item, key) in statusList" :key="key" :value="item.label" :label="item.value"></el-option>
 									</el-select>
 								</el-form-item>
@@ -55,10 +55,16 @@
 								</el-form-item>
 								<el-button type="primary" @click.native="search" size="mini">搜索</el-button>
 								<el-button type="primary" @click.native="exportExcel" size="mini" icon="el-icon-document-checked">导出Excel</el-button>
+								<el-button type="primary" size="mini" @click="batchLetgo" :disabled="tabs != 1">批量放行</el-button>
 							</el-form>
 						</el-collapse-item>
 						</el-collapse>
-					<el-table :data="listData.list" border height="100%" size="mini">
+						<el-tabs v-model="tabs" @tab-click="chooseTabs">
+							<el-tab-pane label="全部" name="0"></el-tab-pane>
+							<el-tab-pane label="待放行" name="1"></el-tab-pane>
+						</el-tabs>
+					<el-table :data="listData.list" border height="100%" size="mini" @selection-change="handleSelectionChange">
+							<el-table-column type="selection" align="center" v-if="tabs == 1"></el-table-column>
 							<el-table-column prop="coin_name" label="币种" width="60" align="center"></el-table-column>
 							<el-table-column  label="类型/下单时间" align="center" width="140">
 								<template slot-scope="scope"><img :src="'/static/img/paytype/' + scope.row.pay_type + '.svg'" style="vertical-align: sub;width: 18px;" alt=""> {{advTypeMap[scope.row.adv_type]}}<br />{{ $fmtDate(scope.row.create_time,'full') }}</template>
@@ -292,7 +298,9 @@ export default {
 				3: '微信',
 			},
 			server_path:'',
-			token:localStorage.getItem('wallet_token')
+			token:localStorage.getItem('wallet_token'),
+			tabs:0,
+			selectList:[]
 		}
         
 	},
@@ -518,6 +526,47 @@ export default {
 				},
 				BigNumber(val){
 					return BigNumber(val)
+				},
+				chooseTabs() {
+					if (this.tabs == 0) {
+						this.filterForm.status = ''
+						this.getList()
+					} else {
+						this.filterForm.status = '2'
+						this.getList()
+					}
+				},
+				handleSelectionChange(selection){
+					console.log(selection)
+					this.selectList = selection
+				},
+				//批量放行
+				batchLetgo(){
+					if(!this.selectList.length) {
+						this.$message.warning('请选择待放行订单！')
+						return
+					}
+					let tradeIds = []
+					this.selectList.forEach(el => {
+						tradeIds.push(el.trade_id)
+					})
+					this.$confirm('放行后订单状态将变为已完成(交易员扣币，商户加币)，确认放行？','确认批量放行',{
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+					}).then(() => {
+						let data = {
+							isDirect:'yes',
+							tradeIds:tradeIds
+						}
+						this.$http.post('/wallet/backmgr/merchant/batchLetgo',{
+							isDirect:'yes',
+							tradeIds:tradeIds,
+							postDataType:'Bean'
+						}).then(res => {
+							this.$message.success(res.msg)
+							this.getList()
+						})
+					})
 				}
 	},
 	computed:{
@@ -662,17 +711,17 @@ export default {
 			color: #909399;
 			padding:0 10px;
 		}
-		/deep/.is-checked{
-			background: #409EFF;
-			border-radius: 5px;
-			padding: 3px 10px;
-			margin-right: 10px;
-			.el-radio__label{
-				color: #fff;
-				padding: 0;
-			}
+		// /deep/.is-checked{
+		// 	background: #409EFF;
+		// 	border-radius: 5px;
+		// 	padding: 3px 10px;
+		// 	margin-right: 10px;
+		// 	.el-radio__label{
+		// 		color: #fff;
+		// 		padding: 0;
+		// 	}
 			
-		}
+		// }
 	.EntryPrompt{
 		// position: fixed;
 		// width: 100%;

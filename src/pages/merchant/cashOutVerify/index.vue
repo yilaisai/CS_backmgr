@@ -205,7 +205,17 @@ export default {
 			this.tabs = this.$route.query.status
 			this.chooseTabs()
 		}
+		if(this.$route.query.advType && this.$route.query.matchResult) {
+			this.filterForm.advType = this.$route.query.advType
+			console.log(this.filterForm.advType)
+			this.filterForm.matchResult = this.$route.query.matchResult
+		}
 		this.selectedDate = getTodayTime()
+		if(this.$route.query.advType && this.$route.query.matchResult) {
+			this.filterForm.advType = this.$route.query.advType
+			this.filterForm.matchResult = this.$route.query.matchResult
+			this.selectedDate = []
+		}
 		this.getCashoutAuditList()
 	},
 	methods:{

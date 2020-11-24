@@ -132,6 +132,7 @@ export default {
     },
     methods:{
         getList(){
+            console.log(this.filterForm)
             this.$http.post('/wallet/app/otc/backmgr/infoShortList',this.filterForm).then(res=>{
                 console.log(res)
                 const { list ,total} = res.result;

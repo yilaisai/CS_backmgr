@@ -1,206 +1,188 @@
 <template>
   <div class="sac-home">
     <div class="ToDoList">
-      <div class="title">待办事项</div>
+      <div class="title">
+        <span class="title-left">待办事项</span>
+      </div>
       <ul>
         <li>
-          <div class="top">
+          <div class="top" @click="$router.push('/LegalCurrency/complaint')">
             <span>{{appealIng}}条申诉待处理</span>
           </div>
-          <div class="bottom" @click="$router.push('/LegalCurrency/complaint')">
-            <span>去处理</span>
-            <img src="@/assets/down_right.svg" alt="">
-          </div>
         </li>
         <li>
-          <div class="top">
+          <div class="top" @click="$router.push('/money/withdraw-check')">
             <span>{{withdrawIng}}条提币审核待处理</span>
           </div>
-          <div class="bottom" @click="$router.push('/money/withdraw-check')">
-            <span>去处理</span>
-            <img src="@/assets/down_right.svg" alt="">
+        </li>
+        <li>
+          <div class="top" @click="$router.push('/LegalCurrency/paymentMethodVerify')">
+            <span>{{bindInfoIng}}条收款方式审核待处理</span>
           </div>
         </li>
         <li>
-          <div class="top"><span>{{bindInfoIng}}条收款方式审核待处理</span></div>
-          <div class="bottom" @click="$router.push('/LegalCurrency/paymentMethodVerify')">
-            <span>去处理</span>
-            <img src="@/assets/down_right.svg" alt="">
+          <div class="top" @click="$router.push({path:'/merchant/cashOutVerify',query: { status: '1' }})">
+            <span>{{outIng}}条兑出审核待处理</span>
           </div>
         </li>
-        <li>
-          <div class="top"><span>{{outIng}}条兑出审核待处理</span></div>
-          <div class="bottom" @click="$router.push({path:'/merchant/cashOutVerify',query: { status: '1' }})">
-            <span>去处理</span>
-            <img src="@/assets/down_right.svg" alt="">
-          </div>
-        </li>
-        <li>
-          <div class="top"><span>{{merchantApplyIng}}条商户注册审核待处理</span></div>
-          <div class="bottom" @click="$router.push({path:'/merchant/merchantList',query:{status:'0'}})">
-            <span>去处理</span>
-            <img src="@/assets/down_right.svg" alt="">
-          </div>
-        </li>
-        <li>
-          <div class="top"><span>{{auditIng}}条广告商审核待处理</span></div>
-          <div class="bottom" @click="$router.push('/LegalCurrency/advertisersVerify')">
-            <span>去处理</span>
-            <img src="@/assets/down_right.svg" alt="">
-          </div>
-        </li>
-        <li>
+        <li @click="$router.push({path:'/user/identityVerify',query:{status:'1'}})">
           <div class="top"><span>{{auditPersonIng}}条实名审核待处理</span></div>
-          <div class="bottom" @click="$router.push({path:'/user/identityVerify',query:{status:'1'}})">
-            <span>去处理</span>
-            <img src="@/assets/down_right.svg" alt="">
-          </div>
         </li>
       </ul>
-    </div>
-    <div class="totalOrder">
-      <div class="title">订单统计</div>
-      <div class="content">
-        <div class="left">
-          <div class="echart" id="echart1"></div>
-          <div class="data">
-            <div class="title">今日进行中订单数</div>
-            <div class="pay"> 
-              <div class="pay-left">
-                <span>未付款：</span>
-                <b>{{payIngOrder}}</b>
-              </div>
-              <div class="pay-right">
-                <span>已付款：</span>
-                <b>{{payedCount}}</b>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="right">
-          <div class="echart" id="echart2"></div>
-          <div class="data">
-            <div class="title">今日完成订单数</div>
-            <div class="pay"> 
-              <div class="pay-left">
-                <span>已完成：</span>
-                <b>{{finishOrder}}</b>
-              </div>
-              <div class="pay-right">
-                <span>已取消：</span>
-                <b>{{cancelOrder}}</b>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
     <div class="totalData">
-      <div class="title">统计数据</div>
-      <ul class="content">
-        <li>
-          <div class="top">兑入</div>
-          <div class="bottom">
-            <div class="text">
-              <div>
-                <span>当日已完成兑入 :</span>
-                <span>{{sumInToday}} USDT</span>
-              </div>
-              <div>
-                <span>昨日已完成兑入 :</span>
-                <span>{{sumInYesterday}} USDT</span>
-              </div>
-            </div>
-            <img src="@/assets/line1.svg" alt="">
-          </div>
+      <div class="title">
+        <div class="title-left">统计数据</div>
+        <div class="title-right">
+          <span :class="[{'active':activeTotal == 1},'btn']" @click="activeTotal = 1">实时</span>
+          <span class="line" v-if="activeTotal == 3"></span>
+          <span :class="[{'active':activeTotal == 2},'btn']" @click="activeTotal = 2">本周</span>
+          <span class="line" v-if="activeTotal == 1"></span>
+          <span :class="[{'active':activeTotal == 3},'btn']" @click="activeTotal = 3">本月</span>
+        </div>
+      </div>
+      <div class="content">
+        <ul>
+          <li>
+            <span>20000</span>
+            <span>兑入订单金额(已完成)</span>
+          </li>
+          <li>
+            <span>20000</span>
+            <span>兑出订单金额(已完成)</span>
+          </li>
+          <li>
+            <span>20000</span>
+            <span>兑入订单数量(已完成)</span>
+          </li>
+          <li>
+            <span>2500</span>
+            <span>平均订单金额</span>
+          </li>
+          <li>
+            <span>22</span>
+            <span>万元以上订单数量占比(%)</span>
+          </li>
+          <li>
+            <span>21</span>
+            <span>万元以上订单金额占比(%)</span>
+          </li>
+          <li>
+            <span>152</span>
+            <span>接单人数</span>
+          </li>
+          <li>
+            <span>555</span>
+            <span>人均接单金额</span>
+          </li>
+          <li>
+            <span>39</span>
+            <span>兑入匹配失败(笔)</span>
+          </li>
+          <li>
+            <span>20000</span>
+            <span>充币</span>
+          </li>
+          <li>
+            <span>20000</span>
+            <span>提币</span>
+          </li>
+          <li>
+            <span>290</span>
+            <span>人均接单量</span>
+          </li>
+        </ul>
+        <div class="canvas" id="echart"></div>
+      </div>
+    </div>
+    <div class="merchantData">
+      <div class="title">
+        <div class="title-left">商户统计</div>
+        <div class="title-right">
+          <span :class="[{'active':activeMerchant == 1},'btn']" @click="activeMerchant = 1">实时</span>
+          <span class="line" v-if="activeMerchant == 3"></span>
+          <span :class="[{'active':activeMerchant == 2},'btn']" @click="activeMerchant = 2">本周</span>
+          <span class="line" v-if="activeMerchant == 1"></span>
+          <span :class="[{'active':activeMerchant == 3},'btn']" @click="activeMerchant = 3">本月</span>
+        </div>
+      </div>
+      <ul class="table">
+        <li class="table-title">
+          <span></span>
+          <span>商户编号</span>
+          <span>商户订单金额(CNY)</span>
+          <span>订单金额占比(%)</span>
+          <span>商户订单量</span>
+          <span>订单量占比(%)</span>
+          <span>兑出订单金额(CNY)</span>
         </li>
-        <li>
-          <div class="top">兑出</div>
-          <div class="bottom">
-            <div class="text">
-              <div>
-                <span>当日已完成兑出 :</span>
-                <span>{{sumOutToday}} USDT</span>
-              </div>
-              <div>
-                <span>昨日已完成兑出 :</span>
-                <span>{{sumOutYesterday}} USDT</span>
-              </div>
-            </div>
-            <img src="@/assets/line2.svg" alt="">
-          </div>
-        </li>
-        <li>
-          <div class="top">提币</div>
-          <div class="bottom">
-            <div class="text">
-              <div>
-                <span>当日已完成提币 :</span>
-                <span>{{todayWithdrawAmount}} USDT</span>
-              </div>
-              <div>
-                <span>昨日已完成提币 :</span>
-                <span>{{yesterdayWithdrawAmount}} USDT</span>
-              </div>
-            </div>
-            <img src="@/assets/line1.svg" alt="">
-          </div>
-        </li>
-        <li>
-          <div class="top">充币</div>
-          <div class="bottom">
-            <div class="text">
-              <div>
-                <span>当日充币 :</span>
-                <span>{{todayRechargeAmount}} USDT</span>
-              </div>
-              <div>
-                <span>昨日充币 :</span>
-                <span>{{yesterdayRechargeAmount}} USDT</span>
-              </div>
-            </div>
-            <img src="@/assets/line3.svg" alt="">
-          </div>
-        </li>
-        <li>
-          <div class="top">兑入冻结</div>
-          <div class="bottom">
-            <div class="text">
-              <div>
-                <span>当日兑入冻结 : </span>
-                <span>{{inFrozen}} USDT</span>
-              </div>
-            </div>
-            <img src="@/assets/line1.svg" alt="">
-          </div>
-        </li>
-        <li>
-          <div class="top">兑出冻结</div>
-          <div class="bottom">
-            <div class="text">
-              <div>
-                <span>当日兑出冻结 :</span>
-                <span>{{outFrozen}} USDT</span>
-              </div>
-            </div>
-            <img src="@/assets/line2.svg" alt="">
-          </div>
-        </li>
-        <li>
-          <div class="top">提币冻结</div>
-          <div class="bottom">
-            <div class="text">
-              <div>
-                <span>当日提币冻结 :</span>
-                <span>{{withdrawFrozen}} USDT</span>
-              </div>
-            </div>
-            <img src="@/assets/line1.svg" alt="">
-          </div>
+        <li v-for="(item,index) in 10" :key="index" class="item">
+          <span>{{index>8?index+1:'0'+(index+1)}}</span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
         </li>
       </ul>
     </div>
-
+    <div class="container">
+      <div class="traderData">
+        <div class="title">
+          <div class="title-left">交易员统计</div>
+          <div class="title-right">
+            <span :class="[{'active':activeTrader == 1},'btn']" @click="activeTrader = 1">实时</span>
+            <span class="line" v-if="activeTrader == 3"></span>
+            <span :class="[{'active':activeTrader == 2},'btn']" @click="activeTrader = 2">本周</span>
+            <span class="line" v-if="activeTrader == 1"></span>
+            <span :class="[{'active':activeTrader == 3},'btn']" @click="activeTrader = 3">本月</span>
+          </div>
+        </div>
+        <ul class="table">
+          <li class="table-title">
+            <span></span>
+            <span>姓名</span>
+            <span>编号</span>
+            <span>订单金额</span>
+            <span>订单量</span>
+            <span>充币量</span>
+          </li>
+          <li v-for="(item,index) in 20" :key="index" class="item">
+            <span>{{index>8?index+1:'0'+(index+1)}}</span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </li>
+        </ul>
+      </div>
+      <div class="totalAmount">
+        <div class="title">
+          <div class="title-left">
+            <span class="text">开启接单人数总持币量(USDT)</span>
+            <span class="blue">1231</span>
+          </div>
+          <div class="title-right">
+            <span class="text">当前开启接单人数(人)</span>
+            <span class="blue">38</span>
+          </div>
+        </div>
+        <ul class="table">
+          <li class="table-title">
+            <span></span>
+            <span>姓名</span>
+            <span>编号</span>
+          </li>
+          <li v-for="(item,index) in 20" :key="index" class="item">
+            <span>{{index>8?index+1:'0'+(index+1)}}</span>
+            <span></span>
+            <span></span>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -213,396 +195,524 @@
         user: [],
         account: [],
         appealIng:0,
-        auditIng:0,
         bindInfoIng:0,
         outIng:0,
         withdrawIng:0,
         appealOverIng:0,
         auditPersonIng:0,
-        merchantApplyIng:0,
-        payIngOrder:0,
-        payedCount:0,
-        finishOrder:0,
-        cancelOrder:0,
-        sumInToday:0,
-        sumInYesterday:0,
-        sumOutToday:0,
-        sumOutYesterday:0,
-        todayWithdrawAmount:0,
-        yesterdayWithdrawAmount:0,
-        todayRechargeAmount:0,
-        yesterdayRechargeAmount:0,
-        inFrozen:0,
-        outFrozen:0,
-        withdrawFrozen:0,
-        messageBoxShow: false,
-        timer: null,
-        appealIngRemind:0,
-        auditIngRemind:0,
-        bindInfoIngRemind:0,
-        outIngRemind:0,
-        withdrawIngRemind:0,
-        auditPersonIngRemind:0,
-        merchantApplyIngRemind:0,
-        payedOrderIn:0,
-        payedOrderOut:0,
-        remindTimes:0,        //提醒的次数
+        activeTotal:1,       // 统计数据
+        activeMerchant:1,    // 商户统计
+        activeTrader:1,      // 交易员统计
       };
     },
     methods: {
       getData() {
         const startDate = localStorage.getItem('NO_REMIND_TIME') || ''
         this.$http.post('/wallet/backmgr/indexInfo').then(res => {
-        let result = res.result;
-        this.appealIng = result.appealIng
-        this.auditIng = result.auditIng
-        this.bindInfoIng = result.bindInfoIng
-        this.outIng = result.outIng
-        this.withdrawIng = result.withdrawIng
-        this.auditPersonIng = result.auditPersonIng
-        this.merchantApplyIng = result.merchantApplyIng
-        this.payIngOrder = result.payIngOrder
-        this.payedCount = result.payedCount
-        this.finishOrder = result.finishOrder
-        this.cancelOrder = result.cancelOrder
-        this.sumInToday = result.sumInToday
-        this.sumInYesterday = result.sumInYesterday
-        this.sumOutToday = result.sumOutToday
-        this.sumOutYesterday = result.sumOutYesterday
-        this.sumInYesterday =result.sumInYesterday
-        this.todayWithdrawAmount = result.todayWithdrawAmount || 0
-        this.yesterdayWithdrawAmount = result.yesterdayWithdrawAmount || 0
-        this.todayRechargeAmount = result.todayRechargeAmount || 0
-        this.yesterdayRechargeAmount = result.yesterdayRechargeAmount || 0
-        this.inFrozen = result.inFrozen
-        this.outFrozen = result.outFrozen
-        this.withdrawFrozen = result.withdrawFrozen
-        let data1 = [{value:this.payIngOrder,name:"未付款"},{value:this.payedCount,name:"已付款"}]
-        let data2 = [{value:this.cancelOrder,name:"已取消"},{value:this.finishOrder,name:"已完成"}]
-        this.intCanvas(data1,data2)
+          let result = res.result;
+          this.appealIng = result.appealIng
+          this.bindInfoIng = result.bindInfoIng
+          this.outIng = result.outIng
+          this.withdrawIng = result.withdrawIng
+          this.auditPersonIng = result.auditPersonIng
+          this.intCanvas()
         })
       },
-      intCanvas(data1,data2) {
-        let color = ['#FDBF5E','#0081FF']
-        this.drawLine('echart1',data1,color)
-        this.drawLine('echart2',data2,color)
+      intCanvas() {
+        this.drawLine()
       },
-      drawLine(id, data, color) {
-        var myChart = echarts.init(document.getElementById(id));
+      drawLine() {
+        var myChart = echarts.init(document.getElementById('echart'));
         let option = {
-        tooltip: {
-          trigger: 'item',
-          formatter: '{b}<br/>{c} ({d}%)'
-        },
-        series: [
-          {
-          name: '',
-          type: 'pie',
-          radius: ['0', '100%'],
-          hoverAnimation:false,
-          label: {
-            normal:{
-            position:'inner',
-            fontSize:'12',
-            },
-            emphasis: {
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+              type: 'none ',        // 默认为直线，可选为：'line' | 'shadow'
+            }
+          },
+          legend: {
+            bottom:20,
+            itemGap: 100,
+            itemWidth: 14,
+            itemHeight: 14,
             textStyle: {
-              fontSize: '14',
-              fontWeight: 'bold'
-            }
-            }
-          },
-          labelLine: {
-            normal: {
-            show: false
+              color: '#000',
+              fontSize: 12,
+              fontWeight: 500
             }
           },
-          data: data,
-          color:color
-          }
-        ],
+          grid: {
+            top:'45px',
+            left: '40px',
+            right: '40px',
+            containLabel: true
+          },
+          xAxis: [
+            {
+              type: 'category',
+              data: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
+              axisTick:{
+                show:false
+              },
+              axisLine: {
+                lineStyle:{
+                  color:'#ccc'
+                }
+              },
+              axisLabel: {
+                color:'#000',
+                fontSize:14,
+                margin:12,
+              }
+            }
+          ],
+          yAxis: [
+            {
+              type: 'value',
+              axisTick: {
+                show:false
+              },
+              axisLine: {
+                lineStyle:{
+                  color:'#ccc'
+                }
+              },
+              axisLabel: {
+                color:'#000',
+                fontSize:14,
+                margin:12,
+              },
+              splitLine: {
+                lineStyle: {
+                  color:'#ddd',
+                  type:'dashed',
+
+                }
+              }
+            }
+          ],
+          series: [
+            {
+              name: '兑入金额',
+              type: 'bar',
+              itemStyle:{
+                color: new echarts.graphic.LinearGradient(
+                  0, 0, 1, 1,             //渐变方向依次为  右/下/左/上
+                  [
+                      {offset: 0, color: '#09B66D'},
+                      {offset: 1, color: '#22CCE2'}
+                  ]
+                ),
+                barBorderRadius:[7,7,0,0],
+                
+              },
+              barWidth:14,
+              data: [320, 332, 301, 334, 390, 330, 320],
+            },
+            {
+              name: '兑出金额',
+              type: 'bar',
+              itemStyle:{
+                color: new echarts.graphic.LinearGradient(
+                  0, 0, 1, 1,
+                  [
+                      {offset: 0, color: '#FF8A48'},
+                      {offset: 1, color: '#FDBF5E'}
+                  ]
+                ),
+                barBorderRadius:[7,7,0,0],
+                
+              },
+              barWidth:14,
+              data: [320, 332, 301, 334, 390, 330, 320]
+            },
+            {
+              name: '充币',
+              type: 'bar',
+              itemStyle:{
+                color: new echarts.graphic.LinearGradient(
+                  0, 0, 1, 1,
+                  [
+                      {offset: 0, color: '#4969FF'},
+                      {offset: 1, color: '#0ACFFE'}
+                  ]
+                ),
+                barBorderRadius:[7,7,0,0],
+                
+              },
+              barWidth:14,
+              data: [320, 332, 301, 334, 390, 330, 320]
+            },
+            {
+              name: '提币',
+              type: 'bar',
+              itemStyle:{
+                color: new echarts.graphic.LinearGradient(
+                  0, 0, 1, 1,
+                  [
+                      {offset: 0, color: '#FF3D57'},
+                      {offset: 1, color: '#FF8A48'}
+                  ]
+                ),
+                barBorderRadius:[7,7,0,0],
+              },
+              barWidth:14,
+              barGap:'15%',
+              data: [320, 332, 301, 334, 390, 330, 320]
+            },
+          ],
         }
         myChart.setOption(option)
       },
       
     },
   	activated() {
-      // if (this.timer) clearTimeout(this.timer)
-      // this.remindTimes = 0
       this.getData()
-      // this.$emit('musicPlay')
-      // this.getNewsList()
-      
     },
   };
 </script>
 <style lang='less'>
   .sac-home {
-    min-width:1230px;
-    background: #F1F1F1;
+    min-width:1400px;
+    background:#DBE7EE;
     overflow-y: auto;
-    .table-wrap {
-    }
-    .t-title {
-	  text-align: center;
-	  font-size: 16px;
+    .title {
+      position: relative;
+      height:60px;
+      padding:0 25px;
+      line-height: 1em;
+      background: #FFF;
+      border-radius: 6px 6px 0 0;
+      font-size:16px;
+      color:#000;
+      font-weight: 600;
+      border-bottom:1px solid rgba(130,145,169,.24);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      &::before {
+        position: absolute;
+        content:'';
+        left:0;
+        top:50%;
+        transform: translateY(-50%);
+        width:4px;
+        height:24px;
+        background: linear-gradient(135deg, #0081FF 0%, #22CCE2 100%);
+        border-radius: 0px 5px 5px 0px;
+      }
+      &-left {
+        display: flex;
+        align-items: center;
+        .blue {
+          margin-left:10px;
+          color:#409EFF;
+        }
+      }
+      &-right {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        .btn {
+          width:64px;
+          height:30px;
+          line-height: 30px;
+          font-size:12px;
+          color:#646464;
+          background: transparent;
+          border-radius: 4px;
+          text-align: center;
+          cursor: pointer;
+          &.active {
+            background: #409EFF;
+            box-shadow: 0px 2px 6px 0px rgba(0, 129, 255, 0.35);
+            color:#FFF;
+            &:hover {
+              color:#FFF;
+            }
+          }
+          &:hover {
+            color:#409EFF;
+          }
+        }
+        .line {
+          width:1px;
+          height:14px;
+          background: #8291A9;
+        }
+        .blue {
+          margin-left:10px;
+          color:#409EFF;
+        }
+      }
     }
     .ToDoList {
-      margin-bottom:20px;
-      border:1px solid #F1F1F1;
+      margin-bottom:10px;
       border-radius:6px;
       background: #FFF;
-      .title {
-        padding:22px 20px;
-        line-height: 1em;
-        font-size:16px;
-        color:#000;
-        font-weight: 600;
-        border-bottom:1px solid rgba(130,145,169,.24);
-      }
       ul {
-        padding:20px;
+        margin:0;
+        padding:25px;
         display: flex;
         align-items: center;
         li {
           list-style: none;
           flex:1;
-          margin-right:10px;
+          margin-right:25px;
           border-radius:6px;
           border:1px solid rgba(130,145,169,0.25);
+          &:hover {
+            box-shadow: 0px 8px 8px 0px rgba(130, 145, 169, 0.1);
+          }
+          .top {
+            position: relative;
+            height:54px;
+            padding:0 24px;
+            font-size:14px;
+            font-weight: 500;
+            color:#242A38;
+            background:rgba(219,231,238,0.25);
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            &::before {
+              position: absolute;
+              content:'';
+              width:8px;
+              height:8px;
+              top:23px;
+              left:7px;
+              background: #FF3D57;
+              border-radius: 50%;
+            }
+          }
           &:last-of-type {
             margin-right:0;
           }
-          display: flex;
-          flex-direction: column;
-          .top {
-            position: relative;
-            height:62px;
-            padding:0 24px;
-            font-size:14px;
-            color:#242A38;
-            background:rgba(219,231,238,0.25);
-            border-bottom:1px solid #DBDEE5;
-            display: flex;
-            align-items: center;
-            span {
-              position: relative;
-               &::before {
-                position: absolute;
-                content:'';
-                width:6px;
-                height:6px;
-                top:7px;
-                left:-12px;
-                background: #FF3D57;
-                border-radius: 50%;
-              }
-            }
-            // &::before {
-            //   position: absolute;
-            //   content:'';
-            //   width:6px;
-            //   height:6px;
-            //   top:31px;
-            //   left:12px;
-            //   background: #FF3D57;
-            //   border-radius: 50%;
-            // }
-          }
-          .bottom {
-            padding:14px 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            span {
-              margin-right:7px;
-              color:#0081FF;
-              font-size:12px;
-            }
-          }
-        }
-      }
-    }
-    .totalOrder {
-      margin-bottom:20px;
-      background:rgba(255,255,255,1);
-      border-radius:6px;
-      >.title {
-        padding:22px 20px;
-        line-height: 1em;
-        font-size:16px;
-        color:#000;
-        font-weight: 600;
-        border-bottom:1px solid rgba(130,145,169,.24);
-      }
-      .content {
-        display: flex;
-        padding:40px 0;
-        >div {
-          flex:1;
-          height:160px;
-          display: flex;
-          justify-content: center;
-          .echart {
-            width:160px;
-            height:160px;
-            margin-right:42px;
-          }
-          .data {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            .title {
-              font-size:16px;
-              color:#000;
-              margin-bottom:20px;
-            }
-            .pay {
-              width:100%;
-              display: flex;
-              >div {
-                min-width:150px;
-                height:74px;
-                background: rgba(241,241,241,.3);
-                border-radius: 6px;
-                padding-left:20px;
-                display: flex;
-                align-items: center;
-                span {
-                  font-size:14px;
-                  color:#323232;
-                }
-                b {
-                  font-size:16px;
-                }
-              }
-              &-left {
-                margin-right:30px; 
-                b {
-                  color:#5E93FF;
-                }
-              }
-              &-right {
-                b {
-                  color:#0DB97E;
-                }
+          &:nth-of-type(2) {
+            .top {
+              &::before {
+                background: #2AE33E;
               }
             }
           }
-        }
-        .left {
-          position: relative;
-          &::after {
-            position: absolute;
-            content:"";
-            width:1px;
-            height:160px;
-            top:0;
-            right:0;
-            background:rgba(130,145,169,.25);;
+          &:nth-of-type(3) {
+            .top {
+              &::before {
+                background:#FA6400;
+              }
+            }
+          }
+          &:nth-of-type(4) {
+            .top {
+              &::before {
+                background: #6236FF;
+              }
+            }
+          }
+          &:nth-of-type(5) {
+            .top {
+              &::before {
+                background: #EB00FF;
+              }
+            }
           }
         }
       }
     }
     .totalData {
-      background:rgba(255,255,255,1);
+      margin-bottom:10px;
       border-radius:6px;
-      .title {
-        padding:22px 20px;
-        line-height: 1em;
-        font-size:16px;
-        color:#000;
-        font-weight: 600;
-        border-bottom:1px solid rgba(130,145,169,.24);
-      }
+      background: #FFF;
       .content {
-        padding:20px;
-        display: flex;
-        flex-wrap: wrap;
-        li {
-          width:24%;
-          list-style: none;
-          height:163px;
-          margin-right:1%;
-          margin-bottom:20px;
-          border-radius:4px;
-          border:1px solid rgba(219,222,229,1);
-          display:flex;
-          justify-content: space-between;
-          flex-direction: column;
-          &:nth-of-type(4n) {
-            margin-right:0;
-          }
-          .top {
-            padding:14px 13px;
-            border-bottom:1px solid #DBDEE5;
-            font-size:14px;
-            color:#323232;
-          }
-          .bottom {
-            flex:1;
-            background:linear-gradient(360deg,rgba(255,255,255,1) 0%,rgba(250,251,252,1) 100%);
-            border-radius:0px 0px 3px 3px;
+        padding:25px;
+        ul {
+          padding:0;
+          margin:0 0 10px 0;
+          display: flex;
+          flex-wrap: wrap;
+          li {
+            width:200px;
+            height:76px;
+            padding:20px;
+            margin-right:25px;
+            margin-bottom:15px;
+            background: #FCFDFE;
+            border-radius: 4px;
+            border: 1px solid #DBDEE5;
+            box-sizing: border-box;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            .text {
-              padding:25px 12px 0;
-              display: flex;
-              flex-direction:column;
-              div {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom:14px;
-                span {
-                  &:first-of-type {
-                    color:#646464;
-                    font-size:12px;
-                    line-height: 1em;
-                  }
-                  &:last-of-type {
-                    color:#323232;
-                    font-size:14px;
-                    line-height: 1em;
-                  }
-                }
+            span {
+              &:first-of-type {
+                line-height: 1em;
+                color:#323232;
+                font-size:14px;
+                font-weight: 500;
+              }
+              &:last-of-type {
+                line-height: 1em;
+                color:#646464;
+                font-size:12px;
               }
             }
-            img {
-              width:100%;
+          }
+        }
+        .canvas {
+          width:100%;
+          height:388px;
+          background: #FFF;
+          border-radius: 6px;
+          border: 1px solid #DBDEE5;
+        }
+      }
+    }
+    .merchantData {
+      margin-bottom:10px;
+      flex:none;
+      overflow: hidden;
+      ul.table {
+        height:288px;
+        padding:0;
+        margin:0;
+        background: #FFF;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        &::-webkit-scrollbar { /*滚动条整体样式*/
+            width: 6px ; /*高宽分别对应横竖滚动条的尺寸*/
+            height: 6px ;
+            background: #ffffff;;
+            cursor: pointer;
+
+        }
+
+        &::-webkit-scrollbar-thumb { /*滚动条里面小方块*/
+            border-radius: 5px;
+            -webkit-box-shadow: inset 0 0 5px rgba(240, 240, 240, .5) ;;
+            background: rgba(63, 98, 131, 0.8) ;;
+            cursor: pointer ;
+        }
+
+        &::-webkit-scrollbar-track { /*滚动条里面轨道*/
+            -webkit-box-shadow: inset 0 0 5px rgba(240, 240, 240, .5) ;
+            border-radius: 0 ;
+            background: rgba(240, 240, 240, 0.5) ;
+            cursor: pointer;
+        }
+        li {
+          display: flex;
+          height:40px;
+          line-height: 40px;
+          border-bottom:1px solid #E0E3E9;
+          box-sizing: border-box;
+          span {
+            flex:1;
+            text-align: center;
+            color:#646464;
+            font-size:14px;
+            border-right:1px solid #E0E3E9;
+            &:nth-of-type(1) {
+              flex:none;
+              width:100px;
+            }
+              &:nth-of-type(2) {
+
+              }
+              &:nth-of-type(3) {
+                
+              }
+              &:nth-of-type(4) {
+                
+              }
+              &:nth-of-type(5) {
+                
+              }
+              &:nth-of-type(6) {
+                
+              }
+            &:nth-of-type(7) {
+              border-right:none;
+            }
+          }
+        }
+        .table-title {
+          height:48px;
+          line-height: 48px;
+          span {
+            color:#000000;
+          }
+        }
+        .item {
+
+        }
+      }
+    }
+    .container {
+      display: flex;
+      >div {
+        flex:1;
+        ul.table {
+          height:288px;
+          padding:0;
+          margin:0;
+          background: #FFF;
+          display: flex;
+          flex-direction: column;
+          overflow-y: auto;
+          &::-webkit-scrollbar { /*滚动条整体样式*/
+              width: 6px ; /*高宽分别对应横竖滚动条的尺寸*/
+              height: 6px ;
+              background: #ffffff;;
+              cursor: pointer;
+          }
+          &::-webkit-scrollbar-thumb { /*滚动条里面小方块*/
+              border-radius: 5px;
+              -webkit-box-shadow: inset 0 0 5px rgba(240, 240, 240, .5) ;;
+              background: rgba(63, 98, 131, 0.8) ;;
+              cursor: pointer ;
+          }
+          &::-webkit-scrollbar-track { /*滚动条里面轨道*/
+              -webkit-box-shadow: inset 0 0 5px rgba(240, 240, 240, .5) ;
+              border-radius: 0 ;
+              background: rgba(240, 240, 240, 0.5) ;
+              cursor: pointer;
+          }
+          li {
+            display: flex;
+            height:40px;
+            line-height: 40px;
+            border-bottom:1px solid #E0E3E9;
+            box-sizing: border-box;
+            span {
+              flex:1;
+              text-align: center;
+              color:#646464;
+              font-size:14px;
+              border-right:1px solid #E0E3E9;
+              &:nth-of-type(1) {
+                flex:none;
+                width:100px;
+              }
+              &:last-of-type(7) {
+                border-right:none;
+              }
+            }
+          }
+          .table-title {
+            height:48px;
+            line-height: 48px;
+            span {
+              color:#000000;
             }
           }
         }
       }
-	}
-	
+      .traderData {
+        margin-right:10px;
+      }
+
+    }
   }
-@keyframes blink {  
-	0%{ text-shadow: 0 0 4px #4cc134}  
-	50%{ text-shadow: 0 0 40px #4cc134}  
-	100%{ text-shadow: 0 0 4px #4cc134}  
-}
-/* 添加兼容性前缀 */
-@-webkit-keyframes blink {
-	0%{ text-shadow: 0 0 4px #4cc134}  
-		50%{ text-shadow: 0 0 40px #4cc134}  
-		100%{ text-shadow: 0 0 4px #4cc134}  
-}
-@-moz-keyframes blink {
-	0%{ text-shadow: 0 0 4px #4cc134}  
-		50%{ text-shadow: 0 0 40px #4cc134}  
-		100%{ text-shadow: 0 0 4px #4cc134}  
-}
-@-ms-keyframes blink {
-	0%{ text-shadow: 0 0 4px #4cc134}  
-		50%{ text-shadow: 0 0 40px #4cc134}  
-		100%{ text-shadow: 0 0 4px #4cc134}  
-}
-@-o-keyframes blink {
-	0%{ text-shadow: 0 0 4px #4cc134}  
-		50%{ text-shadow: 0 0 40px #4cc134}  
-		100%{ text-shadow: 0 0 4px #4cc134}  
-}
 </style>

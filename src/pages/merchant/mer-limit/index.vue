@@ -16,7 +16,7 @@
         :total="detail.total*1">
       </el-pagination>
     </div>
-    <Pop :showPop="showPop" @dialogToggle="showPop = false" :id="item.userId" @getData="getData"></Pop>
+    <Pop :showPop="showPop" @dialogToggle="showPop = false" :id="item.id" @getData="getData"></Pop>
   </div>
 </template>
 <script>

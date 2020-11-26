@@ -40,7 +40,7 @@
     methods: {
       confirm(){
         this.$http.post('wallet/app/otc/backmgr/unCashInLimit',{
-          userId : this.id 
+          id : this.id 
         }).then(res => {
           if(res.code == 200) {
             this.$message.success(res.msg)

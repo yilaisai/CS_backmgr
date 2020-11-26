@@ -124,7 +124,15 @@ const merchant = [
 						title: '新增授权分组'
 					},
 					component: () => import('@/pages/merchant/AuthorizedMerchant/addAuthorizedMerchant.vue')
-			}
+			},
+			{
+				path: 'merLimit',
+				name: 'merLimit',
+				meta: {
+					title: '限制入金设置'
+				},
+				component: () => import('@/pages/merchant/mer-limit/index.vue')
+		}
 		]
 	}
 ]

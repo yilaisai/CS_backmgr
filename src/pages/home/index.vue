@@ -43,9 +43,9 @@
         <el-button type="primary" @click="submitFormPwd" size="small">确 定</el-button>
       </div>
     </el-dialog>
-    <div class="message-box" v-show=" withdrawIngRemind + bindInfoIngRemind + outIngRemind + merchantApplyIngRemind + auditIngRemind + auditPersonIngRemind + payedOrderIn + payedOrderOut + appealOverIng + payedIn + payedOut + moreTotalAmountLimit + moreCountMinLimit + moreNumMin + cashInFailCount  > 0">
+    <div class="message-box" v-show=" withdrawIngRemind + bindInfoIngRemind + outIngRemind + merchantApplyIngRemind + auditIngRemind + auditPersonIngRemind + payedOrderIn + payedOrderOut + appealOverIng + payedIn + payedOut + moreTotalAmountLimit + moreCountMinLimit + moreNumMin + cashInFailCount + freezeNum > 0">
       <div :class="['topbar',{'down' : !messageBoxShow}]" @click="messageBoxShow = !messageBoxShow">
-        <span class="blink" v-show="!messageBoxShow">有{{withdrawIngRemind + bindInfoIngRemind + outIngRemind + merchantApplyIngRemind + auditIngRemind + auditPersonIngRemind + appealOverIng + payedIn + payedOut + moreTotalAmountLimit + moreCountMinLimit + moreNumMin + cashInFailCount}}条新的待处理事项，点击展开</span>
+        <span class="blink" v-show="!messageBoxShow">有{{withdrawIngRemind + bindInfoIngRemind + outIngRemind + merchantApplyIngRemind + auditIngRemind + auditPersonIngRemind + appealOverIng + payedIn + payedOut + moreTotalAmountLimit + moreCountMinLimit + moreNumMin + cashInFailCount + freezeNum}}条新的待处理事项，点击展开</span>
         <span v-show="messageBoxShow"><img src="../../../static/img/logo_white.png" alt=""></span>
         <el-button v-show="messageBoxShow" size="mini" @click="noRemind">不再提醒</el-button>
         <i :class="{'down' : messageBoxShow}"></i>
@@ -72,6 +72,7 @@
 				<li @click="$router.push({path:'/LegalCurrency/userQuery'})" v-show="moreCountMinLimit > 0"><span>持币充足人数不足</span></li>
 				<li @click="$router.push({path:'/LegalCurrency/userQuery'})" v-show="moreNumMin > 0"><span>开启接单人数不足</span></li>
 				<li @click="$router.push({path:'/merchant/cashOutVerify',query:{advType:5,matchResult:'3'}})" v-show="cashInFailCount > 0"><span>有{{cashInFailCount}}笔兑入匹配失败的订单</span></li>
+				<li @click="$router.push({path:'/merchant/cashOutVerify',query:{advType:5,matchResult:'11'}})" v-show="freezeNum > 0"><span>有{{freezeNum}}条封锁冻结的广告订单</span></li>
       </ul>
     </div>
   </div>
@@ -170,6 +171,7 @@ export default {
 			moreNumMin:0,            //开启接单交易员小于*人
 			CB_COUNT_MIN:0,          //开启接单交易员小于 CB_COUNT_MIN 人
 			cashInFailCount:0,       //兑入匹配失败
+			freezeNum:0,             //封锁冻结的广告订单
 		};
 	},
 	methods: {
@@ -233,7 +235,8 @@ export default {
 				this.moreTotalAmountLimit = result.moreTotalAmountLimit
 				this.moreCountMinLimit = result.moreCountMinLimit
 				this.moreNumMin = result.moreNumMin
-				if( this.auditIngRemind > 0 || this.bindInfoIngRemind > 0 || this.outIngRemind > 0 || this.withdrawIngRemind > 0 || this.auditPersonIngRemind > 0 || this.merchantApplyIngRemind > 0 || this.payedIn >0 || this.payedOut >0 || this.moreTotalAmountLimit>0 || this.moreCountMinLimit > 0 || this.moreNumMin>0) {
+				this.freezeNum = result.freezeNum
+				if( this.auditIngRemind > 0 || this.bindInfoIngRemind > 0 || this.outIngRemind > 0 || this.withdrawIngRemind > 0 || this.auditPersonIngRemind > 0 || this.merchantApplyIngRemind > 0 || this.payedIn >0 || this.payedOut >0 || this.moreTotalAmountLimit>0 || this.moreCountMinLimit > 0 || this.moreNumMin>0 || this.freezeNum) {
 					this.$emit('musicPlay')
 				}else if(this.payedOrderIn < result.payedOrderIn || this.payedOrderOut < result.payedOrderOut || this.appealOverNumber < result.appealOverIng || this.cashInFailCount < result.cashInFailCount ) {
 					this.$emit('musicPlay')

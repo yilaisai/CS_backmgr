@@ -11,7 +11,7 @@
 			style="min-width: 100%">
       <el-table-column prop="nickName" label="用户编号" width="170" align="center">
 			</el-table-column>
-			<el-table-column prop="apiUserId" label="UserId" align="center" width="200"></el-table-column>
+			<el-table-column prop="apiUserId" label="apiUserId" align="center" width="200"></el-table-column>
 			<el-table-column prop="updateTime" label="最近一次下单时间" align="center">
         <template slot-scope="scope">
           {{scope.row.updateTime *1  | dateFormat('YYYY-MM-DD HH:mm:ss')}}

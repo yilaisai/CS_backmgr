@@ -5,7 +5,7 @@
         <el-form-item label="商户编号：">
           <el-input v-model="formData.nickName"></el-input>
         </el-form-item>
-        <el-form-item label="UserId：">
+        <el-form-item label="apiUserId：">
           <el-input v-model="formData.userId"></el-input>
         </el-form-item>
         <!-- <el-form-item label="下单时间：">

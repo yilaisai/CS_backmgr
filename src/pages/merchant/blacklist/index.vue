@@ -2,7 +2,7 @@
 	<div class="blacklist-page">
 		<el-form :inline="true"  ref="filterForm" :model="filterForm" label-width="86px" size="mini">
 			<el-form-item label="appid:" >
-				<el-input placeholder="请输入appid" v-model="filterForm.appid" class="input-with-select"></el-input>
+				<el-input placeholder="请输入appid" v-model="filterForm.appId" class="input-with-select"></el-input>
 			</el-form-item>
 			<el-form-item><el-button  type="primary" size="mini" @click.native="search">查询</el-button><el-button  type="primary" size="mini" @click.native="addItem">新增</el-button></el-form-item>
 		</el-form>
@@ -71,7 +71,7 @@ export default {
 	data(){
 		return {
 			filterForm:{
-				appid:'',
+				appId:'',
 				pageNum:1,
 				pageSize:20,
 			},
@@ -171,9 +171,6 @@ export default {
 			})
 		},
 		search(){
-			if(this.filterForm.appid.trim()==''){
-				return
-			}
 			this.filterForm.pageNum =  1
 			this.getList()
 		}

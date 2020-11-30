@@ -36,7 +36,7 @@
          startDate:'',
          endDate:'',
          create_time:'',
-         userId:'',
+         apiUserId:'',
          nickName:''
        },
        item:'',

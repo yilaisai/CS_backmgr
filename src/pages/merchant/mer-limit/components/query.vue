@@ -6,7 +6,7 @@
           <el-input v-model="formData.nickName"></el-input>
         </el-form-item>
         <el-form-item label="apiUserId：">
-          <el-input v-model="formData.userId"></el-input>
+          <el-input v-model="formData.apiUserId"></el-input>
         </el-form-item>
         <!-- <el-form-item label="下单时间：">
           <el-date-picker

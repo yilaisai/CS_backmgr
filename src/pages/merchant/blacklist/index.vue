@@ -7,12 +7,12 @@
 			<el-form-item><el-button  type="primary" size="mini" @click.native="search">查询</el-button><el-button  type="primary" size="mini" @click.native="addItem">新增</el-button></el-form-item>
 		</el-form>
 		<el-table stripe border height="100%" size="mini" :data="list" >
-			<el-table-column prop="appId" label="appid" align="center"></el-table-column>
-			<!-- <el-table-column prop="createTime" label="添加时间" align="center">
+			<el-table-column prop="createTime" label="添加时间" align="center">
 				<template slot-scope="scope">
-					{{  $fmtDate(scope.row.createTime,'full')}}
+					{{  $fmtDate(scope.row.createTimestamp,'full')}}
 				</template>
-			</el-table-column> -->
+			</el-table-column>
+			<el-table-column prop="appId" label="appid" align="center"></el-table-column>
 			<el-table-column prop="appUserId" label="userid" align="center"></el-table-column>
 			<el-table-column prop="ip" label="ip" align="center"></el-table-column>
 			<el-table-column  label="状态" align="center">

@@ -9,7 +9,7 @@
 			border
 			size="mini"
 			style="min-width: 100%">
-      <el-table-column prop="nickName" label="用户编号" width="170" align="center">
+      <el-table-column prop="nickName" label="商户编号" width="170" align="center">
 			</el-table-column>
 			<el-table-column prop="apiUserId" label="apiUserId" align="center" width="200"></el-table-column>
 			<el-table-column prop="updateTime" label="最近一次下单时间" align="center">

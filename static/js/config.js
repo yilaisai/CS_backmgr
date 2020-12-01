@@ -8,9 +8,9 @@ if(window.location.href.indexOf('homo.plus') >= 0) {
 }else if( window.location.href.indexOf('hosen.pro')>0 ){
 	SERVER_PATH2 = 'https://api.hosen.pro/'
 	SERVER_PATH = 'https://api.hosen.pro/'
-}else if( window.location.href.indexOf('admin.icoinease.com')>0 ){
-	SERVER_PATH2 = 'https://api.icoinease.com/'
-	SERVER_PATH = 'https://api.icoinease.com/'
+}else if( window.location.href.indexOf('ubao.io')>0 ){
+	SERVER_PATH2 = 'https://api.ubao.io/'
+	SERVER_PATH = 'https://api.ubao.io/'
 }else {//开发环境
 	// SERVER_PATH2 = 'http://47.52.110.161:7036/'
 	// SERVER_PATH = 'http://47.52.110.161:7036/'
@@ -26,7 +26,7 @@ if(window.location.href.indexOf('homo.plus') >= 0) {
 	// SERVER_PATH = 'http://192.168.120.53:7036/'  //李海
 	// SERVER_PATH2 = 'http://192.168.120.53:7036/'  
 
-		SERVER_PATH2 = 'https://api.icoinease.com/'  //测试
-		SERVER_PATH = 'https://api.icoinease.com/'
+		SERVER_PATH2 = 'https://api.ubao.io/'  //测试
+		SERVER_PATH = 'https://api.ubao.io/'
 		console.log(SERVER_PATH2)
 }

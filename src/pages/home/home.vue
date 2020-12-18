@@ -7,26 +7,26 @@
       <ul>
         <li>
           <div class="top" @click="$router.push('/LegalCurrency/complaint')">
-            <span>{{appealIng}}条申诉待处理</span>
+            <span>{{toDoList.appealIng}}条申诉待处理</span>
           </div>
         </li>
         <li>
           <div class="top" @click="$router.push('/money/withdraw-check')">
-            <span>{{withdrawIng}}条提币审核待处理</span>
+            <span>{{toDoList.withdrawIng}}条提币审核待处理</span>
           </div>
         </li>
         <li>
           <div class="top" @click="$router.push('/LegalCurrency/paymentMethodVerify')">
-            <span>{{bindInfoIng}}条收款方式审核待处理</span>
+            <span>{{toDoList.bindInfoIng}}条收款方式审核待处理</span>
           </div>
         </li>
         <li>
           <div class="top" @click="$router.push({path:'/merchant/cashOutVerify',query: { status: '1' }})">
-            <span>{{outIng}}条兑出审核待处理</span>
+            <span>{{toDoList.outIng}}条兑出审核待处理</span>
           </div>
         </li>
         <li @click="$router.push({path:'/user/identityVerify',query:{status:'1'}})">
-          <div class="top"><span>{{auditPersonIng}}条实名审核待处理</span></div>
+          <div class="top"><span>{{toDoList.auditPersonIng}}条实名审核待处理</span></div>
         </li>
       </ul>
     </div>
@@ -34,61 +34,61 @@
       <div class="title">
         <div class="title-left">统计数据</div>
         <div class="title-right">
-          <span :class="[{'active':activeTotal == 1},'btn']" @click="activeTotal = 1">实时</span>
-          <span class="line" v-if="activeTotal == 3"></span>
-          <span :class="[{'active':activeTotal == 2},'btn']" @click="activeTotal = 2">本周</span>
-          <span class="line" v-if="activeTotal == 1"></span>
-          <span :class="[{'active':activeTotal == 3},'btn']" @click="activeTotal = 3">本月</span>
+          <span :class="[{'active':activeTotal == 0},'btn']" @click="activeTotal = 0;getSumData()">实时</span>
+          <span class="line" v-if="activeTotal == 2"></span>
+          <span :class="[{'active':activeTotal == 1},'btn']" @click="activeTotal = 1;getSumData()">本周</span>
+          <span class="line" v-if="activeTotal == 0"></span>
+          <span :class="[{'active':activeTotal == 2},'btn']" @click="activeTotal = 2;getSumData()">本月</span>
         </div>
       </div>
       <div class="content">
         <ul>
           <li>
-            <span>20000</span>
+            <span>0</span>
             <span>兑入订单金额(已完成)</span>
           </li>
           <li>
-            <span>20000</span>
+            <span>0</span>
             <span>兑出订单金额(已完成)</span>
           </li>
           <li>
-            <span>20000</span>
+            <span>0</span>
             <span>兑入订单数量(已完成)</span>
           </li>
           <li>
-            <span>2500</span>
+            <span>0</span>
             <span>平均订单金额</span>
           </li>
           <li>
-            <span>22</span>
+            <span>0</span>
             <span>万元以上订单数量占比(%)</span>
           </li>
           <li>
-            <span>21</span>
+            <span>0</span>
             <span>万元以上订单金额占比(%)</span>
           </li>
           <li>
-            <span>152</span>
+            <span>0</span>
             <span>接单人数</span>
           </li>
           <li>
-            <span>555</span>
+            <span>0</span>
             <span>人均接单金额</span>
           </li>
           <li>
-            <span>39</span>
+            <span>0</span>
             <span>兑入匹配失败(笔)</span>
           </li>
           <li>
-            <span>20000</span>
+            <span>0</span>
             <span>充币</span>
           </li>
           <li>
-            <span>20000</span>
+            <span>0</span>
             <span>提币</span>
           </li>
           <li>
-            <span>290</span>
+            <span>0</span>
             <span>人均接单量</span>
           </li>
         </ul>
@@ -99,11 +99,11 @@
       <div class="title">
         <div class="title-left">商户统计</div>
         <div class="title-right">
-          <span :class="[{'active':activeMerchant == 1},'btn']" @click="activeMerchant = 1">实时</span>
-          <span class="line" v-if="activeMerchant == 3"></span>
-          <span :class="[{'active':activeMerchant == 2},'btn']" @click="activeMerchant = 2">本周</span>
-          <span class="line" v-if="activeMerchant == 1"></span>
-          <span :class="[{'active':activeMerchant == 3},'btn']" @click="activeMerchant = 3">本月</span>
+          <span :class="[{'active':activeMerchant == 0},'btn']" @click="activeMerchant = 0;getSumMerchant()">实时</span>
+          <span class="line" v-if="activeMerchant == 2"></span>
+          <span :class="[{'active':activeMerchant == 1},'btn']" @click="activeMerchant = 1;getSumMerchant()">本周</span>
+          <span class="line" v-if="activeMerchant == 0"></span>
+          <span :class="[{'active':activeMerchant == 2},'btn']" @click="activeMerchant = 2;getSumMerchant()">本月</span>
         </div>
       </div>
       <ul class="table">
@@ -116,14 +116,14 @@
           <span>订单量占比(%)</span>
           <span>兑出订单金额(CNY)</span>
         </li>
-        <li v-for="(item,index) in 10" :key="index" class="item">
+        <li v-for="(item,index) in merchantList" :key="index" class="item">
           <span>{{index>8?index+1:'0'+(index+1)}}</span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
+          <span>{{item.nickName}}</span>
+          <span>{{item.cashIn}}</span>
+          <span>{{bigNumber(item.cashInRate).times(100) }} %</span>
+          <span>{{item.cashInNum}}</span>
+          <span>{{item.cashInNumRate}}</span>
+          <span>{{bigNumber(item.cashOut).times(100)}} %</span>
         </li>
       </ul>
     </div>
@@ -132,11 +132,11 @@
         <div class="title">
           <div class="title-left">交易员统计</div>
           <div class="title-right">
-            <span :class="[{'active':activeTrader == 1},'btn']" @click="activeTrader = 1">实时</span>
-            <span class="line" v-if="activeTrader == 3"></span>
-            <span :class="[{'active':activeTrader == 2},'btn']" @click="activeTrader = 2">本周</span>
-            <span class="line" v-if="activeTrader == 1"></span>
-            <span :class="[{'active':activeTrader == 3},'btn']" @click="activeTrader = 3">本月</span>
+            <span :class="[{'active':activeTrader == 0},'btn']" @click="activeTrader = 0;getSumTrader()">实时</span>
+            <span class="line" v-if="activeTrader == 2"></span>
+            <span :class="[{'active':activeTrader == 1},'btn']" @click="activeTrader = 1;getSumTrader()">本周</span>
+            <span class="line" v-if="activeTrader == 0"></span>
+            <span :class="[{'active':activeTrader == 2},'btn']" @click="activeTrader = 2;getSumTrader()">本月</span>
           </div>
         </div>
         <ul class="table">
@@ -148,13 +148,13 @@
             <span>订单量</span>
             <span>充币量</span>
           </li>
-          <li v-for="(item,index) in 20" :key="index" class="item">
+          <li v-for="(item,index) in traderList" :key="index" class="item">
             <span>{{index>8?index+1:'0'+(index+1)}}</span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
+            <span>{{item.nickName}}</span>
+            <span>{{item.userId}}</span>
+            <span>{{item.totalAmount}}</span>
+            <span>{{item.totalNum}}</span>
+            <span>{{item.recharge}}</span>
           </li>
         </ul>
       </div>
@@ -162,11 +162,11 @@
         <div class="title">
           <div class="title-left">
             <span class="text">开启接单人数总持币量(USDT)</span>
-            <span class="blue">1231</span>
+            <span class="blue">{{totalAmount}}</span>
           </div>
           <div class="title-right">
             <span class="text">当前开启接单人数(人)</span>
-            <span class="blue">38</span>
+            <span class="blue">{{activeUser}}</span>
           </div>
         </div>
         <ul class="table">
@@ -175,10 +175,10 @@
             <span>姓名</span>
             <span>编号</span>
           </li>
-          <li v-for="(item,index) in 20" :key="index" class="item">
+          <li v-for="(item,index) in userList" :key="index" class="item">
             <span>{{index>8?index+1:'0'+(index+1)}}</span>
-            <span></span>
-            <span></span>
+            <span>{{item.nickName}}</span>
+            <span>{{item.userId}}</span>
           </li>
         </ul>
       </div>
@@ -188,35 +188,132 @@
 <script>
   import { dateFormat } from '@/common/util';
   import echarts from "@/assets/js/echarts"
+  import bigNumber from 'bignumber.js'
   export default {
     name: 'home',
     data() {
       return {
         user: [],
         account: [],
-        appealIng:0,
-        bindInfoIng:0,
-        outIng:0,
-        withdrawIng:0,
-        appealOverIng:0,
-        auditPersonIng:0,
-        activeTotal:1,       // 统计数据
-        activeMerchant:1,    // 商户统计
-        activeTrader:1,      // 交易员统计
+        toDoList:'',         // 待办事项
+        activeTotal:1,       // 统计数据激活 0 实时 1 本周 2 本月 
+        sumData:'',          // 统计数据  
+        xData:[],
+        yData:{
+          cashIn:[],
+          cashOut:[],
+          recharge:[],
+          withdraw:[]
+        },
+        activeMerchant:1,    // 商户统计激活  0 实时 1 本周 2 本月 
+        merchantList:[],     // 商户统计列表
+        activeTrader:1,      // 交易员统计激活  0 实时 1 本周 2 本月 
+        traderList:[],       // 交易员统计列表
+        activeUser:'',       // 开启接单人数
+        totalAmount:'',    
+        userList:'',         // 开启接单人数列表
         myChart:null
       };
     },
     methods: {
+      // 代办事项
       getData() {
-        const startDate = localStorage.getItem('NO_REMIND_TIME') || ''
         this.$http.post('/wallet/backmgr/indexInfo').then(res => {
-          let result = res.result;
-          this.appealIng = result.appealIng
-          this.bindInfoIng = result.bindInfoIng
-          this.outIng = result.outIng
-          this.withdrawIng = result.withdrawIng
-          this.auditPersonIng = result.auditPersonIng
+          this.toDoList = res.result;
           this.intCanvas()
+        })
+      },
+      // 统计数据
+      getSumData(){
+        this.$http.post('/wallet/backmgr/sumIndexTypeDtoList',{
+          pageNum:1,
+          pageSize:1000,
+          type:this.activeTotal
+        }).then( res => {
+          let result = res.result
+          
+        })
+      },
+      // canvas表格数据
+      getAmountData(){
+        this.$http.post('/wallet/backmgr/sumIndexDtoList',{
+          pageNum:1,
+          pageSize:7
+        }).then(res => {
+          if(res.code === 200 ) {
+            let list = res.result.list
+            this.xData = []
+            this.yData = {
+              cashIn:[],
+              cashOut:[],
+              recharge:[],
+              withdraw:[]
+            }
+            list.forEach((el,index) => {
+              switch(index) {
+                case 0:
+                  this.xData.push('MON')
+                  break;
+                case 1:
+                  this.xData.push('TUE')
+                  break;
+                case 2:
+                  this.xData.push('WED')
+                  break;
+                case 3:
+                  this.xData.push('THU')
+                  break;
+                case 4:
+                  this.xData.push('FRI')
+                  break;
+                case 5:
+                  this.xData.push('SAT')
+                  break;
+                case 6:
+                  this.xData.push('SUN')
+                  break;
+                default:
+                  break;
+              }
+              this.yData.cashIn.push(el.cashIn)
+              this.yData.cashOut.push(el.cashOut)
+              this.yData.recharge.push(el.recharge)
+              this.yData.withdraw.push(el.withdraw)
+            })
+            this.intCanvas()
+          }
+        })
+      },
+      // 商户统计
+      getSumMerchant(){
+        this.$http.post('/wallet/backmgr/merchantSumDtoList',{
+          pageNum:1,
+          pageSize:20,
+          type:this.activeMerchant
+        }).then(res => {
+          this.merchantList = res.result.list
+        })
+      },
+      // 交易员统计
+      getSumTrader(){
+        this.$http.post('/wallet/backmgr/userSumList',{
+          pageNum:1,
+          pageSize:20,
+          type:this.activeTrader
+        }).then(res => {
+          this.traderList = res.result.list
+        })
+      },
+      // 开启接单人数统计
+      getActiveUser(){
+        this.$http.post('/wallet/backmgr/cashInUsers',{
+          pageNum:1,
+          pageSize:20
+        }).then(res => {
+          let result = res.result
+          this.activeUser = result.pageInfo.total
+          this.totalAmount = result.totalAmount
+          this.userList = result.pageInfo.list
         })
       },
       intCanvas() {
@@ -251,7 +348,7 @@
           xAxis: [
             {
               type: 'category',
-              data: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
+              data: this.xData,
               axisTick:{
                 show:false
               },
@@ -308,7 +405,7 @@
                 
               },
               barWidth:14,
-              data: [320, 332, 301, 334, 390, 330, 320],
+              data: this.yData.cashIn,
             },
             {
               name: '兑出金额',
@@ -325,7 +422,7 @@
                 
               },
               barWidth:14,
-              data: [320, 332, 301, 334, 390, 330, 320]
+              data: this.yData.cashOut
             },
             {
               name: '充币',
@@ -342,7 +439,7 @@
                 
               },
               barWidth:14,
-              data: [320, 332, 301, 334, 390, 330, 320]
+              data: this.yData.recharge
             },
             {
               name: '提币',
@@ -359,7 +456,7 @@
               },
               barWidth:14,
               barGap:'15%',
-              data: [320, 332, 301, 334, 390, 330, 320]
+              data: this.yData.withdraw
             },
           ],
         }
@@ -369,10 +466,18 @@
         if(this.myChart) {
           this.myChart.resize()
         }
+      },
+      bigNumber(val){
+        return bigNumber(val)
       }
     },
   	activated() {
       this.getData()
+      this.getSumData()
+      this.getAmountData()
+      this.getSumMerchant()
+      this.getSumTrader()
+      this.getActiveUser()
       window.addEventListener('resize',this.resizeInt)
     },
     deactivated(){
@@ -707,7 +812,7 @@
                 flex:none;
                 width:100px;
               }
-              &:last-of-type(7) {
+              &:last-of-type {
                 border-right:none;
               }
             }

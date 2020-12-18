@@ -198,7 +198,7 @@
         toDoList:'',         // 待办事项
         activeTotal:1,       // 统计数据激活 0 实时 1 本周 2 本月 
         sumData:'',          // 统计数据  
-        xData:[],
+        xData:['MON','TUE','WED','THU','FRI','SAT','SUN'],
         yData:{
           cashIn:[],
           cashOut:[],
@@ -242,44 +242,32 @@
         }).then(res => {
           if(res.code === 200 ) {
             let list = res.result.list
-            this.xData = []
             this.yData = {
               cashIn:[],
               cashOut:[],
               recharge:[],
               withdraw:[]
             }
-            list.forEach((el,index) => {
-              switch(index) {
-                case 0:
-                  this.xData.push('MON')
-                  break;
-                case 1:
-                  this.xData.push('TUE')
-                  break;
-                case 2:
-                  this.xData.push('WED')
-                  break;
-                case 3:
-                  this.xData.push('THU')
-                  break;
-                case 4:
-                  this.xData.push('FRI')
-                  break;
-                case 5:
-                  this.xData.push('SAT')
-                  break;
-                case 6:
-                  this.xData.push('SUN')
-                  break;
-                default:
-                  break;
+            for(var i= 0; i<7; i++) {
+              let haveValue = false
+              list.forEach((el,index) => {
+                if (index == i) {
+                  haveValue = true
+                }
+                return                 
+              })
+              if (haveValue) {
+                this.yData.cashIn.push(list[i].cashIn)
+                this.yData.cashOut.push(list[i].cashOut)
+                this.yData.recharge.push(list[i].recharge)
+                this.yData.withdraw.push(list[i].withdraw)
+              } else {
+                this.yData.cashIn.push(0)
+                this.yData.cashOut.push(0)
+                this.yData.recharge.push(0)
+                this.yData.withdraw.push(0)
               }
-              this.yData.cashIn.push(el.cashIn)
-              this.yData.cashOut.push(el.cashOut)
-              this.yData.recharge.push(el.recharge)
-              this.yData.withdraw.push(el.withdraw)
-            })
+            }
             this.intCanvas()
           }
         })

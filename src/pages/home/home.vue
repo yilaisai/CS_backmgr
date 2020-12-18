@@ -203,6 +203,7 @@
         activeTotal:1,       // 统计数据
         activeMerchant:1,    // 商户统计
         activeTrader:1,      // 交易员统计
+        myChart:null
       };
     },
     methods: {
@@ -222,12 +223,12 @@
         this.drawLine()
       },
       drawLine() {
-        var myChart = echarts.init(document.getElementById('echart'));
+        this.myChart = echarts.init(document.getElementById('echart'));
         let option = {
           tooltip: {
             trigger: 'axis',
             axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-              type: 'none ',        // 默认为直线，可选为：'line' | 'shadow'
+              type: 'none',        // 默认为直线，可选为：'line' | 'shadow'
             }
           },
           legend: {
@@ -362,12 +363,23 @@
             },
           ],
         }
-        myChart.setOption(option)
+        this.myChart.setOption(option)
       },
-      
+      resizeInt(){
+        if(this.myChart) {
+          this.myChart.resize()
+        }
+      }
     },
   	activated() {
       this.getData()
+      window.addEventListener('resize',this.resizeInt)
+    },
+    deactivated(){
+      if(this.myChart) {
+        window.removeEventListener('resize',this.resizeInt)
+        this.myChart.dispose()
+      }
     },
   };
 </script>

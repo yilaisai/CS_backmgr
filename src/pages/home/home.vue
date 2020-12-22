@@ -106,26 +106,44 @@
           <span :class="[{'active':activeMerchant == 2},'btn']" @click="activeMerchant = 2;getSumMerchant()">本月</span>
         </div>
       </div>
-      <ul class="table">
-        <li class="table-title">
-          <span></span>
-          <span>商户编号</span>
-          <span>商户订单金额(CNY)</span>
-          <span>订单金额占比(%)</span>
-          <span>商户订单量</span>
-          <span>订单量占比(%)</span>
-          <span>兑出订单金额(CNY)</span>
-        </li>
-        <li v-for="(item,index) in merchantList" :key="index" class="item">
-          <span>{{index>8?index+1:'0'+(index+1)}}</span>
-          <span>{{item.nickName}}</span>
-          <span>{{item.cashIn}}</span>
-          <span>{{bigNumber(item.cashInRate).times(100) }} %</span>
-          <span>{{item.cashInNum}}</span>
-          <span>{{item.cashInNumRate}}</span>
-          <span>{{bigNumber(item.cashOut).times(100)}} %</span>
-        </li>
-      </ul>
+      <div class="list">
+        <ul class="table">
+          <li class="table-title">
+            <span>商户编号</span>
+            <span>商户订单金额(CNY)</span>
+            <span>订单金额占比(%)</span>
+            <span>商户订单量</span>
+            <span>订单量占比(%)</span>
+            <span>兑出订单金额(CNY)</span>
+          </li>
+          <li v-for="(item,index) in merchantList1" :key="index" class="item">
+            <span>{{item.nickName}}</span>
+            <span>{{item.cashIn}}</span>
+            <span>{{bigNumber(item.cashInRate).times(100) }} %</span>
+            <span>{{item.cashInNum}}</span>
+            <span>{{item.cashInNumRate}}</span>
+            <span>{{bigNumber(item.cashOut).times(100)}} %</span>
+          </li>
+        </ul>
+        <ul class="table">
+          <li class="table-title">
+            <span>商户编号</span>
+            <span>商户订单金额(CNY)</span>
+            <span>订单金额占比(%)</span>
+            <span>商户订单量</span>
+            <span>订单量占比(%)</span>
+            <span>兑出订单金额(CNY)</span>
+          </li>
+          <li v-for="(item,index) in merchantList2" :key="index" class="item">
+            <span>{{item.nickName}}</span>
+            <span>{{item.cashIn}}</span>
+            <span>{{bigNumber(item.cashInRate).times(100) }} %</span>
+            <span>{{item.cashInNum}}</span>
+            <span>{{item.cashInNumRate}}</span>
+            <span>{{bigNumber(item.cashOut).times(100)}} %</span>
+          </li>
+        </ul>
+      </div>
     </div>
     <div class="container">
       <div class="traderData">
@@ -139,24 +157,40 @@
             <span :class="[{'active':activeTrader == 2},'btn']" @click="activeTrader = 2;getSumTrader()">本月</span>
           </div>
         </div>
-        <ul class="table">
-          <li class="table-title">
-            <span></span>
-            <span>姓名</span>
-            <span>编号</span>
-            <span>订单金额</span>
-            <span>订单量</span>
-            <span>充币量</span>
-          </li>
-          <li v-for="(item,index) in traderList" :key="index" class="item">
-            <span>{{index>8?index+1:'0'+(index+1)}}</span>
-            <span>{{item.nickName}}</span>
-            <span>{{item.userId}}</span>
-            <span>{{item.totalAmount}}</span>
-            <span>{{item.totalNum}}</span>
-            <span>{{item.recharge}}</span>
-          </li>
-        </ul>
+        <div class="list">
+          <ul class="table">
+            <li class="table-title">
+              <span>姓名</span>
+              <span>编号</span>
+              <span>订单金额</span>
+              <span>订单量</span>
+              <span>充币量</span>
+            </li>
+            <li v-for="(item,index) in traderList1" :key="index" class="item">
+              <span>{{item.nickName}}</span>
+              <span>{{item.userId}}</span>
+              <span>{{item.totalAmount}}</span>
+              <span>{{item.totalNum}}</span>
+              <span>{{item.recharge}}</span>
+            </li>
+          </ul>
+          <ul class="table">
+            <li class="table-title">
+              <span>姓名</span>
+              <span>编号</span>
+              <span>订单金额</span>
+              <span>订单量</span>
+              <span>充币量</span>
+            </li>
+            <li v-for="(item,index) in traderList2" :key="index" class="item">
+              <span>{{item.nickName}}</span>
+              <span>{{item.userId}}</span>
+              <span>{{item.totalAmount}}</span>
+              <span>{{item.totalNum}}</span>
+              <span>{{item.recharge}}</span>
+            </li>
+          </ul>
+        </div>
       </div>
       <div class="totalAmount">
         <div class="title">
@@ -171,14 +205,12 @@
         </div>
         <ul class="table">
           <li class="table-title">
-            <span></span>
-            <span>姓名</span>
             <span>编号</span>
+            <span>持币量</span>
           </li>
           <li v-for="(item,index) in userList" :key="index" class="item">
-            <span>{{index>8?index+1:'0'+(index+1)}}</span>
-            <span>{{item.nickName}}</span>
             <span>{{item.userId}}</span>
+            <span>{{item.amount}}</span>
           </li>
         </ul>
       </div>
@@ -196,7 +228,7 @@
         user: [],
         account: [],
         toDoList:'',         // 待办事项
-        activeTotal:1,       // 统计数据激活 0 实时 1 本周 2 本月 
+        activeTotal:0,       // 统计数据激活 0 实时 1 本周 2 本月 
         sumData:'',          // 统计数据  
         xData:['MON','TUE','WED','THU','FRI','SAT','SUN'],
         yData:{
@@ -205,10 +237,12 @@
           recharge:[],
           withdraw:[]
         },
-        activeMerchant:1,    // 商户统计激活  0 实时 1 本周 2 本月 
-        merchantList:[],     // 商户统计列表
-        activeTrader:1,      // 交易员统计激活  0 实时 1 本周 2 本月 
-        traderList:[],       // 交易员统计列表
+        activeMerchant:0,    // 商户统计激活  0 实时 1 本周 2 本月  
+        merchantList1:[],    // 商户统计列表
+        merchantList2:[],
+        activeTrader:0,      // 交易员统计激活  0 实时 1 本周 2 本月       
+        traderList1:[],      // 交易员统计列表   
+        traderList2:[],
         activeUser:'',       // 开启接单人数
         totalAmount:'',    
         userList:'',         // 开启接单人数列表
@@ -276,10 +310,21 @@
       getSumMerchant(){
         this.$http.post('/wallet/backmgr/merchantSumDtoList',{
           pageNum:1,
-          pageSize:20,
+          pageSize:10,
           type:this.activeMerchant
         }).then(res => {
-          this.merchantList = res.result.list
+          let merchantList = res.result.list
+          this.merchantList1 = []
+          this.merchantList2 = []
+          for(var i = 0; i<5; i++) {
+            if (merchantList[i]){
+              this.merchantList1.push(merchantList[i])
+            }
+            if(merchantList[i+5]) {
+              this.merchantList2.push(merchantList[i+5])
+            }
+          }
+          
         })
       },
       // 交易员统计
@@ -289,7 +334,17 @@
           pageSize:20,
           type:this.activeTrader
         }).then(res => {
-          this.traderList = res.result.list
+          let traderList = res.result.list
+          this.traderList1 = []
+          this.traderList2 = []
+          for(var i = 0; i<10; i++) {
+            if (traderList[i]){
+              this.traderList1.push(traderList[i])
+            }
+            if(traderList[i+10]) {
+              this.traderList2.push(traderList[i+10])
+            }
+          }
         })
       },
       // 开启接单人数统计
@@ -677,59 +732,44 @@
       margin-bottom:10px;
       flex:none;
       overflow: hidden;
-      ul.table {
-        height:288px;
-        padding:0;
-        margin:0;
-        background: #FFF;
+      .list {
         display: flex;
-        flex-direction: column;
-        overflow-y: auto;
-        &::-webkit-scrollbar { /*滚动条整体样式*/
-            width: 6px ; /*高宽分别对应横竖滚动条的尺寸*/
-            height: 6px ;
-            background: #ffffff;;
-            cursor: pointer;
-
-        }
-
-        &::-webkit-scrollbar-thumb { /*滚动条里面小方块*/
-            border-radius: 5px;
-            -webkit-box-shadow: inset 0 0 5px rgba(240, 240, 240, .5) ;;
-            background: rgba(63, 98, 131, 0.8) ;;
-            cursor: pointer ;
-        }
-
-        &::-webkit-scrollbar-track { /*滚动条里面轨道*/
-            -webkit-box-shadow: inset 0 0 5px rgba(240, 240, 240, .5) ;
-            border-radius: 0 ;
-            background: rgba(240, 240, 240, 0.5) ;
-            cursor: pointer;
-        }
-        li {
+        ul.table {
+          flex:1;
+          height:248px;
+          padding:0;
+          margin:0;
+          background: #FFF;
           display: flex;
-          height:40px;
-          line-height: 40px;
-          border-bottom:1px solid #E0E3E9;
-          box-sizing: border-box;
-          span {
-            flex:1;
-            text-align: center;
-            color:#646464;
-            font-size:14px;
-            border-right:1px solid #E0E3E9;
-            &:nth-of-type(1) {
-              flex:none;
-              width:100px;
-            }
+          flex-direction: column;
+          overflow-y: auto;
+          border-right:2px solid #bbb;
+          li {
+            display: flex;
+            height:40px;
+            line-height: 40px;
+            border-bottom:1px solid #E0E3E9;
+            box-sizing: border-box;
+            span {
+              flex:1;
+              text-align: center;
+              color:#646464;
+              font-size:14px;
+              border-right:1px solid #E0E3E9;
+              box-sizing: border-box;
+              &:nth-of-type(1) {
+                flex:none;
+                width:80px;
+              }
               &:nth-of-type(2) {
-
+                min-width:130px;
               }
               &:nth-of-type(3) {
                 
               }
               &:nth-of-type(4) {
-                
+                flex:none;
+                width:110px;
               }
               &:nth-of-type(5) {
                 
@@ -737,22 +777,25 @@
               &:nth-of-type(6) {
                 
               }
-            &:nth-of-type(7) {
-              border-right:none;
+              &:last-of-type {
+                border-right:none;
+                min-width:130px;
+              }
             }
           }
-        }
-        .table-title {
-          height:48px;
-          line-height: 48px;
-          span {
-            color:#000000;
+          .table-title {
+            height:48px;
+            line-height: 48px;
+            span {
+              color:#000000;
+            }
+          }
+          &:last-of-type {
+            border-right: none;
           }
         }
-        .item {
-
-        }
       }
+      
     }
     .container {
       display: flex;
@@ -796,10 +839,6 @@
               color:#646464;
               font-size:14px;
               border-right:1px solid #E0E3E9;
-              &:nth-of-type(1) {
-                flex:none;
-                width:100px;
-              }
               &:last-of-type {
                 border-right:none;
               }
@@ -816,6 +855,16 @@
       }
       .traderData {
         margin-right:10px;
+        .list {
+          display: flex;
+          .table {
+            flex:1;
+            border-right:2px solid #ccc;
+            &:last-of-type {
+              border-right:0;
+            }
+          }
+        }
       }
 
     }

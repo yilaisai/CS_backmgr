@@ -196,7 +196,7 @@
         <div class="title">
           <div class="title-left">
             <span class="text">开启接单人数总持币量(USDT)</span>
-            <span class="blue">{{totalAmount}}</span>
+            <span class="blue">{{Math.floor(totalAmount*10000)/10000}}</span>
           </div>
           <div class="title-right">
             <span class="text">当前开启接单人数(人)</span>
@@ -209,8 +209,8 @@
             <span>持币量</span>
           </li>
           <li v-for="(item,index) in userList" :key="index" class="item">
-            <span>{{item.userId}}</span>
-            <span>{{item.amount}}</span>
+            <span>{{item.nickName}}</span>
+            <span>{{Math.floor(item.amount*10000)/10000}}</span>
           </li>
         </ul>
       </div>

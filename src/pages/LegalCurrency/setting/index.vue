@@ -170,8 +170,8 @@ export default {
 		
 		updateDefaultRate(){
 			let queryDate ={
-				buyRate:Math.floor(this.currentItem.buyRate*100)/10000 || -1,
-				saleRate:Math.floor(this.currentItem.saleRate*100)/10000 || -1,
+				buyRate:Math.floor(this.currentItem.buyRate*100)/10000,
+				saleRate:Math.floor(this.currentItem.saleRate*100)/10000,
 				totalBuyRate:Math.floor(this.rateDetaile[0].totalBuyRate*100)/10000,
 				totalSaleRate:Math.floor(this.rateDetaile[0].totalSaleRate*100)/10000,
 				payType:this.currentItem.payType,

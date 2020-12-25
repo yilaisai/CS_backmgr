@@ -44,51 +44,51 @@
       <div class="content">
         <ul>
           <li>
-            <span>0</span>
+            <span>{{sumData.cashIn || 0}}</span>
             <span>兑入订单金额(已完成)</span>
           </li>
           <li>
-            <span>0</span>
+            <span>{{sumData.cashOut || 0}}</span>
             <span>兑出订单金额(已完成)</span>
           </li>
           <li>
-            <span>0</span>
+            <span>{{sumData.cashInNum || 0}}</span>
             <span>兑入订单数量(已完成)</span>
           </li>
           <li>
-            <span>0</span>
+            <span>{{sumData.aveCashIn || 0}}</span>
             <span>平均订单金额</span>
           </li>
           <li>
-            <span>0</span>
+            <span>{{sumData.numRate || 0}}</span>
             <span>万元以上订单数量占比(%)</span>
           </li>
           <li>
-            <span>0</span>
+            <span>{{sumData.amountRate || 0}}</span>
             <span>万元以上订单金额占比(%)</span>
           </li>
           <li>
-            <span>0</span>
+            <span>{{sumData.tachInAmount || 0}}</span>
             <span>接单人数</span>
           </li>
           <li>
-            <span>0</span>
+            <span>{{sumData.aveUserCashInAmount || 0}}</span>
             <span>人均接单金额</span>
           </li>
           <li>
-            <span>0</span>
+            <span>{{sumData.cashInFalseNum || 0}}</span>
             <span>兑入匹配失败(笔)</span>
           </li>
           <li>
-            <span>0</span>
+            <span>{{sumData.recharge || 0}}</span>
             <span>充币</span>
           </li>
           <li>
-            <span>0</span>
+            <span>{{sumData.withdraw || 0}}</span>
             <span>提币</span>
           </li>
           <li>
-            <span>0</span>
+            <span>{{sumData.aveCashInNum || 0}}</span>
             <span>人均接单量</span>
           </li>
         </ul>
@@ -167,8 +167,8 @@
               <span>充币量</span>
             </li>
             <li v-for="(item,index) in traderList1" :key="index" class="item">
-              <span>{{item.nickName}}</span>
-              <span>{{item.userId}}</span>
+              <span>{{item.realName}}</span>
+              <span :title="item.nickName">{{item.nickName}}</span>
               <span>{{item.totalAmount}}</span>
               <span>{{item.totalNum}}</span>
               <span>{{item.recharge}}</span>
@@ -183,8 +183,8 @@
               <span>充币量</span>
             </li>
             <li v-for="(item,index) in traderList2" :key="index" class="item">
-              <span>{{item.nickName}}</span>
-              <span>{{item.userId}}</span>
+              <span>{{item.realName}}</span>
+              <span :title="item.nickName">{{item.nickName}}</span>
               <span>{{item.totalAmount}}</span>
               <span>{{item.totalNum}}</span>
               <span>{{item.recharge}}</span>
@@ -265,7 +265,7 @@
           type:this.activeTotal
         }).then( res => {
           let result = res.result
-          
+          this.sumData = result
         })
       },
       // canvas表格数据
@@ -835,10 +835,14 @@
             box-sizing: border-box;
             span {
               flex:1;
+              padding:0 5px;
               text-align: center;
               color:#646464;
               font-size:14px;
               border-right:1px solid #E0E3E9;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
               &:last-of-type {
                 border-right:none;
               }

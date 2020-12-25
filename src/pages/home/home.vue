@@ -72,6 +72,10 @@
             <span>接单人数</span>
           </li>
           <li>
+            <span>{{sumData.aveCashInNum || 0}}</span>
+            <span>人均接单量</span>
+          </li>
+          <li>
             <span>{{sumData.aveUserCashInAmount || 0}}</span>
             <span>人均接单金额</span>
           </li>
@@ -87,10 +91,7 @@
             <span>{{sumData.withdraw || 0}}</span>
             <span>提币</span>
           </li>
-          <li>
-            <span>{{sumData.aveCashInNum || 0}}</span>
-            <span>人均接单量</span>
-          </li>
+          
         </ul>
         <div class="canvas" id="echart"></div>
       </div>
@@ -110,11 +111,11 @@
         <ul class="table">
           <li class="table-title">
             <span>商户编号</span>
-            <span>商户订单金额(CNY)</span>
+            <span>商户订单金额(USDT)</span>
             <span>订单金额占比(%)</span>
             <span>商户订单量</span>
             <span>订单量占比(%)</span>
-            <span>兑出订单金额(CNY)</span>
+            <span>兑出订单金额(USDT)</span>
           </li>
           <li v-for="(item,index) in merchantList1" :key="index" class="item">
             <span>{{item.nickName}}</span>
@@ -128,11 +129,11 @@
         <ul class="table">
           <li class="table-title">
             <span>商户编号</span>
-            <span>商户订单金额(CNY)</span>
+            <span>商户订单金额(USDT)</span>
             <span>订单金额占比(%)</span>
             <span>商户订单量</span>
             <span>订单量占比(%)</span>
-            <span>兑出订单金额(CNY)</span>
+            <span>兑出订单金额(USDT)</span>
           </li>
           <li v-for="(item,index) in merchantList2" :key="index" class="item">
             <span>{{item.nickName}}</span>
@@ -762,7 +763,7 @@
                 width:80px;
               }
               &:nth-of-type(2) {
-                min-width:130px;
+                min-width:140px;
               }
               &:nth-of-type(3) {
                 
@@ -779,7 +780,7 @@
               }
               &:last-of-type {
                 border-right:none;
-                min-width:130px;
+                min-width:140px;
               }
             }
           }

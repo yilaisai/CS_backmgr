@@ -101,7 +101,7 @@
 				</el-table>
 			</el-main>
 			<el-footer>
-				<sac-pagination v-show="listData.list.length>0"
+				<sac-pagination v-show="listData.list.length"
 					@handleChange="handleCurrentChange"
 					:total="+listData.total"
 					:page-size="filterForm.pageSize"
@@ -268,13 +268,14 @@ export default {
 <style scoped lang="less">
 .userQuery-page{
 		height:100%;
+		overflow: hidden;
 		/deep/.el-input-group__prepend{
 			width: 36px;
 		}
 	.el-container{
 			height:100%;
 			.el-main{
-				height:100%;
+				// height:100%;
 				width: 100%;
 				flex: 1;
 				display: flex;

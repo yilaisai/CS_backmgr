@@ -60,15 +60,15 @@
             <span>平均订单金额</span>
           </li>
           <li>
-            <span>{{sumData.numRate || 0}}</span>
+            <span>{{bigNumber(sumData.numRate).times(100) || 0}} %</span>
             <span>万元以上订单数量占比(%)</span>
           </li>
           <li>
-            <span>{{sumData.amountRate || 0}}</span>
+            <span>{{bigNumber(sumData.amountRate).times(100) || 0}} %</span>
             <span>万元以上订单金额占比(%)</span>
           </li>
           <li>
-            <span>{{sumData.tachInAmount || 0}}</span>
+            <span>{{sumData.cashInOpenNum || 0}}</span>
             <span>接单人数</span>
           </li>
           <li>
@@ -111,37 +111,37 @@
         <ul class="table">
           <li class="table-title">
             <span>商户编号</span>
-            <span>商户订单金额(USDT)</span>
-            <span>订单金额占比(%)</span>
+            <span>商户订单金额<br/>(USDT)</span>
+            <span>订单金额占比<br/>(%)</span>
             <span>商户订单量</span>
-            <span>订单量占比(%)</span>
-            <span>兑出订单金额(USDT)</span>
+            <span>订单量占比<br/>(%)</span>
+            <span>兑出订单金额<br/>(USDT)</span>
           </li>
           <li v-for="(item,index) in merchantList1" :key="index" class="item">
-            <span>{{item.nickName}}</span>
+            <span :title="item.nickName">{{item.nickName}}</span>
             <span>{{item.cashIn}}</span>
-            <span>{{bigNumber(item.cashInRate).times(100) }} %</span>
+            <span>{{bigNumber(item.cashInRate || 0).times(100) }} %</span>
             <span>{{item.cashInNum}}</span>
-            <span>{{item.cashInNumRate}}</span>
-            <span>{{bigNumber(item.cashOut).times(100)}} %</span>
+            <span>{{bigNumber(item.cashInNumRate || 0).times(100)}} %</span>
+            <span>{{item.cashOut}}</span>
           </li>
         </ul>
         <ul class="table">
           <li class="table-title">
             <span>商户编号</span>
-            <span>商户订单金额(USDT)</span>
-            <span>订单金额占比(%)</span>
+            <span>商户订单金额<br/>(USDT)</span>
+            <span>订单金额占比<br/>(%)</span>
             <span>商户订单量</span>
-            <span>订单量占比(%)</span>
-            <span>兑出订单金额(USDT)</span>
+            <span>订单量占比<br/>(%)</span>
+            <span>兑出订单金额<br/>(USDT)</span>
           </li>
           <li v-for="(item,index) in merchantList2" :key="index" class="item">
-            <span>{{item.nickName}}</span>
+            <span :title="item.nickName">{{item.nickName}}</span>
             <span>{{item.cashIn}}</span>
-            <span>{{bigNumber(item.cashInRate).times(100) }} %</span>
+            <span>{{bigNumber(item.cashInRate || 0).times(100) }} %</span>
             <span>{{item.cashInNum}}</span>
-            <span>{{item.cashInNumRate}}</span>
-            <span>{{bigNumber(item.cashOut).times(100)}} %</span>
+            <span>{{bigNumber(item.cashInNumRate || 0).times(100)}} %</span>
+            <span>{{item.cashOut}}</span>
           </li>
         </ul>
       </div>
@@ -265,7 +265,7 @@
           pageSize:1000,
           type:this.activeTotal
         }).then( res => {
-          let result = res.result
+          let result = res.result.list[0]
           this.sumData = result
         })
       },
@@ -747,17 +747,23 @@
           border-right:2px solid #bbb;
           li {
             display: flex;
+            align-items: center;
             height:40px;
             line-height: 40px;
             border-bottom:1px solid #E0E3E9;
             box-sizing: border-box;
             span {
               flex:1;
+              height:100%;
+              padding:0 5px;
               text-align: center;
               color:#646464;
               font-size:14px;
               border-right:1px solid #E0E3E9;
               box-sizing: border-box;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
               &:nth-of-type(1) {
                 flex:none;
                 width:80px;
@@ -786,9 +792,12 @@
           }
           .table-title {
             height:48px;
-            line-height: 48px;
+            line-height: 1.2em;
             span {
               color:#000000;
+              display: flex;
+              align-items: center;
+              justify-content: center;
             }
           }
           &:last-of-type {

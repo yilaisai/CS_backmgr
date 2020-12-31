@@ -44,24 +44,24 @@
       <div class="content">
         <ul>
           <li>
-            <span>{{sumData.cashIn || 0}}</span>
-            <span>兑入订单金额(已完成)</span>
+            <span>{{sumData.cashIn || 0}} USDT</span>
+            <span>兑入数量(已完成)</span>
           </li>
           <li>
-            <span>{{sumData.cashOut || 0}}</span>
-            <span>兑出订单金额(已完成)</span>
+            <span>{{sumData.cashOut || 0}} USDT</span>
+            <span>兑出数量(已完成)</span>
           </li>
           <li>
             <span>{{sumData.cashInNum || 0}}</span>
-            <span>兑入订单数量(已完成)</span>
+            <span>兑入订单笔数(已完成)</span>
           </li>
           <li>
-            <span>{{sumData.aveCashIn || 0}}</span>
-            <span>平均订单金额</span>
+            <span>{{sumData.aveCashIn || 0}} USDT</span>
+            <span>平均订单数量</span>
           </li>
           <li>
             <span>{{bigNumber(sumData.numRate).times(100) || 0}} %</span>
-            <span>万元以上订单数量占比(%)</span>
+            <span>万元以上订单笔数占比(%)</span>
           </li>
           <li>
             <span>{{bigNumber(sumData.amountRate).times(100) || 0}} %</span>
@@ -73,22 +73,22 @@
           </li>
           <li>
             <span>{{sumData.aveCashInNum || 0}}</span>
-            <span>人均接单量</span>
+            <span>人均接单笔数</span>
           </li>
           <li>
-            <span>{{sumData.aveUserCashInAmount || 0}}</span>
-            <span>人均接单金额</span>
+            <span>{{sumData.aveUserCashInAmount || 0}} USDT</span>
+            <span>人均接单数量</span>
           </li>
           <li>
             <span>{{sumData.cashInFalseNum || 0}}</span>
             <span>兑入匹配失败(笔)</span>
           </li>
           <li>
-            <span>{{sumData.recharge || 0}}</span>
+            <span>{{sumData.recharge || 0}} USDT</span>
             <span>充币</span>
           </li>
           <li>
-            <span>{{sumData.withdraw || 0}}</span>
+            <span>{{sumData.withdraw || 0}} USDT</span>
             <span>提币</span>
           </li>
           
@@ -111,11 +111,11 @@
         <ul class="table">
           <li class="table-title">
             <span>商户编号</span>
-            <span>商户订单金额<br/>(USDT)</span>
+            <span>商户订单数量<br/>(USDT)</span>
             <span>订单金额占比<br/>(%)</span>
-            <span>商户订单量</span>
+            <span>商户订单笔数</span>
             <span>订单量占比<br/>(%)</span>
-            <span>兑出订单金额<br/>(USDT)</span>
+            <span>兑出订单数量<br/>(USDT)</span>
           </li>
           <li v-for="(item,index) in merchantList1" :key="index" class="item">
             <span :title="item.nickName">{{item.nickName}}</span>
@@ -129,11 +129,11 @@
         <ul class="table">
           <li class="table-title">
             <span>商户编号</span>
-            <span>商户订单金额<br/>(USDT)</span>
+            <span>商户订单数量<br/>(USDT)</span>
             <span>订单金额占比<br/>(%)</span>
-            <span>商户订单量</span>
+            <span>商户订单笔数</span>
             <span>订单量占比<br/>(%)</span>
-            <span>兑出订单金额<br/>(USDT)</span>
+            <span>兑出订单数量<br/>(USDT)</span>
           </li>
           <li v-for="(item,index) in merchantList2" :key="index" class="item">
             <span :title="item.nickName">{{item.nickName}}</span>
@@ -163,14 +163,14 @@
             <li class="table-title">
               <span>姓名</span>
               <span>编号</span>
-              <span>订单金额</span>
-              <span>订单量</span>
+              <span>订单数量<br/>(USDT)</span>
+              <span>订单笔数</span>
               <span>充币量</span>
             </li>
             <li v-for="(item,index) in traderList1" :key="index" class="item">
               <span>{{item.realName}}</span>
               <span :title="item.nickName">{{item.nickName}}</span>
-              <span>{{item.totalAmount}}</span>
+              <span :title="item.totalAmount">{{item.totalAmount}}</span>
               <span>{{item.totalNum}}</span>
               <span>{{item.recharge}}</span>
             </li>
@@ -179,14 +179,14 @@
             <li class="table-title">
               <span>姓名</span>
               <span>编号</span>
-              <span>订单金额</span>
-              <span>订单量</span>
+              <span>订单数量<br/>(USDT)</span>
+              <span>订单笔数</span>
               <span>充币量</span>
             </li>
             <li v-for="(item,index) in traderList2" :key="index" class="item">
               <span>{{item.realName}}</span>
               <span :title="item.nickName">{{item.nickName}}</span>
-              <span>{{item.totalAmount}}</span>
+              <span :title="item.totalAmount">{{item.totalAmount}}</span>
               <span>{{item.totalNum}}</span>
               <span>{{item.recharge}}</span>
             </li>
@@ -435,7 +435,7 @@
           ],
           series: [
             {
-              name: '兑入金额',
+              name: '兑入数量',
               type: 'bar',
               itemStyle:{
                 color: new echarts.graphic.LinearGradient(
@@ -452,7 +452,7 @@
               data: this.yData.cashIn,
             },
             {
-              name: '兑出金额',
+              name: '兑出数量',
               type: 'bar',
               itemStyle:{
                 color: new echarts.graphic.LinearGradient(
@@ -876,6 +876,16 @@
             border-right:2px solid #ccc;
             &:last-of-type {
               border-right:0;
+            }
+            .table-title {
+              height:48px;
+              line-height: 1.1em;
+              span {
+                color:#000000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
             }
           }
         }

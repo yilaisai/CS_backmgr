@@ -61,10 +61,11 @@
 			<el-table-column prop="realName" label="姓名" align="center" width="120"></el-table-column>
 			<el-table-column align="center" prop="account" label="账号" width="140"> </el-table-column>
 			<el-table-column align="center"  prop="inviteCode" label="邀请码" width="80"></el-table-column>
-			<el-table-column align="center" label="操作" width="180">
+			<el-table-column align="center" label="操作" width="250">
 				<template slot-scope="scope"  >   
 					<el-button type="text" size="mini"  @click="$router.push({path:'/LegalCurrency/userQueryDetaile',query:{userId:scope.row.userId}})">查看佣金费率</el-button>
 					<el-button type="text" size="mini"  @click="brokerage(scope.row)">迁移</el-button>
+					<el-button type="text" size="mini"  @click="changeToTree(scope.row)">设置为根目录</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -145,119 +146,136 @@ export default {
 		this.getInviteData()
 	},
   	methods:{
-		tabChange(type) {
-			this.queryType = type
-			this.getInviteData()
-		},
-		handleCurrentChange(val,currentPage) {
-			this.listData.pageSize=val
-			this.listData.pageNum=currentPage
-			this.getList()
-		},
-		brokerage(data){
-			this.currItem = data
-			this.account = ''
-			this.showDialog=true
-			this.listData.amount = ''
-			this.listData.pageNum = 1
-			this.getList()
-		},
-		queryParent() {
-			this.$http.post('/wallet/invite/backmgr/getFaInviteRecd',this.filterForm).then(res=>{
-				this.queryParentList = res.result
-				this.showDialogParent = true
-			})
-		},
-		queryParentLoad(tree, treeNode, resolve) {
-			this.$http.post('/wallet/invite/backmgr/getFaInviteRecd',{account: tree.account}).then(res=>{
-				resolve(res.result)
-			})
-		},
-		saerch(){
-			this.listData.pageNum=1
-			this.getList()
-		},
-		getInviteData(saerch){
-			this.$http.post('/wallet/invite/backmgr/findInviteChild',this.filterForm).then(res=>{
-				let list=[]
-				if(saerch=='saerch'&&res.result.userId){
-					list = [res.result]
-					if(res.result.list&&res.result.list.length>0){
-						list[0].hasChildren = true
+			tabChange(type) {
+				this.queryType = type
+				this.getInviteData()
+			},
+			handleCurrentChange(val,currentPage) {
+				this.listData.pageSize=val
+				this.listData.pageNum=currentPage
+				this.getList()
+			},
+			brokerage(data){
+				this.currItem = data
+				this.account = ''
+				this.showDialog=true
+				this.listData.amount = ''
+				this.listData.pageNum = 1
+				this.getList()
+			},
+			queryParent() {
+				this.$http.post('/wallet/invite/backmgr/getFaInviteRecd',this.filterForm).then(res=>{
+					this.queryParentList = res.result
+					this.showDialogParent = true
+				})
+			},
+			queryParentLoad(tree, treeNode, resolve) {
+				this.$http.post('/wallet/invite/backmgr/getFaInviteRecd',{account: tree.account}).then(res=>{
+					resolve(res.result)
+				})
+			},
+			saerch(){
+				this.listData.pageNum=1
+				this.getList()
+			},
+			getInviteData(saerch){
+				this.$http.post('/wallet/invite/backmgr/findInviteChild',this.filterForm).then(res=>{
+					let list=[]
+					if(saerch=='saerch'&&res.result.userId){
+						list = [res.result]
+						if(res.result.list&&res.result.list.length>0){
+							list[0].hasChildren = true
+						}
+					}else{
+						list =res.result.list || []
+						if (list.length) {
+							list.forEach(element => {
+								if(element.childNum>0){
+									element.hasChildren = true
+								}else{
+									element.hasChildren = false
+								}
+							})
+						}
 					}
-				}else{
-					list =res.result.list || []
-					if (list.length) {
-						list.forEach(element => {
-							if(element.childNum>0){
-								element.hasChildren = true
-							}else{
-								element.hasChildren = false
+					this.inviteData =[] 
+					setTimeout(()=>{
+						this.inviteData =list
+					},100)
+				})
+			},
+			getList(){
+				this.$http.post('/wallet/invite/backmgr/queryInviteShip',{
+					account:this.account,
+					inviteeId:this.currItem.userId,
+					pageNum:this.listData.pageNum,
+					pageSize:this.listData.pageSize
+				}).then(res=>{
+					if(res.code==200){
+						this.listData.list = res.result.list
+						if(this.listData.list.length<1 ){
+							this.$message.error('不允许迁移至自己的下级或该账号不存在')
+						}
+						this.listData.total = res.result.total
+					}
+				})
+			},
+			updateInviteShip(inviterId){
+				this.$confirm('确定要执行迁移操作吗?', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning'
+				}).then(() => {
+						this.$http.post('/wallet/invite/backmgr/updateInviteShip',{
+							inviterId:inviterId,
+							inviteeId:this.currItem.userId
+						}).then(res=>{
+							if(res.code==200){
+					this.showDialog2 = false
+					this.filterForm={account:'',inviteCode:'',nickName:''},
+					this.showDialog = false
+								this.getInviteData()
+								this.$message.success('迁移成功')
 							}
 						})
-					}
-				}
-				this.inviteData =[] 
-				setTimeout(()=>{
-					this.inviteData =list
-				},100)
-			})
-		},
-		getList(){
-			this.$http.post('/wallet/invite/backmgr/queryInviteShip',{
-				account:this.account,
-				inviteeId:this.currItem.userId,
-				pageNum:this.listData.pageNum,
-				pageSize:this.listData.pageSize
-			}).then(res=>{
-				if(res.code==200){
-					this.listData.list = res.result.list
-					if(this.listData.list.length<1 ){
-						this.$message.error('不允许迁移至自己的下级或该账号不存在')
-					}
-					this.listData.total = res.result.total
-				}
-			})
-		},
-		updateInviteShip(inviterId){
-			this.$confirm('确定要执行迁移操作吗?', '提示', {
-				confirmButtonText: '确定',
-				cancelButtonText: '取消',
-				type: 'warning'
-			}).then(() => {
-					this.$http.post('/wallet/invite/backmgr/updateInviteShip',{
-						inviterId:inviterId,
-						inviteeId:this.currItem.userId
-					}).then(res=>{
-						if(res.code==200){
-				this.showDialog2 = false
-				this.filterForm={account:'',inviteCode:'',nickName:''},
-				this.showDialog = false
-							this.getInviteData()
-							this.$message.success('迁移成功')
+				}).catch(() => {})
+			},
+			load(tree, treeNode, resolve) {
+				console.log(tree,treeNode,resolve)
+				let inviteCode = tree.inviteCode
+				this.$http.post('/wallet/invite/backmgr/findInviteChild',{inviteCode:inviteCode}).then(res=>{
+					let { list } = res.result;
+					list.forEach(element => {
+						if(element.childNum>0){
+							element.hasChildren = true
+						}else{
+							element.hasChildren = false
 						}
+						
+						})
+						console.log(list)
+						resolve(list)
+						
 					})
-			}).catch(() => {})
+			},
+			changeToTree(item){
+				this.$confirm('确定要执行迁移操作吗?', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning'
+				}).then(() => {
+						this.$http.post('/wallet/invite/backmgr/updateInviteShip',{
+							inviterId:0,
+							inviteeId:item.userId
+						}).then(res=>{
+							if(res.code==200){
+								this.$message.success('迁移成功')
+								this.getInviteData()
+							}
+						})
+				}).catch(() => {})
+			}
 		},
-		load(tree, treeNode, resolve) {
-			console.log(tree,treeNode,resolve)
-			let inviteCode = tree.inviteCode
-			this.$http.post('/wallet/invite/backmgr/findInviteChild',{inviteCode:inviteCode}).then(res=>{
-				let { list } = res.result;
-				list.forEach(element => {
-				if(element.childNum>0){
-					element.hasChildren = true
-				}else{
-					element.hasChildren = false
-				}
-				
-				})
-				console.log(list)
-				resolve(list)
-				
-			})
-		}
-  	},
 }
 </script>
 <style lang="less" scoped>

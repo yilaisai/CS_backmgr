@@ -44,52 +44,52 @@
       <div class="content">
         <ul>
           <li>
-            <span>{{sumData.cashIn || 0}} USDT</span>
-            <span>兑入数量(已完成)</span>
+            <span>{{Math.floor(sumData.cashIn) || 0}} </span>
+            <span>兑入USDT数量</span>
           </li>
           <li>
-            <span>{{sumData.cashOut || 0}} USDT</span>
-            <span>兑出数量(已完成)</span>
+            <span>{{Math.floor(sumData.cashOut) || 0}} </span>
+            <span>兑出USDT数量</span>
           </li>
           <li>
-            <span>{{sumData.cashInNum || 0}}</span>
-            <span>兑入订单笔数(已完成)</span>
+            <span>{{Math.floor(sumData.cashInNum) || 0}}</span>
+            <span>兑入订单笔数</span>
           </li>
           <li>
-            <span>{{sumData.aveCashIn || 0}} USDT</span>
-            <span>平均订单数量</span>
+            <span>{{Math.floor(sumData.aveCashIn) || 0}}</span>
+            <span>订单平均USDT数量</span>
           </li>
           <li>
-            <span>{{bigNumber(sumData.numRate).times(100) || 0}} %</span>
-            <span>万元以上订单笔数占比(%)</span>
+            <span>{{Math.floor(bigNumber(sumData.numRate).times(100)) || 0}} %</span>
+            <span>万余以上订单金额占比</span>
           </li>
           <li>
-            <span>{{bigNumber(sumData.amountRate).times(100) || 0}} %</span>
-            <span>万元以上订单金额占比(%)</span>
+            <span>{{Math.floor(bigNumber(sumData.amountRate).times(100)) || 0}} %</span>
+            <span>万元以上订单笔数占比</span>
           </li>
           <li>
             <span>{{sumData.cashInOpenNum || 0}}</span>
             <span>接单人数</span>
           </li>
           <li>
-            <span>{{sumData.aveCashInNum || 0}}</span>
+            <span>{{Math.floor(sumData.aveCashInNum) || 0}}</span>
             <span>人均接单笔数</span>
           </li>
           <li>
-            <span>{{sumData.aveUserCashInAmount || 0}} USDT</span>
-            <span>人均接单数量</span>
+            <span>{{Math.floor(sumData.aveUserCashInAmount) || 0}}</span>
+            <span>人均接单金额</span>
           </li>
           <li>
-            <span>{{sumData.cashInFalseNum || 0}}</span>
-            <span>兑入匹配失败(笔)</span>
+            <span>{{Math.floor(sumData.cashInFalseNum) || 0}}</span>
+            <span>兑入匹配失败笔数</span>
           </li>
           <li>
-            <span>{{sumData.recharge || 0}} USDT</span>
-            <span>充币</span>
+            <span>{{Math.floor(sumData.recharge)|| 0}}</span>
+            <span>充币数量</span>
           </li>
           <li>
-            <span>{{sumData.withdraw || 0}} USDT</span>
-            <span>提币</span>
+            <span>{{Math.floor(sumData.withdraw) || 0}}</span>
+            <span>提币数量</span>
           </li>
           
         </ul>
@@ -110,38 +110,38 @@
       <div class="list">
         <ul class="table">
           <li class="table-title">
-            <span>商户编号</span>
-            <span>商户订单数量<br/>(USDT)</span>
-            <span>订单金额占比<br/>(%)</span>
-            <span>商户订单笔数</span>
-            <span>订单量占比<br/>(%)</span>
-            <span>兑出订单数量<br/>(USDT)</span>
+            <span>编号</span>
+            <span>兑入USDT</span>
+            <span>订单金额占比</span>
+            <span>订单笔数</span>
+            <span>订单量占比</span>
+            <span>兑出USDT</span>
           </li>
           <li v-for="(item,index) in merchantList1" :key="index" class="item">
             <span :title="item.nickName">{{item.nickName}}</span>
-            <span>{{item.cashIn}}</span>
-            <span>{{bigNumber(item.cashInRate || 0).times(100) }} %</span>
+            <span>{{Math.floor(item.cashIn)}}</span>
+            <span>{{Math.floor(bigNumber(item.cashInRate || 0).times(100)) }} %</span>
             <span>{{item.cashInNum}}</span>
-            <span>{{bigNumber(item.cashInNumRate || 0).times(100)}} %</span>
-            <span>{{item.cashOut}}</span>
+            <span>{{Math.floor(bigNumber(item.cashInNumRate || 0).times(100))}} %</span>
+            <span>{{Math.floor(item.cashOut)}}</span>
           </li>
         </ul>
         <ul class="table">
           <li class="table-title">
-            <span>商户编号</span>
-            <span>商户订单数量<br/>(USDT)</span>
-            <span>订单金额占比<br/>(%)</span>
-            <span>商户订单笔数</span>
-            <span>订单量占比<br/>(%)</span>
-            <span>兑出订单数量<br/>(USDT)</span>
+            <span>编号</span>
+            <span>兑入USDT</span>
+            <span>订单金额占比</span>
+            <span>订单笔数</span>
+            <span>订单量占比</span>
+            <span>兑出USDT</span>
           </li>
           <li v-for="(item,index) in merchantList2" :key="index" class="item">
             <span :title="item.nickName">{{item.nickName}}</span>
-            <span>{{item.cashIn}}</span>
-            <span>{{bigNumber(item.cashInRate || 0).times(100) }} %</span>
+            <span>{{Math.floor(item.cashIn)}}</span>
+            <span>{{Math.floor(bigNumber(item.cashInRate || 0).times(100)) }} %</span>
             <span>{{item.cashInNum}}</span>
-            <span>{{bigNumber(item.cashInNumRate || 0).times(100)}} %</span>
-            <span>{{item.cashOut}}</span>
+            <span>{{Math.floor(bigNumber(item.cashInNumRate || 0).times(100))}} %</span>
+            <span>{{Math.floor(item.cashOut)}}</span>
           </li>
         </ul>
       </div>
@@ -161,34 +161,34 @@
         <div class="list">
           <ul class="table">
             <li class="table-title">
+              <span>账号</span>
               <span>姓名</span>
-              <span>编号</span>
-              <span>订单数量<br/>(USDT)</span>
-              <span>订单笔数</span>
+              <span>兑入USDT</span>
+              <span>笔数</span>
               <span>充币量</span>
             </li>
             <li v-for="(item,index) in traderList1" :key="index" class="item">
-              <span>{{item.realName}}</span>
               <span :title="item.nickName">{{item.nickName}}</span>
-              <span :title="item.totalAmount">{{item.totalAmount}}</span>
-              <span>{{item.totalNum}}</span>
-              <span>{{item.recharge}}</span>
+              <span>{{item.realName}}</span>
+              <span :title="item.totalAmount">{{Math.floor(item.totalAmount)}}</span>
+              <span>{{Math.floor(item.totalNum)}}</span>
+              <span>{{Math.floor(item.recharge)}}</span>
             </li>
           </ul>
           <ul class="table">
             <li class="table-title">
+              <span>账号</span>
               <span>姓名</span>
-              <span>编号</span>
-              <span>订单数量<br/>(USDT)</span>
-              <span>订单笔数</span>
+              <span>兑入USDT</span>
+              <span>笔数</span>
               <span>充币量</span>
             </li>
             <li v-for="(item,index) in traderList2" :key="index" class="item">
-              <span>{{item.realName}}</span>
               <span :title="item.nickName">{{item.nickName}}</span>
-              <span :title="item.totalAmount">{{item.totalAmount}}</span>
-              <span>{{item.totalNum}}</span>
-              <span>{{item.recharge}}</span>
+              <span>{{item.realName}}</span>
+              <span :title="item.totalAmount">{{Math.floor(item.totalAmount)}}</span>
+              <span>{{Math.floor(item.totalNum)}}</span>
+              <span>{{Math.floor(item.recharge)}}</span>
             </li>
           </ul>
         </div>
@@ -196,24 +196,36 @@
       <div class="totalAmount">
         <div class="title">
           <div class="title-left">
-            <span class="text">开启接单人数总持币量(USDT)</span>
-            <span class="blue">{{Math.floor(totalAmount*10000)/10000}}</span>
+            <span class="text">总持币量：</span>
+            <span class="blue">{{Math.floor(totalAmount)}}</span>
           </div>
           <div class="title-right">
-            <span class="text">当前开启接单人数(人)</span>
+            <span class="text">接单人数：</span>
             <span class="blue">{{activeUser}}</span>
           </div>
         </div>
-        <ul class="table">
-          <li class="table-title">
-            <span>编号</span>
-            <span>持币量</span>
-          </li>
-          <li v-for="(item,index) in userList" :key="index" class="item">
-            <span>{{item.nickName}}</span>
-            <span>{{Math.floor(item.amount*10000)/10000}}</span>
-          </li>
-        </ul>
+        <div class="list">
+          <ul class="table">
+            <li class="table-title">
+              <span>编号</span>
+              <span>持币量</span>
+            </li>
+            <li v-for="(item,index) in userList1" :key="index" class="item">
+              <span>{{item.nickName}}</span>
+              <span>{{Math.floor(item.amount)}}</span>
+            </li>
+          </ul>
+          <ul class="table">
+            <li class="table-title">
+              <span>编号</span>
+              <span>持币量</span>
+            </li>
+            <li v-for="(item,index) in userList2" :key="index" class="item">
+              <span>{{item.nickName}}</span>
+              <span>{{Math.floor(item.amount)}}</span>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -246,7 +258,8 @@
         traderList2:[],
         activeUser:'',       // 开启接单人数
         totalAmount:'',    
-        userList:'',         // 开启接单人数列表
+        userList1:'',         // 开启接单人数列表
+        userList2:'',
         myChart:null
       };
     },
@@ -292,10 +305,10 @@
                 return                 
               })
               if (haveValue) {
-                this.yData.cashIn.push(list[i].cashIn)
-                this.yData.cashOut.push(list[i].cashOut)
-                this.yData.recharge.push(list[i].recharge)
-                this.yData.withdraw.push(list[i].withdraw)
+                this.yData.cashIn.push(Math.floor(list[i].cashIn))
+                this.yData.cashOut.push(Math.floor(list[i].cashOut))
+                this.yData.recharge.push(Math.floor(list[i].recharge))
+                this.yData.withdraw.push(Math.floor(list[i].withdraw))
               } else {
                 this.yData.cashIn.push(0)
                 this.yData.cashOut.push(0)
@@ -357,7 +370,17 @@
           let result = res.result
           this.activeUser = result.pageInfo.total
           this.totalAmount = result.totalAmount
-          this.userList = result.pageInfo.list
+          let userList = result.pageInfo.list
+          this.userList1 = []
+          this.userList2 = []
+          for(var i = 0; i<10; i++) {
+            if (userList[i]){
+              this.userList1.push(userList[i])
+            }
+            if(userList[i+10]) {
+              this.userList2.push(userList[i+10])
+            }
+          }
         })
       },
       intCanvas() {
@@ -372,21 +395,22 @@
               type: 'none',        // 默认为直线，可选为：'line' | 'shadow'
             }
           },
-          legend: {
-            bottom:20,
-            itemGap: 100,
-            itemWidth: 14,
-            itemHeight: 14,
-            textStyle: {
-              color: '#000',
-              fontSize: 12,
-              fontWeight: 500
-            }
-          },
+          // legend: {
+          //   bottom:20,
+          //   itemGap: 100,
+          //   itemWidth: 14,
+          //   itemHeight: 14,
+          //   textStyle: {
+          //     color: '#000',
+          //     fontSize: 12,
+          //     fontWeight: 500
+          //   }
+          // },
           grid: {
             top:'45px',
             left: '40px',
             right: '40px',
+            bottom: '20px',
             containLabel: true
           },
           xAxis: [
@@ -435,35 +459,33 @@
           ],
           series: [
             {
-              name: '兑入数量',
+              name: '兑入',
               type: 'bar',
               itemStyle:{
                 color: new echarts.graphic.LinearGradient(
                   0, 0, 1, 1,             //渐变方向依次为  右/下/左/上
                   [
-                      {offset: 0, color: '#09B66D'},
+                      // {offset: 0, color: '#09B66D'},
+                      {offset: 1, color: '#09B66D'},
                       {offset: 1, color: '#22CCE2'}
                   ]
                 ),
-                barBorderRadius:[7,7,0,0],
-                
               },
               barWidth:14,
               data: this.yData.cashIn,
             },
             {
-              name: '兑出数量',
+              name: '兑出',
               type: 'bar',
               itemStyle:{
                 color: new echarts.graphic.LinearGradient(
                   0, 0, 1, 1,
                   [
-                      {offset: 0, color: '#FF8A48'},
+                      // {offset: 0, color: '#FF8A48'},
+                      {offset: 1, color: '#FDBF5E'},
                       {offset: 1, color: '#FDBF5E'}
                   ]
                 ),
-                barBorderRadius:[7,7,0,0],
-                
               },
               barWidth:14,
               data: this.yData.cashOut
@@ -475,12 +497,11 @@
                 color: new echarts.graphic.LinearGradient(
                   0, 0, 1, 1,
                   [
-                      {offset: 0, color: '#4969FF'},
+                      // {offset: 0, color: '#4969FF'},
+                      {offset: 1, color: '#0ACFFE'},
                       {offset: 1, color: '#0ACFFE'}
                   ]
                 ),
-                barBorderRadius:[7,7,0,0],
-                
               },
               barWidth:14,
               data: this.yData.recharge
@@ -492,11 +513,11 @@
                 color: new echarts.graphic.LinearGradient(
                   0, 0, 1, 1,
                   [
-                      {offset: 0, color: '#FF3D57'},
+                      // {offset: 0, color: '#FF3D57'},
+                      {offset: 1, color: '#FF8A48'},
                       {offset: 1, color: '#FF8A48'}
                   ]
                 ),
-                barBorderRadius:[7,7,0,0],
               },
               barWidth:14,
               barGap:'15%',
@@ -693,7 +714,7 @@
           display: flex;
           flex-wrap: wrap;
           li {
-            width:200px;
+            width:220px;
             height:76px;
             padding:20px;
             margin-right:25px;
@@ -708,9 +729,9 @@
             span {
               &:first-of-type {
                 line-height: 1em;
-                color:#323232;
-                font-size:14px;
-                font-weight: 500;
+                color:#000;
+                font-size:16px;
+                font-weight: 600;
               }
               &:last-of-type {
                 line-height: 1em;
@@ -812,7 +833,7 @@
       >div {
         flex:1;
         ul.table {
-          height:288px;
+          height:448px;
           padding:0;
           margin:0;
           background: #FFF;
@@ -866,9 +887,6 @@
             }
           }
         }
-      }
-      .traderData {
-        margin-right:10px;
         .list {
           display: flex;
           .table {
@@ -889,6 +907,29 @@
             }
           }
         }
+      }
+      .traderData {
+        margin-right:10px;
+        // .list {
+        //   display: flex;
+        //   .table {
+        //     flex:1;
+        //     border-right:2px solid #ccc;
+        //     &:last-of-type {
+        //       border-right:0;
+        //     }
+        //     .table-title {
+        //       height:48px;
+        //       line-height: 1.1em;
+        //       span {
+        //         color:#000000;
+        //         display: flex;
+        //         align-items: center;
+        //         justify-content: center;
+        //       }
+        //     }
+        //   }
+        // }
       }
 
     }

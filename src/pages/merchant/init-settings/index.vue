@@ -70,25 +70,25 @@
 							<el-input v-model.trim="form.huobi.in" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.MERCHANT_IN_PRICE_FLOAT" placeholder="输入倍数（如0.9）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d).*$/,'$1$2.$3')"></el-input>
 						</el-form-item>
 						<el-form-item label="兑入价格：" v-else-if="form.MERCHANT_RATE_TYPE == 3">
-							<el-input v-model.trim="form.bian.in" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.MERCHANT_IN_PRICE_FLOAT" placeholder="输入倍数（如0.9）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3')"></el-input>
+							<el-input v-model.trim="form.bian.in" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.MERCHANT_IN_PRICE_FLOAT" placeholder="输入倍数（如0.9）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d).*$/,'$1$2.$3')"></el-input>
 						</el-form-item>
 						<el-form-item label="兑入价格：" v-else-if="form.MERCHANT_RATE_TYPE == 4">
-							<el-input v-model.trim="form.okex.in" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.MERCHANT_IN_PRICE_FLOAT" placeholder="输入倍数（如0.9）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3')"></el-input>
+							<el-input v-model.trim="form.okex.in" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.MERCHANT_IN_PRICE_FLOAT" placeholder="输入倍数（如0.9）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d).*$/,'$1$2.$3')"></el-input>
 						</el-form-item>
 						<el-form-item label="兑入价格：" v-else>
-							<el-input v-model.trim="form.MERCHANT_IN_PRICE" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3')"></el-input>
+							<el-input v-model.trim="form.MERCHANT_IN_PRICE" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d).*$/,'$1$2.$3')"></el-input>
 						</el-form-item>
 						<el-form-item label="兑出价格：" v-if="form.MERCHANT_RATE_TYPE == 1">
-							<el-input v-model.trim="form.huobi.out" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.MERCHANT_OUT_PRICE_FLOAT" placeholder="输入倍数（如1.1）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3')"></el-input>
+							<el-input v-model.trim="form.huobi.out" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.MERCHANT_OUT_PRICE_FLOAT" placeholder="输入倍数（如1.1）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d).*$/,'$1$2.$3')"></el-input>
 						</el-form-item>
 						<el-form-item label="兑出价格：" v-else-if="form.MERCHANT_RATE_TYPE == 3">
-							<el-input v-model.trim="form.bian.out" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.MERCHANT_OUT_PRICE_FLOAT" placeholder="输入倍数（如1.1）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3')"></el-input>
+							<el-input v-model.trim="form.bian.out" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.MERCHANT_OUT_PRICE_FLOAT" placeholder="输入倍数（如1.1）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d).*$/,'$1$2.$3')"></el-input>
 						</el-form-item>
 						<el-form-item label="兑出价格：" v-else-if="form.MERCHANT_RATE_TYPE == 4">
-							<el-input v-model.trim="form.okex.out" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.MERCHANT_OUT_PRICE_FLOAT" placeholder="输入倍数（如1.1）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3')"></el-input>
+							<el-input v-model.trim="form.okex.out" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.MERCHANT_OUT_PRICE_FLOAT" placeholder="输入倍数（如1.1）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d).*$/,'$1$2.$3')"></el-input>
 						</el-form-item>
 						<el-form-item label="兑出价格：" v-else>
-							<el-input v-model.trim="form.MERCHANT_OUT_PRICE" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3')"></el-input>
+							<el-input v-model.trim="form.MERCHANT_OUT_PRICE" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d).*$/,'$1$2.$3')"></el-input>
 						</el-form-item>
 					</el-form>
 					<p class="tips">提示：价格默认使用系统设置的价格，开启手动设置的价格，则自动关闭系统价格，关闭手动设置的价格，则自动开启系统价格。</p>
@@ -131,25 +131,25 @@
 							<el-input v-model.trim="form.huobi.in" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.SET_TIME_IN_PRICE_FLOAT" placeholder="输入倍数（如0.9）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d).*$/,'$1$2.$3')"></el-input>
 						</el-form-item>
 						<el-form-item label="兑入价格：" v-else-if="form.SET_TIME_RATE_TYPE == 3">
-							<el-input v-model.trim="form.bian.in" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.SET_TIME_IN_PRICE_FLOAT" placeholder="输入倍数（如0.9）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3')"></el-input>
+							<el-input v-model.trim="form.bian.in" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.SET_TIME_IN_PRICE_FLOAT" placeholder="输入倍数（如0.9）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d).*$/,'$1$2.$3')"></el-input>
 						</el-form-item>
 						<el-form-item label="兑入价格：" v-else-if="form.SET_TIME_RATE_TYPE == 4">
-							<el-input v-model.trim="form.okex.in" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.SET_TIME_IN_PRICE_FLOAT" placeholder="输入倍数（如0.9）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3')"></el-input>
+							<el-input v-model.trim="form.okex.in" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.SET_TIME_IN_PRICE_FLOAT" placeholder="输入倍数（如0.9）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d).*$/,'$1$2.$3')"></el-input>
 						</el-form-item>
 						<el-form-item label="兑入价格：" v-else>
-							<el-input v-model.trim="form.SET_TIME_IN_PRICE"></el-input>
+							<el-input v-model.trim="form.SET_TIME_IN_PRICE" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d).*$/,'$1$2.$3')"></el-input>
 						</el-form-item>
 						<el-form-item label="兑出价格：" v-if="form.SET_TIME_RATE_TYPE == 1">
-							<el-input v-model.trim="form.huobi.out" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.SET_TIME_OUT_PRICE_FLOAT" placeholder="输入倍数（如1.1）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3')"></el-input>
+							<el-input v-model.trim="form.huobi.out" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.SET_TIME_OUT_PRICE_FLOAT" placeholder="输入倍数（如1.1）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d).*$/,'$1$2.$3')"></el-input>
 						</el-form-item>
 						<el-form-item label="兑出价格：" v-else-if="form.SET_TIME_RATE_TYPE == 3">
-							<el-input v-model.trim="form.bian.out" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.SET_TIME_OUT_PRICE_FLOAT" placeholder="输入倍数（如1.1）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3')"></el-input>
+							<el-input v-model.trim="form.bian.out" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.SET_TIME_OUT_PRICE_FLOAT" placeholder="输入倍数（如1.1）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d).*$/,'$1$2.$3')"></el-input>
 						</el-form-item>
 						<el-form-item label="兑出价格：" v-else-if="form.SET_TIME_RATE_TYPE == 4">
-							<el-input v-model.trim="form.okex.out" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.SET_TIME_OUT_PRICE_FLOAT" placeholder="输入倍数（如1.1）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3')"></el-input>
+							<el-input v-model.trim="form.okex.out" style="width:100px" :disabled="true"></el-input>　+　<el-input v-model.trim="form.SET_TIME_OUT_PRICE_FLOAT" placeholder="输入倍数（如1.1）" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d).*$/,'$1$2.$3')"></el-input>
 						</el-form-item>
 						<el-form-item label="兑出价格：" v-else>
-							<el-input v-model.trim="form.SET_TIME_OUT_PRICE"></el-input>
+							<el-input v-model.trim="form.SET_TIME_OUT_PRICE" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d\d).*$/,'$1$2.$3')"></el-input>
 						</el-form-item>
 						<el-form-item label="启用时间段：">
 							<el-time-select

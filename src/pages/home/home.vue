@@ -60,11 +60,11 @@
             <span>订单平均USDT数量</span>
           </li>
           <li>
-            <span>{{Math.floor(bigNumber(sumData.numRate).times(100)) || 0}} %</span>
-            <span>万余以上订单金额占比</span>
+            <span>{{Math.floor(bigNumber(sumData.amountRate).times(100)) || 0}} %</span>
+            <span>万元以上订单金额占比</span>
           </li>
           <li>
-            <span>{{Math.floor(bigNumber(sumData.amountRate).times(100)) || 0}} %</span>
+            <span>{{Math.floor(bigNumber(sumData.numRate).times(100)) || 0}} %</span>
             <span>万元以上订单笔数占比</span>
           </li>
           <li>
@@ -714,9 +714,9 @@
           display: flex;
           flex-wrap: wrap;
           li {
-            width:220px;
+            width:230px;
             height:76px;
-            padding:20px;
+            padding:17px;
             margin-right:25px;
             margin-bottom:15px;
             background: #FCFDFE;
@@ -726,15 +726,14 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            font-size:12px;
             span {
               &:first-of-type {
-                line-height: 1em;
                 color:#000;
                 font-size:16px;
                 font-weight: 600;
               }
               &:last-of-type {
-                line-height: 1em;
                 color:#646464;
                 font-size:12px;
               }

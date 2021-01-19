@@ -24,10 +24,12 @@
       <el-form-item label="未身份认证每日转账限额:" prop="tranLimitNRealNameAmount">
         <el-input style="width:80%" v-model="ruleForm.tranLimitNRealNameAmount" size="small" placeholder="请输入数额" clearable></el-input>
       </el-form-item>
-      <el-form-item label="是否是ETH代币:" prop="isErc20">
+      <el-form-item label="代币选择:" prop="isErc20">
         <el-radio-group v-model="ruleForm.isErc20">
-          <el-radio v-model="ruleForm.isErc20" label="YES">是</el-radio>
-          <el-radio v-model="ruleForm.isErc20" label="NO">否</el-radio>
+          <el-radio v-model="ruleForm.isErc20" :label="0">有主链</el-radio>
+          <el-radio v-model="ruleForm.isErc20" :label="1">是erc20</el-radio>
+          <el-radio v-model="ruleForm.isErc20" :label="2">是trx20</el-radio>
+          <el-radio v-model="ruleForm.isErc20" :label="3">是eos20</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="最小转账数额:" required>
@@ -315,13 +317,14 @@
       this.server_path = SERVER_PATH;
       if (this.$route.params.coinName) {
         this.ruleForm = Object.assign(this.ruleForm, JSON.parse(JSON.stringify(this.$route.params)))
+        console.log(this.ruleForm)
         const tranInFee = this.ruleForm.tranInFee.split('%');
         const tranOutFee = this.ruleForm.tranOutFee.split('%');
         this.ruleForm.tranInFee = tranInFee[0];
         this.tranInFeeUnit = tranInFee.length > 1 ? '%' : '';
         this.ruleForm.tranOutFee = tranOutFee[0];
         this.tranOutFeeUnit = tranOutFee.length > 1 ? '%' : '';
-        this.ruleForm.isErc20 = this.ruleForm.isErc20 == 0 ? 'NO' : 'YES';
+        // this.ruleForm.isErc20 = this.ruleForm.isErc20 == 0 ? 'NO' : 'YES';
         this.ruleForm.tranLimitNRealNameAmount = this.ruleForm.tranLimitNrealName;
         this.buttonTitle = 2;
       } else {

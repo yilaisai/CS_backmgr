@@ -246,6 +246,9 @@
 						<el-form-item v-if=" coinName == 'USDT' " label="Erc20提币手续费:">
 							<el-input type="number" v-model.trim="form.MERCHANT_WITHDRAW_RATE_ERC20"></el-input>
 						</el-form-item>
+						<el-form-item v-if=" coinName == 'USDT' " label="Trc20提币手续费:">
+							<el-input type="number" v-model.trim="form.MERCHANT_WITHDRAW_RATE_TRC20"></el-input>
+						</el-form-item>
 						<el-form-item v-else label="提币手续费：">
 							<el-input type="number" v-model.trim="form.MERCHANT_WITHDRAW_RATE"></el-input>
 						</el-form-item>

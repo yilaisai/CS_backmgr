@@ -92,6 +92,7 @@
 						<el-table-column label="交易员用户编号/账户" width="150" align="center">
 							<span slot-scope="scope">{{scope.row.nick_name}}<br />{{scope.row.phone}}</span>
 						</el-table-column>
+						<el-table-column prop="maker_tags" label="交易员标签" align="center" width="100"></el-table-column>
 						<el-table-column prop="payment_name" label="付款人" align="center"></el-table-column>
 						<el-table-column prop="receive_name" label="收款人" align="center"></el-table-column>
 						<el-table-column prop="pay_type" label="收款方式" align="center">

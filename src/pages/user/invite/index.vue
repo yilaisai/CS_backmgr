@@ -60,12 +60,14 @@
 			</el-table-column>
 			<el-table-column prop="realName" label="姓名" align="center" width="120"></el-table-column>
 			<el-table-column align="center" prop="account" label="账号" width="140"> </el-table-column>
+			<el-table-column align="center" prop="tags" label="标签" width="140"> </el-table-column>
 			<el-table-column align="center"  prop="inviteCode" label="邀请码" width="80"></el-table-column>
-			<el-table-column align="center" label="操作" width="250">
+			<el-table-column align="center" label="操作" width="320">
 				<template slot-scope="scope"  >   
 					<el-button type="text" size="mini"  @click="$router.push({path:'/LegalCurrency/userQueryDetaile',query:{userId:scope.row.userId}})">查看佣金费率</el-button>
 					<el-button type="text" size="mini"  @click="brokerage(scope.row)">迁移</el-button>
 					<el-button type="text" size="mini"  @click="changeToTree(scope.row)">设置为根目录</el-button>
+					<el-button type="text" size="mini"  @click="setTags(scope.row)">设置标签</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -112,6 +114,16 @@
 				<el-table-column prop="nickName" label="昵称" align="left"></el-table-column>
 			</el-table>
 		</el-dialog>
+		<el-dialog title="设置标签" :visible.sync="showSetTags" width="650px" class="setTagsBox">
+			<div class="tagsBox">
+				<label>标签分组：</label>
+				<el-input type="text" v-model="tag" />
+			</div>
+			<div class="btns">
+				<el-button @click="cancelSetTag">取消</el-button>
+				<el-button type="primary" @click="confirmSetTag">确定</el-button>
+			</div>
+		</el-dialog>
   	</div>
 </template>
 <script>
@@ -134,7 +146,9 @@ export default {
 			},
 			inviteData:[],
 			currItem:{},
-			queryParentList: []
+			queryParentList: [],
+			showSetTags:false,
+			tag:''
 		}
 	},
 	activated(){
@@ -274,6 +288,29 @@ export default {
 							}
 						})
 				}).catch(() => {})
+			},
+			setTags(item){
+				this.currItem = item
+				this.showSetTags = true
+				this.tag = item.tags || ''
+			},
+			cancelSetTag(){
+				this.showSetTags = false
+				this.tag = ''
+			},
+			confirmSetTag(){
+				this.$http.post('/wallet/invite/backmgr/setUsersTags',{
+					tags:this.tag,
+					userIds:this.currItem.userId
+				}).then(res => {
+					this.$notify({
+						type:'success',
+						message:res.msg,
+					})
+					this.showSetTags = false
+					this.tag = ''
+					this.getInviteData()
+				})
 			}
 		},
 }
@@ -355,6 +392,24 @@ export default {
 					line-height: 18px;
 					color: #409EFF;
 				}
+			}
+		}
+	}
+	.setTagsBox {
+		.tagsBox {
+			display: flex;
+			align-items: center;
+			label {
+				width:100px;
+			}
+		}
+		.btns {
+			margin-top:20px;
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+			.el-button {
+				width:100px;
 			}
 		}
 	}

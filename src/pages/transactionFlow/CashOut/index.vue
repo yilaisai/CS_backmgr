@@ -113,9 +113,10 @@
 							<el-table-column prop="letgo_time" label="确认时间" align="center" width="140">
 								<template slot-scope="scope" v-if="scope.row.letgo_time">{{ $fmtDate(scope.row.letgo_time,'full') }}</template>
 							</el-table-column>
-							<el-table-column prop="api_user_id" label="交易员编号/账号" align="center">
+							<el-table-column prop="api_user_id" label="交易员编号/账号" align="center"  width="140">
 								<span slot-scope="scope">{{scope.row.nick_name}}<br />{{scope.row.phone}}</span>
 							</el-table-column>
+							<el-table-column prop="maker_tags" label="交易员标签" align="center"  width="140"></el-table-column>
 							<el-table-column prop="price" label="操作" fixed="right" align="center" width="300">
 								<template slot-scope="scope">
 									<el-button type="danger" size="mini" v-if="scope.row.trade_status==1||scope.row.trade_status==2" @click="appealClick(scope.row) ">申诉</el-button>

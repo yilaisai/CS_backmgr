@@ -72,6 +72,7 @@
 						<el-table-column label="交易员用户编号/账户" width="150" align="center">
 							<span slot-scope="scope">{{scope.row.nick_name}}<br />{{scope.row.phone}}</span>
 						</el-table-column>
+						<el-table-column prop="maker_tags" label="交易员标签" width="100" align="center"></el-table-column>
 						<el-table-column prop="tradeTime" label="状态" width="120" align="center" >
 							<template slot-scope="scope">{{tradeStatusMap[scope.row.trade_status]}}</template>
 						</el-table-column>

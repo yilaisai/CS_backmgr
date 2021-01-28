@@ -66,7 +66,7 @@
 				<span>{{scope.row.phone + ' | ' + scope.row.nickName}}</span>
 			</template>
 		</el-table-column>
-		<el-table-column label="交易商标签" align="center" prop="fromTags"></el-table-column>
+		<el-table-column label="交易员标签" align="center" prop="fromTags"></el-table-column>
 		<el-table-column label="用户类型" align="center">
 			<template slot-scope="scope">{{scope.row.userType | userTypesFilter}}</template>
 		</el-table-column>

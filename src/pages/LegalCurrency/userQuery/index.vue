@@ -55,6 +55,7 @@
 					<el-table-column label="账户/用户编号">
 						<div class="scope" slot-scope="scope">{{scope.row.account}} -- {{scope.row.nickName}}</div>
 					</el-table-column>
+					<el-table-column label="交易商标签" prop="tags" width="100"> </el-table-column>
 					<el-table-column  label="企业类型" align="center" width="100">
 						<div class="scope" slot-scope="scope">
 							<span v-if="scope.row.userEnterprise==0">非企业号</span>

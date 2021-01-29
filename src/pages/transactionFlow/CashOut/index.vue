@@ -409,7 +409,7 @@ export default {
 			})
 		},
 		activationLetgo(tradeId){
-			this.$confirm('放行后订单状态将变为已完成(交易员扣币，商户加币)，确认放行？', '确认放行订单？', {
+			this.$confirm('放行后订单状态将变为已完成(商户扣币，交易员加币)，确认放行？', '确认放行订单？', {
 				confirmButtonText: '确定',
 				cancelButtonText: '取消',
 			// type: 'warning'
@@ -551,7 +551,7 @@ export default {
 					this.selectList.forEach(el => {
 						tradeIds.push(el.trade_id)
 					})
-					this.$confirm('放行后订单状态将变为已完成(交易员扣币，商户加币)，确认放行？','确认批量放行',{
+					this.$confirm('放行后订单状态将变为已完成(商户扣币，交易员加币)，确认放行？','确认批量放行',{
 						confirmButtonText: '确定',
 						cancelButtonText: '取消',
 					}).then(() => {

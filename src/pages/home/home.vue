@@ -225,7 +225,7 @@
               <span>{{Math.floor(item.amount)}}</span>
             </li>
           </ul>
-          <ul class="table">
+          <ul class="table" v-if="userList3.length">
             <li class="table-title">
               <span>编号</span>
               <span>持币量</span>
@@ -234,7 +234,8 @@
               <span>{{item.nickName}}</span>
               <span>{{Math.floor(item.amount)}}</span>
             </li>
-          </ul><ul class="table">
+          </ul>
+          <ul class="table" v-if="userList4.length">
             <li class="table-title">
               <span>编号</span>
               <span>持币量</span>
@@ -386,7 +387,7 @@
       getActiveUser(){
         this.$http.post('/wallet/backmgr/cashInUsers',{
           pageNum:1,
-          pageSize:20
+          pageSize:40
         }).then(res => {
           let result = res.result
           this.activeUser = result.pageInfo.total

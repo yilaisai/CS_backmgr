@@ -225,6 +225,25 @@
               <span>{{Math.floor(item.amount)}}</span>
             </li>
           </ul>
+          <ul class="table">
+            <li class="table-title">
+              <span>编号</span>
+              <span>持币量</span>
+            </li>
+            <li v-for="(item,index) in userList3" :key="index" class="item">
+              <span>{{item.nickName}}</span>
+              <span>{{Math.floor(item.amount)}}</span>
+            </li>
+          </ul><ul class="table">
+            <li class="table-title">
+              <span>编号</span>
+              <span>持币量</span>
+            </li>
+            <li v-for="(item,index) in userList4" :key="index" class="item">
+              <span>{{item.nickName}}</span>
+              <span>{{Math.floor(item.amount)}}</span>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -260,6 +279,8 @@
         totalAmount:'',    
         userList1:'',         // 开启接单人数列表
         userList2:'',
+        userList3:'',
+        userList4:'',
         myChart:null
       };
     },
@@ -373,12 +394,20 @@
           let userList = result.pageInfo.list
           this.userList1 = []
           this.userList2 = []
+          this.userList3 = []
+          this.userList4 = []
           for(var i = 0; i<10; i++) {
             if (userList[i]){
               this.userList1.push(userList[i])
             }
             if(userList[i+10]) {
               this.userList2.push(userList[i+10])
+            }
+            if(userList[i+20]) {
+              this.userList3.push(userList[i+20])
+            }
+            if(userList[i+30]) {
+              this.userList4.push(userList[i+30])
             }
           }
         })

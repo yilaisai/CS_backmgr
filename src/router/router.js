@@ -15,6 +15,7 @@ import user from './routers/user'  //用户管理
 import LegalCurrency from './routers/LegalCurrency'  //法币管理
 import transactionFlow from './routers/transactionFlow'  //交易流水
 import report from './routers/report'  //报表管理
+import coinPay from './routers/coinPay'
 
 export const appRouter = [
 	...systemRouter,
@@ -25,6 +26,7 @@ export const appRouter = [
   ...LegalCurrency,
   ...transactionFlow,
   ...report,
+  ...coinPay,
   {
     path: '/',
     name: 'Index',

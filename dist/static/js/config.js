@@ -1,32 +1,15 @@
-
-var SERVER_PATH = '',
-	SERVER_PATH2 = ''
-if(window.location.href.indexOf('homo.plus') >= 0) {
-	//num22  正式环境
-	SERVER_PATH = 'https://api.homo.plus/'
-	SERVER_PATH2 = 'https://api.homo.plus/'
-}else if( window.location.href.indexOf('hosen.pro')>0 ){
-	SERVER_PATH2 = 'https://api.hosen.pro/'
-	SERVER_PATH = 'https://api.hosen.pro/'
-}else if( window.location.href.indexOf('ubao.io')>0 ){
-	SERVER_PATH2 = 'https://api.ubao.io/'
-	SERVER_PATH = 'https://api.ubao.io/'
-}else {//开发环境
-	// SERVER_PATH2 = 'http://47.52.110.161:7036/'
-	// SERVER_PATH = 'http://47.52.110.161:7036/'
-
-	// SERVER_PATH2 = 'http://192.168.1.56:7036/'  //付岳远程
-	// SERVER_PATH = 'http://192.168.1.56:7036/'
-	
-	// SERVER_PATH = 'http://192.168.120.108:7036/'
-	// SERVER_PATH2 = 'http://192.168.120.108:7036/' 
-	// SERVER_PATH = 'http://192.168.120.42:7036/'  //林威
-	// SERVER_PATH2 = 'http://192.168.120.42:7036/' 
-
-	// SERVER_PATH = 'http://192.168.120.53:7036/'  //李海
-	// SERVER_PATH2 = 'http://192.168.120.53:7036/'  
-
-		SERVER_PATH2 = 'https://api.ubao.io/'  //测试
-		SERVER_PATH = 'https://api.ubao.io/'
-		console.log(SERVER_PATH2)
+var locationHref = window.location.href
+var apiLink = window.location.host.split('.')
+var param1 = 'api'
+var param2 = apiLink[1]+'.'+apiLink[2]
+if(locationHref.indexOf('192.168') >= 0 || locationHref.indexOf('localhost') >= 0) {
+	// window.SERVER_PATH = "http://192.168.120.42:7036"    //李海
+	// window.SERVER_PATH2 = "http://192.168.120.42:7036"
+	// window.SERVER_PATH2 = 'http://192.168.120.108:7036'//付岳
+	// window.SERVER_PATH = 'http://192.168.120.108:7036'
+	window.SERVER_PATH = "https://api.ubao.io"
+	window.SERVER_PATH2 = "https://api.ubao.io"
+} else {
+	window.SERVER_PATH = `https://${param1}.${param2}/`
+	window.SERVER_PATH2 = `https://${param1}.${param2}/`
 }

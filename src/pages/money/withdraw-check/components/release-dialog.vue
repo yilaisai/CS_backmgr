@@ -149,22 +149,42 @@ export default {
                 params.orderId = this.item.id
                 params.secret = form.secret
                 params.userRemark = form.memo
-                console.log(params)
-                this.$http.post('/wallet/backmgr/trade/updateWithdrawSuccess', params).then((res) => {
-					if(res.code == 200) {
-						this.$notify.success({
-							title: '提示',
-							message: res.msg
-						})
-					}else {
-						this.$notify.error({
-							title: '提示',
-							message: res.msg
-						})
-					}
-					this.visible = false
-					this.$emit('getData')
-                }).catch(e => console.warn(e))
+                if(this.item.pinchbeck == 1) { 
+                    this.$confirm('地址已改变，是否仍要方形？').then(()=>{
+                        this.$http.post('/wallet/backmgr/trade/updateWithdrawSuccess', params).then((res) => {
+                            if(res.code == 200) {
+                                this.$notify.success({
+                                    title: '提示',
+                                    message: res.msg
+                                })
+                            }else {
+                                this.$notify.error({
+                                    title: '提示',
+                                    message: res.msg
+                                })
+                            }
+                            this.visible = false
+                            this.$emit('getData')
+                        }).catch(e => console.warn(e))
+                    }).catch(()=>{})
+                } else {
+                    this.$http.post('/wallet/backmgr/trade/updateWithdrawSuccess', params).then((res) => {
+                        if(res.code == 200) {
+                            this.$notify.success({
+                                title: '提示',
+                                message: res.msg
+                            })
+                        }else {
+                            this.$notify.error({
+                                title: '提示',
+                                message: res.msg
+                            })
+                        }
+                        this.visible = false
+                        this.$emit('getData')
+                    }).catch(e => console.warn(e))
+                }
+                
             } else if (this.type === 'reject') {
                 params.tradeStatus = '3'
 				params.sysRemark = form.reason

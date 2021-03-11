@@ -150,7 +150,7 @@ export default {
                 params.secret = form.secret
                 params.userRemark = form.memo
                 if(this.item.pinchbeck == 1) { 
-                    this.$confirm('地址已改变，是否仍要方形？').then(()=>{
+                    this.$confirm('地址已改变，是否仍要放行？').then(()=>{
                         this.$http.post('/wallet/backmgr/trade/updateWithdrawSuccess', params).then((res) => {
                             if(res.code == 200) {
                                 this.$notify.success({

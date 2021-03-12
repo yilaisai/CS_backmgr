@@ -94,10 +94,10 @@
 						</el-switch>
 					</el-form-item>
 					<br>
-					<el-form-item  :label="'派单兑入范围(' + filterForm.coinName + ')：'">
+					<!-- <el-form-item  :label="'派单兑入范围(' + filterForm.coinName + ')：'">
 						<span>【{{MatchConfig.matchMin}}】 ~ 【{{MatchConfig.matchMax}}】</span>
 						<el-button type="primary" plain size="mini" @click="showChange(1)">修改</el-button>
-					</el-form-item>
+					</el-form-item> -->
 					<el-form-item  :label="'派单兑出范围(' + filterForm.coinName + ')：'">
 						<span>【{{MatchConfig.cashoutMin}}】 ~ 【{{MatchConfig.cashoutMax}}】</span>
 						<el-button type="primary" plain size="mini" @click="showChange(2)">修改</el-button>

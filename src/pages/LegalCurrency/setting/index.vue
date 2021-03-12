@@ -21,7 +21,7 @@
 				</el-form>
 				<h4>交易员接单额度全局设置</h4>
 				<el-form label-width="140px" ref="filterForm" size="mini">
-					<el-form-item label="全局派单兑入范围:">
+					<!-- <el-form-item label="全局派单兑入范围:">
 						<el-input v-model="detaileData.sysMatchMin" placeholder="请输入">
 							<template slot="append">{{filterForm.coinName}}</template>
 						</el-input>
@@ -29,7 +29,7 @@
 						<el-input v-model="detaileData.sysMatchMax" placeholder="请输入">
 							<template slot="append">{{filterForm.coinName}}</template>
 						</el-input>
-					</el-form-item>
+					</el-form-item> -->
 					<el-form-item label="全局派单兑出范围:">
 						<el-input v-model="detaileData.sysCashoutMin" placeholder="请输入">
 							<template slot="append">{{filterForm.coinName}}</template>
@@ -58,6 +58,28 @@
 					</el-form-item> -->
 					<el-form-item label=""><el-button type="primary"  @click="UpdateOtcCoinConfig">保存修改</el-button></el-form-item>
 				</el-form>
+		</el-tabs>
+		<h3>持币等级</h3>
+		<el-tabs type="border-card">
+			<el-form label-width="60px" ref="filterForm" size="mini">
+				<el-button type="primary" size="small" @click="addItem">新增等级</el-button>
+				<el-table
+					border
+					:data="levelList"
+					center
+					style="width: 100%">
+					<el-table-column prop="id" label="持币等级" width="120px"></el-table-column>
+					<el-table-column prop="holdAmount" label="持币量（U）" ></el-table-column>
+					<el-table-column prop="amount" label="接单下限（U）" ></el-table-column>
+					<el-table-column label="操作">
+						<template slot-scope="scope">
+							<el-button size="small" @click="editItem(scope.row)">修改</el-button>
+							<el-button size="small" @click="deleteItem(scope.row)">删除</el-button>
+						</template>
+					</el-table-column>
+				</el-table>
+				<p class="tips">1.用户持币量大于持币等级持币量，不接低于接单下限的订单<br/>2.若订单匹配时没有符合条件的交易员，则二次筛选交易员时，此规则无效</p>
+			</el-form>
 		</el-tabs>
 		<h3>返佣设置</h3>
 		<el-tabs type="border-card">
@@ -116,12 +138,12 @@
 				</el-form-item>
 			</el-form>
 		</el-tabs>
-		
-
+		<AddLeVEL :visible="visible" :formItem="item" :type="type" @setVisible="visible = false" @submitAdd="confirmAdd"  @submitEdit="confirmEdit" />
 	</div>
 </template>
 <script>
 import {mapState} from 'vuex'
+import AddLeVEL from './components/addLevel'
 export default {
 	data(){
 		return {
@@ -155,6 +177,13 @@ export default {
 			atobLimitNum:0,
 			atobLimitMin:0,
 			atobLimitMax:0,
+			levelList:[],
+			visible:false,
+			type:1,
+			item:{
+				holdAmount:'',
+				amount:''
+			}
 		}
 	},
 	activated() {
@@ -164,10 +193,70 @@ export default {
 		// }
 		this.queryOtcCoinConfig()
 		this.getDefaultRate()
+		this.getList()
 	},
 	methods:{
-		//
-		
+		getList(){
+			this.$http.post('/wallet/app/otc/backmgr/getMerchantHoldList').then(res => {
+				console.log(res)
+				if(res.code == 200) {
+					this.levelList = res.result
+				}
+			})
+		},
+		addItem(){
+			this.item.holdAmount = ''
+			this.item.amount = ''
+			this.visible = true
+			this.type = 1
+		},
+		editItem(item){
+			this.type = 2
+			this.visible = true
+			this.item = item
+		},
+		confirmAdd(item){
+			this.$http.post('/wallet/app/otc/backmgr/addMerchantHold',{
+				amount:item.amount,
+				holdAmount:item.holdAmount
+			}).then(res => {
+				this.$message({
+					type:"success",
+					message:'添加成功'
+				})
+				this.visible = false
+				this.getList()
+			})
+		},
+		confirmEdit(item){
+			this.$http.post('/wallet/app/otc/backmgr/updateMerchantHold',{
+				amount:item.amount,
+				holdAmount:item.holdAmount,
+				id:this.item.id
+			}).then(res => {
+				this.$message({
+					type:"success",
+					message:'修改成功'
+				})
+				this.visible = false
+				this.getList()
+			})
+		},
+		deleteItem(item){
+			this.$confirm('确认删除？').then(res => {
+				this.$http.post('/wallet/app/otc/backmgr/delMerchantHold',{
+					id:item.id
+				}).then(res => {
+					if(res.code == 200) {
+						this.$message({
+							type: 'success',
+							message: res.msg
+						})
+						this.getList()
+					}
+				})
+			})
+		},
 		updateDefaultRate(){
 			let queryDate ={
 				buyRate:Math.floor(this.currentItem.buyRate*100)/10000,
@@ -281,6 +370,9 @@ export default {
 	},
 	computed:{
 		...mapState(['coinInfo'])
+	},
+	components:{
+		AddLeVEL
 	}
 }
 </script>
@@ -368,6 +460,17 @@ export default {
 				margin-right:20px;
 			}
 		}
+	}
+	.el-table {
+		/deep/ .el-table__body-wrapper {
+			td {
+				text-align: center;
+			}
+		}
+	}
+	.tips {
+		font-size:14px;
+		line-height: 26px;
 	}
 }
 </style>

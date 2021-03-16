@@ -60,10 +60,17 @@
 							</el-form-item>
 							<el-button type="primary" @click.native="search" size="mini">搜索</el-button>
 							<el-button type="primary" @click.native="exportExcel" size="mini" icon="el-icon-document-checked">导出Excel</el-button>
+							<el-button type="primary" size="mini" @click="batchFetchReward" :disabled="tabs == 0 ">批量补发</el-button>
 						</el-form>
 					</el-collapse-item>
-    			</el-collapse>
-				<el-table :data="listData.list" border height="100%" size="mini">
+				</el-collapse>
+				<el-tabs v-model="tabs" @tab-click="chooseTabs">
+					<el-tab-pane label="全部" name="0"></el-tab-pane>
+					<el-tab-pane label="已扣款佣金" name="1"></el-tab-pane>
+					<el-tab-pane label="激活未返佣" name="2"></el-tab-pane>
+				</el-tabs>
+				<el-table :data="listData.list" border height="100%" size="mini" @selection-change="handleSelectionChange">
+						<el-table-column type="selection" align="center" v-if="tabs == 1 || tabs == 2"></el-table-column>
 						<el-table-column prop="coin_name" label="币种" width="60" align="center"></el-table-column>
 						<el-table-column  label="类型/下单时间" align="center" width="140">
 							<template slot-scope="scope"><img :src="'/static/img/paytype/' + scope.row.pay_type + '.svg'" style="vertical-align: sub;width: 18px;" alt=""> {{advTypeMap[scope.row.adv_type]}}<br />{{ $fmtDate(scope.row.create_time,'full') }}</template>
@@ -324,11 +331,50 @@ export default {
 			},{
 				value:3,label:'激活未返佣'
 			}
-			]
+			],
+			tabs:0,
+			selectList:[]
 		}
         
 	},
 	methods:{
+		chooseTabs() {
+			if (this.tabs == 0) {
+				this.filterForm.isReward = ''
+				this.getList()
+			} else if (this.tabs == 1) {
+				this.filterForm.isReward = 2
+				this.getList()
+			} else {
+				this.filterForm.isReward = 3
+				this.getList()
+			}
+		},
+		handleSelectionChange(selection){
+			console.log(selection)
+			this.selectList = selection
+		},
+		batchFetchReward(){
+			if(!this.selectList.length) {
+				this.$message.warning('请选择待放行订单！')
+				return
+			}
+			let tradeIds = []
+			this.selectList.forEach(el => {
+				tradeIds.push(el.trade_id)
+			})
+			this.$confirm('确定补发佣金？','提示',{
+				confirmButtonText: '确定',
+				cancelButtonText: '取消',
+			}).then(() => {
+				this.$http.post('/wallet/invite/backmgr/batchFetchReward ',{
+					recdIds:tradeIds.join(','),
+				}).then(res => {
+					this.$message.success('补发成功！')
+					this.getList()
+				})
+			})
+		},
 		appealClick(data){
 			
 			this.appealData.tradeId = data.trade_id
@@ -676,17 +722,16 @@ export default {
 			color: #909399;
 			padding:0 10px;
 		}
-		/deep/.is-checked{
-			background: #409EFF;
-			border-radius: 5px;
-			padding: 3px 10px;
-			margin-right: 10px;
-			.el-radio__label{
-				color: #fff;
-				padding: 0;
-			}
-			
-		}
+		// /deep/.is-checked{
+		// 	background: #409EFF;
+		// 	border-radius: 5px;
+		// 	padding: 3px 10px;
+		// 	margin-right: 10px;
+		// 	.el-radio__label{
+		// 		color: #fff;
+		// 		padding: 0;
+		// 	}
+		// }
 	.EntryPrompt{
 		// position: fixed;
 		// width: 100%;

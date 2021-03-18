@@ -46,7 +46,7 @@
 								</el-select>
 							</el-form-item>
 							<el-form-item label="返佣状态:">
-								<el-select v-model="filterForm.isReward" >
+								<el-select v-model="filterForm.isReward" :disabled="tabs == 1 || tabs == 2">
 									<el-option v-for="(item, key) in rewardList" :key="key" :value="item.value" :label="item.label"></el-option>
 								</el-select>
 							</el-form-item>
@@ -356,7 +356,7 @@ export default {
 		},
 		batchFetchReward(){
 			if(!this.selectList.length) {
-				this.$message.warning('请选择待放行订单！')
+				this.$message.warning('请选择订单！')
 				return
 			}
 			let tradeIds = []

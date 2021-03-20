@@ -6,10 +6,10 @@
 				<!-- <el-button type="primary" size="mini" icon="el-icon-circle-plus" @click="$emit('hideDialogMR', true)">手动录单</el-button> -->
 			</div>
 		</div>
-        <el-table :data="tableData" border size="mini" style="width: 100%" height="100">
-            <el-table-column prop="create_time" label="时间" width="140" align="center"></el-table-column>
-            <el-table-column prop="phone" label="账号" width="100" align="center"></el-table-column>
-            <el-table-column prop="nickName" label="用户编号" width="90" align="center"></el-table-column>
+        <el-table :data="tableData" border size="mini" style="width: 100%" height="100" :row-class-name="tableRowClassName">
+            <el-table-column prop="create_time" label="时间" width="140" align="center" ></el-table-column>
+            <el-table-column prop="phone" label="账号" width="100" align="center" ></el-table-column>
+            <el-table-column prop="nickName" label="用户编号" width="90" align="center" ></el-table-column>
 			<el-table-column label="用户类型" align="center">
 				<template slot-scope="scope">{{scope.row.user_type | userTypesFilter}}</template>
 			</el-table-column>
@@ -27,7 +27,7 @@
             <el-table-column prop="from_addr" label="From地址" width="300" align="center"></el-table-column>
             <el-table-column prop="to_addr" label="To地址" width="350" align="center" >
                 <template slot-scope="scope">
-                    <span class="toAdd" @click="showImg(scope.row.to_addr)">{{scope.row.to_addr}}</span>
+                    <span @click="showImg(scope.row.to_addr)" class="toAdd">{{scope.row.to_addr}}</span>
                 </template>
             </el-table-column>
             <el-table-column prop="toUrl" label="地址图片" width="100" align="center" >
@@ -103,6 +103,12 @@ export default {
       },
       onError() {
         this.$message.warning('复制失败，请手动复制！')
+      },
+      tableRowClassName({row, rowIndex}){
+          console.log(row)
+        if (row.pinchbeck == 1) {
+          return 'red';
+        }
       }
     },
     filters: {
@@ -149,6 +155,12 @@ export default {
     .el-table {
 		margin-top: 10px;
 		flex: 1;
+        /deep/ .el-table__row {
+            &.red {
+                background: red;
+                color:#232323;
+            }
+        }
         /deep/ .gutter {
             display: block !important;
         }

@@ -58,6 +58,7 @@
 		:data="list"
 		height="calc(100% - 50px)"
 		border
+		:row-class-name="tableRowClassName"
 		size="mini"
 		style="min-width: 100%">
 		<el-table-column prop="create_time" label="发起时间" width="140"></el-table-column>
@@ -148,6 +149,11 @@ export default {
 		},
 		hideDialogMT(b) {
 			this.showDialogMT = b
+		},
+		tableRowClassName({row, rowIndex}){
+			if (row.pinchbeck == 1) {
+				return 'red';
+			}
 		}
 	},
 	components: {
@@ -175,6 +181,12 @@ export default {
 .el-table{
 	flex: 1;
 	margin-top: 0px;
+	/deep/ .el-table__row {
+			&.red {
+					background: red;
+					color:#232323;
+			}
+	}
 	/deep/ .cell {
 		display: flex;
 		align-items: center;

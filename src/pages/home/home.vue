@@ -199,6 +199,17 @@
             <span class="text">总持币量：</span>
             <span class="blue">{{Math.floor(totalAmount)}}</span>
           </div>
+          <div class="title-mid">
+            <el-date-picker
+              v-model="selectedDate"
+              type="daterange"
+              value-format="yyyyMMdd"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期">
+            </el-date-picker>
+            <el-button type="primary" size="small" @click="exportExcel">导出</el-button>
+          </div>
           <div class="title-right">
             <span class="text">接单人数：</span>
             <span class="blue">{{activeUser}}</span>
@@ -254,6 +265,7 @@
   import { dateFormat } from '@/common/util';
   import echarts from "@/assets/js/echarts"
   import bigNumber from 'bignumber.js'
+  import qs from 'qs'
   export default {
     name: 'home',
     data() {
@@ -282,7 +294,14 @@
         userList2:'',
         userList3:'',
         userList4:'',
-        myChart:null
+        myChart:null,
+        selectedDate:[],
+        filterForm:{
+          pageNum:1,
+          pageSize:9999,
+          start:'',
+          end:''
+        }
       };
     },
     methods: {
@@ -564,7 +583,19 @@
       },
       bigNumber(val){
         return bigNumber(val)
-      }
+      },
+      exportExcel(){
+        if(this.selectedDate && this.selectedDate.length==2){
+          this.filterForm.start = this.selectedDate[0]
+          this.filterForm.end = this.selectedDate[1]
+        }else {
+          this.filterForm.start = ''
+          this.filterForm.end = ''
+        }
+        this.filterForm.token = localStorage.getItem('wallet_token') || ""
+        const baseUrl = localStorage.getItem('SERVER_PATH') || window.SERVER_PATH
+        window.open(baseUrl + '/wallet/backmgr/getSumUserHoldList/export?' + qs.stringify(this.filterForm))
+      },
     },
   	activated() {
       this.getData()
@@ -960,7 +991,14 @@
         //   }
         // }
       }
-
+      .totalAmount {
+        .title-mid {
+          /deep/ .el-date-editor {
+            width:250px;
+            margin-right:15px;
+          }
+        }
+      }
     }
   }
 </style>

@@ -144,7 +144,7 @@
         this.filterForm.startDate = this.selectedDate && this.selectedDate[0];
         this.filterForm.endDate = this.selectedDate && this.selectedDate[1];
         this.filterForm.alarmType = this.alarmType.join(',');
-        this.$http.post('wallet/backmgr/trade/getTradeList', this.filterForm)
+        this.$http.post('/wallet/backmgr/trade/getTradeList', this.filterForm)
           .then((res) => {
             this.totalData = res.result.sumData
             const { list, total } = res.result.retMap ? res.result.retMap : res.result;

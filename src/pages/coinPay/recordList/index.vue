@@ -4,13 +4,13 @@
 			<!-- 筛选条件 -->
 			<Query ref="query" @queryData='getData' :orderStatus="orderStatus"/>
 			<!-- 表格 -->
-			<Table :list="pageData.list" :orderStatus="orderStatus" @hideDialogMR="hideDialogMR"></Table>
+			<Table :list="pageData.list" :orderStatus="orderStatus" @cancelOrder="cancel" @inWallet="showInWallet"></Table>
 		</div>
 		<!-- 分页器 -->
 		<div class="footer">
-      <div class="total">
+      <!-- <div class="total">
         <p v-for="(item,index) in newData" :key="index"> <span>{{item.coin_name}}</span> 数量：{{item.sumAmount}} &nbsp;&nbsp;&nbsp;&nbsp;手续费：{{ item.sumFee }}</p>
-      </div>
+      </div> -->
 				<el-pagination
 						@size-change="handleSizeChange"
 						@current-change="handleCurrentChange"
@@ -21,12 +21,14 @@
 						:total="pageData.total*1">
 				</el-pagination>
 		</div>
+		<in-wallet :visible="showPop" @setVisible="setShowPop" @confirmTxid="confirmInWallet"></in-wallet>
 	</div>
 </template>
 
 <script>
 import Query from './components/query.vue'
 import Table from './components/table.vue'
+import InWallet from './components/inWallet'
 export default {
 	data() { 
 		return {
@@ -36,23 +38,33 @@ export default {
 				total: 0,
 				list: []
 			},
-			orderStatus: [
-				{name: '失败', val: 0},
-				{name: '成功', val: 1},
-				// {name: '待审核', val: 2},
-				// {name: '审核不通过', val: 3},
-				// {name: '审核通过', val: 4},
+			orderStatus:[
+				{
+					val:0,
+					name:'待匹配'
+				},
+				{
+					val:1,
+					name:'匹配中'
+				},
+				{
+					val:2,
+					name:'匹配成功'
+				},
+				{
+					val:3,
+					name:'已取消'
+				},
+				{
+					val:4,
+					name:'已入账'
+				},
 			],
-			showDialogMR: false,
-			totalData:[],
+			showPop:false,
+			showId:''
 		}
 	},
 	computed:{
-		newData(){
-			return this.totalData.filter((el)=>{
-				return el.coin_name != 'ETH'
-			})
-		}
 	},
 	activated() {
 		this.getData()
@@ -62,11 +74,9 @@ export default {
 			formData = formData || {}
 			formData.pageNum = this.pageNum
 			formData.pageSize = this.pageSize
-			formData.transType = 2
-			this.$http.post('/wallet/backmgr/trade/queryRechargeWithdrawPage', formData).then(res => {
+			this.$http.post('/wallet/recharge/backmgr/queryRcOrderList', formData).then(res => {
 				if(res.code == 200) {
-					this.pageData = res.result.pageInfo
-					this.totalData = res.result.sumInfo
+					this.pageData = res.result
 				}
 			})
 		},
@@ -78,22 +88,55 @@ export default {
 			this.pageSize = e
 			this.getData()
 		},
-		hideDialogMR(b) {
-			this.showDialogMR = b
+		cancel(id){
+			this.$confirm('确认取消订单？','提示',{
+				confirmButtonText: '确定',
+				cancelButtonText: '取消',
+				type: 'warning'
+			}).then(()=>{
+				this.$http.post('/wallet/recharge/backmgr/cancelOrder',{
+					orderId:id
+				}).then(res => {
+					this.$message('取消成功')
+					this.getData()
+				})
+			}).catch(() => {        
+			});
+			
 		},
-	},
-	filters: {
-		filterStatus(status) {
-			this.orderStatus.forEach((value, index) => {
-				if(status == value.val) {
-					return value.name
-				}
+		showInWallet(id){
+			this.showPop = true
+			this.showId = id
+		},
+		setShowPop(val){
+			this.showPop = val
+		},
+		confirmInWallet(form){
+			if(!form.txId || !form.secret)  {
+				this.$notify({
+					type:'error',
+					message:'请输入TXID及谷歌验证码'
+				})
+				return
+			}
+			this.$http.post('/wallet/recharge/backmgr/checkOrderInWallet',{
+				...form,
+				orderId:this.showId
+				}).then(res => {
+				this.$notify({
+					type:'success',
+					message:res.msg
+				})
+				this.showPop = false
+				this.getData()
 			})
 		}
 	},
 	components: {
 		Query,
-		Table
+		Table,
+		InWallet,
+InWallet
 	}
 }
 </script>

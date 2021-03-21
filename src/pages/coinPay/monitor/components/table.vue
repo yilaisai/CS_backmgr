@@ -8,20 +8,27 @@
 		<el-table-column prop="updateTime" label="充值时间" width="150">
 			<span slot-scope="scope">{{ scope.row.updateTime*1 | dateFormat('YYYY-MM-DD HH:mm:ss') }}</span>
 		</el-table-column>
-		
-		<el-table-column prop="nickName" label="数量" align="center"></el-table-column>
-		<el-table-column prop="coin_name" label="币种" align="center"></el-table-column>
-		<el-table-column prop="coin_name" label="主网" align="center"></el-table-column>
-		<el-table-column prop="coin_name" label="订单匹配状态" align="center"></el-table-column>
-		<el-table-column prop="coin_name" label="状态" align="center"></el-table-column>
-		<el-table-column prop="coin_name" label="归拢状态" align="center"></el-table-column>
-		<el-table-column prop="coin_name" label="归拢地址" align="center"></el-table-column>
-		<el-table-column prop="updateTime" label="归拢时间" width="150">
-			<span slot-scope="scope">{{ scope.row.updateTime*1 | dateFormat('YYYY-MM-DD HH:mm:ss') }}</span>
+		<el-table-column prop="fromAddr" label="充值地址" align="center" width="220"></el-table-column>
+		<el-table-column prop="txId" label="txid" align="center"></el-table-column>
+		<el-table-column prop="amount" label="数量" align="center"></el-table-column>
+		<el-table-column prop="coinName" label="币种" align="center"></el-table-column>
+		<el-table-column prop="chain" label="主网" align="center"></el-table-column>
+		<el-table-column prop="matchStatus" label="订单匹配状态" align="center">
+			<template slot-scope="scope">
+				{{scope.row.matchStatus | filterStatus}}
+			</template>
 		</el-table-column>
-		<el-table-column prop="coin_name" label="实际充值txid" align="center"></el-table-column>
-		<el-table-column prop="coin_name" label="归拢txid" align="center"></el-table-column>
-		<el-table-column prop="coin_name" label="币支付订单号" align="center"></el-table-column>
+		<el-table-column prop="status" label="状态" align="center">
+			<span slot-scope="scope" :class="{'red':scope.row.status == 0}">
+				{{scope.row.status == 1?'正常':'异常'}}
+			</span>
+		</el-table-column>
+		<el-table-column prop="rcOrderId" label="充值订单号" align="center" width="150"></el-table-column>
+		<el-table-column prop="coin_name" label="操作" width="280" align="center">
+			<template slot-scope="scope">
+				<el-button type="danger" size="mini" v-if="scope.row.matchStatus != 2" @click="$emit('inWallet',scope.row.id)">入账</el-button>
+			</template>
+		</el-table-column>
 	</el-table>
 </template>
 
@@ -32,9 +39,6 @@ export default {
 		list: {
 			type: Array
 		},
-		orderStatus: {
-			type: Array
-		}
 	},
 	created() {
 	},
@@ -43,14 +47,22 @@ export default {
 		}
 	},
 	filters: {
-		filterType(status) {
-			let name = ""
-			if(status == 2) {
-				name = "充值"
-			}else {
-				name = "提币"
+		filterStatus(type){
+			let status = ''
+			switch(type) {
+				case 0:
+					status = '待匹配'
+					break
+				case 1:
+					status = '已匹配'
+					break
+				case 2:
+					status = '已入账'
+					break
+				default:
+					break
 			}
-			return name
+			return status
 		}
 	},
 	methods: {
@@ -86,6 +98,9 @@ export default {
 		justify-content: center;
 		span {
 			line-height: 1em;
+		}
+		.red {
+			color:red;
 		}
 	}
 }

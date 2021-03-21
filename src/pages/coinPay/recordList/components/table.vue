@@ -31,7 +31,7 @@
 			<template slot-scope="scope">
 				<el-button type="primary" size="mini" v-if="scope.row.matchStatus != 3 && scope.row.matchStatus != 4" @click="$emit('cancelOrder',scope.row.id)">取消订单</el-button>
 				<el-button type="danger" size="mini" v-if="scope.row.matchStatus != 3 && scope.row.matchStatus != 4" @click="$emit('inWallet',scope.row.id)">人工入账</el-button>
-				<el-button type="danger" size="mini" v-if="scope.row.matchStatus == 3">激活</el-button>
+				<el-button type="danger" size="mini" v-if="scope.row.matchStatus == 3" @click="$emit('activeOrder',scope.row.id)">激活</el-button>
 			</template>
 		</el-table-column>
 	</el-table>

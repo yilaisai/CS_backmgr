@@ -26,7 +26,7 @@
 		<el-table-column prop="rcOrderId" label="充值订单号" align="center" width="150"></el-table-column>
 		<el-table-column prop="coin_name" label="操作" width="280" align="center">
 			<template slot-scope="scope">
-				<el-button type="danger" size="mini" v-if="scope.row.matchStatus != 2" @click="$emit('inWallet',scope.row.id)">入账</el-button>
+				<el-button type="danger" size="mini" v-if="scope.row.matchStatus == 0" @click="$emit('inWallet',scope.row.id)">入账</el-button>
 			</template>
 		</el-table-column>
 	</el-table>

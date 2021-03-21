@@ -4,7 +4,7 @@
 			<!-- 筛选条件 -->
 			<Query ref="query" @queryData='getData' :orderStatus="orderStatus"/>
 			<!-- 表格 -->
-			<Table :list="pageData.list" :orderStatus="orderStatus" @cancelOrder="cancel" @inWallet="showInWallet"></Table>
+			<Table :list="pageData.list" :orderStatus="orderStatus" @cancelOrder="cancel" @inWallet="showInWallet" @activeOrder="activeOrder"></Table>
 		</div>
 		<!-- 分页器 -->
 		<div class="footer">
@@ -103,6 +103,17 @@ export default {
 			}).catch(() => {        
 			});
 			
+		},
+		activeOrder(id){
+			this.$http.post('/wallet/recharge/backmgr/activeRcOrder',{
+				orderId:id
+			}).then(res => {
+				if(res.code == 200) {
+					this.$message.success('激活成功')
+					this.getData()
+				}
+			})
+			 
 		},
 		showInWallet(id){
 			this.showPop = true

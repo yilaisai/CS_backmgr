@@ -21,7 +21,7 @@
 						:total="pageData.total*1">
 				</el-pagination>
 		</div>
-		<in-wallet :visible="showPop" @setVisible="setShowPop" @confirmTxid="confirmInWallet"></in-wallet>
+		<in-wallet :visible="showPop" ref="inWallet" @setVisible="setShowPop" @confirmTxid="confirmInWallet"></in-wallet>
 	</div>
 </template>
 
@@ -115,9 +115,10 @@ export default {
 			})
 			 
 		},
-		showInWallet(id){
+		showInWallet(item){
 			this.showPop = true
-			this.showId = id
+			this.showId = item.id
+			this.$refs.inWallet.form.txId = item.realTxId
 		},
 		setShowPop(val){
 			this.showPop = val

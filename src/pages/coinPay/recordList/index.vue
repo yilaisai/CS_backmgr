@@ -105,15 +105,21 @@ export default {
 			
 		},
 		activeOrder(id){
-			this.$http.post('/wallet/recharge/backmgr/activeRcOrder',{
-				orderId:id
-			}).then(res => {
-				if(res.code == 200) {
-					this.$message.success('激活成功')
-					this.getData()
-				}
-			})
-			 
+			this.$confirm('确认激活订单？','提示',{
+				confirmButtonText: '确定',
+				cancelButtonText: '取消',
+				type: 'warning'
+			}).then(()=>{
+				this.$http.post('/wallet/recharge/backmgr/activeRcOrder',{
+					orderId:id
+				}).then(res => {
+					if(res.code == 200) {
+						this.$message.success('激活成功')
+						this.getData()
+					}
+				})
+			}).catch(() => {        
+			});
 		},
 		showInWallet(item){
 			this.showPop = true

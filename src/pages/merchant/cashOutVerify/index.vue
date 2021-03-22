@@ -15,6 +15,9 @@
 					<el-form-item label="商户订单号:" >
 						<el-input placeholder="请输入商户订单号" v-model="filterForm.apiOrderId" ></el-input>
 					</el-form-item>
+					<el-form-item label="tradeId:" >
+						<el-input placeholder="请输入tradeId" v-model="filterForm.tradeId" ></el-input>
+					</el-form-item>
 					<!-- <el-form-item  label="币种:" >
 						<el-select v-model="filterForm.coinName" >
 								<el-option value="" label='所有'></el-option>
@@ -53,6 +56,7 @@
 			<el-table-column align="center"  label="类型" width="80">
 				<div slot-scope="scope"> {{scope.row.advType==3?'抢单兑出':scope.row.advType==4?'抢单兑入':scope.row.advType==5?'派单兑入':scope.row.advType==6?'派单兑出':''}} </div>
 			</el-table-column>
+			<el-table-column align="center" prop="tradeId" width="160" label="tradeId"></el-table-column>
 			<el-table-column align="center"  label="商户订单号/发起时间" width="160">
 				<template slot-scope="scope">
 					<span>{{scope.row.apiOrderId}}<br />{{$fmtDate(scope.row.createTime, 'full')}}</span>
@@ -171,7 +175,8 @@ export default {
 				endDate:'',
 				pageNum:1,
 				pageSize: 20,
-				matchResult: ''
+				matchResult: '',
+				tradeId:''
 			},
 			selectedDate:[],
 			typeList:[

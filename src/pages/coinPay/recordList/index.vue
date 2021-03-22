@@ -154,7 +154,6 @@ export default {
 		Query,
 		Table,
 		InWallet,
-InWallet
 	}
 }
 </script>

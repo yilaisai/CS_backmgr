@@ -150,46 +150,9 @@
 				</li> -->
 			</ul>
 		</div>
-		<div class="settable">
-			<div class="title">
-				<h3>币支付设置</h3>
-			</div>
-			<ul>
-				<li>
-					<label>支付方式：</label>
-					<span>USDT充值</span>
-				</li>
-				<li></li>
-				<li>
-					<label>商户充值手续费：</label>
-					<span>5</span>
-					<el-button type="primary" plain size="mini" @click="showDialog('chongzhi')">修改</el-button>
-				</li>
-				<li></li>
-				<li>
-					<label>商户充值最大额度（{{$variableCoin}}）：</label>
-					<span>1000</span>
-					<el-button type="primary" plain size="mini" @click="showDialog('chongzhi')">修改</el-button>
-				</li>
-				<li>
-					<label>商户充值最小额度（{{$variableCoin}}）：</label>
-					<span>100</span>
-					<el-button type="primary" plain size="mini" @click="showDialog('chongzhi')">修改</el-button>
-				</li>
-			</ul>
-		</div>
 		<CheckStand :data="pageData"></CheckStand>
 		<el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="40%" >
 			<el-form ref="form" :model="formData" label-width="120px">
-				<el-form-item :label="label" v-if="dialogType == 'chongzhi'">
-					<el-input type="number" v-model="formData.value" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')">
-						<template slot="append" v-if="feeType == 1">%</template>
-					</el-input>
-					<el-radio-group v-model="feeType">
-						<el-radio :label="1">按比例</el-radio>
-  					<el-radio :label="2">按固定数量</el-radio>
-					</el-radio-group>
-				</el-form-item>
 				<el-form-item :label="label1" v-if="dialogType != 'chongbi'">
 					<el-input type="number" v-model="formData.value1" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')">
 						<template slot="append" v-if="dialogType == 'feeRateIn' || dialogType == 'firstRate' || dialogType == 'secRate'|| dialogType == 'daifu'">%</template>
@@ -231,7 +194,6 @@ export default {
 				feeList: []
 			},
 			formData: {
-				value:'',
 				value1: '',
 				value2: '',
 			},
@@ -375,11 +337,6 @@ export default {
 				this.label2 = '充币手续费'
 				this.formData.value1 = ''
 				this.formData.value2 = Math.floor(this.pageData.coinInfo.merchantRechargeRate*10000)/100
-			}else if (this.dialogType == "chongzhi") {
-				this.dialogTitle = '修改币支付设置'
-				this.label = '充值手续费'
-				this.label1 = '充值最大额度'
-				this.label2 = '充值最小额度'
 			}
 			this.dialogVisible = true
 		},

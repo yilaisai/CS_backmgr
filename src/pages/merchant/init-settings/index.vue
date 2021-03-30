@@ -236,31 +236,6 @@
 					</el-form>
 					<p class="tips">提示：商户默认该参数，可在商户查询模块单独配置该参数。初始化设置修改后只对新增商户生效。</p>
 				</el-tab-pane>
-				<el-tab-pane label="币支付初始化设置">
-					<el-form ref="form" :model="form" :inline="true" label-width="155px" size="small">
-						<el-form-item label="商户充值手续费：" class="flex">
-							<el-input type="number" v-model="form.MERCHANT_MAX_OUT_AMOUNT" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')">
-								<template slot="append" v-if="feeType == 1">%</template>
-							</el-input>
-							<el-radio-group v-model="feeType">
-								<el-radio :label="1">按比例</el-radio>
-								<el-radio :label="2">按固定数量</el-radio>
-							</el-radio-group>
-						</el-form-item>
-						<br />
-						<el-form-item label="商户充值最大额度：">
-							<el-input type="number" v-model="form.MERCHANT_MAX_OUT_AMOUNT" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')">
-								<template slot="append">%</template>
-							</el-input>
-						</el-form-item>
-						<br />
-						<el-form-item label="商户充值最小额度：">
-							<el-input type="number" v-model="form.MERCHANT_MAX_OUT_AMOUNT" oninput="value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')">
-								<template slot="append">%</template>
-							</el-input>
-						</el-form-item>
-					</el-form>
-				</el-tab-pane>
 			</el-tabs>
 			<el-tabs type="border-card">
 				<el-tab-pane label="全局设置">

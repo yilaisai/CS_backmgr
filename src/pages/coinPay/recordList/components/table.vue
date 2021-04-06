@@ -29,7 +29,7 @@
 		<el-table-column prop="realTxId" label="入账txid" align="center"></el-table-column>
 		<el-table-column prop="manage" label="操作" width="280" align="center">
 			<template slot-scope="scope">
-				<el-button type="primary" size="mini" v-if="scope.row.matchStatus == 0 || scope.row.matchStatus == 1" @click="$emit('cancelOrder',scope.row.id)">取消订单</el-button>
+				<el-button type="primary" size="mini" v-if="scope.row.matchStatus == 0 || scope.row.matchStatus == 1 || scope.row.matchStatus == 2" @click="$emit('cancelOrder',scope.row.id)">取消订单</el-button>
 				<el-button type="danger" size="mini" v-if="scope.row.matchStatus != 3 && scope.row.matchStatus != 4" @click="$emit('inWallet',scope.row)">人工入账</el-button>
 				<el-button type="danger" size="mini" v-if="scope.row.matchStatus == 3" @click="$emit('inWallet',scope.row)">激活入账</el-button>
 			</template>

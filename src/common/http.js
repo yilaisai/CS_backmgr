@@ -8,7 +8,7 @@ axios.defaults.baseURL = localStorage.getItem('SERVER_PATH') || SERVER_PATH
 console.log(axios.defaults.baseURL)
 const httpInstance = axios.create({
 	responseType: 'json',
-	timeout: 5000,
+	timeout: 10000,
 	params: {},
 	data: {},
 	validateStatus(status) {
